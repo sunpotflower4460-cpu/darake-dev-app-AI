@@ -37,6 +37,13 @@ AI開発をできるだけやさしく、自動化し、安全ゲート付きで
 - 仮データで動いている欄の見える化
 - 実運用に進む前の安全な境界づくり
 
+## Phase 3.6で強化したこと
+
+- `scripts/buildState.mjs` で `public/repo-state.json` を更新する導線
+- `npm run state:build` コマンド
+- 手動実行専用の `Update State File` workflow
+- 変更がある時だけ状態ファイルをコミットする仕組み
+
 ## 初期版でできること
 
 - 魂・種の入力
@@ -45,10 +52,10 @@ AI開発をできるだけやさしく、自動化し、安全ゲート付きで
 - 確認ゲートの見える化
 - 自動スクショ確認の予定表示
 - App Store提出準備フォームの入口
+- 開発状況スナップショット表示
 
 ## 初期版でまだやらないこと
 
-- 外部サービスとの実接続
 - 本番DB接続
 - 課金
 - 認証
@@ -62,11 +69,19 @@ npm install
 npm run dev
 npm run typecheck
 npm run build
+npm run state:build
 ```
+
+## 手動で状態ファイルを更新する流れ
+
+GitHub Actions の `Update State File` を手動実行すると、`public/repo-state.json` が更新されます。
+
+このworkflowは常時自動実行ではありません。必要な時だけ実行する安全寄りの導線です。
 
 ## 設計書
 
 - `docs/phase-0-design.md`
+- `docs/phase-3-prep.md`
 
 ## 方針
 
