@@ -1,0 +1,76 @@
+.boundaryShell {
+  padding-top: 0;
+}
+
+.statusModePanel {
+  border-style: dashed;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.statusPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.statusLead {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.statusLead > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.statusLead h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.25rem, 2vw, 1.7rem);
+  letter-spacing: -0.04em;
+}
+
+.statusLead p:not(.eyebrow) {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.statusGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.statusCard {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgba(255, 250, 240, 0.86);
+}
+
+.statusCard p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.statusCard .agentTop span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+@media (max-width: 960px) {
+  .statusGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .statusLead,
+  .statusGrid {
+    grid-template-columns: 1fr;
+  }
+}
