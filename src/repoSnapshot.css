@@ -3,6 +3,55 @@
   gap: 18px;
 }
 
+.freshnessBox {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 250, 240, 0.9);
+}
+
+.freshnessBox > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.freshnessBox span {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.freshnessBox strong {
+  font-size: 1.2rem;
+  letter-spacing: -0.03em;
+}
+
+.freshnessBox p,
+.freshnessBox small {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.freshness-fresh {
+  border-color: rgba(76, 124, 85, 0.28);
+  background: rgba(76, 124, 85, 0.09);
+}
+
+.freshness-aging {
+  border-color: rgba(185, 130, 46, 0.26);
+  background: rgba(185, 130, 46, 0.09);
+}
+
+.freshness-stale,
+.freshness-unknown {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
 .repoSummaryGrid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -94,5 +143,10 @@
 @media (max-width: 640px) {
   .repoSummaryGrid {
     grid-template-columns: 1fr;
+  }
+
+  .freshnessBox > div {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
