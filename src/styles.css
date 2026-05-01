@@ -1,0 +1,453 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  color: #263027;
+  background: #f5f0e7;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --paper: #fffaf0;
+  --paper-strong: #fff4d8;
+  --ink: #263027;
+  --muted: #6c6f64;
+  --line: rgba(71, 62, 41, 0.14);
+  --green: #4c7c55;
+  --gold: #b9822e;
+  --rose: #b45b5d;
+  --shadow: 0 24px 80px rgba(67, 55, 31, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(255, 214, 130, 0.38), transparent 32rem),
+    radial-gradient(circle at 85% 8%, rgba(124, 172, 119, 0.24), transparent 34rem),
+    linear-gradient(135deg, #f6eddd 0%, #f8f3eb 45%, #eef2e8 100%);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.appShell {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0 56px;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(32px, 8vw, 72px);
+  border: 1px solid var(--line);
+  border-radius: 36px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.92), rgba(246, 255, 235, 0.84));
+  box-shadow: var(--shadow);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  right: -72px;
+  bottom: -96px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(185, 130, 46, 0.24), transparent 70%);
+}
+
+.heroBadge,
+.automationStrip,
+.phaseTop,
+.reviewItem span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.heroBadge {
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: #4b5d3f;
+  background: rgba(110, 152, 91, 0.12);
+  border: 1px solid rgba(94, 130, 77, 0.18);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  max-width: 760px;
+  margin: 24px 0 16px;
+  font-size: clamp(2.6rem, 8vw, 5.9rem);
+  letter-spacing: -0.07em;
+  line-height: 0.92;
+}
+
+.heroLead {
+  max-width: 740px;
+  color: var(--muted);
+  font-size: clamp(1.05rem, 2vw, 1.28rem);
+  line-height: 1.85;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.primaryButton,
+.ghostButton {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.primaryButton {
+  color: #fffdf6;
+  background: #2f5138;
+  box-shadow: 0 12px 30px rgba(47, 81, 56, 0.24);
+}
+
+.ghostButton {
+  color: #31513b;
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid var(--line);
+}
+
+.panel,
+.finishCard {
+  margin-top: 22px;
+  padding: clamp(22px, 4vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  background: rgba(255, 250, 240, 0.82);
+  box-shadow: 0 16px 60px rgba(67, 55, 31, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+.sectionHeader {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+
+.sectionIcon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 18px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #2f5138, #6b8a45);
+}
+
+.sectionHeader h2 {
+  margin-bottom: 6px;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  letter-spacing: -0.04em;
+}
+
+.sectionHeader p:not(.eyebrow),
+.phaseCard p,
+.reviewItem p,
+.finishCard p,
+.blueprintGrid p {
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.eyebrow {
+  margin-bottom: 4px;
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.seedGrid,
+.submissionGrid,
+.blueprintGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  color: #475241;
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+label.wide,
+.blueprintMain {
+  grid-column: 1 / -1;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid rgba(68, 59, 39, 0.18);
+  border-radius: 18px;
+  padding: 14px 15px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.72);
+  outline: none;
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus {
+  border-color: rgba(76, 124, 85, 0.58);
+  box-shadow: 0 0 0 4px rgba(76, 124, 85, 0.12);
+}
+
+.automationStrip {
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 16px;
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: rgba(76, 124, 85, 0.1);
+  border: 1px solid rgba(76, 124, 85, 0.18);
+}
+
+.automationStrip span {
+  color: var(--muted);
+}
+
+.blueprintGrid > div {
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.52);
+  border: 1px solid var(--line);
+}
+
+.blueprintGrid h3,
+.phaseCard h3,
+.finishCard h2 {
+  margin-bottom: 8px;
+}
+
+ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.phaseGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.phaseCard {
+  padding: 20px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--line);
+}
+
+.phaseCard.risk-medium {
+  border-color: rgba(185, 130, 46, 0.32);
+}
+
+.phaseCard.risk-high {
+  border-color: rgba(180, 91, 93, 0.36);
+}
+
+.phaseTop {
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.phaseTop strong {
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: #34523b;
+  background: rgba(76, 124, 85, 0.12);
+}
+
+dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 16px 0;
+}
+
+dl div,
+.gateBox,
+.doneBox {
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(246, 239, 222, 0.74);
+}
+
+dt,
+.gateBox span,
+.doneBox span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+dd {
+  margin: 4px 0 0;
+  font-weight: 900;
+}
+
+.gateBox,
+.doneBox {
+  margin-top: 10px;
+}
+
+.gateBox p,
+.doneBox p {
+  margin-bottom: 0;
+}
+
+.reviewList {
+  display: grid;
+  gap: 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.reviewItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.reviewItem span {
+  align-self: flex-start;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.state-ok span {
+  color: #31543b;
+  background: rgba(76, 124, 85, 0.13);
+}
+
+.state-watch span,
+.state-pending span {
+  color: #815a21;
+  background: rgba(185, 130, 46, 0.14);
+}
+
+.state-blocked span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.14);
+}
+
+.screenshotMock {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-top: 16px;
+  padding: 18px;
+  border: 1px dashed rgba(76, 124, 85, 0.36);
+  border-radius: 22px;
+  color: #3b5d43;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.screenshotMock p {
+  margin-bottom: 0;
+}
+
+.finishCard {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(47, 81, 56, 0.96), rgba(76, 96, 48, 0.9));
+  color: #fffaf0;
+}
+
+.finishCard > div {
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.finishCard p {
+  color: rgba(255, 250, 240, 0.78);
+}
+
+@media (max-width: 760px) {
+  .appShell {
+    width: min(100% - 20px, 1120px);
+    padding-top: 16px;
+  }
+
+  .hero,
+  .panel,
+  .finishCard {
+    border-radius: 24px;
+  }
+
+  .seedGrid,
+  .submissionGrid,
+  .blueprintGrid,
+  .phaseGrid,
+  .finishCard {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHeader {
+    grid-template-columns: 1fr;
+  }
+
+  dl {
+    grid-template-columns: 1fr;
+  }
+
+  .reviewItem,
+  .automationStrip {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
