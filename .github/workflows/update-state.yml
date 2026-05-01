@@ -1,0 +1,35 @@
+name: Update State File
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    name: Update public state file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build state file
+        run: npm run state:build
+
+      - name: Commit state file if changed
+        run: |
+          if git diff --quiet -- public/repo-state.json; then
+            echo "No state changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/repo-state.json
+          git commit -m "chore: update repo state snapshot"
+          git push

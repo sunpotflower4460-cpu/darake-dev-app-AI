@@ -25,6 +25,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Build state file
+        run: npm run state:build
+
       - name: Typecheck
         run: npm run typecheck
 
