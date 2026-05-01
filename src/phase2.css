@@ -1,0 +1,204 @@
+.planPanel,
+.screenshotPanel,
+.notifyPanel {
+  position: relative;
+}
+
+.generatedPlan {
+  display: grid;
+  gap: 20px;
+  padding: 22px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 26px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(239, 248, 232, 0.72));
+}
+
+.generatedPlan h3 {
+  margin-bottom: 8px;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  letter-spacing: -0.04em;
+}
+
+.planColumns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.planColumns > div,
+.notifyCard,
+.agentCard,
+.screenshotCard {
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.planColumns > div {
+  padding: 18px;
+}
+
+.planColumns h4 {
+  margin: 0 0 10px;
+  color: #40513f;
+}
+
+ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--muted);
+  line-height: 1.85;
+}
+
+.timelineRail {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin: 0 0 18px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.timelineDot {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(108, 111, 100, 0.2);
+}
+
+.timelineDot.passed {
+  background: linear-gradient(90deg, #4c7c55, #8fb66f);
+}
+
+.timelineDot.running {
+  background: linear-gradient(90deg, #b9822e, #e0bd75);
+}
+
+.timelineDot.waiting_review {
+  background: linear-gradient(90deg, #7b8aa3, #b9c2d3);
+}
+
+.timelineDot.blocked {
+  background: linear-gradient(90deg, #b45b5d, #dd999b);
+}
+
+.agentGrid,
+.screenshotGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.agentCard,
+.screenshotCard {
+  padding: 17px;
+}
+
+.agentTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.agentTop span {
+  flex: 0 0 auto;
+  padding: 6px 9px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.agent-checking .agentTop span,
+.agent-ready .agentTop span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.agent-needs_human .agentTop span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.13);
+}
+
+.agentRole {
+  margin-bottom: 8px;
+  color: #415143;
+  font-weight: 800;
+}
+
+.screenshotCard {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.screenshotFrame {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  min-height: 110px;
+  border: 1px dashed rgba(76, 124, 85, 0.36);
+  border-radius: 18px;
+  color: #3b5d43;
+  background:
+    linear-gradient(135deg, rgba(76, 124, 85, 0.09), rgba(185, 130, 46, 0.08)),
+    rgba(255, 255, 255, 0.4);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.notifyCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 20px;
+}
+
+.notifyCard h3 {
+  margin-bottom: 8px;
+}
+
+.channelList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.channelList span {
+  padding: 8px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.84rem;
+  font-weight: 900;
+}
+
+@media (max-width: 760px) {
+  .planColumns,
+  .agentGrid,
+  .screenshotGrid,
+  .notifyCard {
+    grid-template-columns: 1fr;
+  }
+
+  .timelineRail {
+    grid-template-columns: repeat(5, minmax(24px, 1fr));
+  }
+
+  .screenshotCard {
+    grid-template-columns: 1fr;
+  }
+
+  .channelList {
+    justify-content: flex-start;
+  }
+}

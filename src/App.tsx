@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
-import { Bell, CheckCircle2, CircleDotDashed, ClipboardCheck, GitPullRequest, Rocket, ShieldCheck, Sparkles, Store, Wand2 } from 'lucide-react';
+import { Bell, Camera, CheckCircle2, CircleDotDashed, ClipboardCheck, GitPullRequest, ListChecks, PauseCircle, Rocket, ShieldCheck, Sparkles, Store, Wand2, Workflow } from 'lucide-react';
+import { agentChecks, generatedPlan, notificationPlan, screenshotChecks } from './data/mockFlow';
 import { blueprint, initialSeed, phases, reviewChecks, submissionDraft } from './data/mockProject';
-import type { PhasePlan, ReviewCheck, RiskLevel } from './types';
+import type { AgentCheck, PhasePlan, ReviewCheck, RiskLevel, ScreenshotCheck } from './types';
 
 const riskLabel: Record<RiskLevel, string> = {
   low: '低リスク',
@@ -22,6 +23,19 @@ const reviewLabel: Record<ReviewCheck['state'], string> = {
   watch: '注意',
   blocked: '停止',
   pending: '確認待ち',
+};
+
+const agentStatusLabel: Record<AgentCheck['status'], string> = {
+  ready: '待機',
+  checking: '確認中',
+  passed: '通過',
+  needs_human: '手動確認',
+};
+
+const screenshotStatusLabel: Record<ScreenshotCheck['status'], string> = {
+  planned: '予定',
+  captured: '取得済み',
+  needs_review: '確認待ち',
 };
 
 function SectionHeader({ icon, title, lead }: { icon: ReactNode; title: string; lead: string }) {
@@ -80,6 +94,37 @@ function ReviewItem({ check }: { check: ReviewCheck }) {
   );
 }
 
+function AgentCard({ agent }: { agent: AgentCheck }) {
+  return (
+    <article className={`agentCard agent-${agent.status}`}>
+      <div className="agentTop">
+        <strong>{agent.name}</strong>
+        <span>{agentStatusLabel[agent.status]}</span>
+      </div>
+      <p className="agentRole">{agent.role}</p>
+      <p>{agent.message}</p>
+    </article>
+  );
+}
+
+function ScreenshotCard({ item }: { item: ScreenshotCheck }) {
+  return (
+    <article className="screenshotCard">
+      <div className="screenshotFrame">
+        <Camera size={22} />
+        <span>{item.viewport === 'mobile' ? 'Mobile' : 'Desktop'}</span>
+      </div>
+      <div>
+        <div className="agentTop">
+          <strong>{item.label}</strong>
+          <span>{screenshotStatusLabel[item.status]}</span>
+        </div>
+        <p>{item.note}</p>
+      </div>
+    </article>
+  );
+}
+
 export default function App() {
   return (
     <main className="appShell">
@@ -128,8 +173,29 @@ export default function App() {
         </div>
       </section>
 
+      <section className="panel planPanel">
+        <SectionHeader icon={<Workflow />} title="2. 種から計画を作る" lead="入力された願いを、一旦の完成まで進むためのやさしい計画へ変換します。" />
+        <div className="generatedPlan">
+          <div>
+            <p className="eyebrow">Generated Plan</p>
+            <h3>{generatedPlan.title}</h3>
+            <p>{generatedPlan.summary}</p>
+          </div>
+          <div className="planColumns">
+            <div>
+              <h4>次に進めること</h4>
+              <ol>{generatedPlan.nextActions.map((item) => <li key={item}>{item}</li>)}</ol>
+            </div>
+            <div>
+              <h4>必ず止まるところ</h4>
+              <ol>{generatedPlan.humanStops.map((item) => <li key={item}>{item}</li>)}</ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="panel">
-        <SectionHeader icon={<ClipboardCheck />} title="2. 設計図に変換" lead="種を、目的・MVP・やらないこと・完成条件へ翻訳します。" />
+        <SectionHeader icon={<ClipboardCheck />} title="3. 設計図に変換" lead="種を、目的・MVP・やらないこと・完成条件へ翻訳します。" />
         <div className="blueprintGrid">
           <div className="blueprintMain">
             <h3>目的</h3>
@@ -151,28 +217,55 @@ export default function App() {
       </section>
 
       <section id="phases" className="panel">
-        <SectionHeader icon={<GitPullRequest />} title="3. Phaseに分けて進める" lead="AIが一気に暴走しないよう、確認できる小さな段階へ分けます。" />
+        <SectionHeader icon={<GitPullRequest />} title="4. Phaseに分けて進める" lead="AIが一気に暴走しないよう、確認できる小さな段階へ分けます。" />
+        <div className="timelineRail" aria-label="Phase progress">
+          {phases.map((phase) => <span key={phase.id} className={`timelineDot ${phase.status}`} title={phase.title} />)}
+        </div>
         <div className="phaseGrid">
           {phases.map((phase) => <PhaseCard phase={phase} key={phase.id} />)}
         </div>
       </section>
 
       <section className="panel reviewPanel">
-        <SectionHeader icon={<ShieldCheck />} title="4. 確認エージェントの門" lead="コード、画面、ビルド、危険変更を確認してから次へ進みます。" />
+        <SectionHeader icon={<ShieldCheck />} title="5. 確認エージェントの門" lead="コード、画面、ビルド、危険変更を確認してから次へ進みます。" />
+        <div className="agentGrid">
+          {agentChecks.map((agent) => <AgentCard agent={agent} key={agent.name} />)}
+        </div>
         <ul className="reviewList">
           {reviewChecks.map((check) => <ReviewItem check={check} key={check.label} />)}
         </ul>
+      </section>
+
+      <section className="panel screenshotPanel">
+        <SectionHeader icon={<Camera />} title="6. 自動スクショ確認の予定" lead="今はモック表示です。後で画面崩れをスクリーンショットで確認する管制欄に育てます。" />
+        <div className="screenshotGrid">
+          {screenshotChecks.map((item) => <ScreenshotCard item={item} key={`${item.label}-${item.viewport}`} />)}
+        </div>
         <div className="screenshotMock">
           <CircleDotDashed />
           <div>
-            <strong>自動スクショ確認</strong>
-            <p>Phase 2以降で、画面崩れをスクリーンショット付きで確認する場所です。</p>
+            <strong>今の状態</strong>
+            <p>Phase 2では予定表示まで。次の段階で実際の取得・比較・添削の流れを足します。</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="panel notifyPanel">
+        <SectionHeader icon={<PauseCircle />} title="7. 止めるタイミングと通知" lead="普段は進み、大事な場面だけ呼ぶ。開発が重くなりすぎないための交通整理です。" />
+        <div className="notifyCard">
+          <div>
+            <p className="eyebrow">通知モード</p>
+            <h3>{notificationPlan.mode === 'pause_on_risk' ? '危険時だけ止める' : '段階ごとに確認'}</h3>
+            <p>{notificationPlan.message}</p>
+          </div>
+          <div className="channelList">
+            {notificationPlan.channels.map((channel) => <span key={channel}>{channel}</span>)}
           </div>
         </div>
       </section>
 
       <section className="panel submitPanel">
-        <SectionHeader icon={<Store />} title="5. 提出準備をまとめる" lead="App Store提出などの手動項目を、最後に慌てないよう同じ場所へ集めます。" />
+        <SectionHeader icon={<Store />} title="8. 提出準備をまとめる" lead="App Store提出などの手動項目を、最後に慌てないよう同じ場所へ集めます。" />
         <div className="submissionGrid">
           <label>アプリ名<input defaultValue={submissionDraft.appName} /></label>
           <label>サブタイトル<input defaultValue={submissionDraft.subtitle} /></label>
@@ -186,7 +279,7 @@ export default function App() {
         <div>
           <Rocket />
           <h2>完成通知の理想</h2>
-          <p>「Phase 1完了」「確認エージェントOK」「スクショ確認OK」「次へ進みます」「完成しました」を、やさしい言葉で返す管制室に育てます。</p>
+          <p>「Phase完了」「確認OK」「次へ進みます」「完成しました」を、やさしい言葉で返す管制室に育てます。</p>
         </div>
         <div>
           <Bell />
@@ -196,7 +289,7 @@ export default function App() {
         <div>
           <CheckCircle2 />
           <h2>次の実装</h2>
-          <p>次フェーズでは、このUIを実際のGitHub Issue / PR / CI確認へ接続する受け皿を追加します。</p>
+          <p>次フェーズでは、このUIを実際のIssue / PR / CI確認へ接続する受け皿を追加します。</p>
         </div>
       </section>
     </main>
