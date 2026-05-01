@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Bell, CheckCircle2, CircleDotDashed, ClipboardCheck, GitPullRequest, Rocket, ShieldCheck, Sparkles, Store, Wand2 } from 'lucide-react';
 import { blueprint, initialSeed, phases, reviewChecks, submissionDraft } from './data/mockProject';
 import type { PhasePlan, ReviewCheck, RiskLevel } from './types';
@@ -23,7 +24,7 @@ const reviewLabel: Record<ReviewCheck['state'], string> = {
   pending: '確認待ち',
 };
 
-function SectionHeader({ icon, title, lead }: { icon: React.ReactNode; title: string; lead: string }) {
+function SectionHeader({ icon, title, lead }: { icon: ReactNode; title: string; lead: string }) {
   return (
     <div className="sectionHeader">
       <div className="sectionIcon">{icon}</div>
