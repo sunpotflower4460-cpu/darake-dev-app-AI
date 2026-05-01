@@ -2,10 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { FuturePanel } from './components/FuturePanel';
+import { InfoPanel } from './components/InfoPanel';
 import { StatusPanel } from './components/StatusPanel';
 import './styles.css';
 import './phase2.css';
 import './phase25.css';
+import './repoSnapshot.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -16,6 +18,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <FuturePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <InfoPanel />
       </div>
     </section>
   </React.StrictMode>,
