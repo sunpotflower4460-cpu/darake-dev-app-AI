@@ -44,3 +44,32 @@ export type SubmissionDraft = {
   privacyNote: string;
   reviewNote: string;
 };
+
+export type ControlMode = 'keep_going' | 'pause_each_phase' | 'pause_on_risk' | 'finish_then_notify';
+
+export type AgentCheck = {
+  name: string;
+  role: string;
+  status: 'ready' | 'checking' | 'passed' | 'needs_human';
+  message: string;
+};
+
+export type ScreenshotCheck = {
+  label: string;
+  viewport: 'mobile' | 'desktop';
+  status: 'planned' | 'captured' | 'needs_review';
+  note: string;
+};
+
+export type NotificationPlan = {
+  mode: ControlMode;
+  channels: string[];
+  message: string;
+};
+
+export type GeneratedPlan = {
+  title: string;
+  summary: string;
+  nextActions: string[];
+  humanStops: string[];
+};
