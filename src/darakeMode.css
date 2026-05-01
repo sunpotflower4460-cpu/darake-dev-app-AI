@@ -21,6 +21,44 @@
   line-height: 1.75;
 }
 
+.darakeStateBanner {
+  display: grid;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.darakeStateBanner strong {
+  font-size: 1.05rem;
+}
+
+.darakeStateBanner span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.darakeStateBanner p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.darakeState-fresh,
+.darakeState-aging {
+  border-color: rgba(76, 124, 85, 0.28);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.darakeState-stale,
+.darakeState-unknown {
+  border-color: rgba(180, 91, 93, 0.25);
+  background: rgba(180, 91, 93, 0.08);
+}
+
 .darakePrinciples {
   display: flex;
   flex-wrap: wrap;
