@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-05-01T12:50:00Z",
+  "source": "static-sample",
+  "repository": {
+    "name": "darake-dev-app-AI",
+    "fullName": "sunpotflower4460-cpu/darake-dev-app-AI",
+    "visibility": "private",
+    "defaultBranch": "main"
+  },
+  "counts": {
+    "issues": 0,
+    "pullRequests": 5,
+    "mergedPullRequests": 5
+  },
+  "pullRequests": [
+    { "number": 5, "title": "Phase 3: 開発状況スナップショットを表示", "status": "merged" },
+    { "number": 4, "title": "P3: 次の表示準備パネルを追加", "status": "merged" },
+    { "number": 3, "title": "Phase 2.5: 表示モードとサービス境界を追加", "status": "merged" },
+    { "number": 2, "title": "Phase 2: モック管制室体験を強化", "status": "merged" },
+    { "number": 1, "title": "Phase 0-1: 設計固定と初期アプリ土台", "status": "merged" }
+  ]
+}
