@@ -1,5 +1,7 @@
-import { ClipboardList, Copy, SendHorizontal } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Check, ClipboardList, Copy, SendHorizontal } from 'lucide-react';
 import { issueDraft } from '../data/issueDraft';
+import { formatIssueDraft } from '../utils/formatIssueDraft';
 
 function ListBlock({ title, items }: { title: string; items: string[] }) {
   return (
@@ -13,6 +15,20 @@ function ListBlock({ title, items }: { title: string; items: string[] }) {
 }
 
 export function IssueDraftPanel() {
+  const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
+  const formattedDraft = useMemo(() => formatIssueDraft(issueDraft), []);
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(formattedDraft);
+      setCopyState('copied');
+      window.setTimeout(() => setCopyState('idle'), 1800);
+    } catch {
+      setCopyState('failed');
+      window.setTimeout(() => setCopyState('idle'), 2400);
+    }
+  }
+
   return (
     <div className="issueDraftPanel">
       <div className="issueDraftHero">
@@ -47,7 +63,12 @@ export function IssueDraftPanel() {
           <strong>エージェントに渡す文</strong>
         </div>
         <p>{issueDraft.handoffPrompt}</p>
-        <button type="button" className="copyMockButton"><Copy size={16} /> コピー機能は次の段階で追加</button>
+        <button type="button" className={`copyMockButton copy-${copyState}`} onClick={handleCopy}>
+          {copyState === 'copied' ? <Check size={16} /> : <Copy size={16} />}
+          {copyState === 'copied' && 'コピーしました'}
+          {copyState === 'failed' && 'コピーできませんでした'}
+          {copyState === 'idle' && 'Issue本文をコピー'}
+        </button>
       </div>
     </div>
   );
