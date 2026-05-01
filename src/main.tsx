@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { DarakeModePanel } from './components/DarakeModePanel';
 import { FuturePanel } from './components/FuturePanel';
 import { InfoPanel } from './components/InfoPanel';
 import { StatusPanel } from './components/StatusPanel';
@@ -8,11 +9,15 @@ import './styles.css';
 import './phase2.css';
 import './phase25.css';
 import './repoSnapshot.css';
+import './darakeMode.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <App />
     <section className="appShell boundaryShell">
+      <div className="panel statusModePanel">
+        <DarakeModePanel />
+      </div>
       <div className="panel statusModePanel">
         <StatusPanel />
       </div>
