@@ -122,6 +122,23 @@
   color: #35513d;
   background: rgba(76, 124, 85, 0.13);
   font-weight: 900;
+  cursor: pointer;
+  transition: transform 0.16s ease, background 0.16s ease;
+}
+
+.copyMockButton:hover {
+  transform: translateY(-1px);
+  background: rgba(76, 124, 85, 0.18);
+}
+
+.copy-copied {
+  color: #fffaf0;
+  background: #4c7c55;
+}
+
+.copy-failed {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.13);
 }
 
 @media (max-width: 760px) {
