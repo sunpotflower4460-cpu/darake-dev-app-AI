@@ -45,6 +45,15 @@ export function InfoPanel() {
         </div>
       </div>
 
+      <div className={`freshnessBox freshness-${state.freshness.level}`}>
+        <div>
+          <span>{state.freshness.label}</span>
+          <strong>{state.freshness.canRelax ? 'だらけてOK' : '軽く確認すると安心'}</strong>
+        </div>
+        <p>{state.freshness.message}</p>
+        {typeof state.freshness.minutesOld === 'number' && <small>約{state.freshness.minutesOld}分前の状態です。</small>}
+      </div>
+
       <div className="repoSummaryGrid">
         <article><span>名前</span><strong>{state.name}</strong></article>
         <article><span>公開範囲</span><strong>{state.visibility}</strong></article>
