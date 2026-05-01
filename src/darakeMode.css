@@ -1,0 +1,127 @@
+.darakePanel {
+  display: grid;
+  gap: 22px;
+}
+
+.darakeHero {
+  padding: 22px;
+  border: 1px solid rgba(76, 124, 85, 0.16);
+  border-radius: 26px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.92), rgba(238, 247, 231, 0.88));
+}
+
+.darakeHero h3 {
+  margin: 0 0 8px;
+  font-size: clamp(1.6rem, 3vw, 2.35rem);
+  letter-spacing: -0.05em;
+}
+
+.darakeHero p:not(.eyebrow) {
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.darakePrinciples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.darakePrinciples span {
+  padding: 8px 11px;
+  border-radius: 999px;
+  color: #31513b;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.84rem;
+  font-weight: 900;
+}
+
+.darakeLaneGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.darakeLane {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.darakeLaneHeader {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.darakeLaneHeader svg {
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  padding: 9px;
+  border-radius: 15px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.darakeLaneHeader h4 {
+  margin: 0 0 4px;
+  font-size: 1.15rem;
+}
+
+.darakeLaneHeader p,
+.darakeTask p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.darakeTaskList {
+  display: grid;
+  gap: 10px;
+}
+
+.darakeTask {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.darakeTask strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.darakeTask span {
+  justify-self: start;
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.lane-now {
+  border-color: rgba(76, 124, 85, 0.24);
+}
+
+.lane-later {
+  border-color: rgba(185, 130, 46, 0.22);
+}
+
+.lane-leave {
+  border-color: rgba(108, 111, 100, 0.22);
+}
+
+@media (max-width: 960px) {
+  .darakeLaneGrid {
+    grid-template-columns: 1fr;
+  }
+}
