@@ -4,6 +4,34 @@
   gap: 14px;
 }
 
+.draftSaveNote {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 20px;
+  background: rgba(76, 124, 85, 0.09);
+}
+
+.draftSaveNote strong {
+  color: #35513d;
+}
+
+.draftSaveNote button {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 9px 12px;
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.14);
+  font-weight: 900;
+  cursor: pointer;
+}
+
 .issueEditField {
   display: grid;
   gap: 8px;
@@ -45,5 +73,10 @@
 @media (max-width: 760px) {
   .issueEditorGrid {
     grid-template-columns: 1fr;
+  }
+
+  .draftSaveNote {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
