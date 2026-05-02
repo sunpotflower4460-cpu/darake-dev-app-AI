@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
-import { Check, ClipboardList, Copy, SendHorizontal } from 'lucide-react';
+import { Check, ClipboardList, Copy, RotateCcw, SendHorizontal } from 'lucide-react';
 import { issueDraft } from '../data/issueDraft';
 import type { IssueDraft } from '../data/issueDraft';
+import { clearDraft, loadDraft, saveDraft } from '../utils/draftStore';
 import { formatIssueDraft } from '../utils/formatIssueDraft';
 
 function toLines(items: string[]): string {
@@ -35,11 +36,20 @@ function TextAreaField({ label, value, rows = 4, onChange }: { label: string; va
 
 export function IssueDraftPanel() {
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
-  const [draft, setDraft] = useState<IssueDraft>(issueDraft);
+  const [draft, setDraft] = useState<IssueDraft>(() => loadDraft());
   const formattedDraft = useMemo(() => formatIssueDraft(draft), [draft]);
 
   function updateDraft(next: Partial<IssueDraft>) {
-    setDraft((current) => ({ ...current, ...next }));
+    setDraft((current) => {
+      const updated = { ...current, ...next };
+      saveDraft(updated);
+      return updated;
+    });
+  }
+
+  function handleReset() {
+    const resetDraft = clearDraft();
+    setDraft(resetDraft);
   }
 
   async function handleCopy() {
@@ -62,6 +72,11 @@ export function IssueDraftPanel() {
           <h3>Issue下書き</h3>
           <p>まだ投稿せず、エージェントに渡しやすい形へ整える段階です。</p>
         </div>
+      </div>
+
+      <div className="draftSaveNote">
+        <strong>編集中の下書きはこのブラウザに一時保存されます。</strong>
+        <button type="button" onClick={handleReset}><RotateCcw size={15} /> 初期状態に戻す</button>
       </div>
 
       <div className="issueEditorGrid">
