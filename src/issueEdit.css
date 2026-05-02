@@ -4,18 +4,23 @@
   gap: 14px;
 }
 
-.draftSaveNote {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
+.draftSaveNote,
+.draftQualityPanel {
   padding: 14px 16px;
   border: 1px solid rgba(76, 124, 85, 0.2);
   border-radius: 20px;
   background: rgba(76, 124, 85, 0.09);
 }
 
-.draftSaveNote strong {
+.draftSaveNote {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.draftSaveNote strong,
+.draftQualityHead strong {
   color: #35513d;
 }
 
@@ -30,6 +35,61 @@
   background: rgba(185, 130, 46, 0.14);
   font-weight: 900;
   cursor: pointer;
+}
+
+.draftQualityPanel {
+  display: grid;
+  gap: 12px;
+}
+
+.draftQualityHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.draftQualityHead span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.draftCheckGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.draftCheckItem {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 250, 240, 0.74);
+}
+
+.draftCheckItem strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.draftCheckItem p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.check-ok {
+  border-color: rgba(76, 124, 85, 0.24);
+}
+
+.check-watch {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.check-needs_care {
+  border-color: rgba(180, 91, 93, 0.24);
 }
 
 .issueEditField {
@@ -70,12 +130,20 @@
   box-shadow: 0 0 0 4px rgba(76, 124, 85, 0.12);
 }
 
+@media (max-width: 900px) {
+  .draftCheckGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 760px) {
-  .issueEditorGrid {
+  .issueEditorGrid,
+  .draftCheckGrid {
     grid-template-columns: 1fr;
   }
 
-  .draftSaveNote {
+  .draftSaveNote,
+  .draftQualityHead {
     align-items: flex-start;
     flex-direction: column;
   }
