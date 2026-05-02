@@ -12,6 +12,7 @@ import './phase25.css';
 import './repoSnapshot.css';
 import './darakeMode.css';
 import './issueDraft.css';
+import './issueEdit.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

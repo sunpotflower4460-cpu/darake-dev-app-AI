@@ -1,22 +1,46 @@
 import { useMemo, useState } from 'react';
 import { Check, ClipboardList, Copy, SendHorizontal } from 'lucide-react';
 import { issueDraft } from '../data/issueDraft';
+import type { IssueDraft } from '../data/issueDraft';
 import { formatIssueDraft } from '../utils/formatIssueDraft';
 
-function ListBlock({ title, items }: { title: string; items: string[] }) {
+function toLines(items: string[]): string {
+  return items.join('\n');
+}
+
+function fromLines(value: string): string[] {
+  return value
+    .split('\n')
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function TextField({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {
   return (
-    <div className="issueListBlock">
-      <h4>{title}</h4>
-      <ul>
-        {items.map((item) => <li key={item}>{item}</li>)}
-      </ul>
-    </div>
+    <label className="issueEditField">
+      {label}
+      <input value={value} onChange={(event) => onChange(event.target.value)} />
+    </label>
+  );
+}
+
+function TextAreaField({ label, value, rows = 4, onChange }: { label: string; value: string; rows?: number; onChange: (value: string) => void }) {
+  return (
+    <label className="issueEditField">
+      {label}
+      <textarea rows={rows} value={value} onChange={(event) => onChange(event.target.value)} />
+    </label>
   );
 }
 
 export function IssueDraftPanel() {
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
-  const formattedDraft = useMemo(() => formatIssueDraft(issueDraft), []);
+  const [draft, setDraft] = useState<IssueDraft>(issueDraft);
+  const formattedDraft = useMemo(() => formatIssueDraft(draft), [draft]);
+
+  function updateDraft(next: Partial<IssueDraft>) {
+    setDraft((current) => ({ ...current, ...next }));
+  }
 
   async function handleCopy() {
     try {
@@ -40,21 +64,13 @@ export function IssueDraftPanel() {
         </div>
       </div>
 
-      <div className="issueTitleCard">
-        <span>Issue title</span>
-        <strong>{issueDraft.title}</strong>
-      </div>
-
-      <div className="issueBodyGrid">
-        <article className="issueMainCard">
-          <h4>目的</h4>
-          <p>{issueDraft.intent}</p>
-          <h4>背景</h4>
-          <p>{issueDraft.background}</p>
-        </article>
-        <ListBlock title="やること" items={issueDraft.scope} />
-        <ListBlock title="完了条件" items={issueDraft.done} />
-        <ListBlock title="まだやらないこと" items={issueDraft.notDoing} />
+      <div className="issueEditorGrid">
+        <TextField label="Issue title" value={draft.title} onChange={(title) => updateDraft({ title })} />
+        <TextAreaField label="目的" value={draft.intent} rows={3} onChange={(intent) => updateDraft({ intent })} />
+        <TextAreaField label="背景" value={draft.background} rows={4} onChange={(background) => updateDraft({ background })} />
+        <TextAreaField label="やること（一行ずつ）" value={toLines(draft.scope)} rows={5} onChange={(value) => updateDraft({ scope: fromLines(value) })} />
+        <TextAreaField label="完了条件（一行ずつ）" value={toLines(draft.done)} rows={5} onChange={(value) => updateDraft({ done: fromLines(value) })} />
+        <TextAreaField label="まだやらないこと（一行ずつ）" value={toLines(draft.notDoing)} rows={4} onChange={(value) => updateDraft({ notDoing: fromLines(value) })} />
       </div>
 
       <div className="handoffBox">
@@ -62,7 +78,7 @@ export function IssueDraftPanel() {
           <SendHorizontal />
           <strong>エージェントに渡す文</strong>
         </div>
-        <p>{issueDraft.handoffPrompt}</p>
+        <textarea className="handoffEditor" rows={4} value={draft.handoffPrompt} onChange={(event) => updateDraft({ handoffPrompt: event.target.value })} />
         <button type="button" className={`copyMockButton copy-${copyState}`} onClick={handleCopy}>
           {copyState === 'copied' ? <Check size={16} /> : <Copy size={16} />}
           {copyState === 'copied' && 'コピーしました'}
