@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Check, ClipboardList, Copy, RotateCcw, SendHorizontal } from 'lucide-react';
 import { issueDraft } from '../data/issueDraft';
 import type { IssueDraft } from '../data/issueDraft';
+import { checkIssueDraft } from '../utils/checkIssueDraft';
 import { clearDraft, loadDraft, saveDraft } from '../utils/draftStore';
 import { formatIssueDraft } from '../utils/formatIssueDraft';
 
@@ -38,6 +39,8 @@ export function IssueDraftPanel() {
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
   const [draft, setDraft] = useState<IssueDraft>(() => loadDraft());
   const formattedDraft = useMemo(() => formatIssueDraft(draft), [draft]);
+  const checks = useMemo(() => checkIssueDraft(draft), [draft]);
+  const careCount = checks.filter((check) => check.level !== 'ok').length;
 
   function updateDraft(next: Partial<IssueDraft>) {
     setDraft((current) => {
@@ -77,6 +80,21 @@ export function IssueDraftPanel() {
       <div className="draftSaveNote">
         <strong>編集中の下書きはこのブラウザに一時保存されます。</strong>
         <button type="button" onClick={handleReset}><RotateCcw size={15} /> 初期状態に戻す</button>
+      </div>
+
+      <div className="draftQualityPanel">
+        <div className="draftQualityHead">
+          <strong>{careCount === 0 ? '下書きは整っています' : '少しだけ整えると楽です'}</strong>
+          <span>確認ポイント {careCount}</span>
+        </div>
+        <div className="draftCheckGrid">
+          {checks.map((check) => (
+            <article className={`draftCheckItem check-${check.level}`} key={check.id}>
+              <strong>{check.label}</strong>
+              <p>{check.message}</p>
+            </article>
+          ))}
+        </div>
       </div>
 
       <div className="issueEditorGrid">
