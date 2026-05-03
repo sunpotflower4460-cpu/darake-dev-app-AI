@@ -93,6 +93,14 @@ AI開発をできるだけやさしく、自動化し、安全ゲート付きで
 - 初期状態に戻すボタン
 - 投稿前の安全な保存だけに限定
 
+## Phase 6.0で固定したこと
+
+- GitHub実データ連携は読み取り専用から始める
+- tokenやsecretをブラウザへ出さない
+- GitHub Actionsで状態JSONを生成し、publicへ出す情報を選別する
+- 不明な状態は自動実行せずmanualへ寄せる
+- 書き込み操作はPhase 7以降で個別に安全設計する
+
 ## 初期版でできること
 
 - 魂・種の入力
@@ -127,18 +135,22 @@ npm run dev
 npm run typecheck
 npm run build
 npm run state:build
+npm run review:build
 ```
 
 ## 手動で状態ファイルを更新する流れ
 
 GitHub Actions の `Update State File` を手動実行すると、`public/repo-state.json` が更新されます。
 
-このworkflowは常時自動実行ではありません。必要な時だけ実行する安全寄りの導線です。
+GitHub Actions の `Update Review Watch File` を手動実行すると、`public/review-watch.json` が更新されます。
+
+これらのworkflowは常時自動実行ではありません。必要な時だけ実行する安全寄りの導線です。
 
 ## 設計書
 
 - `docs/phase-0-design.md`
 - `docs/phase-3-prep.md`
+- `docs/github-integration-safety.md`
 
 ## 方針
 
