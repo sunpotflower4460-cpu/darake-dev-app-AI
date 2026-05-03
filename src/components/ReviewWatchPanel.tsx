@@ -92,6 +92,7 @@ export function ReviewWatchPanel() {
                 <article key={item.id}>
                   <strong>{item.label}</strong>
                   <span>{statusLabel[item.status]}</span>
+                  {item.url && <a href={item.url} target="_blank" rel="noreferrer">開く</a>}
                 </article>
               ))}
             </div>
@@ -126,6 +127,7 @@ export function ReviewWatchPanel() {
             </div>
             <strong>{item.label}</strong>
             <p>{item.message}</p>
+            {item.url && <a className="reviewWatchCardLink" href={item.url} target="_blank" rel="noreferrer"><ExternalLink size={15} /> 開く</a>}
           </article>
         ))}
       </div>
