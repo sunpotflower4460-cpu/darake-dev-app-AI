@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Activity, ExternalLink, GitPullRequest, ShieldCheck } from 'lucide-react';
 import { reviewUpdateSteps, reviewWatchPrinciples } from '../data/reviewWatch';
 import type { WatchItem } from '../data/reviewWatch';
-import { loadReviewWatchState } from '../services/reviewWatchService';
+import { loadReviewWatchState, type ReviewFreshness } from '../services/reviewWatchService';
 
 const statusLabel = {
   ok: 'OK',
@@ -16,6 +16,7 @@ const actionsUrl = 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/ac
 export function ReviewWatchPanel() {
   const [items, setItems] = useState<WatchItem[]>([]);
   const [source, setSource] = useState('loading');
+  const [freshness, setFreshness] = useState<ReviewFreshness | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -24,6 +25,7 @@ export function ReviewWatchPanel() {
       if (active) {
         setItems(state.items);
         setSource(state.source);
+        setFreshness(state.freshness);
       }
     });
 
@@ -43,6 +45,17 @@ export function ReviewWatchPanel() {
           <small>更新元: {source}</small>
         </div>
       </div>
+
+      {freshness && (
+        <div className={`reviewFreshnessBox reviewFreshness-${freshness.level}`}>
+          <div>
+            <strong>{freshness.shouldUpdate ? '更新すると安心' : '今はだらけてOK'}</strong>
+            <span>{freshness.label}</span>
+          </div>
+          <p>{freshness.message}</p>
+          {typeof freshness.minutesOld === 'number' && <small>約{freshness.minutesOld}分前の状態です。</small>}
+        </div>
+      )}
 
       <div className="reviewPrinciples">
         {reviewWatchPrinciples.map((item) => <span key={item}>{item}</span>)}
