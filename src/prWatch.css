@@ -38,7 +38,9 @@
 .prFreshnessBox small,
 .prLane p,
 .prLaneItems small,
-.prAlertBox p {
+.prAlertBox p,
+.prBridgeBox p,
+.prBridgeBox small {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -53,7 +55,8 @@
   font-weight: 900;
 }
 
-.prAlertBox {
+.prAlertBox,
+.prBridgeBox {
   display: grid;
   gap: 8px;
   padding: 16px;
@@ -62,7 +65,13 @@
   background: rgba(180, 91, 93, 0.08);
 }
 
-.prAlertBox > div {
+.prBridgeBox {
+  border-color: rgba(76, 124, 85, 0.22);
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.prAlertBox > div,
+.prBridgeBox > div {
   display: flex;
   justify-content: space-between;
   gap: 12px;
@@ -74,7 +83,13 @@
   font-size: 1.08rem;
 }
 
-.prAlertBox span {
+.prBridgeBox strong {
+  color: #35513d;
+  font-size: 1.08rem;
+}
+
+.prAlertBox span,
+.prBridgeBox span {
   display: inline-grid;
   place-items: center;
   min-width: 30px;
@@ -83,6 +98,30 @@
   color: #fffaf0;
   background: #b45b5d;
   font-weight: 900;
+}
+
+.prBridgeBox span {
+  background: #4c7c55;
+}
+
+.prBridgeBox.pr-bridge-blocked {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.prBridgeBox.pr-bridge-manual,
+.prBridgeBox.pr-bridge-checking {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.prBridgeBox.pr-bridge-blocked strong {
+  color: #7e3436;
+}
+
+.prBridgeBox.pr-bridge-manual strong,
+.prBridgeBox.pr-bridge-checking strong {
+  color: #76531d;
 }
 
 .prAlertBox a {
@@ -323,7 +362,8 @@
   .prWatchEmpty,
   .prWatchCardHead,
   .prFreshnessBox > div,
-  .prAlertBox > div {
+  .prAlertBox > div,
+  .prBridgeBox > div {
     align-items: flex-start;
     flex-direction: column;
   }
