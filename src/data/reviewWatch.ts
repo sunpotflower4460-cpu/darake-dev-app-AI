@@ -1,10 +1,13 @@
 export type WatchStatus = 'ok' | 'checking' | 'manual' | 'blocked';
 
+const repoUrl = 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI';
+
 export type WatchItem = {
   id: string;
   label: string;
   status: WatchStatus;
   message: string;
+  url?: string;
 };
 
 export type ReviewUpdateStep = {
@@ -19,24 +22,28 @@ export const reviewWatchItems: WatchItem[] = [
     label: 'PR',
     status: 'checking',
     message: '作業内容と差分を見る場所です。',
+    url: `${repoUrl}/pulls`,
   },
   {
     id: 'ci',
     label: 'CI',
     status: 'ok',
     message: 'state:build / typecheck / build を確認します。',
+    url: `${repoUrl}/actions`,
   },
   {
     id: 'review',
     label: 'レビュー',
     status: 'manual',
     message: 'CodeRabbitや人間レビューの指摘を見ます。',
+    url: `${repoUrl}/pulls`,
   },
   {
     id: 'merge',
     label: 'マージ判断',
     status: 'manual',
     message: '危険がなければsquash mergeへ進みます。',
+    url: `${repoUrl}/pulls`,
   },
 ];
 
