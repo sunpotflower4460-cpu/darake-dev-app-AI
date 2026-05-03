@@ -7,6 +7,12 @@ export type WatchItem = {
   message: string;
 };
 
+export type ReviewUpdateStep = {
+  id: string;
+  title: string;
+  detail: string;
+};
+
 export const reviewWatchItems: WatchItem[] = [
   {
     id: 'pr',
@@ -39,4 +45,22 @@ export const reviewWatchPrinciples = [
   '成功は静かに通す',
   '危険なら止める',
   '判断が必要な所だけ見る',
+];
+
+export const reviewUpdateSteps: ReviewUpdateStep[] = [
+  {
+    id: 'open-actions',
+    title: 'Actionsを開く',
+    detail: 'GitHubのActionsタブで Update Review Watch File を選びます。',
+  },
+  {
+    id: 'run-workflow',
+    title: '手動実行する',
+    detail: 'Run workflow を押すと public/review-watch.json が更新されます。',
+  },
+  {
+    id: 'return-app',
+    title: '画面に戻る',
+    detail: '更新後にアプリを再読み込みすると新しい状態が見えます。',
+  },
 ];
