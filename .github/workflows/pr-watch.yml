@@ -1,0 +1,34 @@
+name: PR Watch Snapshot
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  snapshot:
+    name: Build PR watch snapshot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build PR watch file
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run pr:build
+
+      - name: Upload PR watch artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-watch
+          path: snapshot/pr-watch.json
