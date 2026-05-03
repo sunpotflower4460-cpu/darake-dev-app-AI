@@ -31,7 +31,9 @@
 
 .reviewWatchHero p:not(.eyebrow),
 .reviewWatchCard p,
-.reviewUpdateSteps p {
+.reviewUpdateSteps p,
+.reviewFreshnessBox p,
+.reviewFreshnessBox small {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -44,6 +46,45 @@
   color: #35513d;
   background: rgba(76, 124, 85, 0.12);
   font-weight: 900;
+}
+
+.reviewFreshnessBox {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 250, 240, 0.82);
+}
+
+.reviewFreshnessBox > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.reviewFreshnessBox strong {
+  color: #35513d;
+  font-size: 1.08rem;
+}
+
+.reviewFreshnessBox span {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.reviewFreshness-fresh,
+.reviewFreshness-aging {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.09);
+}
+
+.reviewFreshness-stale,
+.reviewFreshness-unknown {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
 }
 
 .reviewPrinciples {
@@ -184,7 +225,8 @@
     grid-template-columns: 1fr;
   }
 
-  .reviewUpdateHead {
+  .reviewUpdateHead,
+  .reviewFreshnessBox > div {
     align-items: flex-start;
     flex-direction: column;
   }
