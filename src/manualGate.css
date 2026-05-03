@@ -31,7 +31,7 @@
 
 .manualGateHero p:not(.eyebrow),
 .manualStepCard p,
-.manualGateNotes li {
+.manualGateSmall {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -93,6 +93,18 @@
   color: #6c6f64;
   background: rgba(108, 111, 100, 0.12);
   font-weight: 900;
+}
+
+.manualGateLink {
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  text-decoration: none;
+  box-shadow: 0 14px 30px rgba(76, 124, 85, 0.16);
+}
+
+.manualGateSmall {
+  margin: -8px 0 0;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 960px) {
