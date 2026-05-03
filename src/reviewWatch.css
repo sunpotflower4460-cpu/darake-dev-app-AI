@@ -35,7 +35,8 @@
 .reviewFreshnessBox p,
 .reviewFreshnessBox small,
 .reviewLane p,
-.reviewLaneItems small {
+.reviewLaneItems small,
+.reviewAlertBox p {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -47,6 +48,38 @@
   border-radius: 999px;
   color: #35513d;
   background: rgba(76, 124, 85, 0.12);
+  font-weight: 900;
+}
+
+.reviewAlertBox {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid rgba(180, 91, 93, 0.24);
+  border-radius: 22px;
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.reviewAlertBox > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.reviewAlertBox strong {
+  color: #7e3436;
+  font-size: 1.08rem;
+}
+
+.reviewAlertBox span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  color: #fffaf0;
+  background: #b45b5d;
   font-weight: 900;
 }
 
@@ -299,7 +332,8 @@
   }
 
   .reviewUpdateHead,
-  .reviewFreshnessBox > div {
+  .reviewFreshnessBox > div,
+  .reviewAlertBox > div {
     align-items: flex-start;
     flex-direction: column;
   }
