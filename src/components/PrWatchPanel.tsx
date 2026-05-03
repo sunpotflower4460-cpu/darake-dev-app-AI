@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ExternalLink, GitPullRequestArrow, RefreshCcw } from 'lucide-react';
 import { loadPrWatchState, type PrWatchState } from '../services/prWatchService';
+import { buildPrLaneGroups } from '../utils/prLanes';
 
 const statusLabel = {
   ok: 'OK',
@@ -12,7 +13,17 @@ const statusLabel = {
 const actionsUrl = 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/update-pr-watch.yml';
 
 export function PrWatchPanel() {
-  const [state, setState] = useState<PrWatchState>({ source: 'loading', items: [] });
+  const [state, setState] = useState<PrWatchState>({
+    source: 'loading',
+    freshness: {
+      level: 'unknown',
+      label: '読み込み中',
+      message: 'PR一覧を読み込んでいます。',
+      shouldUpdate: false,
+    },
+    items: [],
+  });
+  const laneGroups = useMemo(() => buildPrLaneGroups(state.items), [state.items]);
 
   useEffect(() => {
     let active = true;
@@ -38,6 +49,37 @@ export function PrWatchPanel() {
           <p>GitHubのPR一覧を読むだけで確認する入口です。書き込み操作はしません。</p>
           <small>更新元: {state.source} / PR件数: {state.items.length}</small>
         </div>
+      </div>
+
+      <div className={`prFreshnessBox prFreshness-${state.freshness.level}`}>
+        <div>
+          <strong>{state.freshness.shouldUpdate ? '更新すると安心' : '今はだらけてOK'}</strong>
+          <span>{state.freshness.label}</span>
+        </div>
+        <p>{state.freshness.message}</p>
+        {typeof state.freshness.minutesOld === 'number' && <small>約{state.freshness.minutesOld}分前のPR一覧です。</small>}
+      </div>
+
+      <div className="prLaneGrid">
+        {laneGroups.map((group) => (
+          <section className={`prLane lane-${group.lane}`} key={group.lane}>
+            <div className="prLaneHead">
+              <strong>{group.title}</strong>
+              <span>{group.items.length}</span>
+            </div>
+            <p>{group.lead}</p>
+            <div className="prLaneItems">
+              {group.items.length === 0 && <small>今はありません。</small>}
+              {group.items.map((item) => (
+                <article key={item.id}>
+                  <strong>{item.label}</strong>
+                  <span>{statusLabel[item.status]}</span>
+                  {item.url && <a href={item.url} target="_blank" rel="noreferrer">開く</a>}
+                </article>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
 
       <div className="prWatchGuide">
