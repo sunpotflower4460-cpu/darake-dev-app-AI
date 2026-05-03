@@ -6,25 +6,29 @@
       "id": "pr",
       "label": "PR",
       "status": "checking",
-      "message": "作業内容と差分を見る場所です。"
+      "message": "作業内容と差分を見る場所です。",
+      "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls"
     },
     {
       "id": "ci",
       "label": "CI",
       "status": "ok",
-      "message": "state:build / typecheck / build を確認します。"
+      "message": "state:build / typecheck / build を確認します。",
+      "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions"
     },
     {
       "id": "review",
       "label": "レビュー",
       "status": "manual",
-      "message": "CodeRabbitや人間レビューの指摘を見ます。"
+      "message": "CodeRabbitや人間レビューの指摘を見ます。",
+      "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls"
     },
     {
       "id": "merge",
       "label": "マージ判断",
       "status": "manual",
-      "message": "危険がなければsquash mergeへ進みます。"
+      "message": "危険がなければsquash mergeへ進みます。",
+      "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls"
     }
   ]
 }
