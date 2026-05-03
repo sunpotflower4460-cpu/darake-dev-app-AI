@@ -25,6 +25,7 @@ type ReviewWatchJson = {
     label: string;
     status: WatchStatus;
     message: string;
+    url?: string;
   }>;
 };
 
@@ -94,6 +95,7 @@ function normalizeItems(data?: ReviewWatchJson['items']): WatchItem[] {
     label: item.label,
     status: isWatchStatus(item.status) ? item.status : 'manual',
     message: item.message,
+    url: item.url,
   }));
 }
 
