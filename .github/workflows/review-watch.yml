@@ -1,0 +1,33 @@
+name: Review Watch Snapshot
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: read
+  checks: read
+
+jobs:
+  snapshot:
+    name: Build review watch snapshot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build review watch file
+        run: npm run review:build
+
+      - name: Upload review watch artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-watch
+          path: snapshot/review-watch.json
