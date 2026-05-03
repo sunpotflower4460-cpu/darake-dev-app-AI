@@ -57,6 +57,9 @@ export function ReviewWatchPanel() {
             <span>{alert.count}</span>
           </div>
           <p>{alert.message}</p>
+          {alert.actionUrl && alert.actionLabel && (
+            <a href={alert.actionUrl} target="_blank" rel="noreferrer"><ExternalLink size={16} /> {alert.actionLabel}</a>
+          )}
         </div>
       )}
 
