@@ -7,28 +7,83 @@
       "label": "PR",
       "status": "checking",
       "message": "作業内容と差分を見る場所です。",
-      "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls"
+      "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls",
+      "risk": "medium",
+      "links": [
+        {
+          "label": "PR一覧",
+          "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls"
+        }
+      ],
+      "actions": [
+        {
+          "label": "PRを見る",
+          "kind": "open",
+          "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls"
+        }
+      ]
     },
     {
       "id": "ci",
       "label": "CI",
       "status": "ok",
       "message": "state:build / typecheck / build を確認します。",
-      "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions"
+      "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions",
+      "risk": "low",
+      "links": [
+        {
+          "label": "Actions",
+          "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions"
+        }
+      ],
+      "actions": [
+        {
+          "label": "放っておく",
+          "kind": "wait"
+        }
+      ]
     },
     {
       "id": "review",
       "label": "レビュー",
       "status": "manual",
       "message": "CodeRabbitや人間レビューの指摘を見ます。",
-      "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls"
+      "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls",
+      "risk": "medium",
+      "links": [
+        {
+          "label": "レビュー確認",
+          "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls"
+        }
+      ],
+      "actions": [
+        {
+          "label": "確認する",
+          "kind": "manual",
+          "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls"
+        }
+      ]
     },
     {
       "id": "merge",
       "label": "マージ判断",
       "status": "manual",
       "message": "危険がなければsquash mergeへ進みます。",
-      "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls"
+      "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls",
+      "risk": "high",
+      "links": [
+        {
+          "label": "マージ候補",
+          "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls"
+        }
+      ],
+      "actions": [
+        {
+          "label": "人間確認",
+          "kind": "manual",
+          "url": "https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/pulls"
+        }
+      ]
     }
   ]
 }

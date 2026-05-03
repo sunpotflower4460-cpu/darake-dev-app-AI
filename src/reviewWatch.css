@@ -190,7 +190,7 @@
 
 .reviewLaneItems article {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto auto auto;
   gap: 10px;
   align-items: center;
   padding: 10px;
@@ -198,13 +198,34 @@
   background: rgba(255, 255, 255, 0.58);
 }
 
-.reviewLaneItems article span {
+.reviewLaneItems article span,
+.riskBadge {
   padding: 4px 8px;
   border-radius: 999px;
   color: #35513d;
   background: rgba(76, 124, 85, 0.12);
   font-size: 0.74rem;
   font-weight: 900;
+}
+
+.risk-low {
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+}
+
+.risk-medium {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.risk-high {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.risk-unknown {
+  color: #6c6f64;
+  background: rgba(108, 111, 100, 0.12);
 }
 
 .reviewLaneItems article a,
@@ -355,6 +376,10 @@
   .reviewWatchGrid,
   .reviewUpdateSteps,
   .reviewLaneGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .reviewLaneItems article {
     grid-template-columns: 1fr;
   }
 
