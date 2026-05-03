@@ -35,6 +35,16 @@
   line-height: 1.65;
 }
 
+.reviewWatchHero small {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-weight: 900;
+}
+
 .reviewPrinciples {
   display: flex;
   flex-wrap: wrap;
