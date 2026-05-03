@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Activity, ExternalLink, GitPullRequest, ShieldCheck } from 'lucide-react';
 import { reviewUpdateSteps, reviewWatchPrinciples } from '../data/reviewWatch';
 import type { WatchItem } from '../data/reviewWatch';
 import { loadReviewWatchState, type ReviewFreshness } from '../services/reviewWatchService';
+import { buildReviewLaneGroups } from '../utils/reviewLanes';
 
 const statusLabel = {
   ok: 'OK',
@@ -17,6 +18,7 @@ export function ReviewWatchPanel() {
   const [items, setItems] = useState<WatchItem[]>([]);
   const [source, setSource] = useState('loading');
   const [freshness, setFreshness] = useState<ReviewFreshness | null>(null);
+  const laneGroups = useMemo(() => buildReviewLaneGroups(items), [items]);
 
   useEffect(() => {
     let active = true;
@@ -59,6 +61,27 @@ export function ReviewWatchPanel() {
 
       <div className="reviewPrinciples">
         {reviewWatchPrinciples.map((item) => <span key={item}>{item}</span>)}
+      </div>
+
+      <div className="reviewLaneGrid">
+        {laneGroups.map((group) => (
+          <section className={`reviewLane lane-${group.lane}`} key={group.lane}>
+            <div className="reviewLaneHead">
+              <strong>{group.title}</strong>
+              <span>{group.items.length}</span>
+            </div>
+            <p>{group.lead}</p>
+            <div className="reviewLaneItems">
+              {group.items.length === 0 && <small>今はありません。</small>}
+              {group.items.map((item) => (
+                <article key={item.id}>
+                  <strong>{item.label}</strong>
+                  <span>{statusLabel[item.status]}</span>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
 
       <div className="reviewUpdateBox">
