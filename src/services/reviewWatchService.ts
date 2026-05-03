@@ -1,4 +1,12 @@
-import { reviewWatchItems, type WatchItem, type WatchStatus } from '../data/reviewWatch';
+import {
+  reviewWatchItems,
+  type ReviewActionKind,
+  type ReviewRiskLevel,
+  type ReviewWatchAction,
+  type ReviewWatchLink,
+  type WatchItem,
+  type WatchStatus,
+} from '../data/reviewWatch';
 
 export type ReviewFreshnessLevel = 'fresh' | 'aging' | 'stale' | 'unknown';
 
@@ -17,20 +25,51 @@ export type ReviewWatchState = {
   items: WatchItem[];
 };
 
-type ReviewWatchJson = {
-  source?: string;
-  generatedAt?: string;
-  items?: Array<{
-    id: string;
+type ReviewWatchJsonItem = {
+  id: string;
+  label: string;
+  status: string;
+  message: string;
+  url?: string;
+  risk?: string;
+  links?: ReviewWatchLink[];
+  actions?: Array<{
     label: string;
-    status: WatchStatus;
-    message: string;
+    kind: string;
     url?: string;
   }>;
 };
 
+type ReviewWatchJson = {
+  source?: string;
+  generatedAt?: string;
+  items?: ReviewWatchJsonItem[];
+};
+
 function isWatchStatus(value: string): value is WatchStatus {
   return value === 'ok' || value === 'checking' || value === 'manual' || value === 'blocked';
+}
+
+function isRiskLevel(value?: string): value is ReviewRiskLevel {
+  return value === 'low' || value === 'medium' || value === 'high' || value === 'unknown';
+}
+
+function isActionKind(value: string): value is ReviewActionKind {
+  return value === 'open' || value === 'update' || value === 'wait' || value === 'manual';
+}
+
+function normalizeLinks(links?: ReviewWatchLink[]): ReviewWatchLink[] | undefined {
+  return links?.filter((link) => typeof link.label === 'string' && typeof link.url === 'string');
+}
+
+function normalizeActions(actions?: ReviewWatchJsonItem['actions']): ReviewWatchAction[] | undefined {
+  return actions
+    ?.filter((action) => typeof action.label === 'string' && isActionKind(action.kind))
+    .map((action) => ({
+      label: action.label,
+      kind: action.kind,
+      url: action.url,
+    }));
 }
 
 function getReviewFreshness(generatedAt?: string): ReviewFreshness {
@@ -96,6 +135,9 @@ function normalizeItems(data?: ReviewWatchJson['items']): WatchItem[] {
     status: isWatchStatus(item.status) ? item.status : 'manual',
     message: item.message,
     url: item.url,
+    risk: isRiskLevel(item.risk) ? item.risk : 'unknown',
+    links: normalizeLinks(item.links),
+    actions: normalizeActions(item.actions),
   }));
 }
 
