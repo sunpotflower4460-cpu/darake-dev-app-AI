@@ -3,6 +3,7 @@ import { ExternalLink, GitPullRequestArrow, RefreshCcw } from 'lucide-react';
 import { loadPrWatchState, type PrWatchState } from '../services/prWatchService';
 import { buildPrAlert } from '../utils/prAlert';
 import { buildPrLaneGroups } from '../utils/prLanes';
+import { buildPrReviewBridgeSummary } from '../utils/prReviewBridge';
 
 const statusLabel = {
   ok: 'OK',
@@ -26,6 +27,7 @@ export function PrWatchPanel() {
   });
   const laneGroups = useMemo(() => buildPrLaneGroups(state.items), [state.items]);
   const alert = useMemo(() => buildPrAlert(state.items), [state.items]);
+  const bridgeSummary = useMemo(() => buildPrReviewBridgeSummary(state.items), [state.items]);
 
   useEffect(() => {
     let active = true;
@@ -73,6 +75,15 @@ export function PrWatchPanel() {
         </div>
         <p>{state.freshness.message}</p>
         {typeof state.freshness.minutesOld === 'number' && <small>約{state.freshness.minutesOld}分前のPR一覧です。</small>}
+      </div>
+
+      <div className={`prBridgeBox pr-bridge-${bridgeSummary.status}`}>
+        <div>
+          <strong>{bridgeSummary.title}</strong>
+          <span>{bridgeSummary.count}</span>
+        </div>
+        <p>{bridgeSummary.message}</p>
+        <small>Review Watch形式へ変換可能な項目: {bridgeSummary.convertedItems.length}</small>
       </div>
 
       <div className="prLaneGrid">
