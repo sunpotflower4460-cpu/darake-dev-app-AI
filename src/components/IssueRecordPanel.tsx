@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import { Check, FileCheck2, RotateCcw, Save } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Check, ExternalLink, FileCheck2, RotateCcw, Save } from 'lucide-react';
 import { clearIssueRecord, loadIssueRecord, saveIssueRecord, type IssueRecord } from '../utils/issueRecordStore';
+import { getIssueNextStep } from '../utils/issueNextStep';
 
 export function IssueRecordPanel() {
   const [record, setRecord] = useState<IssueRecord>(() => loadIssueRecord());
   const [saved, setSaved] = useState(false);
+  const nextStep = useMemo(() => getIssueNextStep(record), [record]);
 
   function updateRecord(next: Partial<IssueRecord>) {
     setRecord((current) => ({ ...current, ...next }));
@@ -31,6 +33,16 @@ export function IssueRecordPanel() {
           <h3>作成後の記録欄</h3>
           <p>GitHubでIssueを作ったあと、番号やURLをここに控えておきます。</p>
         </div>
+      </div>
+
+      <div className="issueNextCard">
+        <div>
+          <strong>{nextStep.title}</strong>
+          <p>{nextStep.message}</p>
+        </div>
+        {nextStep.hasLink && nextStep.url && (
+          <a href={nextStep.url} target="_blank" rel="noreferrer"><ExternalLink size={16} /> Issueを開く</a>
+        )}
       </div>
 
       <div className="issueRecordGrid">
