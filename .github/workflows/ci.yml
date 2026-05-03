@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
   build:
@@ -30,6 +31,11 @@ jobs:
 
       - name: Build review watch file
         run: npm run review:build
+
+      - name: Build PR watch file
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run pr:build
 
       - name: Typecheck
         run: npm run typecheck
