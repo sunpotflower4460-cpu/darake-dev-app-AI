@@ -1,7 +1,20 @@
+import { useEffect, useMemo, useState } from 'react';
 import { ExternalLink, Hand } from 'lucide-react';
+import type { IssueDraft } from '../data/issueDraft';
 import { manualGateSteps, manualGateWarnings } from '../data/manualGate';
+import { buildGitHubIssueUrl } from '../utils/githubIssueUrl';
+import { loadDraft, subscribeDraftChanges } from '../utils/draftStore';
+import { formatIssueDraft } from '../utils/formatIssueDraft';
 
 export function ManualGatePanel() {
+  const [draft, setDraft] = useState<IssueDraft>(() => loadDraft());
+
+  useEffect(() => {
+    return subscribeDraftChanges(() => setDraft(loadDraft()));
+  }, []);
+
+  const issueUrl = useMemo(() => buildGitHubIssueUrl(draft.title, formatIssueDraft(draft)), [draft]);
+
   return (
     <div className="manualGatePanel">
       <div className="manualGateHero">
@@ -29,9 +42,10 @@ export function ManualGatePanel() {
         ))}
       </div>
 
-      <button type="button" className="manualGateButton" disabled>
-        <ExternalLink size={16} /> 次の段階でGitHub案内を有効化
-      </button>
+      <a className="manualGateButton manualGateLink" href={issueUrl} target="_blank" rel="noreferrer">
+        <ExternalLink size={16} /> GitHubでIssue作成画面を開く
+      </a>
+      <p className="manualGateSmall">GitHub画面で最後に確認してから作成します。</p>
     </div>
   );
 }
