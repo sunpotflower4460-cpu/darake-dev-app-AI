@@ -1,9 +1,8 @@
-name: CI
+name: PR Watch Snapshot
 
 on:
+  workflow_dispatch:
   pull_request:
-    branches: [main]
-  push:
     branches: [main]
 
 permissions:
@@ -11,8 +10,8 @@ permissions:
   pull-requests: read
 
 jobs:
-  build:
-    name: Typecheck and build
+  snapshot:
+    name: Build PR watch snapshot
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,22 +22,13 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build state file
-        run: npm run state:build
-
-      - name: Build review watch file
-        run: npm run review:build
-
       - name: Build PR watch file
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: npm run pr:build
 
-      - name: Typecheck
-        run: npm run typecheck
-
-      - name: Build
-        run: npm run build
+      - name: Upload PR watch artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-watch
+          path: snapshot/pr-watch.json
