@@ -101,6 +101,13 @@ AI開発をできるだけやさしく、自動化し、安全ゲート付きで
 - 不明な状態は自動実行せずmanualへ寄せる
 - 書き込み操作はPhase 7以降で個別に安全設計する
 
+## Phase 6.1で強化したこと
+
+- GitHub Actionsでopen PR一覧を読み取り
+- `snapshot/pr-watch.json` をartifact生成
+- `npm run pr:build` コマンド
+- publicへの自動反映なしで、読み取り専用のPR監視土台を追加
+
 ## 初期版でできること
 
 - 魂・種の入力
@@ -136,6 +143,7 @@ npm run typecheck
 npm run build
 npm run state:build
 npm run review:build
+npm run pr:build
 ```
 
 ## 手動で状態ファイルを更新する流れ
@@ -143,6 +151,8 @@ npm run review:build
 GitHub Actions の `Update State File` を手動実行すると、`public/repo-state.json` が更新されます。
 
 GitHub Actions の `Update Review Watch File` を手動実行すると、`public/review-watch.json` が更新されます。
+
+GitHub Actions の `Update PR Watch File` を手動実行すると、`public/pr-watch.json` が更新されます。
 
 これらのworkflowは常時自動実行ではありません。必要な時だけ実行する安全寄りの導線です。
 
