@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ExternalLink, GitPullRequestArrow, RefreshCcw } from 'lucide-react';
 import { loadPrWatchState, type PrWatchState } from '../services/prWatchService';
+import { buildPrAlert } from '../utils/prAlert';
 import { buildPrLaneGroups } from '../utils/prLanes';
 
 const statusLabel = {
@@ -24,6 +25,7 @@ export function PrWatchPanel() {
     items: [],
   });
   const laneGroups = useMemo(() => buildPrLaneGroups(state.items), [state.items]);
+  const alert = useMemo(() => buildPrAlert(state.items), [state.items]);
 
   useEffect(() => {
     let active = true;
@@ -50,6 +52,19 @@ export function PrWatchPanel() {
           <small>更新元: {state.source} / PR件数: {state.items.length}</small>
         </div>
       </div>
+
+      {alert.show && (
+        <div className="prAlertBox">
+          <div>
+            <strong>{alert.title}</strong>
+            <span>{alert.count}</span>
+          </div>
+          <p>{alert.message}</p>
+          {alert.actionUrl && alert.actionLabel && (
+            <a href={alert.actionUrl} target="_blank" rel="noreferrer"><ExternalLink size={16} /> {alert.actionLabel}</a>
+          )}
+        </div>
+      )}
 
       <div className={`prFreshnessBox prFreshness-${state.freshness.level}`}>
         <div>
