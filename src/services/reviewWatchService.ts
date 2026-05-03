@@ -63,13 +63,19 @@ function normalizeLinks(links?: ReviewWatchLink[]): ReviewWatchLink[] | undefine
 }
 
 function normalizeActions(actions?: ReviewWatchJsonItem['actions']): ReviewWatchAction[] | undefined {
-  return actions
-    ?.filter((action) => typeof action.label === 'string' && isActionKind(action.kind))
-    .map((action) => ({
+  return actions?.reduce<ReviewWatchAction[]>((safeActions, action) => {
+    if (typeof action.label !== 'string' || !isActionKind(action.kind)) {
+      return safeActions;
+    }
+
+    safeActions.push({
       label: action.label,
       kind: action.kind,
       url: action.url,
-    }));
+    });
+
+    return safeActions;
+  }, []);
 }
 
 function getReviewFreshness(generatedAt?: string): ReviewFreshness {
