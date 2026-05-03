@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Activity, GitPullRequest, ShieldCheck } from 'lucide-react';
-import { reviewWatchPrinciples } from '../data/reviewWatch';
+import { Activity, ExternalLink, GitPullRequest, ShieldCheck } from 'lucide-react';
+import { reviewUpdateSteps, reviewWatchPrinciples } from '../data/reviewWatch';
 import type { WatchItem } from '../data/reviewWatch';
 import { loadReviewWatchState } from '../services/reviewWatchService';
 
@@ -10,6 +10,8 @@ const statusLabel = {
   manual: '手動',
   blocked: '停止',
 };
+
+const actionsUrl = 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/update-review-watch.yml';
 
 export function ReviewWatchPanel() {
   const [items, setItems] = useState<WatchItem[]>([]);
@@ -44,6 +46,24 @@ export function ReviewWatchPanel() {
 
       <div className="reviewPrinciples">
         {reviewWatchPrinciples.map((item) => <span key={item}>{item}</span>)}
+      </div>
+
+      <div className="reviewUpdateBox">
+        <div className="reviewUpdateHead">
+          <strong>状態を更新する時</strong>
+          <a href={actionsUrl} target="_blank" rel="noreferrer"><ExternalLink size={16} /> Actionsを開く</a>
+        </div>
+        <div className="reviewUpdateSteps">
+          {reviewUpdateSteps.map((step, index) => (
+            <article key={step.id}>
+              <span>{index + 1}</span>
+              <div>
+                <strong>{step.title}</strong>
+                <p>{step.detail}</p>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
 
       <div className="reviewWatchGrid">
