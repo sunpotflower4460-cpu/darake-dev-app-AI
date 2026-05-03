@@ -13,6 +13,13 @@ const statusLabel = {
   blocked: '停止',
 };
 
+const riskLabel = {
+  low: '低リスク',
+  medium: '中リスク',
+  high: '高リスク',
+  unknown: '未判定',
+};
+
 const actionsUrl = 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/update-review-watch.yml';
 
 export function ReviewWatchPanel() {
@@ -92,6 +99,7 @@ export function ReviewWatchPanel() {
                 <article key={item.id}>
                   <strong>{item.label}</strong>
                   <span>{statusLabel[item.status]}</span>
+                  {item.risk && <span className={`riskBadge risk-${item.risk}`}>{riskLabel[item.risk]}</span>}
                   {item.url && <a href={item.url} target="_blank" rel="noreferrer">開く</a>}
                 </article>
               ))}
@@ -126,6 +134,7 @@ export function ReviewWatchPanel() {
               <span>{statusLabel[item.status]}</span>
             </div>
             <strong>{item.label}</strong>
+            {item.risk && <span className={`riskBadge risk-${item.risk}`}>{riskLabel[item.risk]}</span>}
             <p>{item.message}</p>
             {item.url && <a className="reviewWatchCardLink" href={item.url} target="_blank" rel="noreferrer"><ExternalLink size={15} /> 開く</a>}
           </article>
