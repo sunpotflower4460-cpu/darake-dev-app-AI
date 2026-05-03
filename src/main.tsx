@@ -6,6 +6,7 @@ import { FinalCheckPanel } from './components/FinalCheckPanel';
 import { FuturePanel } from './components/FuturePanel';
 import { InfoPanel } from './components/InfoPanel';
 import { IssueDraftPanel } from './components/IssueDraftPanel';
+import { IssueRecordPanel } from './components/IssueRecordPanel';
 import { ManualGatePanel } from './components/ManualGatePanel';
 import { StatusPanel } from './components/StatusPanel';
 import './styles.css';
@@ -17,6 +18,7 @@ import './issueDraft.css';
 import './issueEdit.css';
 import './finalCheck.css';
 import './manualGate.css';
+import './issueRecord.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -33,6 +35,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <ManualGatePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <IssueRecordPanel />
       </div>
       <div className="panel statusModePanel">
         <StatusPanel />
