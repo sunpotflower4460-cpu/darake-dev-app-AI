@@ -33,7 +33,9 @@
 .reviewWatchCard p,
 .reviewUpdateSteps p,
 .reviewFreshnessBox p,
-.reviewFreshnessBox small {
+.reviewFreshnessBox small,
+.reviewLane p,
+.reviewLaneItems small {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -100,6 +102,75 @@
   background: rgba(76, 124, 85, 0.12);
   font-size: 0.84rem;
   font-weight: 900;
+}
+
+.reviewLaneGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.reviewLane {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 250, 240, 0.82);
+}
+
+.reviewLaneHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.reviewLaneHead span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  color: #fffaf0;
+  background: #4c7c55;
+  font-weight: 900;
+}
+
+.reviewLaneItems {
+  display: grid;
+  gap: 8px;
+}
+
+.reviewLaneItems article {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.reviewLaneItems article span {
+  padding: 4px 8px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.74rem;
+  font-weight: 900;
+}
+
+.lane-now {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.lane-later {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.lane-leave {
+  border-color: rgba(76, 124, 85, 0.24);
 }
 
 .reviewUpdateBox {
@@ -213,7 +284,8 @@
 
 @media (max-width: 960px) {
   .reviewWatchGrid,
-  .reviewUpdateSteps {
+  .reviewUpdateSteps,
+  .reviewLaneGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -221,7 +293,8 @@
 @media (max-width: 760px) {
   .reviewWatchHero,
   .reviewWatchGrid,
-  .reviewUpdateSteps {
+  .reviewUpdateSteps,
+  .reviewLaneGrid {
     grid-template-columns: 1fr;
   }
 
