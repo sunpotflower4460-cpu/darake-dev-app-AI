@@ -1,0 +1,111 @@
+.reviewWatchPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.reviewWatchHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.88));
+}
+
+.reviewWatchHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.reviewWatchHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.reviewWatchHero p:not(.eyebrow),
+.reviewWatchCard p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.reviewPrinciples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.reviewPrinciples span {
+  padding: 8px 11px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.84rem;
+  font-weight: 900;
+}
+
+.reviewWatchGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.reviewWatchCard {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgba(255, 250, 240, 0.82);
+}
+
+.reviewWatchCard > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.reviewWatchCard svg {
+  color: #3f6146;
+}
+
+.reviewWatchCard span {
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.watch-checking {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.watch-manual {
+  border-color: rgba(108, 111, 100, 0.22);
+}
+
+.watch-blocked {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+@media (max-width: 960px) {
+  .reviewWatchGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .reviewWatchHero,
+  .reviewWatchGrid {
+    grid-template-columns: 1fr;
+  }
+}
