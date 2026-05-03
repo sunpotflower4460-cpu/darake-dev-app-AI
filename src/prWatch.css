@@ -33,7 +33,11 @@
 .prWatchGuide p,
 .prWatchEmpty p,
 .prWatchCard p,
-.prWatchMeta span {
+.prWatchMeta span,
+.prFreshnessBox p,
+.prFreshnessBox small,
+.prLane p,
+.prLaneItems small {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -46,6 +50,127 @@
   color: #35513d;
   background: rgba(76, 124, 85, 0.12);
   font-weight: 900;
+}
+
+.prFreshnessBox {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 250, 240, 0.82);
+}
+
+.prFreshnessBox > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.prFreshnessBox strong {
+  color: #35513d;
+  font-size: 1.08rem;
+}
+
+.prFreshnessBox span {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.prFreshness-fresh,
+.prFreshness-aging {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.09);
+}
+
+.prFreshness-stale,
+.prFreshness-unknown {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.prLaneGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.prLane {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 250, 240, 0.82);
+}
+
+.prLaneHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.prLaneHead span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  color: #fffaf0;
+  background: #4c7c55;
+  font-weight: 900;
+}
+
+.prLaneItems {
+  display: grid;
+  gap: 8px;
+}
+
+.prLaneItems article {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.prLaneItems article span {
+  padding: 4px 8px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.74rem;
+  font-weight: 900;
+}
+
+.prLaneItems article a {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.lane-now {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.lane-later {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.lane-leave {
+  border-color: rgba(76, 124, 85, 0.24);
 }
 
 .prWatchGuide,
@@ -135,16 +260,28 @@
   border-color: rgba(76, 124, 85, 0.24);
 }
 
+@media (max-width: 960px) {
+  .prLaneGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 760px) {
   .prWatchHero,
-  .prWatchGrid {
+  .prWatchGrid,
+  .prLaneGrid {
     grid-template-columns: 1fr;
   }
 
   .prWatchGuide,
   .prWatchEmpty,
-  .prWatchCardHead {
+  .prWatchCardHead,
+  .prFreshnessBox > div {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .prLaneItems article {
+    grid-template-columns: 1fr;
   }
 }
