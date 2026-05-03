@@ -1,0 +1,58 @@
+import { useState } from 'react';
+import { Check, FileCheck2, RotateCcw, Save } from 'lucide-react';
+import { clearIssueRecord, loadIssueRecord, saveIssueRecord, type IssueRecord } from '../utils/issueRecordStore';
+
+export function IssueRecordPanel() {
+  const [record, setRecord] = useState<IssueRecord>(() => loadIssueRecord());
+  const [saved, setSaved] = useState(false);
+
+  function updateRecord(next: Partial<IssueRecord>) {
+    setRecord((current) => ({ ...current, ...next }));
+    setSaved(false);
+  }
+
+  function handleSave() {
+    setRecord(saveIssueRecord(record));
+    setSaved(true);
+    window.setTimeout(() => setSaved(false), 1800);
+  }
+
+  function handleClear() {
+    setRecord(clearIssueRecord());
+    setSaved(false);
+  }
+
+  return (
+    <div className="issueRecordPanel">
+      <div className="issueRecordHero">
+        <FileCheck2 />
+        <div>
+          <p className="eyebrow">Issue Record</p>
+          <h3>作成後の記録欄</h3>
+          <p>GitHubでIssueを作ったあと、番号やURLをここに控えておきます。</p>
+        </div>
+      </div>
+
+      <div className="issueRecordGrid">
+        <label>
+          Issue番号
+          <input value={record.number} placeholder="#18 など" onChange={(event) => updateRecord({ number: event.target.value })} />
+        </label>
+        <label>
+          Issue URL
+          <input value={record.url} placeholder="https://github.com/..." onChange={(event) => updateRecord({ url: event.target.value })} />
+        </label>
+        <label className="recordNoteField">
+          メモ
+          <textarea rows={3} value={record.note} placeholder="次に見ること、任せたことなど" onChange={(event) => updateRecord({ note: event.target.value })} />
+        </label>
+      </div>
+
+      <div className="issueRecordActions">
+        <button type="button" onClick={handleSave}>{saved ? <Check size={16} /> : <Save size={16} />} {saved ? '保存しました' : '記録を保存'}</button>
+        <button type="button" className="secondaryRecordButton" onClick={handleClear}><RotateCcw size={16} /> 空にする</button>
+        {record.savedAt && <span>保存時刻: {record.savedAt}</span>}
+      </div>
+    </div>
+  );
+}
