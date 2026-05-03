@@ -3,6 +3,7 @@ import { Activity, ExternalLink, GitPullRequest, ShieldCheck } from 'lucide-reac
 import { reviewUpdateSteps, reviewWatchPrinciples } from '../data/reviewWatch';
 import type { WatchItem } from '../data/reviewWatch';
 import { loadReviewWatchState, type ReviewFreshness } from '../services/reviewWatchService';
+import { buildReviewAlert } from '../utils/reviewAlert';
 import { buildReviewLaneGroups } from '../utils/reviewLanes';
 
 const statusLabel = {
@@ -19,6 +20,7 @@ export function ReviewWatchPanel() {
   const [source, setSource] = useState('loading');
   const [freshness, setFreshness] = useState<ReviewFreshness | null>(null);
   const laneGroups = useMemo(() => buildReviewLaneGroups(items), [items]);
+  const alert = useMemo(() => buildReviewAlert(items), [items]);
 
   useEffect(() => {
     let active = true;
@@ -47,6 +49,16 @@ export function ReviewWatchPanel() {
           <small>更新元: {source}</small>
         </div>
       </div>
+
+      {alert.show && (
+        <div className="reviewAlertBox">
+          <div>
+            <strong>{alert.title}</strong>
+            <span>{alert.count}</span>
+          </div>
+          <p>{alert.message}</p>
+        </div>
+      )}
 
       {freshness && (
         <div className={`reviewFreshnessBox reviewFreshness-${freshness.level}`}>
