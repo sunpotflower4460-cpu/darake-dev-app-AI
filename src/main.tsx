@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { DarakeModePanel } from './components/DarakeModePanel';
+import { FinalCheckPanel } from './components/FinalCheckPanel';
 import { FuturePanel } from './components/FuturePanel';
 import { InfoPanel } from './components/InfoPanel';
 import { IssueDraftPanel } from './components/IssueDraftPanel';
@@ -13,6 +14,7 @@ import './repoSnapshot.css';
 import './darakeMode.css';
 import './issueDraft.css';
 import './issueEdit.css';
+import './finalCheck.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -23,6 +25,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <IssueDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <FinalCheckPanel />
       </div>
       <div className="panel statusModePanel">
         <StatusPanel />
