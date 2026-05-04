@@ -1,0 +1,245 @@
+.screenshotPlanExportPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.screenshotPlanHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.screenshotPlanHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.screenshotPlanHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.screenshotPlanHero p:not(.eyebrow),
+.screenshotPlanSafetyBox p,
+.screenshotPlanControls span,
+.screenshotPlanSummaryGrid p,
+.screenshotPlanTargetItem p,
+.screenshotPlanTargetItem small,
+.screenshotPlanBlockedItem p,
+.screenshotPlanTargetList > p,
+.screenshotPlanBlockedList > p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.export-ready {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.export-needs-review {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.export-not-ready {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.screenshotPlanSafetyBox,
+.screenshotPlanControls,
+.screenshotPlanSummaryGrid section,
+.screenshotPlanTargetBox,
+.screenshotPlanBlockedBox,
+.screenshotPlanJsonBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.screenshotPlanSafetyBox strong,
+.screenshotPlanTargetBox strong,
+.screenshotPlanBlockedBox strong,
+.screenshotPlanJsonBox strong,
+.screenshotPlanSummaryGrid h4,
+.screenshotPlanTargetItem strong,
+.screenshotPlanBlockedItem strong {
+  color: #35513d;
+}
+
+.screenshotPlanControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotPlanControls button,
+.screenshotPlanCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.screenshotPlanCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.screenshotPlanCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.screenshotPlanControls span,
+.screenshotPlanTargetBox > div:first-child span,
+.screenshotPlanBlockedBox > div:first-child span,
+.screenshotPlanJsonBox > div:first-child span,
+.screenshotPlanTargetItem span,
+.screenshotPlanBlockedItem span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.screenshotPlanSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.screenshotPlanSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotPlanSummaryGrid h4,
+.screenshotPlanSummaryGrid p {
+  margin: 0;
+}
+
+.screenshotPlanSummaryGrid p {
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.screenshotPlanTargetBox,
+.screenshotPlanBlockedBox,
+.screenshotPlanJsonBox {
+  display: grid;
+  gap: 12px;
+}
+
+.screenshotPlanTargetBox > div:first-child,
+.screenshotPlanBlockedBox > div:first-child,
+.screenshotPlanJsonBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.screenshotPlanTargetList,
+.screenshotPlanBlockedList {
+  display: grid;
+  gap: 10px;
+}
+
+.screenshotPlanTargetItem,
+.screenshotPlanBlockedItem {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotPlanTargetItem > div,
+.screenshotPlanBlockedItem > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.screenshotPlanTargetItem p,
+.screenshotPlanTargetItem small,
+.screenshotPlanBlockedItem p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.screenshotPlanBlockedItem {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.screenshotPlanBlockedItem span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.screenshotPlanJsonBox pre {
+  max-height: 420px;
+  overflow: auto;
+  margin: 0;
+  padding: 14px;
+  border-radius: 16px;
+  color: #2f332d;
+  background: rgba(255, 250, 240, 0.82);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@media (max-width: 900px) {
+  .screenshotPlanSummaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .screenshotPlanHero,
+  .screenshotPlanSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .screenshotPlanControls,
+  .screenshotPlanControls button,
+  .screenshotPlanCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .screenshotPlanTargetBox > div:first-child,
+  .screenshotPlanBlockedBox > div:first-child,
+  .screenshotPlanJsonBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
