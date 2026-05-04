@@ -48,7 +48,9 @@
 .savedPlanQueueItem small,
 .savedQueuePreflightBox p,
 .executionDraftBox p,
-.executionDraftCopyRow span {
+.executionDraftCopyRow span,
+.issueHandoffBox p,
+.issueHandoffCopyRow span {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -62,7 +64,8 @@
 .completionReportBox,
 .savedPlanQueueBox,
 .savedQueuePreflightBox,
-.executionDraftBox {
+.executionDraftBox,
+.issueHandoffBox {
   display: grid;
   gap: 12px;
   padding: 16px;
@@ -80,7 +83,8 @@
 .completionReportBox strong,
 .savedPlanQueueBox strong,
 .savedQueuePreflightBox strong,
-.executionDraftBox strong {
+.executionDraftBox strong,
+.issueHandoffBox strong {
   color: #76531d;
   font-size: 1.1rem;
 }
@@ -147,7 +151,8 @@
 .completionReportBox,
 .savedPlanQueueBox,
 .savedQueuePreflightBox,
-.executionDraftBox {
+.executionDraftBox,
+.issueHandoffBox {
   border-color: rgba(76, 124, 85, 0.24);
   background: rgba(76, 124, 85, 0.08);
 }
@@ -159,7 +164,8 @@
 .completionReportBox > div:first-child,
 .savedPlanQueueBox > div:first-child,
 .savedQueuePreflightBox > div:first-child,
-.executionDraftBox > div:first-child {
+.executionDraftBox > div:first-child,
+.issueHandoffBox > div:first-child {
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -176,7 +182,9 @@
 .savedPlanQueueBox > div:first-child strong,
 .savedQueuePreflightBox > div:first-child strong,
 .executionDraftBox > div:first-child strong,
-.executionDraftBox h4 {
+.executionDraftBox h4,
+.issueHandoffBox > div:first-child strong,
+.issueHandoffBox h4 {
   color: #35513d;
 }
 
@@ -189,7 +197,9 @@
 .savedQueuePreflightBox > div:first-child span,
 .savedQueuePreflightBox > div:last-child span,
 .executionDraftBox > div:first-child span,
-.executionDraftBox section span {
+.executionDraftBox section span,
+.issueHandoffBox > div:first-child span,
+.issueHandoffBox section span {
   padding: 6px 10px;
   border-radius: 999px;
   color: #35513d;
@@ -199,13 +209,15 @@
 }
 
 .savedQueuePreflightBox > div:last-child,
-.executionDraftBox section > div {
+.executionDraftBox section > div,
+.issueHandoffBox section > div {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.executionDraftBox section {
+.executionDraftBox section,
+.issueHandoffBox section {
   display: grid;
   gap: 8px;
   padding: 12px;
@@ -213,11 +225,13 @@
   background: rgba(255, 250, 240, 0.72);
 }
 
-.executionDraftBox h4 {
+.executionDraftBox h4,
+.issueHandoffBox h4 {
   margin: 0;
 }
 
-.executionDraftCopyRow {
+.executionDraftCopyRow,
+.issueHandoffCopyRow {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -227,7 +241,8 @@
   background: rgba(255, 250, 240, 0.72);
 }
 
-.executionDraftCopyButton {
+.executionDraftCopyButton,
+.issueHandoffCopyButton {
   display: inline-flex;
   gap: 8px;
   align-items: center;
@@ -240,49 +255,68 @@
   cursor: pointer;
 }
 
-.executionDraftCopyButton.copy-copied {
+.executionDraftCopyButton.copy-copied,
+.issueHandoffCopyButton.copy-copied {
   background: linear-gradient(135deg, #4c7c55, #4c7c55);
 }
 
-.executionDraftCopyButton.copy-failed {
+.executionDraftCopyButton.copy-failed,
+.issueHandoffCopyButton.copy-failed {
   background: linear-gradient(135deg, #b45b5d, #b9822e);
 }
 
-.draft-batch-gate {
+.draft-batch-gate,
+.issue-manual-gate {
   border-color: rgba(185, 130, 46, 0.25);
   background: rgba(185, 130, 46, 0.08);
 }
 
 .draft-batch-gate > div:first-child strong,
 .draft-batch-gate > div:first-child span,
-.draft-batch-gate section span {
+.draft-batch-gate section span,
+.issue-manual-gate > div:first-child strong,
+.issue-manual-gate > div:first-child span,
+.issue-manual-gate section span {
   color: #76531d;
 }
 
 .draft-batch-gate > div:first-child span,
-.draft-batch-gate section span {
+.draft-batch-gate section span,
+.issue-manual-gate > div:first-child span,
+.issue-manual-gate section span {
   background: rgba(185, 130, 46, 0.13);
 }
 
-.draft-blocked {
+.draft-blocked,
+.issue-blocked-review {
   border-color: rgba(180, 91, 93, 0.24);
   background: rgba(180, 91, 93, 0.08);
 }
 
 .draft-blocked > div:first-child strong,
 .draft-blocked > div:first-child span,
-.draft-blocked section span {
+.draft-blocked section span,
+.issue-blocked-review > div:first-child strong,
+.issue-blocked-review > div:first-child span,
+.issue-blocked-review section span {
   color: #7e3436;
 }
 
 .draft-blocked > div:first-child span,
-.draft-blocked section span {
+.draft-blocked section span,
+.issue-blocked-review > div:first-child span,
+.issue-blocked-review section span {
   background: rgba(180, 91, 93, 0.12);
 }
 
 .draft-not-ready {
   border-color: rgba(108, 111, 100, 0.24);
   background: rgba(108, 111, 100, 0.07);
+}
+
+.issue-copy-only {
+  border-color: rgba(76, 124, 85, 0.24);
+  background: rgba(76, 124, 85, 0.08);
 }
 
 .preflight-ready {
@@ -654,7 +688,8 @@
   .completionReportBox > div:first-child,
   .savedPlanQueueBox > div:first-child,
   .savedQueuePreflightBox > div:first-child,
-  .executionDraftBox > div:first-child {
+  .executionDraftBox > div:first-child,
+  .issueHandoffBox > div:first-child {
     align-items: flex-start;
     flex-direction: column;
   }
@@ -664,7 +699,9 @@
   .autoRunSaveRow,
   .autoRunSaveRow button,
   .executionDraftCopyRow,
-  .executionDraftCopyButton {
+  .executionDraftCopyButton,
+  .issueHandoffCopyRow,
+  .issueHandoffCopyButton {
     width: 100%;
     justify-content: center;
   }
