@@ -1,0 +1,254 @@
+.uiMachineCheckDraftPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.uiMachineHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.uiMachineHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.uiMachineHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.uiMachineHero p:not(.eyebrow),
+.uiMachineSafetyBox p,
+.uiMachineControls span,
+.uiMachineSummaryGrid p,
+.uiMachineCheckItem p,
+.uiMachineTargetItem p,
+.uiMachineNotesBox li {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.machine-check-ready {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.machine-needs-fix {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.machine-not-ready {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.uiMachineSafetyBox,
+.uiMachineControls,
+.uiMachineSummaryGrid section,
+.uiMachineGlobalBox,
+.uiMachineTargetBox,
+.uiMachineNotesBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.uiMachineSafetyBox strong,
+.uiMachineGlobalBox strong,
+.uiMachineTargetBox strong,
+.uiMachineNotesBox strong,
+.uiMachineSummaryGrid h4,
+.uiMachineCheckItem strong,
+.uiMachineTargetItem strong {
+  color: #35513d;
+}
+
+.uiMachineControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.uiMachineControls button,
+.uiMachineCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.uiMachineCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.uiMachineCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.uiMachineControls span,
+.uiMachineGlobalBox > div:first-child span,
+.uiMachineTargetBox > div:first-child span,
+.uiMachineNotesBox > div:first-child span,
+.uiMachineCheckItem span,
+.uiMachineTargetItem span,
+.uiMachineMiniChecks span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.uiMachineSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.uiMachineSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.uiMachineSummaryGrid h4,
+.uiMachineSummaryGrid p {
+  margin: 0;
+}
+
+.uiMachineSummaryGrid p {
+  font-weight: 900;
+}
+
+.uiMachineGlobalBox,
+.uiMachineTargetBox,
+.uiMachineNotesBox {
+  display: grid;
+  gap: 12px;
+}
+
+.uiMachineGlobalBox > div:first-child,
+.uiMachineTargetBox > div:first-child,
+.uiMachineNotesBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.uiMachineCheckList,
+.uiMachineTargetList {
+  display: grid;
+  gap: 10px;
+}
+
+.uiMachineCheckItem,
+.uiMachineTargetItem {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.uiMachineCheckItem > div,
+.uiMachineTargetItem > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.uiMachineCheckItem p,
+.uiMachineTargetItem p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.check-warn {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.check-warn span,
+.mini-warn {
+  color: #76531d !important;
+  background: rgba(185, 130, 46, 0.13) !important;
+}
+
+.check-block {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.check-block span,
+.mini-block {
+  color: #7e3436 !important;
+  background: rgba(180, 91, 93, 0.12) !important;
+}
+
+.uiMachineMiniChecks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.uiMachineNotesBox ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.uiMachineNotesBox li + li {
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .uiMachineSummaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .uiMachineHero,
+  .uiMachineSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .uiMachineControls,
+  .uiMachineControls button,
+  .uiMachineCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .uiMachineGlobalBox > div:first-child,
+  .uiMachineTargetBox > div:first-child,
+  .uiMachineNotesBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
