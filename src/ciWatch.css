@@ -37,7 +37,8 @@
 .ciFreshnessBox p,
 .ciFreshnessBox small,
 .ciLane p,
-.ciLaneItems small {
+.ciLaneItems small,
+.ciAlertBox p {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -50,6 +51,51 @@
   color: #35513d;
   background: rgba(76, 124, 85, 0.12);
   font-weight: 900;
+}
+
+.ciAlertBox {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid rgba(180, 91, 93, 0.24);
+  border-radius: 22px;
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.ciAlertBox > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.ciAlertBox strong {
+  color: #7e3436;
+  font-size: 1.08rem;
+}
+
+.ciAlertBox span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  color: #fffaf0;
+  background: #b45b5d;
+  font-weight: 900;
+}
+
+.ciAlertBox a {
+  justify-self: start;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 9px 13px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+  font-weight: 900;
+  text-decoration: none;
 }
 
 .ciFreshnessBox {
@@ -277,7 +323,8 @@
   .ciWatchGuide,
   .ciWatchEmpty,
   .ciWatchCardHead,
-  .ciFreshnessBox > div {
+  .ciFreshnessBox > div,
+  .ciAlertBox > div {
     align-items: flex-start;
     flex-direction: column;
   }
