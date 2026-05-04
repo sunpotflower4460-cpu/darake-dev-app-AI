@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Rocket } from 'lucide-react';
+import { autoContinueRules } from '../data/autoContinueRules';
 import { autoRunPlanSections } from '../data/autoRunPlan';
 import { buildAutoRunPhaseQueue, summarizeAutoRunQueue } from '../utils/autoRunPhaseQueue';
 import { classifyRiskList, summarizeRisk } from '../utils/riskClassifier';
@@ -37,7 +38,7 @@ export function AutoRunPlanPanel() {
       <div className="autoRunHero">
         <Rocket />
         <div>
-          <p className="eyebrow">Phase 8.3</p>
+          <p className="eyebrow">Phase 8.4</p>
           <h3>一括オート進行モード設計</h3>
           <p>「作りたい」を受け取ったあと、完成間近まで自動で進み、必要な手動項目は最後にまとめるための地図です。</p>
         </div>
@@ -125,6 +126,23 @@ export function AutoRunPlanPanel() {
                 <small>{item.riskLabel} / {item.status}</small>
                 <p>{item.note}</p>
               </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div className="autoContinueRuleBox">
+        <div>
+          <strong>Auto Continue Rule</strong>
+          <span>実行前ルール</span>
+        </div>
+        <p>前のQueue itemが成功したら次へ進みます。ただし、軽微な注意は完成間近レポートへ回し、致命的な条件だけ途中で止めます。</p>
+        <div className="autoContinueRuleGrid">
+          {autoContinueRules.map((rule) => (
+            <article className={`autoContinueRuleCard rule-${rule.type}`} key={rule.id}>
+              <strong>{rule.title}</strong>
+              <p>{rule.detail}</p>
+              <div>{rule.examples.map((example) => <span key={example}>{example}</span>)}</div>
             </article>
           ))}
         </div>
