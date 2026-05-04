@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Eye } from 'lucide-react';
+import { ExternalLink, Eye } from 'lucide-react';
 import { actionPreviewItems } from '../data/actionPreview';
+import { issueManualGuideSteps, issueManualGuideUrl } from '../data/issueManualGuide';
 import { checkIssueDraft } from '../utils/checkIssueDraft';
 import { loadDraft, subscribeDraftChanges } from '../utils/draftStore';
 import { buildIssueActionPreview } from '../utils/issueActionPreview';
@@ -27,7 +28,7 @@ export function ActionPreviewPanel() {
       <div className="actionPreviewHero">
         <Eye />
         <div>
-          <p className="eyebrow">Phase 7.3</p>
+          <p className="eyebrow">Phase 7.4</p>
           <h3>実行前プレビュー</h3>
           <p>Issue作成、PR作成、マージなどの書き込み操作は、実行前に内容と安全条件を1枚で確認します。</p>
         </div>
@@ -58,6 +59,22 @@ export function ActionPreviewPanel() {
           <h4>まだ止める理由</h4>
           <ul>{finalConfirm.stopReasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>
         </section>
+      </div>
+
+      <div className="issueManualGuide">
+        <div>
+          <strong>Issue手動投稿ガイド</strong>
+          <a href={issueManualGuideUrl} target="_blank" rel="noreferrer"><ExternalLink size={16} /> GitHubでIssueを開く</a>
+        </div>
+        <p>自動投稿の前に、まずはGitHubの投稿画面まで安全に案内します。Submitは自分で押す前提です。</p>
+        <div>
+          {issueManualGuideSteps.map((step) => (
+            <article key={step.id}>
+              <strong>{step.title}</strong>
+              <small>{step.detail}</small>
+            </article>
+          ))}
+        </div>
       </div>
 
       <div className="actionPreviewGrid">
