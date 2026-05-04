@@ -5,6 +5,7 @@ import { autoRunPlanSections } from '../data/autoRunPlan';
 import { buildAutoRunPhaseQueue, summarizeAutoRunQueue } from '../utils/autoRunPhaseQueue';
 import { clearAutoRunPlan, loadAutoRunPlan, saveAutoRunPlan } from '../utils/autoRunPlanStore';
 import { buildCompletionReport, formatCompletionReport } from '../utils/completionReport';
+import { buildExecutionOrchestrationDraft, formatExecutionOrchestrationDraft } from '../utils/executionOrchestrationDraft';
 import { classifyRiskList, summarizeRisk } from '../utils/riskClassifier';
 import { buildSavedAutoRunPlanQueue } from '../utils/savedAutoRunPlanQueue';
 import { buildSavedQueuePreflight } from '../utils/savedQueuePreflight';
@@ -25,6 +26,7 @@ export function AutoRunPlanPanel() {
   const [savedAt, setSavedAt] = useState(savedPlan.savedAt ?? '');
   const [saveState, setSaveState] = useState<'idle' | 'saved'>('idle');
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
+  const [draftCopyState, setDraftCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
 
   const generatedPlan = useMemo(() => {
     const autoItems = splitLines(autoScope);
@@ -44,6 +46,8 @@ export function AutoRunPlanPanel() {
   const formattedCompletionReport = useMemo(() => formatCompletionReport(completionReport), [completionReport]);
   const savedQueue = useMemo(() => buildSavedAutoRunPlanQueue({ appName, seed, completionDefinition, autoScope, savedAt }), [appName, seed, completionDefinition, autoScope, savedAt]);
   const savedQueuePreflight = useMemo(() => buildSavedQueuePreflight(savedQueue), [savedQueue]);
+  const executionDraft = useMemo(() => buildExecutionOrchestrationDraft(savedQueue, savedQueuePreflight, completionReport), [savedQueue, savedQueuePreflight, completionReport]);
+  const formattedExecutionDraft = useMemo(() => formatExecutionOrchestrationDraft(executionDraft), [executionDraft]);
 
   function handleSavePlan() {
     const next = saveAutoRunPlan({ appName, seed, completionDefinition, autoScope });
@@ -73,12 +77,23 @@ export function AutoRunPlanPanel() {
     }
   }
 
+  async function handleCopyExecutionDraft() {
+    try {
+      await navigator.clipboard.writeText(formattedExecutionDraft);
+      setDraftCopyState('copied');
+      window.setTimeout(() => setDraftCopyState('idle'), 1800);
+    } catch {
+      setDraftCopyState('failed');
+      window.setTimeout(() => setDraftCopyState('idle'), 2400);
+    }
+  }
+
   return (
     <div className="autoRunPlanPanel">
       <div className="autoRunHero">
         <Rocket />
         <div>
-          <p className="eyebrow">Phase 8.9</p>
+          <p className="eyebrow">Phase 9.0</p>
           <h3>一括オート進行モード設計</h3>
           <p>「作りたい」を受け取ったあと、完成間近まで自動で進み、必要な手動項目は最後にまとめるための地図です。</p>
         </div>
@@ -87,6 +102,31 @@ export function AutoRunPlanPanel() {
       <div className="autoRunPrinciple">
         <strong>Batch Gate Mode</strong>
         <p>途中で小さく止まらず、どうしても進めない時だけ止まります。軽微な問題や手動項目は完成間近レポートへまとめます。</p>
+      </div>
+
+      <div className={`executionDraftBox draft-${executionDraft.handoffMode}`}>
+        <div>
+          <strong>{executionDraft.title}</strong>
+          <span>{executionDraft.handoffMode}</span>
+        </div>
+        <p>{executionDraft.message}</p>
+        <div className="executionDraftCopyRow">
+          <button type="button" className={`executionDraftCopyButton copy-${draftCopyState}`} onClick={handleCopyExecutionDraft}>
+            {draftCopyState === 'copied' ? <Check size={16} /> : <Copy size={16} />}
+            {draftCopyState === 'copied' && '下書きをコピーしました'}
+            {draftCopyState === 'failed' && 'コピーできませんでした'}
+            {draftCopyState === 'idle' && '実行パック下書きをコピー'}
+          </button>
+          <span>外部実行へ渡す前の安全なMarkdown下書きです。まだ実行はしません。</span>
+        </div>
+        <section>
+          <h4>Payload Summary</h4>
+          <div>{executionDraft.payloadSummary.map((item) => <span key={item}>{item}</span>)}</div>
+        </section>
+        <section>
+          <h4>Safety Notes</h4>
+          <div>{executionDraft.safetyNotes.map((item) => <span key={item}>{item}</span>)}</div>
+        </section>
       </div>
 
       <div className="autoRunForm">
