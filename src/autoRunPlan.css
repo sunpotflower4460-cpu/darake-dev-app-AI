@@ -45,7 +45,8 @@
 .completionCopyRow span,
 .autoRunSaveRow span,
 .savedPlanQueueBox p,
-.savedPlanQueueItem small {
+.savedPlanQueueItem small,
+.savedQueuePreflightBox p {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -57,7 +58,8 @@
 .autoPhaseQueueBox,
 .autoContinueRuleBox,
 .completionReportBox,
-.savedPlanQueueBox {
+.savedPlanQueueBox,
+.savedQueuePreflightBox {
   display: grid;
   gap: 12px;
   padding: 16px;
@@ -73,7 +75,8 @@
 .autoPhaseQueueBox strong,
 .autoContinueRuleBox strong,
 .completionReportBox strong,
-.savedPlanQueueBox strong {
+.savedPlanQueueBox strong,
+.savedQueuePreflightBox strong {
   color: #76531d;
   font-size: 1.1rem;
 }
@@ -138,7 +141,8 @@
 .autoPhaseQueueBox,
 .autoContinueRuleBox,
 .completionReportBox,
-.savedPlanQueueBox {
+.savedPlanQueueBox,
+.savedQueuePreflightBox {
   border-color: rgba(76, 124, 85, 0.24);
   background: rgba(76, 124, 85, 0.08);
 }
@@ -148,7 +152,8 @@
 .autoPhaseQueueBox > div:first-child,
 .autoContinueRuleBox > div:first-child,
 .completionReportBox > div:first-child,
-.savedPlanQueueBox > div:first-child {
+.savedPlanQueueBox > div:first-child,
+.savedQueuePreflightBox > div:first-child {
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -162,7 +167,8 @@
 .autoContinueRuleBox > div:first-child strong,
 .completionReportBox > div:first-child strong,
 .completionReportBox h4,
-.savedPlanQueueBox > div:first-child strong {
+.savedPlanQueueBox > div:first-child strong,
+.savedQueuePreflightBox > div:first-child strong {
   color: #35513d;
 }
 
@@ -171,13 +177,63 @@
 .autoPhaseQueueBox > div:first-child span,
 .autoContinueRuleBox > div:first-child span,
 .completionReportBox > div:first-child span,
-.savedPlanQueueBox > div:first-child span {
+.savedPlanQueueBox > div:first-child span,
+.savedQueuePreflightBox > div:first-child span,
+.savedQueuePreflightBox > div:last-child span {
   padding: 6px 10px;
   border-radius: 999px;
   color: #35513d;
   background: rgba(76, 124, 85, 0.12);
   font-size: 0.82rem;
   font-weight: 900;
+}
+
+.savedQueuePreflightBox > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.preflight-ready {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.preflight-batch-gate {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.preflight-batch-gate > div:first-child strong,
+.preflight-batch-gate > div:first-child span,
+.preflight-batch-gate > div:last-child span {
+  color: #76531d;
+}
+
+.preflight-batch-gate > div:first-child span,
+.preflight-batch-gate > div:last-child span {
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.preflight-hard-stop {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.preflight-hard-stop > div:first-child strong,
+.preflight-hard-stop > div:first-child span,
+.preflight-hard-stop > div:last-child span {
+  color: #7e3436;
+}
+
+.preflight-hard-stop > div:first-child span,
+.preflight-hard-stop > div:last-child span {
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.preflight-empty {
+  border-color: rgba(108, 111, 100, 0.24);
+  background: rgba(108, 111, 100, 0.07);
 }
 
 .autoRunGenerated section {
@@ -505,7 +561,8 @@
   .autoPhaseQueueBox > div:first-child,
   .autoContinueRuleBox > div:first-child,
   .completionReportBox > div:first-child,
-  .savedPlanQueueBox > div:first-child {
+  .savedPlanQueueBox > div:first-child,
+  .savedQueuePreflightBox > div:first-child {
     align-items: flex-start;
     flex-direction: column;
   }
