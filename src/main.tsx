@@ -21,6 +21,7 @@ import { PrWatchPanel } from './components/PrWatchPanel';
 import { ReviewWatchPanel } from './components/ReviewWatchPanel';
 import { ScreenshotJobDraftPanel } from './components/ScreenshotJobDraftPanel';
 import { StatusPanel } from './components/StatusPanel';
+import { UiCheckCompletionReportPanel } from './components/UiCheckCompletionReportPanel';
 import { UiCheckResultRecordPanel } from './components/UiCheckResultRecordPanel';
 import { UiMachineCheckDraftPanel } from './components/UiMachineCheckDraftPanel';
 import './styles.css';
@@ -42,6 +43,7 @@ import './previewUrlRecord.css';
 import './screenshotJobDraft.css';
 import './uiMachineCheckDraft.css';
 import './uiCheckResultRecord.css';
+import './uiCheckCompletionReport.css';
 import './reviewWatch.css';
 import './prWatch.css';
 import './ciWatch.css';
@@ -93,6 +95,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <UiCheckResultRecordPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <UiCheckCompletionReportPanel />
       </div>
       <div className="panel statusModePanel">
         <ReviewWatchPanel />
