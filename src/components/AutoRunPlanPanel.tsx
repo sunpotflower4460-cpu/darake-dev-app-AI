@@ -6,6 +6,7 @@ import { buildAutoRunPhaseQueue, summarizeAutoRunQueue } from '../utils/autoRunP
 import { clearAutoRunPlan, loadAutoRunPlan, saveAutoRunPlan } from '../utils/autoRunPlanStore';
 import { buildCompletionReport, formatCompletionReport } from '../utils/completionReport';
 import { buildExecutionOrchestrationDraft, formatExecutionOrchestrationDraft } from '../utils/executionOrchestrationDraft';
+import { buildExternalAgentPrompt, formatExternalAgentPrompt } from '../utils/externalAgentPrompt';
 import { buildIssueHandoffTemplate, formatIssueHandoffTemplate } from '../utils/issueHandoffTemplate';
 import { classifyRiskList, summarizeRisk } from '../utils/riskClassifier';
 import { buildSavedAutoRunPlanQueue } from '../utils/savedAutoRunPlanQueue';
@@ -29,6 +30,7 @@ export function AutoRunPlanPanel() {
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
   const [draftCopyState, setDraftCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
   const [issueCopyState, setIssueCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
+  const [agentPromptCopyState, setAgentPromptCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
 
   const generatedPlan = useMemo(() => {
     const autoItems = splitLines(autoScope);
@@ -55,6 +57,11 @@ export function AutoRunPlanPanel() {
     [appName, savedQueue, savedQueuePreflight, completionReport, executionDraft],
   );
   const formattedIssueHandoffTemplate = useMemo(() => formatIssueHandoffTemplate(issueHandoffTemplate), [issueHandoffTemplate]);
+  const externalAgentPrompt = useMemo(
+    () => buildExternalAgentPrompt(appName, savedQueue, savedQueuePreflight, completionReport, executionDraft, issueHandoffTemplate),
+    [appName, savedQueue, savedQueuePreflight, completionReport, executionDraft, issueHandoffTemplate],
+  );
+  const formattedExternalAgentPrompt = useMemo(() => formatExternalAgentPrompt(externalAgentPrompt), [externalAgentPrompt]);
 
   function handleSavePlan() {
     const next = saveAutoRunPlan({ appName, seed, completionDefinition, autoScope });
@@ -106,12 +113,23 @@ export function AutoRunPlanPanel() {
     }
   }
 
+  async function handleCopyExternalAgentPrompt() {
+    try {
+      await navigator.clipboard.writeText(formattedExternalAgentPrompt);
+      setAgentPromptCopyState('copied');
+      window.setTimeout(() => setAgentPromptCopyState('idle'), 1800);
+    } catch {
+      setAgentPromptCopyState('failed');
+      window.setTimeout(() => setAgentPromptCopyState('idle'), 2400);
+    }
+  }
+
   return (
     <div className="autoRunPlanPanel">
       <div className="autoRunHero">
         <Rocket />
         <div>
-          <p className="eyebrow">Phase 9.1</p>
+          <p className="eyebrow">Phase 9.2</p>
           <h3>一括オート進行モード設計</h3>
           <p>「作りたい」を受け取ったあと、完成間近まで自動で進み、必要な手動項目は最後にまとめるための地図です。</p>
         </div>
@@ -120,6 +138,31 @@ export function AutoRunPlanPanel() {
       <div className="autoRunPrinciple">
         <strong>Batch Gate Mode</strong>
         <p>途中で小さく止まらず、どうしても進めない時だけ止まります。軽微な問題や手動項目は完成間近レポートへまとめます。</p>
+      </div>
+
+      <div className={`externalAgentPromptBox agent-${externalAgentPrompt.safetyMode}`}>
+        <div>
+          <strong>External Agent Prompt</strong>
+          <span>{externalAgentPrompt.safetyMode}</span>
+        </div>
+        <p>Cloud Agent / Copilot / Claude Codeなどへ貼るための実装指示プロンプトです。アプリ内から外部実行はしません。</p>
+        <div className="externalAgentPromptCopyRow">
+          <button type="button" className={`externalAgentPromptCopyButton copy-${agentPromptCopyState}`} onClick={handleCopyExternalAgentPrompt}>
+            {agentPromptCopyState === 'copied' ? <Check size={16} /> : <Copy size={16} />}
+            {agentPromptCopyState === 'copied' && 'プロンプトをコピーしました'}
+            {agentPromptCopyState === 'failed' && 'コピーできませんでした'}
+            {agentPromptCopyState === 'idle' && '外部エージェント用プロンプトをコピー'}
+          </button>
+          <span>実装指示・安全ゲート・完了条件をまとめてコピーします。</span>
+        </div>
+        <section>
+          <h4>Target Agents</h4>
+          <div>{externalAgentPrompt.targetAgents.map((agent) => <span key={agent}>{agent}</span>)}</div>
+        </section>
+        <section>
+          <h4>Prompt Summary</h4>
+          <div>{externalAgentPrompt.summary.map((item) => <span key={item}>{item}</span>)}</div>
+        </section>
       </div>
 
       <div className={`issueHandoffBox issue-${issueHandoffTemplate.safetyMode}`}>
