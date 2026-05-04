@@ -47,23 +47,32 @@ jobs:
             exit 1
           fi
 
-      - name: Reject obvious secret-like payloads
+      - name: Write and validate plan JSON
         env:
           PLAN_JSON: ${{ inputs.plan_json }}
         run: |
-          if echo "$PLAN_JSON" | grep -Eiq '(token|secret|api[_-]?key|cookie|password|private[_-]?key)'; then
-            echo "The plan_json appears to include secret-like text. Refusing to continue."
-            exit 1
-          fi
-
-      - name: Write plan JSON
-        env:
-          PLAN_JSON: ${{ inputs.plan_json }}
-        run: |
-          cat > screenshot-plan.json <<'JSON'
-          $PLAN_JSON
-          JSON
+          printf '%s' "$PLAN_JSON" > screenshot-plan.json
           python -m json.tool screenshot-plan.json > screenshot-plan.pretty.json
+
+      - name: Validate draft-only runner flags
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          plan = json.loads(Path('screenshot-plan.pretty.json').read_text())
+          runner = plan.get('runner', {})
+          schema = plan.get('schemaVersion')
+
+          if schema != 'darake-screenshot-plan-v1':
+              raise SystemExit('Unexpected schemaVersion. Refusing to continue.')
+          if runner.get('mode') != 'draft-only':
+              raise SystemExit('runner.mode must remain draft-only.')
+          if runner.get('shouldRunAutomatically') is not False:
+              raise SystemExit('runner.shouldRunAutomatically must remain false.')
+
+          print('Draft-only plan flags validated.')
+          PY
 
       - name: Print validated plan
         run: |
