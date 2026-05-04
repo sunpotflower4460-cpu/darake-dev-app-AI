@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Rocket } from 'lucide-react';
 import { autoRunPlanSections } from '../data/autoRunPlan';
+import { classifyRiskList, summarizeRisk } from '../utils/riskClassifier';
 
 const defaultAutoScope = ['UI実装', 'モックデータ', 'CSS調整', 'README更新', 'CI確認', 'Snapshot確認'];
 const defaultStopConditions = ['secret / token / key が必要', '認証・課金・本番DB変更', 'Build不能', 'App Store / 本番公開判断'];
@@ -25,13 +26,15 @@ export function AutoRunPlanPanel() {
       stopConditions: defaultStopConditions,
     };
   }, [appName, seed, completionDefinition, autoScope]);
+  const classifications = useMemo(() => classifyRiskList(generatedPlan.autoItems), [generatedPlan.autoItems]);
+  const riskSummary = useMemo(() => summarizeRisk(classifications), [classifications]);
 
   return (
     <div className="autoRunPlanPanel">
       <div className="autoRunHero">
         <Rocket />
         <div>
-          <p className="eyebrow">Phase 8.1</p>
+          <p className="eyebrow">Phase 8.2</p>
           <h3>一括オート進行モード設計</h3>
           <p>「作りたい」を受け取ったあと、完成間近まで自動で進み、必要な手動項目は最後にまとめるための地図です。</p>
         </div>
@@ -83,6 +86,25 @@ export function AutoRunPlanPanel() {
           <h4>途中で止まる条件</h4>
           <div>{generatedPlan.stopConditions.map((item) => <span key={item}>{item}</span>)}</div>
         </section>
+      </div>
+
+      <div className="riskClassifierBox">
+        <div>
+          <strong>Risk Classifier</strong>
+          <span>safe {riskSummary.safeAuto} / review {riskSummary.reviewNeeded} / manual {riskSummary.manualGate} / blocked {riskSummary.blocked}</span>
+        </div>
+        <p>入力した作業を、自動候補・後で確認・手動ゲート・必ず停止に分類します。Batch Gate Modeでは、後で確認できるものは完成間近レポートへ回します。</p>
+        <div className="riskClassifierGrid">
+          {classifications.map((classification) => (
+            <article className={`riskClassifierCard risk-${classification.risk}`} key={classification.item}>
+              <div>
+                <strong>{classification.item}</strong>
+                <span>{classification.label}</span>
+              </div>
+              <p>{classification.reason}</p>
+            </article>
+          ))}
+        </div>
       </div>
 
       <div className="autoRunGrid">
