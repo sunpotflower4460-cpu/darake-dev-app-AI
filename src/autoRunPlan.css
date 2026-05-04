@@ -46,7 +46,9 @@
 .autoRunSaveRow span,
 .savedPlanQueueBox p,
 .savedPlanQueueItem small,
-.savedQueuePreflightBox p {
+.savedQueuePreflightBox p,
+.executionDraftBox p,
+.executionDraftCopyRow span {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -59,7 +61,8 @@
 .autoContinueRuleBox,
 .completionReportBox,
 .savedPlanQueueBox,
-.savedQueuePreflightBox {
+.savedQueuePreflightBox,
+.executionDraftBox {
   display: grid;
   gap: 12px;
   padding: 16px;
@@ -76,7 +79,8 @@
 .autoContinueRuleBox strong,
 .completionReportBox strong,
 .savedPlanQueueBox strong,
-.savedQueuePreflightBox strong {
+.savedQueuePreflightBox strong,
+.executionDraftBox strong {
   color: #76531d;
   font-size: 1.1rem;
 }
@@ -142,7 +146,8 @@
 .autoContinueRuleBox,
 .completionReportBox,
 .savedPlanQueueBox,
-.savedQueuePreflightBox {
+.savedQueuePreflightBox,
+.executionDraftBox {
   border-color: rgba(76, 124, 85, 0.24);
   background: rgba(76, 124, 85, 0.08);
 }
@@ -153,7 +158,8 @@
 .autoContinueRuleBox > div:first-child,
 .completionReportBox > div:first-child,
 .savedPlanQueueBox > div:first-child,
-.savedQueuePreflightBox > div:first-child {
+.savedQueuePreflightBox > div:first-child,
+.executionDraftBox > div:first-child {
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -168,7 +174,9 @@
 .completionReportBox > div:first-child strong,
 .completionReportBox h4,
 .savedPlanQueueBox > div:first-child strong,
-.savedQueuePreflightBox > div:first-child strong {
+.savedQueuePreflightBox > div:first-child strong,
+.executionDraftBox > div:first-child strong,
+.executionDraftBox h4 {
   color: #35513d;
 }
 
@@ -179,7 +187,9 @@
 .completionReportBox > div:first-child span,
 .savedPlanQueueBox > div:first-child span,
 .savedQueuePreflightBox > div:first-child span,
-.savedQueuePreflightBox > div:last-child span {
+.savedQueuePreflightBox > div:last-child span,
+.executionDraftBox > div:first-child span,
+.executionDraftBox section span {
   padding: 6px 10px;
   border-radius: 999px;
   color: #35513d;
@@ -188,10 +198,91 @@
   font-weight: 900;
 }
 
-.savedQueuePreflightBox > div:last-child {
+.savedQueuePreflightBox > div:last-child,
+.executionDraftBox section > div {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.executionDraftBox section {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.executionDraftBox h4 {
+  margin: 0;
+}
+
+.executionDraftCopyRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.executionDraftCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.executionDraftCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.executionDraftCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.draft-batch-gate {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.draft-batch-gate > div:first-child strong,
+.draft-batch-gate > div:first-child span,
+.draft-batch-gate section span {
+  color: #76531d;
+}
+
+.draft-batch-gate > div:first-child span,
+.draft-batch-gate section span {
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.draft-blocked {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.draft-blocked > div:first-child strong,
+.draft-blocked > div:first-child span,
+.draft-blocked section span {
+  color: #7e3436;
+}
+
+.draft-blocked > div:first-child span,
+.draft-blocked section span {
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.draft-not-ready {
+  border-color: rgba(108, 111, 100, 0.24);
+  background: rgba(108, 111, 100, 0.07);
 }
 
 .preflight-ready {
@@ -562,7 +653,8 @@
   .autoContinueRuleBox > div:first-child,
   .completionReportBox > div:first-child,
   .savedPlanQueueBox > div:first-child,
-  .savedQueuePreflightBox > div:first-child {
+  .savedQueuePreflightBox > div:first-child,
+  .executionDraftBox > div:first-child {
     align-items: flex-start;
     flex-direction: column;
   }
@@ -570,7 +662,9 @@
   .completionCopyRow,
   .completionCopyButton,
   .autoRunSaveRow,
-  .autoRunSaveRow button {
+  .autoRunSaveRow button,
+  .executionDraftCopyRow,
+  .executionDraftCopyButton {
     width: 100%;
     justify-content: center;
   }
