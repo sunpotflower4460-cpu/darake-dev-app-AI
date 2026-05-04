@@ -7,6 +7,7 @@ import { clearAutoRunPlan, loadAutoRunPlan, saveAutoRunPlan } from '../utils/aut
 import { buildCompletionReport, formatCompletionReport } from '../utils/completionReport';
 import { classifyRiskList, summarizeRisk } from '../utils/riskClassifier';
 import { buildSavedAutoRunPlanQueue } from '../utils/savedAutoRunPlanQueue';
+import { buildSavedQueuePreflight } from '../utils/savedQueuePreflight';
 
 const defaultAutoScope = ['UI実装', 'モックデータ', 'CSS調整', 'README更新', 'CI確認', 'Snapshot確認'];
 const defaultStopConditions = ['secret / token / key が必要', '認証・課金・本番DB変更', 'Build不能', 'App Store / 本番公開判断'];
@@ -42,6 +43,7 @@ export function AutoRunPlanPanel() {
   const completionReport = useMemo(() => buildCompletionReport(phaseQueue, classifications), [phaseQueue, classifications]);
   const formattedCompletionReport = useMemo(() => formatCompletionReport(completionReport), [completionReport]);
   const savedQueue = useMemo(() => buildSavedAutoRunPlanQueue({ appName, seed, completionDefinition, autoScope, savedAt }), [appName, seed, completionDefinition, autoScope, savedAt]);
+  const savedQueuePreflight = useMemo(() => buildSavedQueuePreflight(savedQueue), [savedQueue]);
 
   function handleSavePlan() {
     const next = saveAutoRunPlan({ appName, seed, completionDefinition, autoScope });
@@ -76,7 +78,7 @@ export function AutoRunPlanPanel() {
       <div className="autoRunHero">
         <Rocket />
         <div>
-          <p className="eyebrow">Phase 8.8</p>
+          <p className="eyebrow">Phase 8.9</p>
           <h3>一括オート進行モード設計</h3>
           <p>「作りたい」を受け取ったあと、完成間近まで自動で進み、必要な手動項目は最後にまとめるための地図です。</p>
         </div>
@@ -113,6 +115,15 @@ export function AutoRunPlanPanel() {
           自動で進めたい範囲（一行ずつ）
           <textarea rows={5} value={autoScope} onChange={(event) => setAutoScope(event.target.value)} />
         </label>
+      </div>
+
+      <div className={`savedQueuePreflightBox preflight-${savedQueuePreflight.status}`}>
+        <div>
+          <strong>{savedQueuePreflight.title}</strong>
+          <span>{savedQueuePreflight.status}</span>
+        </div>
+        <p>{savedQueuePreflight.message}</p>
+        <div>{savedQueuePreflight.checks.map((check) => <span key={check}>{check}</span>)}</div>
       </div>
 
       <div className="savedPlanQueueBox">
