@@ -1,0 +1,273 @@
+.lowRiskPrCandidatePanel {
+  display: grid;
+  gap: 18px;
+}
+
+.lowRiskHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.lowRiskHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.lowRiskHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.lowRiskHero p:not(.eyebrow),
+.lowRiskNoticeBox p,
+.lowRiskControls span,
+.lowRiskStatusGrid p,
+.lowRiskConditionItem p,
+.lowRiskChecklistBox li {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.candidate-candidate {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.candidate-review-candidate {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.candidate-blocked {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.candidate-not-ready {
+  border-color: rgba(108, 111, 100, 0.24);
+  background: rgba(108, 111, 100, 0.07);
+}
+
+.lowRiskNoticeBox,
+.lowRiskControls,
+.lowRiskStatusGrid section,
+.lowRiskConditionBox,
+.lowRiskReasonGrid section,
+.lowRiskChecklistBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.lowRiskNoticeBox {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.lowRiskNoticeBox > svg {
+  color: #4c7c55;
+}
+
+.lowRiskNoticeBox strong,
+.lowRiskConditionBox strong,
+.lowRiskChecklistBox strong,
+.lowRiskStatusGrid h4,
+.lowRiskReasonGrid h4 {
+  color: #35513d;
+}
+
+.lowRiskControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.lowRiskControls button,
+.lowRiskCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.lowRiskControls button:first-child {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.lowRiskCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.lowRiskCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.lowRiskStatusGrid,
+.lowRiskReasonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.lowRiskStatusGrid section,
+.lowRiskReasonGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.lowRiskStatusGrid h4,
+.lowRiskReasonGrid h4 {
+  margin: 0;
+}
+
+.lowRiskStatusGrid p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-weight: 800;
+}
+
+.lowRiskConditionBox,
+.lowRiskChecklistBox {
+  display: grid;
+  gap: 12px;
+}
+
+.lowRiskConditionBox > div:first-child,
+.lowRiskChecklistBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lowRiskConditionBox > div:first-child span,
+.lowRiskChecklistBox > div:first-child span,
+.lowRiskConditionItem span,
+.lowRiskReasonGrid span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.lowRiskConditionList {
+  display: grid;
+  gap: 10px;
+}
+
+.lowRiskConditionItem {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.lowRiskConditionItem > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lowRiskConditionItem strong {
+  color: #35513d;
+}
+
+.lowRiskConditionItem p {
+  margin: 0;
+}
+
+.condition-warn {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.condition-warn span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.condition-block {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.condition-block span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.lowRiskReasonGrid section > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lowRiskReasonGrid section:first-child span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.lowRiskReasonGrid section:nth-child(2) span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.lowRiskChecklistBox ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.lowRiskChecklistBox li + li {
+  margin-top: 8px;
+}
+
+@media (max-width: 760px) {
+  .lowRiskHero,
+  .lowRiskNoticeBox,
+  .lowRiskStatusGrid,
+  .lowRiskReasonGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .lowRiskControls,
+  .lowRiskControls button,
+  .lowRiskCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .lowRiskConditionBox > div:first-child,
+  .lowRiskChecklistBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
