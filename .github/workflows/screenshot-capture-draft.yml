@@ -1,0 +1,87 @@
+name: Screenshot Capture Draft
+
+on:
+  workflow_dispatch:
+    inputs:
+      plan_json:
+        description: Draft-only screenshot plan JSON
+        required: true
+        type: string
+      dry_run:
+        description: Keep true until manual capture is approved
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      require_manual_gate:
+        description: Refuse execution unless human gate is acknowledged
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  print-plan-only:
+    name: Print screenshot plan only
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm manual gate
+        run: |
+          if [ "${{ inputs.require_manual_gate }}" != "true" ]; then
+            echo "Manual gate is required."
+            exit 1
+          fi
+
+      - name: Keep dry-run enabled
+        run: |
+          if [ "${{ inputs.dry_run }}" != "true" ]; then
+            echo "This draft workflow refuses non-dry-run execution."
+            exit 1
+          fi
+
+      - name: Write and validate plan JSON
+        env:
+          PLAN_JSON: ${{ inputs.plan_json }}
+        run: |
+          printf '%s' "$PLAN_JSON" > screenshot-plan.json
+          python -m json.tool screenshot-plan.json > screenshot-plan.pretty.json
+
+      - name: Validate draft-only runner flags
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          plan = json.loads(Path('screenshot-plan.pretty.json').read_text())
+          runner = plan.get('runner', {})
+          schema = plan.get('schemaVersion')
+
+          if schema != 'darake-screenshot-plan-v1':
+              raise SystemExit('Unexpected schemaVersion. Refusing to continue.')
+          if runner.get('mode') != 'draft-only':
+              raise SystemExit('runner.mode must remain draft-only.')
+          if runner.get('shouldRunAutomatically') is not False:
+              raise SystemExit('runner.shouldRunAutomatically must remain false.')
+
+          print('Draft-only plan flags validated.')
+          PY
+
+      - name: Print validated plan
+        run: |
+          echo "Draft only: no browser, no screenshot capture, no external worker."
+          cat screenshot-plan.pretty.json
+
+      - name: Upload plan artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-plan-dry-run
+          path: screenshot-plan.pretty.json
+          if-no-files-found: error
