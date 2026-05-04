@@ -28,6 +28,7 @@ import './manualGate.css';
 import './issueRecord.css';
 import './phaseQueue.css';
 import './autoRunPlan.css';
+import './externalAgentPrompt.css';
 import './reviewWatch.css';
 import './prWatch.css';
 import './ciWatch.css';
