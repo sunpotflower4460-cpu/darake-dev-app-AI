@@ -108,6 +108,14 @@ AI開発をできるだけやさしく、自動化し、安全ゲート付きで
 - `npm run pr:build` コマンド
 - publicへの自動反映なしで、読み取り専用のPR監視土台を追加
 
+## Phase 6.8で強化したこと
+
+- GitHub Actionsでworkflow runsを読み取り
+- `snapshot/ci-watch.json` をartifact生成
+- `npm run ci:build` コマンド
+- CI / workflow状態をReview Watch形式に近いJSONへ変換
+- publicへの自動反映なしで、読み取り専用のCI監視土台を追加
+
 ## 初期版でできること
 
 - 魂・種の入力
@@ -144,6 +152,7 @@ npm run build
 npm run state:build
 npm run review:build
 npm run pr:build
+npm run ci:build
 ```
 
 ## 手動で状態ファイルを更新する流れ
@@ -153,6 +162,8 @@ GitHub Actions の `Update State File` を手動実行すると、`public/repo-s
 GitHub Actions の `Update Review Watch File` を手動実行すると、`public/review-watch.json` が更新されます。
 
 GitHub Actions の `Update PR Watch File` を手動実行すると、`public/pr-watch.json` が更新されます。
+
+CI Watch Snapshot workflow は `snapshot/ci-watch.json` をartifactとして生成します。現時点ではpublicファイルへは反映しません。
 
 これらのworkflowは常時自動実行ではありません。必要な時だけ実行する安全寄りの導線です。
 
