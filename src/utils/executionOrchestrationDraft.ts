@@ -11,11 +11,26 @@ export type ExecutionOrchestrationDraft = {
   safetyNotes: string[];
 };
 
+const reportPlaceholders = new Set([
+  'まだ自動進行候補はありません',
+  '軽微な後回し項目はまだありません',
+  '最後にまとめる手動項目はまだありません',
+  '途中停止が必要な項目はまだありません',
+]);
+
+function countRealReportItems(items: string[]): number {
+  return items.filter((item) => !reportPlaceholders.has(item)).length;
+}
+
 export function buildExecutionOrchestrationDraft(
   queue: SavedAutoRunPlanQueue,
   preflight: SavedQueuePreflight,
   report: CompletionReport,
 ): ExecutionOrchestrationDraft {
+  const realBatchedNotes = countRealReportItems(report.batchedNotes);
+  const realManualItems = countRealReportItems(report.manualItems);
+  const realHardStopItems = countRealReportItems(report.hardStopItems);
+
   if (preflight.status === 'empty') {
     return {
       title: '実行オーケストレーション入口：未準備',
@@ -35,7 +50,7 @@ export function buildExecutionOrchestrationDraft(
       handoffMode: 'blocked',
       payloadSummary: [
         `Queue items: ${queue.items.length}`,
-        `Hard stop items: ${report.hardStopItems.length}`,
+        `Hard stop items: ${realHardStopItems}`,
         'Blockedを含むため、実行前または該当地点で停止候補',
       ],
       safetyNotes: ['secret / token / key は含めない', '本番DB・認証・課金・公開判断は手動', '外部実行ボタンはまだ作らない'],
@@ -50,8 +65,8 @@ export function buildExecutionOrchestrationDraft(
       handoffMode: 'batch-gate',
       payloadSummary: [
         `Queue items: ${queue.items.length}`,
-        `Batched notes: ${report.batchedNotes.length}`,
-        `Manual items: ${report.manualItems.length}`,
+        `Batched notes: ${realBatchedNotes}`,
+        `Manual items: ${realManualItems}`,
       ],
       safetyNotes: ['needs-reviewは途中停止せず最後にまとめる', 'manual-gateは必要時だけ止める', '外部実行ボタンはまだ作らない'],
     };
