@@ -35,6 +35,8 @@
 .reviewUpdateGuidance p,
 .reviewAftercareBox p,
 .reviewAftercareBox small,
+.reviewTodayFocusBox p,
+.reviewTodayFocusBox small,
 .reviewUpdateLinks small,
 .reviewFreshnessBox p,
 .reviewFreshnessBox small,
@@ -59,6 +61,56 @@
   color: #35513d;
   background: rgba(76, 124, 85, 0.12);
   font-weight: 900;
+}
+
+.reviewTodayFocusBox {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid rgba(76, 124, 85, 0.28);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(76, 124, 85, 0.12), rgba(255, 250, 240, 0.82));
+}
+
+.reviewTodayFocusBox > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.reviewTodayFocusBox > div:first-child strong {
+  color: #35513d;
+  font-size: 1.18rem;
+}
+
+.reviewTodayFocusBox > div:first-child span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  color: #fffaf0;
+  background: #4c7c55;
+  font-weight: 900;
+}
+
+.reviewTodayFocusItems {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.reviewTodayFocusItems a,
+.reviewTodayFocusItems > span {
+  display: grid;
+  gap: 4px;
+  padding: 11px;
+  border-radius: 16px;
+  color: #35513d;
+  background: rgba(255, 250, 240, 0.72);
+  font-weight: 900;
+  text-decoration: none;
 }
 
 .reviewAlertBox {
@@ -538,7 +590,8 @@
   .reviewWatchGrid,
   .reviewUpdateSteps,
   .reviewUpdateLinks,
-  .reviewLaneGrid {
+  .reviewLaneGrid,
+  .reviewTodayFocusItems {
     grid-template-columns: 1fr;
   }
 
@@ -549,7 +602,8 @@
   .reviewUpdateHead,
   .reviewFreshnessBox > div,
   .reviewAlertBox > div,
-  .reviewUnifiedBox > div:first-child {
+  .reviewUnifiedBox > div:first-child,
+  .reviewTodayFocusBox > div:first-child {
     align-items: flex-start;
     flex-direction: column;
   }

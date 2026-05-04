@@ -8,6 +8,7 @@ import { loadPrWatchState, type PrWatchState } from '../services/prWatchService'
 import { loadReviewWatchState, type ReviewFreshness } from '../services/reviewWatchService';
 import { buildReviewAlert } from '../utils/reviewAlert';
 import { buildReviewLaneGroups } from '../utils/reviewLanes';
+import { buildReviewTodayFocus } from '../utils/reviewTodayFocus';
 import { buildReviewUnifiedSummary } from '../utils/reviewOriginSummary';
 import { buildReviewUpdateGuidance } from '../utils/reviewUpdateGuidance';
 import { convertCiToReviewWatchItem } from '../utils/ciReviewBridge';
@@ -47,6 +48,7 @@ export function ReviewWatchPanel() {
   const ciReviewItems = useMemo(() => ciState?.items.map(convertCiToReviewWatchItem) ?? [], [ciState]);
   const mergedItems = useMemo(() => [...items, ...prReviewItems, ...ciReviewItems], [items, prReviewItems, ciReviewItems]);
   const laneGroups = useMemo(() => buildReviewLaneGroups(mergedItems), [mergedItems]);
+  const todayFocus = useMemo(() => buildReviewTodayFocus(mergedItems), [mergedItems]);
   const alert = useMemo(() => buildReviewAlert(mergedItems), [mergedItems]);
   const unifiedSummary = useMemo(() => buildReviewUnifiedSummary(mergedItems), [mergedItems]);
   const updateGuidance = useMemo(
@@ -78,6 +80,21 @@ export function ReviewWatchPanel() {
           <h3>PR監視の入口</h3>
           <p>PR、CI、レビュー、マージ判断を一か所で見るための入口です。</p>
           <small>更新元: {source} / PR由来: {prReviewItems.length}件 / CI由来: {ciReviewItems.length}件</small>
+        </div>
+      </div>
+
+      <div className="reviewTodayFocusBox">
+        <div><strong>{todayFocus.title}</strong><span>{todayFocus.focusItems.length}</span></div>
+        <p>{todayFocus.message}</p>
+        <small>{todayFocus.hiddenCount}件は今は圧縮しています。</small>
+        <div className="reviewTodayFocusItems">
+          {todayFocus.focusItems.length === 0 && <span>今日は確認なし</span>}
+          {todayFocus.focusItems.slice(0, 4).map((item) => (
+            <a href={item.url} target="_blank" rel="noreferrer" key={item.id}>
+              <strong>{item.label}</strong>
+              <small>{statusLabel[item.status]} / {item.risk ? riskLabel[item.risk] : '未判定'}</small>
+            </a>
+          ))}
         </div>
       </div>
 
