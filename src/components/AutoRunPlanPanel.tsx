@@ -6,6 +6,7 @@ import { buildAutoRunPhaseQueue, summarizeAutoRunQueue } from '../utils/autoRunP
 import { clearAutoRunPlan, loadAutoRunPlan, saveAutoRunPlan } from '../utils/autoRunPlanStore';
 import { buildCompletionReport, formatCompletionReport } from '../utils/completionReport';
 import { classifyRiskList, summarizeRisk } from '../utils/riskClassifier';
+import { buildSavedAutoRunPlanQueue } from '../utils/savedAutoRunPlanQueue';
 
 const defaultAutoScope = ['UI実装', 'モックデータ', 'CSS調整', 'README更新', 'CI確認', 'Snapshot確認'];
 const defaultStopConditions = ['secret / token / key が必要', '認証・課金・本番DB変更', 'Build不能', 'App Store / 本番公開判断'];
@@ -40,6 +41,7 @@ export function AutoRunPlanPanel() {
   const queueSummary = useMemo(() => summarizeAutoRunQueue(phaseQueue), [phaseQueue]);
   const completionReport = useMemo(() => buildCompletionReport(phaseQueue, classifications), [phaseQueue, classifications]);
   const formattedCompletionReport = useMemo(() => formatCompletionReport(completionReport), [completionReport]);
+  const savedQueue = useMemo(() => buildSavedAutoRunPlanQueue({ appName, seed, completionDefinition, autoScope, savedAt }), [appName, seed, completionDefinition, autoScope, savedAt]);
 
   function handleSavePlan() {
     const next = saveAutoRunPlan({ appName, seed, completionDefinition, autoScope });
@@ -74,7 +76,7 @@ export function AutoRunPlanPanel() {
       <div className="autoRunHero">
         <Rocket />
         <div>
-          <p className="eyebrow">Phase 8.7</p>
+          <p className="eyebrow">Phase 8.8</p>
           <h3>一括オート進行モード設計</h3>
           <p>「作りたい」を受け取ったあと、完成間近まで自動で進み、必要な手動項目は最後にまとめるための地図です。</p>
         </div>
@@ -111,6 +113,25 @@ export function AutoRunPlanPanel() {
           自動で進めたい範囲（一行ずつ）
           <textarea rows={5} value={autoScope} onChange={(event) => setAutoScope(event.target.value)} />
         </label>
+      </div>
+
+      <div className="savedPlanQueueBox">
+        <div>
+          <strong>{savedQueue.title}</strong>
+          <span>{savedQueue.savedAt}</span>
+        </div>
+        <p>{savedQueue.message}</p>
+        <div className="savedPlanQueueList">
+          {savedQueue.items.length > 0 ? savedQueue.items.map((item) => (
+            <article className={`savedPlanQueueItem queue-${item.status}`} key={item.id}>
+              <span>{item.order}</span>
+              <div>
+                <strong>{item.title}</strong>
+                <small>{item.riskLabel} / {item.status}</small>
+              </div>
+            </article>
+          )) : <p>保存済みPlanを作ると、ここに固定Queueが並びます。</p>}
+        </div>
       </div>
 
       <div className="autoRunGenerated">
