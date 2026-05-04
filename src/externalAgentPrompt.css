@@ -1,0 +1,140 @@
+.externalAgentPromptBox {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.24);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.externalAgentPromptBox > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.externalAgentPromptBox strong,
+.externalAgentPromptBox h4,
+.externalAgentPromptBox > div:first-child strong {
+  color: #35513d;
+}
+
+.externalAgentPromptBox strong {
+  font-size: 1.1rem;
+}
+
+.externalAgentPromptBox p,
+.externalAgentPromptCopyRow span {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.externalAgentPromptBox > div:first-child span,
+.externalAgentPromptBox section span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.externalAgentPromptCopyRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.externalAgentPromptCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.externalAgentPromptCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.externalAgentPromptCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.externalAgentPromptBox section {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.externalAgentPromptBox h4 {
+  margin: 0;
+}
+
+.externalAgentPromptBox section > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.agent-batch-gate {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.agent-batch-gate > div:first-child strong,
+.agent-batch-gate > div:first-child span,
+.agent-batch-gate section span {
+  color: #76531d;
+}
+
+.agent-batch-gate > div:first-child span,
+.agent-batch-gate section span {
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.agent-blocked-review {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.agent-blocked-review > div:first-child strong,
+.agent-blocked-review > div:first-child span,
+.agent-blocked-review section span {
+  color: #7e3436;
+}
+
+.agent-blocked-review > div:first-child span,
+.agent-blocked-review section span {
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.agent-not-ready {
+  border-color: rgba(108, 111, 100, 0.24);
+  background: rgba(108, 111, 100, 0.07);
+}
+
+@media (max-width: 760px) {
+  .externalAgentPromptBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .externalAgentPromptCopyRow,
+  .externalAgentPromptCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+}
