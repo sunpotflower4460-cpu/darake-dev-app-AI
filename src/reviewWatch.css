@@ -36,7 +36,9 @@
 .reviewFreshnessBox small,
 .reviewLane p,
 .reviewLaneItems small,
-.reviewAlertBox p {
+.reviewAlertBox p,
+.reviewPrBridgeNotice p,
+.reviewPrBridgeNotice small {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -96,13 +98,24 @@
   text-decoration: none;
 }
 
-.reviewFreshnessBox {
+.reviewFreshnessBox,
+.reviewPrBridgeNotice {
   display: grid;
   gap: 8px;
   padding: 16px;
   border: 1px solid var(--line);
   border-radius: 22px;
   background: rgba(255, 250, 240, 0.82);
+}
+
+.reviewPrBridgeNotice {
+  border-color: rgba(76, 124, 85, 0.24);
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.reviewPrBridgeNotice strong {
+  color: #35513d;
+  font-size: 1.08rem;
 }
 
 .reviewFreshnessBox > div {
