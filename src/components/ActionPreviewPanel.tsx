@@ -4,6 +4,7 @@ import { actionPreviewItems } from '../data/actionPreview';
 import { checkIssueDraft } from '../utils/checkIssueDraft';
 import { loadDraft, subscribeDraftChanges } from '../utils/draftStore';
 import { buildIssueActionPreview } from '../utils/issueActionPreview';
+import { buildIssueFinalConfirm } from '../utils/issueFinalConfirm';
 
 const modeLabel = {
   'preview-only': '表示のみ',
@@ -15,6 +16,7 @@ export function ActionPreviewPanel() {
   const [draft, setDraft] = useState(() => loadDraft());
   const issueChecks = useMemo(() => checkIssueDraft(draft), [draft]);
   const issuePreview = useMemo(() => buildIssueActionPreview(draft, issueChecks), [draft, issueChecks]);
+  const finalConfirm = useMemo(() => buildIssueFinalConfirm(draft, issueChecks), [draft, issueChecks]);
 
   useEffect(() => {
     return subscribeDraftChanges(() => setDraft(loadDraft()));
@@ -25,7 +27,7 @@ export function ActionPreviewPanel() {
       <div className="actionPreviewHero">
         <Eye />
         <div>
-          <p className="eyebrow">Phase 7.2</p>
+          <p className="eyebrow">Phase 7.3</p>
           <h3>実行前プレビュー</h3>
           <p>Issue作成、PR作成、マージなどの書き込み操作は、実行前に内容と安全条件を1枚で確認します。</p>
         </div>
@@ -40,6 +42,22 @@ export function ActionPreviewPanel() {
         <ul>
           {issuePreview.previewLines.map((line) => <li key={line}>{line}</li>)}
         </ul>
+      </div>
+
+      <div className={`issueFinalConfirm final-${finalConfirm.status}`}>
+        <div>
+          <strong>{finalConfirm.title}</strong>
+          <span>{finalConfirm.gateLabel}</span>
+        </div>
+        <p>{finalConfirm.message}</p>
+        <section>
+          <h4>投稿するならこの内容</h4>
+          <ul>{finalConfirm.finalLines.map((line) => <li key={line}>{line}</li>)}</ul>
+        </section>
+        <section>
+          <h4>まだ止める理由</h4>
+          <ul>{finalConfirm.stopReasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>
+        </section>
       </div>
 
       <div className="actionPreviewGrid">
