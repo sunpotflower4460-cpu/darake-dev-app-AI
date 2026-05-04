@@ -35,13 +35,16 @@
 .issueActionPreview p,
 .issueActionPreview li,
 .issueFinalConfirm p,
-.issueFinalConfirm li {
+.issueFinalConfirm li,
+.issueManualGuide p,
+.issueManualGuide small {
   color: var(--muted);
   line-height: 1.65;
 }
 
 .issueActionPreview,
-.issueFinalConfirm {
+.issueFinalConfirm,
+.issueManualGuide {
   display: grid;
   gap: 10px;
   padding: 16px;
@@ -50,8 +53,14 @@
   background: rgba(76, 124, 85, 0.08);
 }
 
+.issueManualGuide {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
 .issueActionPreview > div,
-.issueFinalConfirm > div {
+.issueFinalConfirm > div,
+.issueManualGuide > div:first-child {
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -59,9 +68,14 @@
 }
 
 .issueActionPreview strong,
-.issueFinalConfirm strong {
+.issueFinalConfirm strong,
+.issueManualGuide strong {
   color: #35513d;
   font-size: 1.08rem;
+}
+
+.issueManualGuide strong {
+  color: #76531d;
 }
 
 .issueActionPreview span,
@@ -72,6 +86,19 @@
   background: rgba(76, 124, 85, 0.12);
   font-size: 0.76rem;
   font-weight: 900;
+}
+
+.issueManualGuide a {
+  flex: 0 0 auto;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 9px 13px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  text-decoration: none;
 }
 
 .issueActionPreview ul,
@@ -91,6 +118,20 @@
 .issueFinalConfirm h4 {
   margin: 0;
   color: #35513d;
+}
+
+.issueManualGuide > div:last-child {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.issueManualGuide article {
+  display: grid;
+  gap: 4px;
+  padding: 11px;
+  border-radius: 16px;
+  background: rgba(255, 250, 240, 0.72);
 }
 
 .issue-needs-care,
@@ -172,15 +213,23 @@
   background: rgba(180, 91, 93, 0.12);
 }
 
+@media (max-width: 960px) {
+  .issueManualGuide > div:last-child {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 760px) {
   .actionPreviewHero,
-  .actionPreviewGrid {
+  .actionPreviewGrid,
+  .issueManualGuide > div:last-child {
     grid-template-columns: 1fr;
   }
 
   .actionPreviewCard > div,
   .issueActionPreview > div,
-  .issueFinalConfirm > div {
+  .issueFinalConfirm > div,
+  .issueManualGuide > div:first-child {
     align-items: flex-start;
     flex-direction: column;
   }
