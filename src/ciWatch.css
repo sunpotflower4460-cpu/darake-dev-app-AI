@@ -1,0 +1,151 @@
+.ciWatchPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.ciWatchHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.88));
+}
+
+.ciWatchHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.ciWatchHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.ciWatchHero p:not(.eyebrow),
+.ciWatchGuide p,
+.ciWatchEmpty p,
+.ciWatchCard p,
+.ciWatchMeta span {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.ciWatchHero small {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-weight: 900;
+}
+
+.ciWatchGuide,
+.ciWatchEmpty {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid rgba(185, 130, 46, 0.22);
+  border-radius: 22px;
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.ciWatchGuide a,
+.ciWatchLink {
+  flex: 0 0 auto;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 9px 13px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.ciWatchGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ciWatchCard {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgba(255, 250, 240, 0.82);
+}
+
+.ciWatchCardHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.ciWatchCardHead span,
+.ciRiskBadge {
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.ciWatchMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ciWatchMeta span {
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: rgba(108, 111, 100, 0.1);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.ci-blocked {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.ci-manual {
+  border-color: rgba(108, 111, 100, 0.22);
+}
+
+.ci-checking {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.ci-ok {
+  border-color: rgba(76, 124, 85, 0.24);
+}
+
+@media (max-width: 760px) {
+  .ciWatchHero,
+  .ciWatchGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .ciWatchGuide,
+  .ciWatchEmpty,
+  .ciWatchCardHead {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
