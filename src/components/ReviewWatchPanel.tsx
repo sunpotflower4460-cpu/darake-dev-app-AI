@@ -8,6 +8,7 @@ import { loadReviewWatchState, type ReviewFreshness } from '../services/reviewWa
 import { buildReviewAlert } from '../utils/reviewAlert';
 import { buildReviewLaneGroups } from '../utils/reviewLanes';
 import { buildReviewUnifiedSummary } from '../utils/reviewOriginSummary';
+import { buildReviewUpdateGuidance } from '../utils/reviewUpdateGuidance';
 import { convertCiToReviewWatchItem } from '../utils/ciReviewBridge';
 import { convertPrToReviewWatchItem } from '../utils/prReviewBridge';
 
@@ -15,16 +16,19 @@ const statusLabel = { ok: 'OK', checking: '確認', manual: '手動', blocked: '
 const riskLabel = { low: '低リスク', medium: '中リスク', high: '高リスク', unknown: '未判定' };
 const updateLinks = [
   {
+    target: 'review',
     label: 'Review Watch更新',
     detail: '固定の確認項目を更新します。',
     url: 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/update-review-watch.yml',
   },
   {
+    target: 'pr',
     label: 'PR Watch更新',
     detail: 'open PR一覧を更新します。',
     url: 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/update-pr-watch.yml',
   },
   {
+    target: 'ci',
     label: 'CI Watch更新',
     detail: 'workflow run状態を更新します。',
     url: 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/update-ci-watch.yml',
@@ -44,6 +48,10 @@ export function ReviewWatchPanel() {
   const laneGroups = useMemo(() => buildReviewLaneGroups(mergedItems), [mergedItems]);
   const alert = useMemo(() => buildReviewAlert(mergedItems), [mergedItems]);
   const unifiedSummary = useMemo(() => buildReviewUnifiedSummary(mergedItems), [mergedItems]);
+  const updateGuidance = useMemo(
+    () => buildReviewUpdateGuidance({ reviewFreshness: freshness, prFreshness: prState?.freshness, ciFreshness: ciState?.freshness }),
+    [freshness, prState?.freshness, ciState?.freshness],
+  );
 
   useEffect(() => {
     let active = true;
@@ -143,9 +151,16 @@ export function ReviewWatchPanel() {
 
       <div className="reviewUpdateBox">
         <div className="reviewUpdateHead"><strong>状態を更新する時</strong></div>
+        <div className="reviewUpdateGuidance">
+          <strong>{updateGuidance.title}</strong>
+          <p>{updateGuidance.message}</p>
+          <div>
+            {updateGuidance.items.map((item) => <span className={item.shouldUpdate ? 'needsUpdate' : 'canRest'} key={item.target}>{item.label}: {item.shouldUpdate ? '更新' : '休み'}</span>)}
+          </div>
+        </div>
         <div className="reviewUpdateLinks">
           {updateLinks.map((link) => (
-            <a href={link.url} target="_blank" rel="noreferrer" key={link.label}>
+            <a className={updateGuidance.items.find((item) => item.target === link.target)?.shouldUpdate ? 'needsUpdateLink' : ''} href={link.url} target="_blank" rel="noreferrer" key={link.label}>
               <ExternalLink size={16} />
               <span><strong>{link.label}</strong><small>{link.detail}</small></span>
             </a>

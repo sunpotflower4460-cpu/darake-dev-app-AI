@@ -32,6 +32,7 @@
 .reviewWatchHero p:not(.eyebrow),
 .reviewWatchCard p,
 .reviewUpdateSteps p,
+.reviewUpdateGuidance p,
 .reviewUpdateLinks small,
 .reviewFreshnessBox p,
 .reviewFreshnessBox small,
@@ -365,6 +366,39 @@
 
 .reviewUpdateHead strong {
   color: #76531d;
+}
+
+.reviewUpdateGuidance {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.reviewUpdateGuidance > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.reviewUpdateGuidance span {
+  padding: 6px 9px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.reviewUpdateGuidance .needsUpdate,
+.reviewUpdateLinks a.needsUpdateLink {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.15);
+  border: 1px solid rgba(185, 130, 46, 0.24);
+}
+
+.reviewUpdateGuidance .canRest {
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
 }
 
 .reviewUpdateLinks {
