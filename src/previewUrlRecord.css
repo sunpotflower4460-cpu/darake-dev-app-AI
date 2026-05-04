@@ -1,0 +1,191 @@
+.previewUrlRecordPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.previewUrlHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.previewUrlHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.previewUrlHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.previewUrlHero p:not(.eyebrow),
+.previewUrlSafetyBox p,
+.previewUrlActions span,
+.previewTargetGrid p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.previewUrlSafetyBox,
+.previewUrlForm,
+.previewUrlActions,
+.previewUrlSummaryBox,
+.previewTargetGrid section {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.previewUrlSafetyBox strong,
+.previewUrlSummaryBox strong,
+.previewTargetGrid h4,
+.previewTargetGrid strong {
+  color: #35513d;
+}
+
+.previewUrlForm {
+  display: grid;
+  gap: 12px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.previewUrlForm label {
+  display: grid;
+  gap: 8px;
+  color: #475241;
+  font-weight: 900;
+}
+
+.previewUrlForm input {
+  width: 100%;
+  border: 1px solid rgba(68, 59, 39, 0.18);
+  border-radius: 16px;
+  padding: 12px 13px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.72);
+  outline: none;
+}
+
+.previewUrlActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.previewUrlActions button,
+.previewCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.previewUrlActions .secondaryPreviewButton {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.previewCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.previewCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.previewUrlSummaryBox {
+  display: grid;
+  gap: 12px;
+}
+
+.previewUrlSummaryBox > div:first-child,
+.previewUrlSummaryBox > div:nth-child(2) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.previewUrlSummaryBox span,
+.previewTargetGrid span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.previewTargetGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.previewTargetGrid section {
+  display: grid;
+  gap: 12px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.previewTargetGrid h4 {
+  margin: 0;
+}
+
+.previewTargetGrid section > div {
+  display: grid;
+  gap: 10px;
+}
+
+.previewTargetGrid article {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.previewTargetGrid article p {
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .previewUrlHero,
+  .previewTargetGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .previewUrlActions,
+  .previewUrlActions button,
+  .previewCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .previewUrlSummaryBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
