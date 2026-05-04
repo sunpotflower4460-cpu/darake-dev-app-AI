@@ -1,0 +1,208 @@
+.screenshotWorkflowDispatchPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.screenshotWorkflowHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.screenshotWorkflowHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.screenshotWorkflowHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.screenshotWorkflowHero p:not(.eyebrow),
+.screenshotWorkflowSafetyBox p,
+.screenshotWorkflowControls span,
+.screenshotWorkflowSummaryGrid p,
+.screenshotWorkflowNotesBox li {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.dispatch-ready-to-copy {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.dispatch-needs-review {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.dispatch-not-ready {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.screenshotWorkflowSafetyBox,
+.screenshotWorkflowControls,
+.screenshotWorkflowSummaryGrid section,
+.screenshotWorkflowCodeGrid section,
+.screenshotWorkflowNotesBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.screenshotWorkflowSafetyBox strong,
+.screenshotWorkflowNotesBox strong,
+.screenshotWorkflowSummaryGrid h4,
+.screenshotWorkflowCodeGrid strong {
+  color: #35513d;
+}
+
+.screenshotWorkflowControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotWorkflowControls button,
+.screenshotWorkflowCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.screenshotWorkflowCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.screenshotWorkflowCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.screenshotWorkflowControls span,
+.screenshotWorkflowCodeGrid section > div span,
+.screenshotWorkflowNotesBox > div:first-child span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.screenshotWorkflowSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.screenshotWorkflowSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotWorkflowSummaryGrid h4,
+.screenshotWorkflowSummaryGrid p {
+  margin: 0;
+}
+
+.screenshotWorkflowSummaryGrid p {
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.screenshotWorkflowCodeGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.screenshotWorkflowCodeGrid section,
+.screenshotWorkflowNotesBox {
+  display: grid;
+  gap: 12px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotWorkflowCodeGrid section > div,
+.screenshotWorkflowNotesBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.screenshotWorkflowCodeGrid pre {
+  max-height: 460px;
+  overflow: auto;
+  margin: 0;
+  padding: 14px;
+  border-radius: 16px;
+  color: #2f332d;
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.screenshotWorkflowNotesBox ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.screenshotWorkflowNotesBox li + li {
+  margin-top: 8px;
+}
+
+@media (max-width: 980px) {
+  .screenshotWorkflowSummaryGrid,
+  .screenshotWorkflowCodeGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .screenshotWorkflowHero,
+  .screenshotWorkflowSummaryGrid,
+  .screenshotWorkflowCodeGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .screenshotWorkflowControls,
+  .screenshotWorkflowControls button,
+  .screenshotWorkflowCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .screenshotWorkflowCodeGrid section > div,
+  .screenshotWorkflowNotesBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
