@@ -38,7 +38,9 @@
 .reviewLaneItems small,
 .reviewAlertBox p,
 .reviewPrBridgeNotice p,
-.reviewPrBridgeNotice small {
+.reviewPrBridgeNotice small,
+.reviewCiBridgeNotice p,
+.reviewCiBridgeNotice small {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -99,7 +101,8 @@
 }
 
 .reviewFreshnessBox,
-.reviewPrBridgeNotice {
+.reviewPrBridgeNotice,
+.reviewCiBridgeNotice {
   display: grid;
   gap: 8px;
   padding: 16px;
@@ -113,9 +116,19 @@
   background: rgba(76, 124, 85, 0.08);
 }
 
-.reviewPrBridgeNotice strong {
+.reviewCiBridgeNotice {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.reviewPrBridgeNotice strong,
+.reviewCiBridgeNotice strong {
   color: #35513d;
   font-size: 1.08rem;
+}
+
+.reviewCiBridgeNotice strong {
+  color: #76531d;
 }
 
 .reviewFreshnessBox > div {
