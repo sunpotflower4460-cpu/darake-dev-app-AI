@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Rocket } from 'lucide-react';
 import { autoRunPlanSections } from '../data/autoRunPlan';
+import { buildAutoRunPhaseQueue, summarizeAutoRunQueue } from '../utils/autoRunPhaseQueue';
 import { classifyRiskList, summarizeRisk } from '../utils/riskClassifier';
 
 const defaultAutoScope = ['UI実装', 'モックデータ', 'CSS調整', 'README更新', 'CI確認', 'Snapshot確認'];
@@ -28,13 +29,15 @@ export function AutoRunPlanPanel() {
   }, [appName, seed, completionDefinition, autoScope]);
   const classifications = useMemo(() => classifyRiskList(generatedPlan.autoItems), [generatedPlan.autoItems]);
   const riskSummary = useMemo(() => summarizeRisk(classifications), [classifications]);
+  const phaseQueue = useMemo(() => buildAutoRunPhaseQueue(classifications), [classifications]);
+  const queueSummary = useMemo(() => summarizeAutoRunQueue(phaseQueue), [phaseQueue]);
 
   return (
     <div className="autoRunPlanPanel">
       <div className="autoRunHero">
         <Rocket />
         <div>
-          <p className="eyebrow">Phase 8.2</p>
+          <p className="eyebrow">Phase 8.3</p>
           <h3>一括オート進行モード設計</h3>
           <p>「作りたい」を受け取ったあと、完成間近まで自動で進み、必要な手動項目は最後にまとめるための地図です。</p>
         </div>
@@ -102,6 +105,26 @@ export function AutoRunPlanPanel() {
                 <span>{classification.label}</span>
               </div>
               <p>{classification.reason}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div className="autoPhaseQueueBox">
+        <div>
+          <strong>Phase Queue</strong>
+          <span>pending {queueSummary.pending} / review {queueSummary.needsReview} / blocked {queueSummary.blocked}</span>
+        </div>
+        <p>分類済みの作業候補を、実行前のQueueとして順番に並べます。まだ自動実行はしません。</p>
+        <div className="autoPhaseQueueList">
+          {phaseQueue.map((item) => (
+            <article className={`autoPhaseQueueItem queue-${item.status}`} key={item.id}>
+              <span>{item.order}</span>
+              <div>
+                <strong>{item.title}</strong>
+                <small>{item.riskLabel} / {item.status}</small>
+                <p>{item.note}</p>
+              </div>
             </article>
           ))}
         </div>

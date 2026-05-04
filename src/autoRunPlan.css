@@ -35,7 +35,10 @@
 .autoRunForm p,
 .autoRunGenerated p,
 .riskClassifierBox p,
-.riskClassifierCard p {
+.riskClassifierCard p,
+.autoPhaseQueueBox p,
+.autoPhaseQueueItem p,
+.autoPhaseQueueItem small {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -43,7 +46,8 @@
 .autoRunPrinciple,
 .autoRunForm,
 .autoRunGenerated,
-.riskClassifierBox {
+.riskClassifierBox,
+.autoPhaseQueueBox {
   display: grid;
   gap: 12px;
   padding: 16px;
@@ -55,7 +59,8 @@
 .autoRunPrinciple strong,
 .autoRunForm strong,
 .autoRunGenerated strong,
-.riskClassifierBox strong {
+.riskClassifierBox strong,
+.autoPhaseQueueBox strong {
   color: #76531d;
   font-size: 1.1rem;
 }
@@ -83,13 +88,15 @@
 }
 
 .autoRunGenerated,
-.riskClassifierBox {
+.riskClassifierBox,
+.autoPhaseQueueBox {
   border-color: rgba(76, 124, 85, 0.24);
   background: rgba(76, 124, 85, 0.08);
 }
 
 .autoRunGenerated > div:first-child,
-.riskClassifierBox > div:first-child {
+.riskClassifierBox > div:first-child,
+.autoPhaseQueueBox > div:first-child {
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -98,12 +105,14 @@
 
 .autoRunGenerated > div:first-child strong,
 .autoRunGenerated h4,
-.riskClassifierBox > div:first-child strong {
+.riskClassifierBox > div:first-child strong,
+.autoPhaseQueueBox > div:first-child strong {
   color: #35513d;
 }
 
 .autoRunGenerated > div:first-child span,
-.riskClassifierBox > div:first-child span {
+.riskClassifierBox > div:first-child span,
+.autoPhaseQueueBox > div:first-child span {
   padding: 6px 10px;
   border-radius: 999px;
   color: #35513d;
@@ -208,6 +217,78 @@
   background: rgba(180, 91, 93, 0.12);
 }
 
+.autoPhaseQueueList {
+  display: grid;
+  gap: 10px;
+}
+
+.autoPhaseQueueItem {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.autoPhaseQueueItem > span {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  color: #fffaf0;
+  background: #4c7c55;
+  font-weight: 900;
+}
+
+.autoPhaseQueueItem > div {
+  display: grid;
+  gap: 4px;
+}
+
+.autoPhaseQueueItem strong {
+  color: #35513d;
+  font-size: 0.98rem;
+}
+
+.autoPhaseQueueItem small {
+  font-weight: 900;
+}
+
+.autoPhaseQueueItem p {
+  margin: 0;
+}
+
+.queue-pending {
+  border-color: rgba(76, 124, 85, 0.24);
+}
+
+.queue-needs-review {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.queue-needs-review > span {
+  background: #b9822e;
+}
+
+.queue-blocked {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.queue-blocked > span {
+  background: #b45b5d;
+}
+
+.queue-running > span {
+  background: #6c6f64;
+}
+
+.queue-done > span {
+  background: #4c7c55;
+}
+
 .autoRunGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -272,7 +353,8 @@
 
   .autoRunGenerated > div:first-child,
   .riskClassifierBox > div:first-child,
-  .riskClassifierCard > div {
+  .riskClassifierCard > div,
+  .autoPhaseQueueBox > div:first-child {
     align-items: flex-start;
     flex-direction: column;
   }
