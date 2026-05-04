@@ -43,7 +43,9 @@
 .autoContinueRuleCard p,
 .completionReportBox p,
 .completionCopyRow span,
-.autoRunSaveRow span {
+.autoRunSaveRow span,
+.savedPlanQueueBox p,
+.savedPlanQueueItem small {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -54,7 +56,8 @@
 .riskClassifierBox,
 .autoPhaseQueueBox,
 .autoContinueRuleBox,
-.completionReportBox {
+.completionReportBox,
+.savedPlanQueueBox {
   display: grid;
   gap: 12px;
   padding: 16px;
@@ -69,7 +72,8 @@
 .riskClassifierBox strong,
 .autoPhaseQueueBox strong,
 .autoContinueRuleBox strong,
-.completionReportBox strong {
+.completionReportBox strong,
+.savedPlanQueueBox strong {
   color: #76531d;
   font-size: 1.1rem;
 }
@@ -133,7 +137,8 @@
 .riskClassifierBox,
 .autoPhaseQueueBox,
 .autoContinueRuleBox,
-.completionReportBox {
+.completionReportBox,
+.savedPlanQueueBox {
   border-color: rgba(76, 124, 85, 0.24);
   background: rgba(76, 124, 85, 0.08);
 }
@@ -142,7 +147,8 @@
 .riskClassifierBox > div:first-child,
 .autoPhaseQueueBox > div:first-child,
 .autoContinueRuleBox > div:first-child,
-.completionReportBox > div:first-child {
+.completionReportBox > div:first-child,
+.savedPlanQueueBox > div:first-child {
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -155,7 +161,8 @@
 .autoPhaseQueueBox > div:first-child strong,
 .autoContinueRuleBox > div:first-child strong,
 .completionReportBox > div:first-child strong,
-.completionReportBox h4 {
+.completionReportBox h4,
+.savedPlanQueueBox > div:first-child strong {
   color: #35513d;
 }
 
@@ -163,7 +170,8 @@
 .riskClassifierBox > div:first-child span,
 .autoPhaseQueueBox > div:first-child span,
 .autoContinueRuleBox > div:first-child span,
-.completionReportBox > div:first-child span {
+.completionReportBox > div:first-child span,
+.savedPlanQueueBox > div:first-child span {
   padding: 6px 10px;
   border-radius: 999px;
   color: #35513d;
@@ -349,12 +357,14 @@
   gap: 8px;
 }
 
-.autoPhaseQueueList {
+.autoPhaseQueueList,
+.savedPlanQueueList {
   display: grid;
   gap: 10px;
 }
 
-.autoPhaseQueueItem {
+.autoPhaseQueueItem,
+.savedPlanQueueItem {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 12px;
@@ -364,7 +374,8 @@
   background: rgba(255, 250, 240, 0.72);
 }
 
-.autoPhaseQueueItem > span {
+.autoPhaseQueueItem > span,
+.savedPlanQueueItem > span {
   display: inline-grid;
   place-items: center;
   width: 34px;
@@ -375,17 +386,20 @@
   font-weight: 900;
 }
 
-.autoPhaseQueueItem > div {
+.autoPhaseQueueItem > div,
+.savedPlanQueueItem > div {
   display: grid;
   gap: 4px;
 }
 
-.autoPhaseQueueItem strong {
+.autoPhaseQueueItem strong,
+.savedPlanQueueItem strong {
   color: #35513d;
   font-size: 0.98rem;
 }
 
-.autoPhaseQueueItem small {
+.autoPhaseQueueItem small,
+.savedPlanQueueItem small {
   font-weight: 900;
 }
 
@@ -490,7 +504,8 @@
   .riskClassifierCard > div,
   .autoPhaseQueueBox > div:first-child,
   .autoContinueRuleBox > div:first-child,
-  .completionReportBox > div:first-child {
+  .completionReportBox > div:first-child,
+  .savedPlanQueueBox > div:first-child {
     align-items: flex-start;
     flex-direction: column;
   }
