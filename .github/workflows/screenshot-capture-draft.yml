@@ -1,0 +1,78 @@
+name: Screenshot Capture Draft
+
+on:
+  workflow_dispatch:
+    inputs:
+      plan_json:
+        description: Draft-only screenshot plan JSON
+        required: true
+        type: string
+      dry_run:
+        description: Keep true until manual capture is approved
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      require_manual_gate:
+        description: Refuse execution unless human gate is acknowledged
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  print-plan-only:
+    name: Print screenshot plan only
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm manual gate
+        run: |
+          if [ "${{ inputs.require_manual_gate }}" != "true" ]; then
+            echo "Manual gate is required."
+            exit 1
+          fi
+
+      - name: Keep dry-run enabled
+        run: |
+          if [ "${{ inputs.dry_run }}" != "true" ]; then
+            echo "This draft workflow refuses non-dry-run execution."
+            exit 1
+          fi
+
+      - name: Reject obvious secret-like payloads
+        env:
+          PLAN_JSON: ${{ inputs.plan_json }}
+        run: |
+          if echo "$PLAN_JSON" | grep -Eiq '(token|secret|api[_-]?key|cookie|password|private[_-]?key)'; then
+            echo "The plan_json appears to include secret-like text. Refusing to continue."
+            exit 1
+          fi
+
+      - name: Write plan JSON
+        env:
+          PLAN_JSON: ${{ inputs.plan_json }}
+        run: |
+          cat > screenshot-plan.json <<'JSON'
+          $PLAN_JSON
+          JSON
+          python -m json.tool screenshot-plan.json > screenshot-plan.pretty.json
+
+      - name: Print validated plan
+        run: |
+          echo "Draft only: no browser, no screenshot capture, no external worker."
+          cat screenshot-plan.pretty.json
+
+      - name: Upload plan artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-plan-dry-run
+          path: screenshot-plan.pretty.json
+          if-no-files-found: error
