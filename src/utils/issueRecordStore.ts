@@ -1,6 +1,10 @@
+export type IssueRecordStatus = 'drafted' | 'submitted' | 'linked-to-phase' | 'needs-followup';
+
 export type IssueRecord = {
   number: string;
   url: string;
+  phase: string;
+  status: IssueRecordStatus;
   note: string;
   savedAt?: string;
 };
@@ -10,6 +14,8 @@ const KEY = 'darake.issueRecord.v1';
 export const emptyIssueRecord: IssueRecord = {
   number: '',
   url: '',
+  phase: '',
+  status: 'drafted',
   note: '',
 };
 
