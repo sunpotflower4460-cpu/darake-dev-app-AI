@@ -3,6 +3,7 @@ import { Activity, ExternalLink, RefreshCcw } from 'lucide-react';
 import { loadCiWatchState, type CiWatchState } from '../services/ciWatchService';
 import { buildCiAlert } from '../utils/ciAlert';
 import { buildCiLaneGroups } from '../utils/ciLanes';
+import { buildCiReviewBridgeSummary } from '../utils/ciReviewBridge';
 
 const statusLabel = {
   ok: 'OK',
@@ -33,6 +34,7 @@ export function CiWatchPanel() {
   });
   const laneGroups = useMemo(() => buildCiLaneGroups(state.items), [state.items]);
   const alert = useMemo(() => buildCiAlert(state.items), [state.items]);
+  const bridgeSummary = useMemo(() => buildCiReviewBridgeSummary(state.items), [state.items]);
 
   useEffect(() => {
     let active = true;
@@ -80,6 +82,15 @@ export function CiWatchPanel() {
         </div>
         <p>{state.freshness.message}</p>
         {typeof state.freshness.minutesOld === 'number' && <small>約{state.freshness.minutesOld}分前のCI状態です。</small>}
+      </div>
+
+      <div className={`ciBridgeBox ci-bridge-${bridgeSummary.status}`}>
+        <div>
+          <strong>{bridgeSummary.title}</strong>
+          <span>{bridgeSummary.count}</span>
+        </div>
+        <p>{bridgeSummary.message}</p>
+        <small>Review Watch形式へ変換可能な項目: {bridgeSummary.convertedItems.length}</small>
       </div>
 
       <div className="ciLaneGrid">
