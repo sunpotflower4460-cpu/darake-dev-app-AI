@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { ActionPreviewPanel } from './components/ActionPreviewPanel';
+import { AutoRunPlanPanel } from './components/AutoRunPlanPanel';
 import { CiWatchPanel } from './components/CiWatchPanel';
 import { DarakeModePanel } from './components/DarakeModePanel';
 import { FinalCheckPanel } from './components/FinalCheckPanel';
@@ -26,6 +27,7 @@ import './finalCheck.css';
 import './manualGate.css';
 import './issueRecord.css';
 import './phaseQueue.css';
+import './autoRunPlan.css';
 import './reviewWatch.css';
 import './prWatch.css';
 import './ciWatch.css';
@@ -53,6 +55,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <PhaseQueuePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <AutoRunPlanPanel />
       </div>
       <div className="panel statusModePanel">
         <ReviewWatchPanel />
