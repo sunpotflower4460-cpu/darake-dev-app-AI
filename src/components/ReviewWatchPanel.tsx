@@ -13,7 +13,23 @@ import { convertPrToReviewWatchItem } from '../utils/prReviewBridge';
 
 const statusLabel = { ok: 'OK', checking: '確認', manual: '手動', blocked: '停止' };
 const riskLabel = { low: '低リスク', medium: '中リスク', high: '高リスク', unknown: '未判定' };
-const actionsUrl = 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/update-review-watch.yml';
+const updateLinks = [
+  {
+    label: 'Review Watch更新',
+    detail: '固定の確認項目を更新します。',
+    url: 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/update-review-watch.yml',
+  },
+  {
+    label: 'PR Watch更新',
+    detail: 'open PR一覧を更新します。',
+    url: 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/update-pr-watch.yml',
+  },
+  {
+    label: 'CI Watch更新',
+    detail: 'workflow run状態を更新します。',
+    url: 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/update-ci-watch.yml',
+  },
+];
 
 export function ReviewWatchPanel() {
   const [items, setItems] = useState<WatchItem[]>([]);
@@ -126,7 +142,15 @@ export function ReviewWatchPanel() {
       </div>
 
       <div className="reviewUpdateBox">
-        <div className="reviewUpdateHead"><strong>状態を更新する時</strong><a href={actionsUrl} target="_blank" rel="noreferrer"><ExternalLink size={16} /> Actionsを開く</a></div>
+        <div className="reviewUpdateHead"><strong>状態を更新する時</strong></div>
+        <div className="reviewUpdateLinks">
+          {updateLinks.map((link) => (
+            <a href={link.url} target="_blank" rel="noreferrer" key={link.label}>
+              <ExternalLink size={16} />
+              <span><strong>{link.label}</strong><small>{link.detail}</small></span>
+            </a>
+          ))}
+        </div>
         <div className="reviewUpdateSteps">
           {reviewUpdateSteps.map((step, index) => (
             <article key={step.id}><span>{index + 1}</span><div><strong>{step.title}</strong><p>{step.detail}</p></div></article>
