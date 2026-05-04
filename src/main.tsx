@@ -19,6 +19,7 @@ import { PreviewUrlRecordPanel } from './components/PreviewUrlRecordPanel';
 import { PrCreationPreviewPanel } from './components/PrCreationPreviewPanel';
 import { PrWatchPanel } from './components/PrWatchPanel';
 import { ReviewWatchPanel } from './components/ReviewWatchPanel';
+import { ScreenshotJobDraftPanel } from './components/ScreenshotJobDraftPanel';
 import { StatusPanel } from './components/StatusPanel';
 import './styles.css';
 import './phase2.css';
@@ -36,6 +37,7 @@ import './prCreationPreview.css';
 import './lowRiskPrCandidate.css';
 import './lowRiskMergeCandidate.css';
 import './previewUrlRecord.css';
+import './screenshotJobDraft.css';
 import './reviewWatch.css';
 import './prWatch.css';
 import './ciWatch.css';
@@ -78,6 +80,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <PreviewUrlRecordPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <ScreenshotJobDraftPanel />
       </div>
       <div className="panel statusModePanel">
         <ReviewWatchPanel />
