@@ -15,6 +15,7 @@ import { LowRiskPrCandidatePanel } from './components/LowRiskPrCandidatePanel';
 import { ManualGatePanel } from './components/ManualGatePanel';
 import { Phase7SafetyPanel } from './components/Phase7SafetyPanel';
 import { PhaseQueuePanel } from './components/PhaseQueuePanel';
+import { PreviewUrlRecordPanel } from './components/PreviewUrlRecordPanel';
 import { PrCreationPreviewPanel } from './components/PrCreationPreviewPanel';
 import { PrWatchPanel } from './components/PrWatchPanel';
 import { ReviewWatchPanel } from './components/ReviewWatchPanel';
@@ -34,6 +35,7 @@ import './autoRunPlan.css';
 import './prCreationPreview.css';
 import './lowRiskPrCandidate.css';
 import './lowRiskMergeCandidate.css';
+import './previewUrlRecord.css';
 import './reviewWatch.css';
 import './prWatch.css';
 import './ciWatch.css';
@@ -73,6 +75,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <LowRiskMergeCandidatePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <PreviewUrlRecordPanel />
       </div>
       <div className="panel statusModePanel">
         <ReviewWatchPanel />
