@@ -1,0 +1,39 @@
+name: Update CI Watch File
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  update:
+    name: Update public CI watch file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build CI watch file
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CI_WATCH_OUTPUT: public/ci-watch.json
+        run: npm run ci:build
+
+      - name: Commit CI watch file if changed
+        run: |
+          if git diff --quiet -- public/ci-watch.json; then
+            echo "No CI watch changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/ci-watch.json
+          git commit -m "chore: update CI watch snapshot"
+          git push

@@ -116,6 +116,13 @@ AI開発をできるだけやさしく、自動化し、安全ゲート付きで
 - CI / workflow状態をReview Watch形式に近いJSONへ変換
 - publicへの自動反映なしで、読み取り専用のCI監視土台を追加
 
+## Phase 6.9で強化したこと
+
+- CI Watch結果を手動実行時だけ `public/ci-watch.json` へ反映する導線
+- `Update CI Watch File` workflow
+- 変更がある時だけCI状態ファイルをコミット
+- 常時自動更新ではなく、必要な時だけ更新する安全寄りの流れ
+
 ## 初期版でできること
 
 - 魂・種の入力
@@ -163,7 +170,9 @@ GitHub Actions の `Update Review Watch File` を手動実行すると、`public
 
 GitHub Actions の `Update PR Watch File` を手動実行すると、`public/pr-watch.json` が更新されます。
 
-CI Watch Snapshot workflow は `snapshot/ci-watch.json` をartifactとして生成します。現時点ではpublicファイルへは反映しません。
+GitHub Actions の `Update CI Watch File` を手動実行すると、`public/ci-watch.json` が更新されます。
+
+CI Watch Snapshot workflow は `snapshot/ci-watch.json` をartifactとして生成します。
 
 これらのworkflowは常時自動実行ではありません。必要な時だけ実行する安全寄りの導線です。
 
