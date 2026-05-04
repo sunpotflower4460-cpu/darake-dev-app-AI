@@ -7,9 +7,14 @@ import { clearAutoRunPlan, loadAutoRunPlan, saveAutoRunPlan } from '../utils/aut
 import { buildCompletionReport, formatCompletionReport } from '../utils/completionReport';
 import { buildExecutionOrchestrationDraft, formatExecutionOrchestrationDraft } from '../utils/executionOrchestrationDraft';
 import { buildIssueHandoffTemplate, formatIssueHandoffTemplate } from '../utils/issueHandoffTemplate';
+import { loadPreviewUrlRecord } from '../utils/previewUrlStore';
 import { classifyRiskList, summarizeRisk } from '../utils/riskClassifier';
 import { buildSavedAutoRunPlanQueue } from '../utils/savedAutoRunPlanQueue';
 import { buildSavedQueuePreflight } from '../utils/savedQueuePreflight';
+import { buildScreenshotJobDraft } from '../utils/screenshotJobDraft';
+import { buildUiCheckCompletionReport, formatUiCheckCompletionReport } from '../utils/uiCheckCompletionReport';
+import { buildInitialUiCheckResultRecord, loadUiCheckResultRecord } from '../utils/uiCheckResultRecord';
+import { buildUiMachineCheckDraft } from '../utils/uiMachineCheckDraft';
 
 const defaultAutoScope = ['UI実装', 'モックデータ', 'CSS調整', 'README更新', 'CI確認', 'Snapshot確認'];
 const defaultStopConditions = ['secret / token / key が必要', '認証・課金・本番DB変更', 'Build不能', 'App Store / 本番公開判断'];
@@ -44,8 +49,17 @@ export function AutoRunPlanPanel() {
   const riskSummary = useMemo(() => summarizeRisk(classifications), [classifications]);
   const phaseQueue = useMemo(() => buildAutoRunPhaseQueue(classifications), [classifications]);
   const queueSummary = useMemo(() => summarizeAutoRunQueue(phaseQueue), [phaseQueue]);
-  const completionReport = useMemo(() => buildCompletionReport(phaseQueue, classifications), [phaseQueue, classifications]);
-  const formattedCompletionReport = useMemo(() => formatCompletionReport(completionReport), [completionReport]);
+  const baseCompletionReport = useMemo(() => buildCompletionReport(phaseQueue, classifications), [phaseQueue, classifications]);
+  const completionReport = useMemo(() => {
+    const previewRecord = loadPreviewUrlRecord();
+    const screenshotDraft = buildScreenshotJobDraft(previewRecord);
+    const machineDraft = buildUiMachineCheckDraft(screenshotDraft);
+    const fallbackRecord = buildInitialUiCheckResultRecord(machineDraft);
+    const uiRecord = loadUiCheckResultRecord(fallbackRecord);
+
+    return buildUiCheckCompletionReport(baseCompletionReport, uiRecord);
+  }, [baseCompletionReport]);
+  const formattedCompletionReport = useMemo(() => formatUiCheckCompletionReport(completionReport), [completionReport]);
   const savedQueue = useMemo(() => buildSavedAutoRunPlanQueue({ appName, seed, completionDefinition, autoScope, savedAt }), [appName, seed, completionDefinition, autoScope, savedAt]);
   const savedQueuePreflight = useMemo(() => buildSavedQueuePreflight(savedQueue), [savedQueue]);
   const executionDraft = useMemo(() => buildExecutionOrchestrationDraft(savedQueue, savedQueuePreflight, completionReport), [savedQueue, savedQueuePreflight, completionReport]);
@@ -310,6 +324,18 @@ export function AutoRunPlanPanel() {
           <span>完成間近</span>
         </div>
         <p>{completionReport.message}</p>
+        <div className="completionUiSummaryBox">
+          <strong>UI Check Summary</strong>
+          <div>
+            <span>status {completionReport.uiSummary.status}</span>
+            <span>total {completionReport.uiSummary.total}</span>
+            <span>unchecked {completionReport.uiSummary.unchecked}</span>
+            <span>pass {completionReport.uiSummary.pass}</span>
+            <span>warn {completionReport.uiSummary.warn}</span>
+            <span>fail {completionReport.uiSummary.fail}</span>
+            <span>done {completionReport.uiSummary.completionRate}%</span>
+          </div>
+        </div>
         <div className="completionCopyRow">
           <button type="button" className={`completionCopyButton copy-${copyState}`} onClick={handleCopyCompletionReport}>
             {copyState === 'copied' ? <Check size={16} /> : <Copy size={16} />}
@@ -317,7 +343,7 @@ export function AutoRunPlanPanel() {
             {copyState === 'failed' && 'コピーできませんでした'}
             {copyState === 'idle' && 'Completion Reportをコピー'}
           </button>
-          <span>チャット・Issue・メモへ貼れるMarkdown形式です。</span>
+          <span>チャット・Issue・メモへ貼れるMarkdown形式です。UIチェック結果も常時合流します。</span>
         </div>
         <div className="completionReportGrid">
           <section>
