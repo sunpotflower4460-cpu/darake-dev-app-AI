@@ -42,7 +42,8 @@
 .autoContinueRuleBox p,
 .autoContinueRuleCard p,
 .completionReportBox p,
-.completionCopyRow span {
+.completionCopyRow span,
+.autoRunSaveRow span {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -93,6 +94,39 @@
   background: rgba(255, 255, 255, 0.72);
   outline: none;
   resize: vertical;
+}
+
+.autoRunSaveRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.autoRunSaveRow button {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.autoRunSaveRow .secondaryAutoRunButton {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.autoRunSaveRow span {
+  font-size: 0.9rem;
+  font-weight: 800;
 }
 
 .autoRunGenerated,
@@ -462,7 +496,9 @@
   }
 
   .completionCopyRow,
-  .completionCopyButton {
+  .completionCopyButton,
+  .autoRunSaveRow,
+  .autoRunSaveRow button {
     width: 100%;
     justify-content: center;
   }

@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
-import { Check, Copy, Rocket } from 'lucide-react';
+import { Check, Copy, Rocket, RotateCcw, Save } from 'lucide-react';
 import { autoContinueRules } from '../data/autoContinueRules';
 import { autoRunPlanSections } from '../data/autoRunPlan';
 import { buildAutoRunPhaseQueue, summarizeAutoRunQueue } from '../utils/autoRunPhaseQueue';
+import { clearAutoRunPlan, loadAutoRunPlan, saveAutoRunPlan } from '../utils/autoRunPlanStore';
 import { buildCompletionReport, formatCompletionReport } from '../utils/completionReport';
 import { classifyRiskList, summarizeRisk } from '../utils/riskClassifier';
 
@@ -14,10 +15,13 @@ function splitLines(value: string): string[] {
 }
 
 export function AutoRunPlanPanel() {
-  const [appName, setAppName] = useState('');
-  const [seed, setSeed] = useState('');
-  const [completionDefinition, setCompletionDefinition] = useState('');
-  const [autoScope, setAutoScope] = useState(defaultAutoScope.join('\n'));
+  const savedPlan = useMemo(() => loadAutoRunPlan(), []);
+  const [appName, setAppName] = useState(savedPlan.appName);
+  const [seed, setSeed] = useState(savedPlan.seed);
+  const [completionDefinition, setCompletionDefinition] = useState(savedPlan.completionDefinition);
+  const [autoScope, setAutoScope] = useState(savedPlan.autoScope || defaultAutoScope.join('\n'));
+  const [savedAt, setSavedAt] = useState(savedPlan.savedAt ?? '');
+  const [saveState, setSaveState] = useState<'idle' | 'saved'>('idle');
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
 
   const generatedPlan = useMemo(() => {
@@ -37,6 +41,23 @@ export function AutoRunPlanPanel() {
   const completionReport = useMemo(() => buildCompletionReport(phaseQueue, classifications), [phaseQueue, classifications]);
   const formattedCompletionReport = useMemo(() => formatCompletionReport(completionReport), [completionReport]);
 
+  function handleSavePlan() {
+    const next = saveAutoRunPlan({ appName, seed, completionDefinition, autoScope });
+    setSavedAt(next.savedAt ?? '');
+    setSaveState('saved');
+    window.setTimeout(() => setSaveState('idle'), 1800);
+  }
+
+  function handleClearPlan() {
+    const next = clearAutoRunPlan();
+    setAppName(next.appName);
+    setSeed(next.seed);
+    setCompletionDefinition(next.completionDefinition);
+    setAutoScope(defaultAutoScope.join('\n'));
+    setSavedAt('');
+    setSaveState('idle');
+  }
+
   async function handleCopyCompletionReport() {
     try {
       await navigator.clipboard.writeText(formattedCompletionReport);
@@ -53,7 +74,7 @@ export function AutoRunPlanPanel() {
       <div className="autoRunHero">
         <Rocket />
         <div>
-          <p className="eyebrow">Phase 8.6</p>
+          <p className="eyebrow">Phase 8.7</p>
           <h3>一括オート進行モード設計</h3>
           <p>「作りたい」を受け取ったあと、完成間近まで自動で進み、必要な手動項目は最後にまとめるための地図です。</p>
         </div>
@@ -68,6 +89,11 @@ export function AutoRunPlanPanel() {
         <div>
           <strong>Auto Run Plan生成フォーム</strong>
           <p>まだ実行はしません。最初に渡す「作りたい」を、一括進行用の計画に変換するための入力欄です。</p>
+        </div>
+        <div className="autoRunSaveRow">
+          <button type="button" onClick={handleSavePlan}>{saveState === 'saved' ? <Check size={16} /> : <Save size={16} />} {saveState === 'saved' ? '保存しました' : 'Auto Run Planを保存'}</button>
+          <button type="button" className="secondaryAutoRunButton" onClick={handleClearPlan}><RotateCcw size={16} /> 空にする</button>
+          {savedAt && <span>保存時刻: {savedAt}</span>}
         </div>
         <label>
           アプリ名
