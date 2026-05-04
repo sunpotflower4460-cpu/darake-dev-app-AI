@@ -1,0 +1,257 @@
+.screenshotRunGatePanel {
+  display: grid;
+  gap: 18px;
+}
+
+.screenshotRunGateHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.screenshotRunGateHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.screenshotRunGateHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.screenshotRunGateHero p:not(.eyebrow),
+.screenshotRunGateSafetyBox p,
+.screenshotRunGateControls span,
+.screenshotRunGateSummaryGrid p,
+.screenshotRunGateCheckItem p,
+.screenshotRunGateConditionGrid span {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.run-gate-ready {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.run-gate-needs-review {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.run-gate-blocked {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.screenshotRunGateSafetyBox,
+.screenshotRunGateControls,
+.screenshotRunGateSummaryGrid section,
+.screenshotRunGateCheckBox,
+.screenshotRunGateConditionGrid section {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.screenshotRunGateSafetyBox strong,
+.screenshotRunGateCheckBox strong,
+.screenshotRunGateSummaryGrid h4,
+.screenshotRunGateCheckItem strong,
+.screenshotRunGateConditionGrid h4 {
+  color: #35513d;
+}
+
+.screenshotRunGateControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotRunGateControls button,
+.screenshotRunGateCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.screenshotRunGateCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.screenshotRunGateCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.screenshotRunGateControls span,
+.screenshotRunGateCheckBox > div:first-child span,
+.screenshotRunGateCheckItem span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.screenshotRunGateSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.screenshotRunGateSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotRunGateSummaryGrid h4,
+.screenshotRunGateSummaryGrid p {
+  margin: 0;
+}
+
+.screenshotRunGateSummaryGrid p {
+  font-weight: 900;
+}
+
+.screenshotRunGateCheckBox {
+  display: grid;
+  gap: 12px;
+}
+
+.screenshotRunGateCheckBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.screenshotRunGateCheckList {
+  display: grid;
+  gap: 10px;
+}
+
+.screenshotRunGateCheckItem {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotRunGateCheckItem > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.screenshotRunGateCheckItem p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.gate-check-warn {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.gate-check-warn span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.gate-check-block {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.gate-check-block span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.screenshotRunGateConditionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.screenshotRunGateConditionGrid section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotRunGateConditionGrid h4 {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+.screenshotRunGateConditionGrid span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.screenshotRunGateConditionGrid section:nth-child(2) {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.screenshotRunGateConditionGrid section:nth-child(2) span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+@media (max-width: 980px) {
+  .screenshotRunGateSummaryGrid,
+  .screenshotRunGateConditionGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .screenshotRunGateHero,
+  .screenshotRunGateSummaryGrid,
+  .screenshotRunGateConditionGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .screenshotRunGateControls,
+  .screenshotRunGateControls button,
+  .screenshotRunGateCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .screenshotRunGateCheckBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
