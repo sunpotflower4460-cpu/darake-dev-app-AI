@@ -1,0 +1,34 @@
+name: CI Watch Snapshot
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  snapshot:
+    name: Build CI watch snapshot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build CI watch file
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run ci:build
+
+      - name: Upload CI watch artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-watch
+          path: snapshot/ci-watch.json
