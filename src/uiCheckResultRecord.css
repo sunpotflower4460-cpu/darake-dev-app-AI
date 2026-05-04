@@ -1,0 +1,260 @@
+.uiCheckResultRecordPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.uiCheckResultHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.uiCheckResultHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.uiCheckResultHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.uiCheckResultHero p:not(.eyebrow),
+.uiCheckResultSafetyBox p,
+.uiCheckResultControls span,
+.uiCheckResultSummaryGrid p,
+.uiCheckResultEntry p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.result-passed {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.result-needs-review,
+.result-in-progress {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.result-failed,
+.result-empty {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.uiCheckResultSafetyBox,
+.uiCheckResultControls,
+.uiCheckResultSummaryGrid section,
+.uiCheckResultListBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.uiCheckResultSafetyBox strong,
+.uiCheckResultListBox strong,
+.uiCheckResultSummaryGrid h4,
+.uiCheckResultEntry strong {
+  color: #35513d;
+}
+
+.uiCheckResultControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.uiCheckResultControls button,
+.resultCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.uiCheckResultControls .secondaryResultButton {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.resultCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.resultCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.uiCheckResultControls span,
+.uiCheckResultListBox > div:first-child span,
+.uiCheckResultEntry span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.uiCheckResultSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.uiCheckResultSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.uiCheckResultSummaryGrid h4,
+.uiCheckResultSummaryGrid p {
+  margin: 0;
+}
+
+.uiCheckResultSummaryGrid p {
+  font-weight: 900;
+}
+
+.uiCheckResultListBox {
+  display: grid;
+  gap: 12px;
+}
+
+.uiCheckResultListBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.uiCheckResultEntryList {
+  display: grid;
+  gap: 10px;
+}
+
+.uiCheckResultEntry {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.uiCheckResultEntry > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.uiCheckResultEntry p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.entry-unchecked {
+  border-color: rgba(108, 111, 100, 0.2);
+}
+
+.entry-warn {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.entry-warn span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.entry-fail {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.entry-fail span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.uiCheckResultOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.uiCheckResultOptions button {
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 999px;
+  padding: 8px 10px;
+  color: #475241;
+  background: rgba(255, 250, 240, 0.72);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.uiCheckResultOptions button.active {
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.entry-warn .uiCheckResultOptions button.active {
+  background: linear-gradient(135deg, #b9822e, #b9822e);
+}
+
+.entry-fail .uiCheckResultOptions button.active {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+@media (max-width: 980px) {
+  .uiCheckResultSummaryGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .uiCheckResultHero,
+  .uiCheckResultSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .uiCheckResultControls,
+  .uiCheckResultControls button,
+  .resultCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .uiCheckResultListBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .uiCheckResultOptions button {
+    flex: 1 1 42%;
+  }
+}

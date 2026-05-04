@@ -21,6 +21,7 @@ import { PrWatchPanel } from './components/PrWatchPanel';
 import { ReviewWatchPanel } from './components/ReviewWatchPanel';
 import { ScreenshotJobDraftPanel } from './components/ScreenshotJobDraftPanel';
 import { StatusPanel } from './components/StatusPanel';
+import { UiCheckResultRecordPanel } from './components/UiCheckResultRecordPanel';
 import { UiMachineCheckDraftPanel } from './components/UiMachineCheckDraftPanel';
 import './styles.css';
 import './phase2.css';
@@ -40,6 +41,7 @@ import './lowRiskMergeCandidate.css';
 import './previewUrlRecord.css';
 import './screenshotJobDraft.css';
 import './uiMachineCheckDraft.css';
+import './uiCheckResultRecord.css';
 import './reviewWatch.css';
 import './prWatch.css';
 import './ciWatch.css';
@@ -88,6 +90,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <UiMachineCheckDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <UiCheckResultRecordPanel />
       </div>
       <div className="panel statusModePanel">
         <ReviewWatchPanel />
