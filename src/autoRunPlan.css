@@ -31,23 +31,105 @@
 
 .autoRunHero p:not(.eyebrow),
 .autoRunPrinciple p,
-.autoRunCard p {
+.autoRunCard p,
+.autoRunForm p,
+.autoRunGenerated p {
   color: var(--muted);
   line-height: 1.65;
 }
 
-.autoRunPrinciple {
+.autoRunPrinciple,
+.autoRunForm,
+.autoRunGenerated {
   display: grid;
-  gap: 8px;
+  gap: 12px;
   padding: 16px;
   border: 1px solid rgba(185, 130, 46, 0.25);
   border-radius: 22px;
   background: rgba(185, 130, 46, 0.08);
 }
 
-.autoRunPrinciple strong {
+.autoRunPrinciple strong,
+.autoRunForm strong,
+.autoRunGenerated strong {
   color: #76531d;
   font-size: 1.1rem;
+}
+
+.autoRunForm label {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+  color: #475241;
+  font-weight: 900;
+}
+
+.autoRunForm input,
+.autoRunForm textarea {
+  width: 100%;
+  border: 1px solid rgba(68, 59, 39, 0.18);
+  border-radius: 16px;
+  padding: 12px 13px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.72);
+  outline: none;
+  resize: vertical;
+}
+
+.autoRunGenerated {
+  border-color: rgba(76, 124, 85, 0.24);
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.autoRunGenerated > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.autoRunGenerated > div:first-child strong,
+.autoRunGenerated h4 {
+  color: #35513d;
+}
+
+.autoRunGenerated > div:first-child span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.autoRunGenerated section {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.autoRunGenerated h4 {
+  margin: 0;
+}
+
+.autoRunGenerated section > div,
+.autoRunGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.autoRunGenerated section span {
+  padding: 6px 9px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
 }
 
 .autoRunGrid {
@@ -109,5 +191,10 @@
   .autoRunHero,
   .autoRunGrid {
     grid-template-columns: 1fr;
+  }
+
+  .autoRunGenerated > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
