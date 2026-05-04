@@ -13,6 +13,7 @@ import { IssueRecordPanel } from './components/IssueRecordPanel';
 import { ManualGatePanel } from './components/ManualGatePanel';
 import { Phase7SafetyPanel } from './components/Phase7SafetyPanel';
 import { PhaseQueuePanel } from './components/PhaseQueuePanel';
+import { PrCreationPreviewPanel } from './components/PrCreationPreviewPanel';
 import { PrWatchPanel } from './components/PrWatchPanel';
 import { ReviewWatchPanel } from './components/ReviewWatchPanel';
 import { StatusPanel } from './components/StatusPanel';
@@ -28,6 +29,7 @@ import './manualGate.css';
 import './issueRecord.css';
 import './phaseQueue.css';
 import './autoRunPlan.css';
+import './prCreationPreview.css';
 import './reviewWatch.css';
 import './prWatch.css';
 import './ciWatch.css';
@@ -58,6 +60,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <AutoRunPlanPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <PrCreationPreviewPanel />
       </div>
       <div className="panel statusModePanel">
         <ReviewWatchPanel />
