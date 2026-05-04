@@ -199,13 +199,34 @@
 .executionDraftBox > div:first-child span,
 .executionDraftBox section span,
 .issueHandoffBox > div:first-child span,
-.issueHandoffBox section span {
+.issueHandoffBox section span,
+.completionUiSummaryBox span {
   padding: 6px 10px;
   border-radius: 999px;
   color: #35513d;
   background: rgba(76, 124, 85, 0.12);
   font-size: 0.82rem;
   font-weight: 900;
+}
+
+.completionUiSummaryBox {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 16px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.completionUiSummaryBox strong {
+  color: #35513d;
+  font-size: 0.98rem;
+}
+
+.completionUiSummaryBox div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .savedQueuePreflightBox > div:last-child,
@@ -690,6 +711,11 @@
   .savedQueuePreflightBox > div:first-child,
   .executionDraftBox > div:first-child,
   .issueHandoffBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .completionUiSummaryBox div {
     align-items: flex-start;
     flex-direction: column;
   }
