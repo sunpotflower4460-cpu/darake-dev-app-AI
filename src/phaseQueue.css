@@ -1,0 +1,111 @@
+.phaseQueuePanel {
+  display: grid;
+  gap: 18px;
+}
+
+.phaseQueueHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.88));
+}
+
+.phaseQueueHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.phaseQueueHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.phaseQueueHero p:not(.eyebrow),
+.phaseQueueCard p,
+.phaseQueueNote p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.phaseQueueCard,
+.phaseQueueNote {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.24);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.phaseQueueCard > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.phaseQueueCard strong,
+.phaseQueueNote strong {
+  color: #35513d;
+  font-size: 1.08rem;
+}
+
+.phaseQueueCard span,
+.phaseQueueMeta a {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.phaseQueueMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.queue-waiting {
+  border-color: rgba(108, 111, 100, 0.22);
+  background: rgba(108, 111, 100, 0.07);
+}
+
+.queue-ready {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.queue-linked {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.queue-needs-followup {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+@media (max-width: 760px) {
+  .phaseQueueHero {
+    grid-template-columns: 1fr;
+  }
+
+  .phaseQueueCard > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
