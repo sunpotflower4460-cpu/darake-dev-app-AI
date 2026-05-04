@@ -10,6 +10,7 @@ import { FuturePanel } from './components/FuturePanel';
 import { InfoPanel } from './components/InfoPanel';
 import { IssueDraftPanel } from './components/IssueDraftPanel';
 import { IssueRecordPanel } from './components/IssueRecordPanel';
+import { LowRiskMergeCandidatePanel } from './components/LowRiskMergeCandidatePanel';
 import { LowRiskPrCandidatePanel } from './components/LowRiskPrCandidatePanel';
 import { ManualGatePanel } from './components/ManualGatePanel';
 import { Phase7SafetyPanel } from './components/Phase7SafetyPanel';
@@ -32,6 +33,7 @@ import './phaseQueue.css';
 import './autoRunPlan.css';
 import './prCreationPreview.css';
 import './lowRiskPrCandidate.css';
+import './lowRiskMergeCandidate.css';
 import './reviewWatch.css';
 import './prWatch.css';
 import './ciWatch.css';
@@ -68,6 +70,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <LowRiskPrCandidatePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <LowRiskMergeCandidatePanel />
       </div>
       <div className="panel statusModePanel">
         <ReviewWatchPanel />
