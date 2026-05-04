@@ -1,0 +1,273 @@
+.lowRiskMergeCandidatePanel {
+  display: grid;
+  gap: 18px;
+}
+
+.mergeCandidateHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.mergeCandidateHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.mergeCandidateHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.mergeCandidateHero p:not(.eyebrow),
+.mergeCandidateNoticeBox p,
+.mergeCandidateControls span,
+.mergeCandidateStatusGrid p,
+.mergeCandidateConditionItem p,
+.mergeRequiredBox li {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.merge-candidate {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.merge-review-candidate {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.merge-blocked {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.merge-not-ready {
+  border-color: rgba(108, 111, 100, 0.24);
+  background: rgba(108, 111, 100, 0.07);
+}
+
+.mergeCandidateNoticeBox,
+.mergeCandidateControls,
+.mergeCandidateStatusGrid section,
+.mergeCandidateConditionBox,
+.mergeRequiredBox,
+.mergeCandidateReasonGrid section {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.mergeCandidateNoticeBox {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.mergeCandidateNoticeBox > svg {
+  color: #4c7c55;
+}
+
+.mergeCandidateNoticeBox strong,
+.mergeCandidateConditionBox strong,
+.mergeRequiredBox strong,
+.mergeCandidateStatusGrid h4,
+.mergeCandidateReasonGrid h4 {
+  color: #35513d;
+}
+
+.mergeCandidateControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.mergeCandidateControls button,
+.mergeCandidateCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.mergeCandidateControls button:first-child {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.mergeCandidateCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.mergeCandidateCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.mergeCandidateStatusGrid,
+.mergeCandidateReasonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.mergeCandidateStatusGrid section,
+.mergeCandidateReasonGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.mergeCandidateStatusGrid h4,
+.mergeCandidateReasonGrid h4 {
+  margin: 0;
+}
+
+.mergeCandidateStatusGrid p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-weight: 800;
+}
+
+.mergeCandidateConditionBox,
+.mergeRequiredBox {
+  display: grid;
+  gap: 12px;
+}
+
+.mergeCandidateConditionBox > div:first-child,
+.mergeRequiredBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mergeCandidateConditionBox > div:first-child span,
+.mergeRequiredBox > div:first-child span,
+.mergeCandidateConditionItem span,
+.mergeCandidateReasonGrid span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.mergeCandidateConditionList {
+  display: grid;
+  gap: 10px;
+}
+
+.mergeCandidateConditionItem {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.mergeCandidateConditionItem > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mergeCandidateConditionItem strong {
+  color: #35513d;
+}
+
+.mergeCandidateConditionItem p {
+  margin: 0;
+}
+
+.condition-warn {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.condition-warn span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.condition-block {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.condition-block span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.mergeRequiredBox ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.mergeRequiredBox li + li {
+  margin-top: 8px;
+}
+
+.mergeCandidateReasonGrid section > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mergeCandidateReasonGrid section:first-child span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.mergeCandidateReasonGrid section:nth-child(2) span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+@media (max-width: 760px) {
+  .mergeCandidateHero,
+  .mergeCandidateNoticeBox,
+  .mergeCandidateStatusGrid,
+  .mergeCandidateReasonGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .mergeCandidateControls,
+  .mergeCandidateControls button,
+  .mergeCandidateCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .mergeCandidateConditionBox > div:first-child,
+  .mergeRequiredBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
