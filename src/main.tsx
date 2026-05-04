@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { ActionPreviewPanel } from './components/ActionPreviewPanel';
 import { CiWatchPanel } from './components/CiWatchPanel';
 import { DarakeModePanel } from './components/DarakeModePanel';
 import { FinalCheckPanel } from './components/FinalCheckPanel';
@@ -27,6 +28,7 @@ import './reviewWatch.css';
 import './prWatch.css';
 import './ciWatch.css';
 import './phase7Safety.css';
+import './actionPreview.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -52,6 +54,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <Phase7SafetyPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <ActionPreviewPanel />
       </div>
       <div className="panel statusModePanel">
         <PrWatchPanel />
