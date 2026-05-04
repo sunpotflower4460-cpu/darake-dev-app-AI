@@ -6,6 +6,7 @@ import { buildAutoRunPhaseQueue, summarizeAutoRunQueue } from '../utils/autoRunP
 import { clearAutoRunPlan, loadAutoRunPlan, saveAutoRunPlan } from '../utils/autoRunPlanStore';
 import { buildCompletionReport, formatCompletionReport } from '../utils/completionReport';
 import { buildExecutionOrchestrationDraft, formatExecutionOrchestrationDraft } from '../utils/executionOrchestrationDraft';
+import { buildIssueHandoffTemplate, formatIssueHandoffTemplate } from '../utils/issueHandoffTemplate';
 import { classifyRiskList, summarizeRisk } from '../utils/riskClassifier';
 import { buildSavedAutoRunPlanQueue } from '../utils/savedAutoRunPlanQueue';
 import { buildSavedQueuePreflight } from '../utils/savedQueuePreflight';
@@ -27,6 +28,7 @@ export function AutoRunPlanPanel() {
   const [saveState, setSaveState] = useState<'idle' | 'saved'>('idle');
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
   const [draftCopyState, setDraftCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
+  const [issueCopyState, setIssueCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
 
   const generatedPlan = useMemo(() => {
     const autoItems = splitLines(autoScope);
@@ -48,6 +50,11 @@ export function AutoRunPlanPanel() {
   const savedQueuePreflight = useMemo(() => buildSavedQueuePreflight(savedQueue), [savedQueue]);
   const executionDraft = useMemo(() => buildExecutionOrchestrationDraft(savedQueue, savedQueuePreflight, completionReport), [savedQueue, savedQueuePreflight, completionReport]);
   const formattedExecutionDraft = useMemo(() => formatExecutionOrchestrationDraft(executionDraft), [executionDraft]);
+  const issueHandoffTemplate = useMemo(
+    () => buildIssueHandoffTemplate(appName, savedQueue, savedQueuePreflight, completionReport, executionDraft),
+    [appName, savedQueue, savedQueuePreflight, completionReport, executionDraft],
+  );
+  const formattedIssueHandoffTemplate = useMemo(() => formatIssueHandoffTemplate(issueHandoffTemplate), [issueHandoffTemplate]);
 
   function handleSavePlan() {
     const next = saveAutoRunPlan({ appName, seed, completionDefinition, autoScope });
@@ -88,12 +95,23 @@ export function AutoRunPlanPanel() {
     }
   }
 
+  async function handleCopyIssueHandoffTemplate() {
+    try {
+      await navigator.clipboard.writeText(formattedIssueHandoffTemplate);
+      setIssueCopyState('copied');
+      window.setTimeout(() => setIssueCopyState('idle'), 1800);
+    } catch {
+      setIssueCopyState('failed');
+      window.setTimeout(() => setIssueCopyState('idle'), 2400);
+    }
+  }
+
   return (
     <div className="autoRunPlanPanel">
       <div className="autoRunHero">
         <Rocket />
         <div>
-          <p className="eyebrow">Phase 9.0</p>
+          <p className="eyebrow">Phase 9.1</p>
           <h3>一括オート進行モード設計</h3>
           <p>「作りたい」を受け取ったあと、完成間近まで自動で進み、必要な手動項目は最後にまとめるための地図です。</p>
         </div>
@@ -102,6 +120,31 @@ export function AutoRunPlanPanel() {
       <div className="autoRunPrinciple">
         <strong>Batch Gate Mode</strong>
         <p>途中で小さく止まらず、どうしても進めない時だけ止まります。軽微な問題や手動項目は完成間近レポートへまとめます。</p>
+      </div>
+
+      <div className={`issueHandoffBox issue-${issueHandoffTemplate.safetyMode}`}>
+        <div>
+          <strong>Issue Handoff Template</strong>
+          <span>{issueHandoffTemplate.safetyMode}</span>
+        </div>
+        <p>実行パック下書きをGitHub Issueへ貼るためのテンプレートです。アプリ内からIssueは作成しません。</p>
+        <div className="issueHandoffCopyRow">
+          <button type="button" className={`issueHandoffCopyButton copy-${issueCopyState}`} onClick={handleCopyIssueHandoffTemplate}>
+            {issueCopyState === 'copied' ? <Check size={16} /> : <Copy size={16} />}
+            {issueCopyState === 'copied' && 'Issueテンプレートをコピーしました'}
+            {issueCopyState === 'failed' && 'コピーできませんでした'}
+            {issueCopyState === 'idle' && 'Issueテンプレートをコピー'}
+          </button>
+          <span>Title / Labels / Body をまとめてコピーします。</span>
+        </div>
+        <section>
+          <h4>Title</h4>
+          <p>{issueHandoffTemplate.title}</p>
+        </section>
+        <section>
+          <h4>Labels</h4>
+          <div>{issueHandoffTemplate.labels.map((label) => <span key={label}>{label}</span>)}</div>
+        </section>
       </div>
 
       <div className={`executionDraftBox draft-${executionDraft.handoffMode}`}>
