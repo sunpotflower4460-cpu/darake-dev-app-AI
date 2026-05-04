@@ -1,0 +1,223 @@
+.screenshotJobDraftPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.screenshotJobHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.screenshotJobHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.screenshotJobHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.screenshotJobHero p:not(.eyebrow),
+.screenshotJobSafetyBox p,
+.screenshotJobControls span,
+.screenshotJobSummaryGrid p,
+.screenshotTargetItem p,
+.screenshotTargetItem small,
+.screenshotSafetyNotesBox li {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.screenshot-draft-ready {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.screenshot-not-ready {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.screenshotJobSafetyBox,
+.screenshotJobControls,
+.screenshotJobSummaryGrid section,
+.screenshotTargetQueueBox,
+.screenshotSafetyNotesBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.screenshotJobSafetyBox strong,
+.screenshotTargetQueueBox strong,
+.screenshotSafetyNotesBox strong,
+.screenshotJobSummaryGrid h4,
+.screenshotTargetItem strong {
+  color: #35513d;
+}
+
+.screenshotJobControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotJobControls button,
+.screenshotJobCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.screenshotJobCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.screenshotJobCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.screenshotJobControls span,
+.screenshotTargetQueueBox > div:first-child span,
+.screenshotSafetyNotesBox > div:first-child span,
+.screenshotTargetItem span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.screenshotJobSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.screenshotJobSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotJobSummaryGrid h4,
+.screenshotJobSummaryGrid p {
+  margin: 0;
+}
+
+.screenshotJobSummaryGrid p {
+  overflow-wrap: anywhere;
+  font-weight: 900;
+}
+
+.screenshotTargetQueueBox,
+.screenshotSafetyNotesBox {
+  display: grid;
+  gap: 12px;
+}
+
+.screenshotTargetQueueBox > div:first-child,
+.screenshotSafetyNotesBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.screenshotTargetList {
+  display: grid;
+  gap: 10px;
+}
+
+.screenshotTargetItem {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotTargetItem > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.screenshotTargetItem p,
+.screenshotTargetItem small {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.target-missing-url,
+.target-invalid-size {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.target-missing-url span,
+.target-invalid-size span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.screenshotSafetyNotesBox ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.screenshotSafetyNotesBox li + li {
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .screenshotJobSummaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .screenshotJobHero,
+  .screenshotJobSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .screenshotJobControls,
+  .screenshotJobControls button,
+  .screenshotJobCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .screenshotTargetQueueBox > div:first-child,
+  .screenshotSafetyNotesBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
