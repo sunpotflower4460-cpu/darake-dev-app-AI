@@ -43,6 +43,7 @@ export function ReviewWatchPanel() {
   const [freshness, setFreshness] = useState<ReviewFreshness | null>(null);
   const [prState, setPrState] = useState<PrWatchState | null>(null);
   const [ciState, setCiState] = useState<CiWatchState | null>(null);
+  const [showDetails, setShowDetails] = useState(false);
 
   const prReviewItems = useMemo(() => prState?.items.map(convertPrToReviewWatchItem) ?? [], [prState]);
   const ciReviewItems = useMemo(() => ciState?.items.map(convertCiToReviewWatchItem) ?? [], [ciState]);
@@ -125,47 +126,61 @@ export function ReviewWatchPanel() {
         </div>
       </div>
 
-      {freshness && (
-        <div className={`reviewFreshnessBox reviewFreshness-${freshness.level}`}>
-          <div><strong>{freshness.shouldUpdate ? '更新すると安心' : '今はだらけてOK'}</strong><span>{freshness.label}</span></div>
-          <p>{freshness.message}</p>
-          {typeof freshness.minutesOld === 'number' && <small>約{freshness.minutesOld}分前の状態です。</small>}
+      <div className="reviewDetailsGate">
+        <div>
+          <strong>{showDetails ? '詳細一覧を表示中' : '詳細一覧は閉じています'}</strong>
+          <p>{showDetails ? '必要な確認が終わったら、また閉じてだらけられます。' : '今日見るところだけ見れば十分です。細かい一覧は必要な時だけ開きます。'}</p>
         </div>
-      )}
-
-      <div className="reviewPrBridgeNotice">
-        <strong>PR Watch読み取り統合</strong>
-        <p>固定項目 {items.length}件に、PR由来 {prReviewItems.length}件を読み取り専用で合流しています。</p>
-        <small>PR由来項目は public/pr-watch.json から読み込みます。</small>
+        <button type="button" onClick={() => setShowDetails((current) => !current)}>
+          {showDetails ? '詳細を閉じる' : '詳細を開く'}
+        </button>
       </div>
 
-      <div className="reviewCiBridgeNotice">
-        <strong>CI Watch読み取り統合</strong>
-        <p>固定項目 {items.length}件に、CI由来 {ciReviewItems.length}件を読み取り専用で合流しています。</p>
-        <small>CI由来項目は public/ci-watch.json から読み込みます。</small>
-      </div>
-
-      <div className="reviewPrinciples">{reviewWatchPrinciples.map((item) => <span key={item}>{item}</span>)}</div>
-
-      <div className="reviewLaneGrid">
-        {laneGroups.map((group) => (
-          <section className={`reviewLane lane-${group.lane}`} key={group.lane}>
-            <div className="reviewLaneHead"><strong>{group.title}</strong><span>{group.items.length}</span></div>
-            <p>{group.lead}</p>
-            <div className="reviewLaneItems">
-              {group.items.length === 0 && <small>今はありません。</small>}
-              {group.items.map((item) => (
-                <article key={item.id}>
-                  <strong>{item.label}</strong>
-                  <span>{statusLabel[item.status]}</span>
-                  {item.risk && <span className={`riskBadge risk-${item.risk}`}>{riskLabel[item.risk]}</span>}
-                  {item.url && <a href={item.url} target="_blank" rel="noreferrer">開く</a>}
-                </article>
-              ))}
+      {showDetails && (
+        <>
+          {freshness && (
+            <div className={`reviewFreshnessBox reviewFreshness-${freshness.level}`}>
+              <div><strong>{freshness.shouldUpdate ? '更新すると安心' : '今はだらけてOK'}</strong><span>{freshness.label}</span></div>
+              <p>{freshness.message}</p>
+              {typeof freshness.minutesOld === 'number' && <small>約{freshness.minutesOld}分前の状態です。</small>}
             </div>
-          </section>
-        ))}
-      </div>
+          )}
+
+          <div className="reviewPrBridgeNotice">
+            <strong>PR Watch読み取り統合</strong>
+            <p>固定項目 {items.length}件に、PR由来 {prReviewItems.length}件を読み取り専用で合流しています。</p>
+            <small>PR由来項目は public/pr-watch.json から読み込みます。</small>
+          </div>
+
+          <div className="reviewCiBridgeNotice">
+            <strong>CI Watch読み取り統合</strong>
+            <p>固定項目 {items.length}件に、CI由来 {ciReviewItems.length}件を読み取り専用で合流しています。</p>
+            <small>CI由来項目は public/ci-watch.json から読み込みます。</small>
+          </div>
+
+          <div className="reviewPrinciples">{reviewWatchPrinciples.map((item) => <span key={item}>{item}</span>)}</div>
+
+          <div className="reviewLaneGrid">
+            {laneGroups.map((group) => (
+              <section className={`reviewLane lane-${group.lane}`} key={group.lane}>
+                <div className="reviewLaneHead"><strong>{group.title}</strong><span>{group.items.length}</span></div>
+                <p>{group.lead}</p>
+                <div className="reviewLaneItems">
+                  {group.items.length === 0 && <small>今はありません。</small>}
+                  {group.items.map((item) => (
+                    <article key={item.id}>
+                      <strong>{item.label}</strong>
+                      <span>{statusLabel[item.status]}</span>
+                      {item.risk && <span className={`riskBadge risk-${item.risk}`}>{riskLabel[item.risk]}</span>}
+                      {item.url && <a href={item.url} target="_blank" rel="noreferrer">開く</a>}
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        </>
+      )}
 
       <div className="reviewUpdateBox">
         <div className="reviewUpdateHead"><strong>状態を更新する時</strong></div>
@@ -203,17 +218,19 @@ export function ReviewWatchPanel() {
         </div>
       </div>
 
-      <div className="reviewWatchGrid">
-        {mergedItems.map((item) => (
-          <article className={`reviewWatchCard watch-${item.status}`} key={item.id}>
-            <div>{item.status === 'ok' ? <ShieldCheck /> : <Activity />}<span>{statusLabel[item.status]}</span></div>
-            <strong>{item.label}</strong>
-            {item.risk && <span className={`riskBadge risk-${item.risk}`}>{riskLabel[item.risk]}</span>}
-            <p>{item.message}</p>
-            {item.url && <a className="reviewWatchCardLink" href={item.url} target="_blank" rel="noreferrer"><ExternalLink size={15} /> 開く</a>}
-          </article>
-        ))}
-      </div>
+      {showDetails && (
+        <div className="reviewWatchGrid">
+          {mergedItems.map((item) => (
+            <article className={`reviewWatchCard watch-${item.status}`} key={item.id}>
+              <div>{item.status === 'ok' ? <ShieldCheck /> : <Activity />}<span>{statusLabel[item.status]}</span></div>
+              <strong>{item.label}</strong>
+              {item.risk && <span className={`riskBadge risk-${item.risk}`}>{riskLabel[item.risk]}</span>}
+              <p>{item.message}</p>
+              {item.url && <a className="reviewWatchCardLink" href={item.url} target="_blank" rel="noreferrer"><ExternalLink size={15} /> 開く</a>}
+            </article>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

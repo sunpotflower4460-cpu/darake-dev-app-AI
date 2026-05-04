@@ -31,6 +31,7 @@
 
 .reviewWatchHero p:not(.eyebrow),
 .reviewWatchCard p,
+.reviewDetailsGate p,
 .reviewUpdateSteps p,
 .reviewUpdateGuidance p,
 .reviewAftercareBox p,
@@ -111,6 +112,33 @@
   background: rgba(255, 250, 240, 0.72);
   font-weight: 900;
   text-decoration: none;
+}
+
+.reviewDetailsGate {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border: 1px dashed rgba(76, 124, 85, 0.28);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.06);
+}
+
+.reviewDetailsGate strong {
+  color: #35513d;
+  font-size: 1.06rem;
+}
+
+.reviewDetailsGate button {
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
 }
 
 .reviewAlertBox {
@@ -600,6 +628,7 @@
   }
 
   .reviewUpdateHead,
+  .reviewDetailsGate,
   .reviewFreshnessBox > div,
   .reviewAlertBox > div,
   .reviewUnifiedBox > div:first-child,
