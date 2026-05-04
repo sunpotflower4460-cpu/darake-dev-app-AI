@@ -33,7 +33,11 @@
 .ciWatchGuide p,
 .ciWatchEmpty p,
 .ciWatchCard p,
-.ciWatchMeta span {
+.ciWatchMeta span,
+.ciFreshnessBox p,
+.ciFreshnessBox small,
+.ciLane p,
+.ciLaneItems small {
   color: var(--muted);
   line-height: 1.65;
 }
@@ -46,6 +50,127 @@
   color: #35513d;
   background: rgba(76, 124, 85, 0.12);
   font-weight: 900;
+}
+
+.ciFreshnessBox {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 250, 240, 0.82);
+}
+
+.ciFreshnessBox > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.ciFreshnessBox strong {
+  color: #35513d;
+  font-size: 1.08rem;
+}
+
+.ciFreshnessBox span {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.ciFreshness-fresh,
+.ciFreshness-aging {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.09);
+}
+
+.ciFreshness-stale,
+.ciFreshness-unknown {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.ciLaneGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ciLane {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(255, 250, 240, 0.82);
+}
+
+.ciLaneHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.ciLaneHead span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  color: #fffaf0;
+  background: #4c7c55;
+  font-weight: 900;
+}
+
+.ciLaneItems {
+  display: grid;
+  gap: 8px;
+}
+
+.ciLaneItems article {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.ciLaneItems article span {
+  padding: 4px 8px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.74rem;
+  font-weight: 900;
+}
+
+.ciLaneItems article a {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.lane-now {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.lane-later {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.lane-leave {
+  border-color: rgba(76, 124, 85, 0.24);
 }
 
 .ciWatchGuide,
@@ -136,16 +261,28 @@
   border-color: rgba(76, 124, 85, 0.24);
 }
 
+@media (max-width: 960px) {
+  .ciLaneGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 760px) {
   .ciWatchHero,
-  .ciWatchGrid {
+  .ciWatchGrid,
+  .ciLaneGrid {
     grid-template-columns: 1fr;
   }
 
   .ciWatchGuide,
   .ciWatchEmpty,
-  .ciWatchCardHead {
+  .ciWatchCardHead,
+  .ciFreshnessBox > div {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .ciLaneItems article {
+    grid-template-columns: 1fr;
   }
 }

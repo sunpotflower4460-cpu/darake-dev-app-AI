@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Activity, ExternalLink, RefreshCcw } from 'lucide-react';
 import { loadCiWatchState, type CiWatchState } from '../services/ciWatchService';
+import { buildCiLaneGroups } from '../utils/ciLanes';
 
 const statusLabel = {
   ok: 'OK',
@@ -19,7 +20,17 @@ const riskLabel = {
 const actionsUrl = 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/update-ci-watch.yml';
 
 export function CiWatchPanel() {
-  const [state, setState] = useState<CiWatchState>({ source: 'loading', items: [] });
+  const [state, setState] = useState<CiWatchState>({
+    source: 'loading',
+    freshness: {
+      level: 'unknown',
+      label: '読み込み中',
+      message: 'CI状態を読み込んでいます。',
+      shouldUpdate: false,
+    },
+    items: [],
+  });
+  const laneGroups = useMemo(() => buildCiLaneGroups(state.items), [state.items]);
 
   useEffect(() => {
     let active = true;
@@ -45,6 +56,37 @@ export function CiWatchPanel() {
           <p>GitHub Actionsの実行状態を読むだけで確認する入口です。再実行や変更操作はしません。</p>
           <small>更新元: {state.source} / CI件数: {state.items.length}</small>
         </div>
+      </div>
+
+      <div className={`ciFreshnessBox ciFreshness-${state.freshness.level}`}>
+        <div>
+          <strong>{state.freshness.shouldUpdate ? '更新すると安心' : '今はだらけてOK'}</strong>
+          <span>{state.freshness.label}</span>
+        </div>
+        <p>{state.freshness.message}</p>
+        {typeof state.freshness.minutesOld === 'number' && <small>約{state.freshness.minutesOld}分前のCI状態です。</small>}
+      </div>
+
+      <div className="ciLaneGrid">
+        {laneGroups.map((group) => (
+          <section className={`ciLane lane-${group.lane}`} key={group.lane}>
+            <div className="ciLaneHead">
+              <strong>{group.title}</strong>
+              <span>{group.items.length}</span>
+            </div>
+            <p>{group.lead}</p>
+            <div className="ciLaneItems">
+              {group.items.length === 0 && <small>今はありません。</small>}
+              {group.items.map((item) => (
+                <article key={item.id}>
+                  <strong>{item.label}</strong>
+                  <span>{statusLabel[item.status]}</span>
+                  {item.url && <a href={item.url} target="_blank" rel="noreferrer">開く</a>}
+                </article>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
 
       <div className="ciWatchGuide">
