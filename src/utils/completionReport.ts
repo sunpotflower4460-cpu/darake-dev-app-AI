@@ -38,3 +38,30 @@ export function buildCompletionReport(
     ],
   };
 }
+
+function formatList(items: string[]): string {
+  return items.map((item) => `- ${item}`).join('\n');
+}
+
+export function formatCompletionReport(report: CompletionReport): string {
+  return [
+    `# ${report.title}`,
+    '',
+    report.message,
+    '',
+    '## できたこと候補',
+    formatList(report.doneItems),
+    '',
+    '## 最後にまとめる注意点',
+    formatList(report.batchedNotes),
+    '',
+    '## 手動項目',
+    formatList(report.manualItems),
+    '',
+    '## 途中停止候補',
+    formatList(report.hardStopItems),
+    '',
+    '## 次のおすすめ',
+    formatList(report.nextRecommendations),
+  ].join('\n');
+}

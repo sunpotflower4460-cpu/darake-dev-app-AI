@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
-import { Rocket } from 'lucide-react';
+import { Check, Copy, Rocket } from 'lucide-react';
 import { autoContinueRules } from '../data/autoContinueRules';
 import { autoRunPlanSections } from '../data/autoRunPlan';
 import { buildAutoRunPhaseQueue, summarizeAutoRunQueue } from '../utils/autoRunPhaseQueue';
-import { buildCompletionReport } from '../utils/completionReport';
+import { buildCompletionReport, formatCompletionReport } from '../utils/completionReport';
 import { classifyRiskList, summarizeRisk } from '../utils/riskClassifier';
 
 const defaultAutoScope = ['UI実装', 'モックデータ', 'CSS調整', 'README更新', 'CI確認', 'Snapshot確認'];
@@ -18,6 +18,7 @@ export function AutoRunPlanPanel() {
   const [seed, setSeed] = useState('');
   const [completionDefinition, setCompletionDefinition] = useState('');
   const [autoScope, setAutoScope] = useState(defaultAutoScope.join('\n'));
+  const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
 
   const generatedPlan = useMemo(() => {
     const autoItems = splitLines(autoScope);
@@ -34,13 +35,25 @@ export function AutoRunPlanPanel() {
   const phaseQueue = useMemo(() => buildAutoRunPhaseQueue(classifications), [classifications]);
   const queueSummary = useMemo(() => summarizeAutoRunQueue(phaseQueue), [phaseQueue]);
   const completionReport = useMemo(() => buildCompletionReport(phaseQueue, classifications), [phaseQueue, classifications]);
+  const formattedCompletionReport = useMemo(() => formatCompletionReport(completionReport), [completionReport]);
+
+  async function handleCopyCompletionReport() {
+    try {
+      await navigator.clipboard.writeText(formattedCompletionReport);
+      setCopyState('copied');
+      window.setTimeout(() => setCopyState('idle'), 1800);
+    } catch {
+      setCopyState('failed');
+      window.setTimeout(() => setCopyState('idle'), 2400);
+    }
+  }
 
   return (
     <div className="autoRunPlanPanel">
       <div className="autoRunHero">
         <Rocket />
         <div>
-          <p className="eyebrow">Phase 8.5</p>
+          <p className="eyebrow">Phase 8.6</p>
           <h3>一括オート進行モード設計</h3>
           <p>「作りたい」を受け取ったあと、完成間近まで自動で進み、必要な手動項目は最後にまとめるための地図です。</p>
         </div>
@@ -156,6 +169,15 @@ export function AutoRunPlanPanel() {
           <span>完成間近</span>
         </div>
         <p>{completionReport.message}</p>
+        <div className="completionCopyRow">
+          <button type="button" className={`completionCopyButton copy-${copyState}`} onClick={handleCopyCompletionReport}>
+            {copyState === 'copied' ? <Check size={16} /> : <Copy size={16} />}
+            {copyState === 'copied' && 'レポートをコピーしました'}
+            {copyState === 'failed' && 'コピーできませんでした'}
+            {copyState === 'idle' && 'Completion Reportをコピー'}
+          </button>
+          <span>チャット・Issue・メモへ貼れるMarkdown形式です。</span>
+        </div>
         <div className="completionReportGrid">
           <section>
             <h4>できたこと候補</h4>
