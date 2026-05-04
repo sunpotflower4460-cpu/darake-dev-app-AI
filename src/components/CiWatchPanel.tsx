@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Activity, ExternalLink, RefreshCcw } from 'lucide-react';
 import { loadCiWatchState, type CiWatchState } from '../services/ciWatchService';
+import { buildCiAlert } from '../utils/ciAlert';
 import { buildCiLaneGroups } from '../utils/ciLanes';
 
 const statusLabel = {
@@ -31,6 +32,7 @@ export function CiWatchPanel() {
     items: [],
   });
   const laneGroups = useMemo(() => buildCiLaneGroups(state.items), [state.items]);
+  const alert = useMemo(() => buildCiAlert(state.items), [state.items]);
 
   useEffect(() => {
     let active = true;
@@ -57,6 +59,19 @@ export function CiWatchPanel() {
           <small>更新元: {state.source} / CI件数: {state.items.length}</small>
         </div>
       </div>
+
+      {alert.show && (
+        <div className="ciAlertBox">
+          <div>
+            <strong>{alert.title}</strong>
+            <span>{alert.count}</span>
+          </div>
+          <p>{alert.message}</p>
+          {alert.actionUrl && alert.actionLabel && (
+            <a href={alert.actionUrl} target="_blank" rel="noreferrer"><ExternalLink size={16} /> {alert.actionLabel}</a>
+          )}
+        </div>
+      )}
 
       <div className={`ciFreshnessBox ciFreshness-${state.freshness.level}`}>
         <div>
