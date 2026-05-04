@@ -3,6 +3,7 @@ import { Rocket } from 'lucide-react';
 import { autoContinueRules } from '../data/autoContinueRules';
 import { autoRunPlanSections } from '../data/autoRunPlan';
 import { buildAutoRunPhaseQueue, summarizeAutoRunQueue } from '../utils/autoRunPhaseQueue';
+import { buildCompletionReport } from '../utils/completionReport';
 import { classifyRiskList, summarizeRisk } from '../utils/riskClassifier';
 
 const defaultAutoScope = ['UI実装', 'モックデータ', 'CSS調整', 'README更新', 'CI確認', 'Snapshot確認'];
@@ -32,13 +33,14 @@ export function AutoRunPlanPanel() {
   const riskSummary = useMemo(() => summarizeRisk(classifications), [classifications]);
   const phaseQueue = useMemo(() => buildAutoRunPhaseQueue(classifications), [classifications]);
   const queueSummary = useMemo(() => summarizeAutoRunQueue(phaseQueue), [phaseQueue]);
+  const completionReport = useMemo(() => buildCompletionReport(phaseQueue, classifications), [phaseQueue, classifications]);
 
   return (
     <div className="autoRunPlanPanel">
       <div className="autoRunHero">
         <Rocket />
         <div>
-          <p className="eyebrow">Phase 8.4</p>
+          <p className="eyebrow">Phase 8.5</p>
           <h3>一括オート進行モード設計</h3>
           <p>「作りたい」を受け取ったあと、完成間近まで自動で進み、必要な手動項目は最後にまとめるための地図です。</p>
         </div>
@@ -146,6 +148,36 @@ export function AutoRunPlanPanel() {
             </article>
           ))}
         </div>
+      </div>
+
+      <div className="completionReportBox">
+        <div>
+          <strong>{completionReport.title}</strong>
+          <span>完成間近</span>
+        </div>
+        <p>{completionReport.message}</p>
+        <div className="completionReportGrid">
+          <section>
+            <h4>できたこと候補</h4>
+            {completionReport.doneItems.map((item) => <span key={item}>{item}</span>)}
+          </section>
+          <section>
+            <h4>最後にまとめる注意点</h4>
+            {completionReport.batchedNotes.map((item) => <span key={item}>{item}</span>)}
+          </section>
+          <section>
+            <h4>手動項目</h4>
+            {completionReport.manualItems.map((item) => <span key={item}>{item}</span>)}
+          </section>
+          <section>
+            <h4>途中停止候補</h4>
+            {completionReport.hardStopItems.map((item) => <span key={item}>{item}</span>)}
+          </section>
+        </div>
+        <section className="completionNextBox">
+          <h4>次のおすすめ</h4>
+          <div>{completionReport.nextRecommendations.map((item) => <span key={item}>{item}</span>)}</div>
+        </section>
       </div>
 
       <div className="autoRunGrid">
