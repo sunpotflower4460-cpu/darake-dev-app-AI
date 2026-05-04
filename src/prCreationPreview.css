@@ -1,0 +1,263 @@
+.prCreationPreviewPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.prPreviewHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.prPreviewHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.prPreviewHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.prPreviewHero p:not(.eyebrow),
+.prPreviewSafetyBox p,
+.prPreviewControls span,
+.prPreviewMetaGrid p,
+.prPreviewFileItem p,
+.prPreviewFileItem small {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.preview-blocked {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.preview-preview-only {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.preview-not-ready {
+  border-color: rgba(108, 111, 100, 0.24);
+  background: rgba(108, 111, 100, 0.07);
+}
+
+.prPreviewSafetyBox,
+.prPreviewControls,
+.prPreviewMetaGrid section,
+.prPreviewChecks section,
+.prPreviewFilePlan,
+.prPreviewBodyBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.prPreviewSafetyBox {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.prPreviewSafetyBox > svg {
+  color: #4c7c55;
+}
+
+.prPreviewSafetyBox strong,
+.prPreviewFilePlan strong,
+.prPreviewBodyBox strong,
+.prPreviewMetaGrid h4,
+.prPreviewChecks h4 {
+  color: #35513d;
+}
+
+.prPreviewControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.prPreviewControls button,
+.prPreviewCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.prPreviewControls button:first-child {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.prPreviewCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.prPreviewCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.prPreviewMetaGrid,
+.prPreviewChecks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.prPreviewMetaGrid section,
+.prPreviewChecks section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.prPreviewMetaGrid h4,
+.prPreviewChecks h4 {
+  margin: 0;
+}
+
+.prPreviewMetaGrid p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-weight: 800;
+}
+
+.prPreviewChecks section > div,
+.prPreviewFilePlan > div:first-child,
+.prPreviewBodyBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prPreviewChecks span,
+.prPreviewFilePlan > div:first-child span,
+.prPreviewBodyBox > div:first-child span,
+.prPreviewFileItem span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.prPreviewFilePlan,
+.prPreviewBodyBox {
+  display: grid;
+  gap: 12px;
+}
+
+.prPreviewFileList {
+  display: grid;
+  gap: 10px;
+}
+
+.prPreviewFileItem {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.prPreviewFileItem > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prPreviewFileItem strong {
+  color: #35513d;
+  overflow-wrap: anywhere;
+}
+
+.prPreviewFileItem p,
+.prPreviewFileItem small {
+  margin: 0;
+}
+
+.prPreviewFileItem small {
+  font-weight: 900;
+}
+
+.prPreviewFileItem.risk-review-needed {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.prPreviewFileItem.risk-review-needed span,
+.prPreviewFileItem.risk-review-needed small {
+  color: #76531d;
+}
+
+.prPreviewFileItem.risk-blocked {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.prPreviewFileItem.risk-blocked span,
+.prPreviewFileItem.risk-blocked small {
+  color: #7e3436;
+}
+
+.prPreviewBodyBox pre {
+  max-height: 360px;
+  overflow: auto;
+  margin: 0;
+  padding: 14px;
+  border-radius: 16px;
+  color: #35513d;
+  background: rgba(255, 250, 240, 0.78);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: 0.86rem/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@media (max-width: 760px) {
+  .prPreviewHero,
+  .prPreviewSafetyBox,
+  .prPreviewMetaGrid,
+  .prPreviewChecks {
+    grid-template-columns: 1fr;
+  }
+
+  .prPreviewControls,
+  .prPreviewControls button,
+  .prPreviewCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .prPreviewFilePlan > div:first-child,
+  .prPreviewBodyBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
