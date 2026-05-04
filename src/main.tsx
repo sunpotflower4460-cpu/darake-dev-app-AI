@@ -20,6 +20,7 @@ import { PrCreationPreviewPanel } from './components/PrCreationPreviewPanel';
 import { PrWatchPanel } from './components/PrWatchPanel';
 import { ReviewWatchPanel } from './components/ReviewWatchPanel';
 import { ScreenshotJobDraftPanel } from './components/ScreenshotJobDraftPanel';
+import { ScreenshotPlanExportPanel } from './components/ScreenshotPlanExportPanel';
 import { ScreenshotResultRecordPanel } from './components/ScreenshotResultRecordPanel';
 import { ScreenshotToUiCheckBridgePanel } from './components/ScreenshotToUiCheckBridgePanel';
 import { StatusPanel } from './components/StatusPanel';
@@ -43,6 +44,7 @@ import './lowRiskPrCandidate.css';
 import './lowRiskMergeCandidate.css';
 import './previewUrlRecord.css';
 import './screenshotJobDraft.css';
+import './screenshotPlanExport.css';
 import './screenshotResultRecord.css';
 import './screenshotToUiCheckBridge.css';
 import './uiMachineCheckDraft.css';
@@ -93,6 +95,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <ScreenshotJobDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <ScreenshotPlanExportPanel />
       </div>
       <div className="panel statusModePanel">
         <ScreenshotResultRecordPanel />
