@@ -33,6 +33,8 @@
 .reviewWatchCard p,
 .reviewUpdateSteps p,
 .reviewUpdateGuidance p,
+.reviewAftercareBox p,
+.reviewAftercareBox small,
 .reviewUpdateLinks small,
 .reviewFreshnessBox p,
 .reviewFreshnessBox small,
@@ -368,7 +370,8 @@
   color: #76531d;
 }
 
-.reviewUpdateGuidance {
+.reviewUpdateGuidance,
+.reviewAftercareBox {
   display: grid;
   gap: 8px;
   padding: 12px;
@@ -376,7 +379,8 @@
   background: rgba(255, 250, 240, 0.72);
 }
 
-.reviewUpdateGuidance > div {
+.reviewUpdateGuidance > div,
+.reviewAftercareBox > div {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -387,6 +391,20 @@
   border-radius: 999px;
   font-size: 0.78rem;
   font-weight: 900;
+}
+
+.reviewAftercareBox article {
+  display: grid;
+  gap: 4px;
+  min-width: 190px;
+  flex: 1 1 190px;
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(76, 124, 85, 0.09);
+}
+
+.reviewAftercareBox strong {
+  color: #35513d;
 }
 
 .reviewUpdateGuidance .needsUpdate,
