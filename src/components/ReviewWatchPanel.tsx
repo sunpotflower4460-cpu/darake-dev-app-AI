@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Activity, ExternalLink, GitPullRequest, ShieldCheck } from 'lucide-react';
 import { reviewUpdateSteps, reviewWatchPrinciples } from '../data/reviewWatch';
+import { updateAftercareSteps } from '../data/updateAftercare';
 import type { WatchItem } from '../data/reviewWatch';
 import { loadCiWatchState, type CiWatchState } from '../services/ciWatchService';
 import { loadPrWatchState, type PrWatchState } from '../services/prWatchService';
@@ -165,6 +166,18 @@ export function ReviewWatchPanel() {
               <span><strong>{link.label}</strong><small>{link.detail}</small></span>
             </a>
           ))}
+        </div>
+        <div className="reviewAftercareBox">
+          <strong>更新後はここだけ確認</strong>
+          <p>workflowを押した後は、この4つだけ見れば大丈夫です。</p>
+          <div>
+            {updateAftercareSteps.map((step) => (
+              <article key={step.id}>
+                <strong>{step.title}</strong>
+                <small>{step.detail}</small>
+              </article>
+            ))}
+          </div>
         </div>
         <div className="reviewUpdateSteps">
           {reviewUpdateSteps.map((step, index) => (
