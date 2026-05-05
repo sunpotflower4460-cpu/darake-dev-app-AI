@@ -1,0 +1,289 @@
+.limitedCaptureWorkflowPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.limitedCaptureWorkflowHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.limitedCaptureWorkflowHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.limitedCaptureWorkflowHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.limitedCaptureWorkflowHero p:not(.eyebrow),
+.limitedCaptureWorkflowSafetyBox p,
+.limitedCaptureWorkflowControls span,
+.limitedCaptureWorkflowSummaryGrid p,
+.limitedCaptureWorkflowJob p,
+.limitedCaptureWorkflowNotesBox span,
+.limitedCaptureWorkflowGrid span {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.limited-capture-ready-to-plan {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.limited-capture-needs-review {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.limited-capture-not-ready {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.limitedCaptureWorkflowSafetyBox,
+.limitedCaptureWorkflowControls,
+.limitedCaptureWorkflowSummaryGrid section,
+.limitedCaptureWorkflowGrid section,
+.limitedCaptureWorkflowJobsBox,
+.limitedCaptureWorkflowYamlBox,
+.limitedCaptureWorkflowNotesBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.limitedCaptureWorkflowSafetyBox strong,
+.limitedCaptureWorkflowSummaryGrid h4,
+.limitedCaptureWorkflowGrid h4,
+.limitedCaptureWorkflowJobsBox strong,
+.limitedCaptureWorkflowYamlBox strong,
+.limitedCaptureWorkflowNotesBox strong,
+.limitedCaptureWorkflowJob strong {
+  color: #35513d;
+}
+
+.limitedCaptureWorkflowControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.limitedCaptureWorkflowControls button,
+.limitedCaptureWorkflowCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.limitedCaptureWorkflowCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.limitedCaptureWorkflowCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.limitedCaptureWorkflowControls span,
+.limitedCaptureWorkflowGrid span,
+.limitedCaptureWorkflowJobsBox > div:first-child span,
+.limitedCaptureWorkflowJob span,
+.limitedCaptureWorkflowYamlBox > div:first-child span,
+.limitedCaptureWorkflowNotesBox > div:first-child span,
+.limitedCaptureWorkflowNotesBox > div:last-child span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.limitedCaptureWorkflowSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.limitedCaptureWorkflowSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.limitedCaptureWorkflowSummaryGrid h4,
+.limitedCaptureWorkflowSummaryGrid p {
+  margin: 0;
+}
+
+.limitedCaptureWorkflowSummaryGrid p {
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.limitedCaptureWorkflowGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.limitedCaptureWorkflowGrid section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.limitedCaptureWorkflowGrid h4 {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+.limitedCaptureWorkflowGrid section:nth-child(4) {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.limitedCaptureWorkflowGrid section:nth-child(4) span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.limitedCaptureWorkflowJobsBox,
+.limitedCaptureWorkflowYamlBox,
+.limitedCaptureWorkflowNotesBox {
+  display: grid;
+  gap: 12px;
+}
+
+.limitedCaptureWorkflowJobsBox > div:first-child,
+.limitedCaptureWorkflowYamlBox > div:first-child,
+.limitedCaptureWorkflowNotesBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.limitedCaptureWorkflowJobsList {
+  display: grid;
+  gap: 10px;
+}
+
+.limitedCaptureWorkflowJob {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.limitedCaptureWorkflowJob > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.limitedCaptureWorkflowJob p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.risk-medium {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.risk-medium span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.risk-high {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.risk-high span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.limitedCaptureWorkflowYamlBox pre {
+  max-height: 460px;
+  overflow: auto;
+  margin: 0;
+  padding: 14px;
+  border-radius: 16px;
+  color: #2f332d;
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.limitedCaptureWorkflowNotesBox > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 1080px) {
+  .limitedCaptureWorkflowSummaryGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .limitedCaptureWorkflowGrid,
+  .limitedCaptureWorkflowSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .limitedCaptureWorkflowHero {
+    grid-template-columns: 1fr;
+  }
+
+  .limitedCaptureWorkflowControls,
+  .limitedCaptureWorkflowControls button,
+  .limitedCaptureWorkflowCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .limitedCaptureWorkflowJobsBox > div:first-child,
+  .limitedCaptureWorkflowYamlBox > div:first-child,
+  .limitedCaptureWorkflowNotesBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
