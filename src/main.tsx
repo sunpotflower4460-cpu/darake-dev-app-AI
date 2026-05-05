@@ -19,6 +19,7 @@ import { PhaseQueuePanel } from './components/PhaseQueuePanel';
 import { PreviewUrlRecordPanel } from './components/PreviewUrlRecordPanel';
 import { PrCreationPreviewPanel } from './components/PrCreationPreviewPanel';
 import { PrWatchPanel } from './components/PrWatchPanel';
+import { RealCaptureWorkflowDraftPanel } from './components/RealCaptureWorkflowDraftPanel';
 import { ReviewWatchPanel } from './components/ReviewWatchPanel';
 import { ScreenshotCaptureGatePanel } from './components/ScreenshotCaptureGatePanel';
 import { ScreenshotDryRunArtifactCheckPanel } from './components/ScreenshotDryRunArtifactCheckPanel';
@@ -51,6 +52,7 @@ import './lowRiskPrCandidate.css';
 import './lowRiskMergeCandidate.css';
 import './previewUrlRecord.css';
 import './dryRunArtifactCheckRecord.css';
+import './realCaptureWorkflowDraft.css';
 import './screenshotCaptureGate.css';
 import './screenshotDryRunArtifactCheck.css';
 import './screenshotJobDraft.css';
@@ -133,6 +135,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <ScreenshotCaptureGatePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <RealCaptureWorkflowDraftPanel />
       </div>
       <div className="panel statusModePanel">
         <ScreenshotResultRecordPanel />
