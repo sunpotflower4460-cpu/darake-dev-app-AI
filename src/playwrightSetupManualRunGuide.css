@@ -1,0 +1,230 @@
+.playwrightManualGuidePanel {
+  display: grid;
+  gap: 18px;
+}
+
+.playwrightManualHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.playwrightManualHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.playwrightManualHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.playwrightManualHero p:not(.eyebrow),
+.playwrightManualSafetyBox p,
+.playwrightManualControls span,
+.playwrightManualSummaryGrid p,
+.playwrightManualStepItem p,
+.playwrightManualStepItem small,
+.playwrightManualGrid span {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.playwrightManualSafetyBox,
+.playwrightManualControls,
+.playwrightManualSummaryGrid section,
+.playwrightManualStepsBox,
+.playwrightManualGrid section {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.playwrightManualSafetyBox strong,
+.playwrightManualStepsBox strong,
+.playwrightManualSummaryGrid h4,
+.playwrightManualStepItem strong,
+.playwrightManualGrid h4 {
+  color: #35513d;
+}
+
+.playwrightManualControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.playwrightManualControls button,
+.playwrightManualCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.playwrightManualCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.playwrightManualCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.playwrightManualControls span,
+.playwrightManualStepsBox > div:first-child span,
+.playwrightManualGrid span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.playwrightManualSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.playwrightManualSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.playwrightManualSummaryGrid h4,
+.playwrightManualSummaryGrid p {
+  margin: 0;
+}
+
+.playwrightManualSummaryGrid p {
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.playwrightManualStepsBox {
+  display: grid;
+  gap: 12px;
+}
+
+.playwrightManualStepsBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.playwrightManualStepList {
+  display: grid;
+  gap: 10px;
+}
+
+.playwrightManualStepItem {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.playwrightManualStepItem > span {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  color: #fffaf0;
+  background: #4c7c55;
+  font-weight: 900;
+}
+
+.playwrightManualStepItem > div {
+  display: grid;
+  gap: 4px;
+}
+
+.playwrightManualStepItem p,
+.playwrightManualStepItem small {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.playwrightManualStepItem small {
+  font-weight: 900;
+}
+
+.playwrightManualGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.playwrightManualGrid section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.playwrightManualGrid h4 {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+.playwrightManualGrid section:nth-child(2) {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.playwrightManualGrid section:nth-child(2) span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+@media (max-width: 900px) {
+  .playwrightManualSummaryGrid,
+  .playwrightManualGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .playwrightManualHero {
+    grid-template-columns: 1fr;
+  }
+
+  .playwrightManualControls,
+  .playwrightManualControls button,
+  .playwrightManualCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .playwrightManualStepsBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
