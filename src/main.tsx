@@ -26,6 +26,7 @@ import { ScreenshotRunGatePanel } from './components/ScreenshotRunGatePanel';
 import { ScreenshotToUiCheckBridgePanel } from './components/ScreenshotToUiCheckBridgePanel';
 import { ScreenshotWorkflowDispatchDraftPanel } from './components/ScreenshotWorkflowDispatchDraftPanel';
 import { ScreenshotWorkflowFileStatusPanel } from './components/ScreenshotWorkflowFileStatusPanel';
+import { ScreenshotWorkflowManualRunGuidePanel } from './components/ScreenshotWorkflowManualRunGuidePanel';
 import { StatusPanel } from './components/StatusPanel';
 import { UiCheckCompletionReportPanel } from './components/UiCheckCompletionReportPanel';
 import { UiCheckResultRecordPanel } from './components/UiCheckResultRecordPanel';
@@ -53,6 +54,7 @@ import './screenshotRunGate.css';
 import './screenshotToUiCheckBridge.css';
 import './screenshotWorkflowDispatchDraft.css';
 import './screenshotWorkflowFileStatus.css';
+import './screenshotWorkflowManualRunGuide.css';
 import './uiMachineCheckDraft.css';
 import './uiCheckResultRecord.css';
 import './uiCheckCompletionReport.css';
@@ -113,6 +115,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <ScreenshotWorkflowFileStatusPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <ScreenshotWorkflowManualRunGuidePanel />
       </div>
       <div className="panel statusModePanel">
         <ScreenshotResultRecordPanel />
