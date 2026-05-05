@@ -5,6 +5,7 @@ import { ActionPreviewPanel } from './components/ActionPreviewPanel';
 import { AutoRunPlanPanel } from './components/AutoRunPlanPanel';
 import { CiWatchPanel } from './components/CiWatchPanel';
 import { DarakeModePanel } from './components/DarakeModePanel';
+import { DryRunArtifactCheckRecordPanel } from './components/DryRunArtifactCheckRecordPanel';
 import { FinalCheckPanel } from './components/FinalCheckPanel';
 import { FuturePanel } from './components/FuturePanel';
 import { InfoPanel } from './components/InfoPanel';
@@ -48,6 +49,7 @@ import './prCreationPreview.css';
 import './lowRiskPrCandidate.css';
 import './lowRiskMergeCandidate.css';
 import './previewUrlRecord.css';
+import './dryRunArtifactCheckRecord.css';
 import './screenshotDryRunArtifactCheck.css';
 import './screenshotJobDraft.css';
 import './screenshotPlanExport.css';
@@ -123,6 +125,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <ScreenshotDryRunArtifactCheckPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <DryRunArtifactCheckRecordPanel />
       </div>
       <div className="panel statusModePanel">
         <ScreenshotResultRecordPanel />
