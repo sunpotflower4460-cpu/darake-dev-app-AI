@@ -12,6 +12,7 @@ import { InfoPanel } from './components/InfoPanel';
 import { IssueDraftPanel } from './components/IssueDraftPanel';
 import { IssueRecordPanel } from './components/IssueRecordPanel';
 import { LimitedScreenshotCaptureWorkflowDraftPanel } from './components/LimitedScreenshotCaptureWorkflowDraftPanel';
+import { LimitedScreenshotCaptureWorkflowFileStatusPanel } from './components/LimitedScreenshotCaptureWorkflowFileStatusPanel';
 import { LowRiskMergeCandidatePanel } from './components/LowRiskMergeCandidatePanel';
 import { LowRiskPrCandidatePanel } from './components/LowRiskPrCandidatePanel';
 import { ManualGatePanel } from './components/ManualGatePanel';
@@ -58,6 +59,7 @@ import './lowRiskMergeCandidate.css';
 import './previewUrlRecord.css';
 import './dryRunArtifactCheckRecord.css';
 import './limitedScreenshotCaptureWorkflowDraft.css';
+import './limitedScreenshotCaptureWorkflowFileStatus.css';
 import './playwrightSetupDryRunDraft.css';
 import './playwrightSetupManualRunGuide.css';
 import './playwrightSetupReportRecord.css';
@@ -163,6 +165,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <LimitedScreenshotCaptureWorkflowDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <LimitedScreenshotCaptureWorkflowFileStatusPanel />
       </div>
       <div className="panel statusModePanel">
         <ScreenshotResultRecordPanel />

@@ -1,0 +1,77 @@
+name: Screenshot Capture Limited Manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      plan_json:
+        description: Screenshot plan JSON from the app
+        required: true
+        type: string
+      confirm_capture:
+        description: Type CAPTURE_LIMITED_APPROVED to allow limited capture
+        required: true
+        type: string
+      max_targets:
+        description: First capture batch size, 1 or 2 only
+        required: true
+        default: '1'
+        type: choice
+        options:
+          - '1'
+          - '2'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  capture-limited:
+    name: Capture limited approved targets
+    runs-on: ubuntu-latest
+    env:
+      PLAN_JSON: ${{ inputs.plan_json }}
+      CONFIRM_CAPTURE: ${{ inputs.confirm_capture }}
+      MAX_TARGETS: ${{ inputs.max_targets }}
+      OUT_DIR: artifacts/screenshots
+      MANIFEST_PATH: artifacts/screenshot-capture-manifest.json
+    steps:
+      - name: Validate manual capture gate
+        run: |
+          if [ "${CONFIRM_CAPTURE}" != "CAPTURE_LIMITED_APPROVED" ]; then
+            echo "confirm_capture must be CAPTURE_LIMITED_APPROVED."
+            exit 1
+          fi
+          if [ "${MAX_TARGETS}" != "1" ] && [ "${MAX_TARGETS}" != "2" ]; then
+            echo "max_targets must be 1 or 2."
+            exit 1
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install app dependencies
+        run: npm ci
+
+      - name: Install Playwright package and Chromium
+        run: |
+          npm install --no-save playwright@latest
+          npx playwright install --with-deps chromium
+
+      - name: Capture limited approved targets
+        run: node scripts/captureLimitedScreenshots.mjs
+
+      - name: Upload screenshot artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshot-capture-limited
+          path: |
+            artifacts/screenshots/**
+            artifacts/screenshot-capture-manifest.json
+          if-no-files-found: error
