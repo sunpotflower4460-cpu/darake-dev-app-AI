@@ -29,6 +29,7 @@ import { PrWatchPanel } from './components/PrWatchPanel';
 import { RealCaptureWorkflowDraftPanel } from './components/RealCaptureWorkflowDraftPanel';
 import { ReviewWatchPanel } from './components/ReviewWatchPanel';
 import { ScreenshotCaptureGatePanel } from './components/ScreenshotCaptureGatePanel';
+import { ScreenshotCaptureManifestRecordPanel } from './components/ScreenshotCaptureManifestRecordPanel';
 import { ScreenshotDryRunArtifactCheckPanel } from './components/ScreenshotDryRunArtifactCheckPanel';
 import { ScreenshotJobDraftPanel } from './components/ScreenshotJobDraftPanel';
 import { ScreenshotPlanExportPanel } from './components/ScreenshotPlanExportPanel';
@@ -68,6 +69,7 @@ import './playwrightSetupReportRecord.css';
 import './playwrightSetupWorkflowFileStatus.css';
 import './realCaptureWorkflowDraft.css';
 import './screenshotCaptureGate.css';
+import './screenshotCaptureManifestRecord.css';
 import './screenshotDryRunArtifactCheck.css';
 import './screenshotJobDraft.css';
 import './screenshotPlanExport.css';
@@ -173,6 +175,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <LimitedScreenshotCaptureManualRunGuidePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <ScreenshotCaptureManifestRecordPanel />
       </div>
       <div className="panel statusModePanel">
         <ScreenshotResultRecordPanel />
