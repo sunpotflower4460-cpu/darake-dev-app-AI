@@ -1,0 +1,204 @@
+.screenshotArtifactCheckPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.screenshotArtifactHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.screenshotArtifactHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.screenshotArtifactHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.screenshotArtifactHero p:not(.eyebrow),
+.screenshotArtifactSafetyBox p,
+.screenshotArtifactControls span,
+.screenshotArtifactSummaryGrid p,
+.screenshotArtifactChecklistGrid p,
+.screenshotArtifactBottomGrid span {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.screenshotArtifactSafetyBox,
+.screenshotArtifactControls,
+.screenshotArtifactSummaryGrid section,
+.screenshotArtifactChecklistGrid section,
+.screenshotArtifactBottomGrid section {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.screenshotArtifactSafetyBox strong,
+.screenshotArtifactSummaryGrid h4,
+.screenshotArtifactChecklistGrid h4,
+.screenshotArtifactChecklistGrid strong,
+.screenshotArtifactBottomGrid h4 {
+  color: #35513d;
+}
+
+.screenshotArtifactControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotArtifactControls button,
+.screenshotArtifactCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.screenshotArtifactCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.screenshotArtifactCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.screenshotArtifactControls span,
+.screenshotArtifactChecklistGrid span,
+.screenshotArtifactBottomGrid span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.screenshotArtifactSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.screenshotArtifactSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotArtifactSummaryGrid h4,
+.screenshotArtifactSummaryGrid p {
+  margin: 0;
+}
+
+.screenshotArtifactSummaryGrid p {
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.screenshotArtifactChecklistGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.screenshotArtifactChecklistGrid section {
+  display: grid;
+  gap: 10px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotArtifactChecklistGrid h4,
+.screenshotArtifactBottomGrid h4 {
+  margin: 0;
+}
+
+.screenshotArtifactChecklistGrid article {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.16);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.screenshotArtifactChecklistGrid article p {
+  margin: 0;
+}
+
+.screenshotArtifactChecklistGrid article span {
+  justify-self: start;
+}
+
+.screenshotArtifactBottomGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.screenshotArtifactBottomGrid section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.screenshotArtifactBottomGrid h4 {
+  flex-basis: 100%;
+}
+
+.screenshotArtifactBottomGrid section:first-child {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.screenshotArtifactBottomGrid section:first-child span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+@media (max-width: 900px) {
+  .screenshotArtifactSummaryGrid,
+  .screenshotArtifactChecklistGrid,
+  .screenshotArtifactBottomGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .screenshotArtifactHero {
+    grid-template-columns: 1fr;
+  }
+
+  .screenshotArtifactControls,
+  .screenshotArtifactControls button,
+  .screenshotArtifactCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+}
