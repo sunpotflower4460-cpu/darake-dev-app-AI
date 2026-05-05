@@ -1,0 +1,274 @@
+.playwrightSetupPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.playwrightSetupHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.playwrightSetupHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.playwrightSetupHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.playwrightSetupHero p:not(.eyebrow),
+.playwrightSetupSafetyBox p,
+.playwrightSetupControls span,
+.playwrightSetupSummaryGrid p,
+.playwrightSetupJob p,
+.playwrightSetupNotesBox span,
+.playwrightSetupGrid span {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.playwright-setup-ready-to-plan {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.playwright-setup-needs-review {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.playwright-setup-not-ready {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.playwrightSetupSafetyBox,
+.playwrightSetupControls,
+.playwrightSetupSummaryGrid section,
+.playwrightSetupGrid section,
+.playwrightSetupJobsBox,
+.playwrightSetupYamlBox,
+.playwrightSetupNotesBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.playwrightSetupSafetyBox strong,
+.playwrightSetupSummaryGrid h4,
+.playwrightSetupGrid h4,
+.playwrightSetupJobsBox strong,
+.playwrightSetupYamlBox strong,
+.playwrightSetupNotesBox strong,
+.playwrightSetupJob strong {
+  color: #35513d;
+}
+
+.playwrightSetupControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.playwrightSetupControls button,
+.playwrightSetupCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.playwrightSetupCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.playwrightSetupCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.playwrightSetupControls span,
+.playwrightSetupGrid span,
+.playwrightSetupJobsBox > div:first-child span,
+.playwrightSetupJob span,
+.playwrightSetupYamlBox > div:first-child span,
+.playwrightSetupNotesBox > div:first-child span,
+.playwrightSetupNotesBox > div:last-child span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.playwrightSetupSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.playwrightSetupSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.playwrightSetupSummaryGrid h4,
+.playwrightSetupSummaryGrid p {
+  margin: 0;
+}
+
+.playwrightSetupSummaryGrid p {
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.playwrightSetupGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.playwrightSetupGrid section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.playwrightSetupGrid h4 {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+.playwrightSetupGrid section:nth-child(4) {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.playwrightSetupGrid section:nth-child(4) span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.playwrightSetupJobsBox,
+.playwrightSetupYamlBox,
+.playwrightSetupNotesBox {
+  display: grid;
+  gap: 12px;
+}
+
+.playwrightSetupJobsBox > div:first-child,
+.playwrightSetupYamlBox > div:first-child,
+.playwrightSetupNotesBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.playwrightSetupJobsList {
+  display: grid;
+  gap: 10px;
+}
+
+.playwrightSetupJob {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.playwrightSetupJob > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.playwrightSetupJob p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.setup-risk-medium {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.setup-risk-medium span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.playwrightSetupYamlBox pre {
+  max-height: 460px;
+  overflow: auto;
+  margin: 0;
+  padding: 14px;
+  border-radius: 16px;
+  color: #2f332d;
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.playwrightSetupNotesBox > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .playwrightSetupGrid,
+  .playwrightSetupSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .playwrightSetupHero {
+    grid-template-columns: 1fr;
+  }
+
+  .playwrightSetupControls,
+  .playwrightSetupControls button,
+  .playwrightSetupCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .playwrightSetupJobsBox > div:first-child,
+  .playwrightSetupYamlBox > div:first-child,
+  .playwrightSetupNotesBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
