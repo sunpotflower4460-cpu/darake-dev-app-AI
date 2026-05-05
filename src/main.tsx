@@ -16,6 +16,7 @@ import { LowRiskPrCandidatePanel } from './components/LowRiskPrCandidatePanel';
 import { ManualGatePanel } from './components/ManualGatePanel';
 import { Phase7SafetyPanel } from './components/Phase7SafetyPanel';
 import { PhaseQueuePanel } from './components/PhaseQueuePanel';
+import { PlaywrightSetupDryRunDraftPanel } from './components/PlaywrightSetupDryRunDraftPanel';
 import { PreviewUrlRecordPanel } from './components/PreviewUrlRecordPanel';
 import { PrCreationPreviewPanel } from './components/PrCreationPreviewPanel';
 import { PrWatchPanel } from './components/PrWatchPanel';
@@ -52,6 +53,7 @@ import './lowRiskPrCandidate.css';
 import './lowRiskMergeCandidate.css';
 import './previewUrlRecord.css';
 import './dryRunArtifactCheckRecord.css';
+import './playwrightSetupDryRunDraft.css';
 import './realCaptureWorkflowDraft.css';
 import './screenshotCaptureGate.css';
 import './screenshotDryRunArtifactCheck.css';
@@ -138,6 +140,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <RealCaptureWorkflowDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <PlaywrightSetupDryRunDraftPanel />
       </div>
       <div className="panel statusModePanel">
         <ScreenshotResultRecordPanel />
