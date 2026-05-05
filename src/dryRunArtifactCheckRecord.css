@@ -1,0 +1,279 @@
+.dryRunArtifactRecordPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.dryRunArtifactRecordHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.dryRunArtifactRecordHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.dryRunArtifactRecordHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.dryRunArtifactRecordHero p:not(.eyebrow),
+.dryRunArtifactRecordSafetyBox p,
+.dryRunArtifactRecordControls span,
+.dryRunArtifactRecordSummaryGrid p,
+.dryRunArtifactRecordStatusList p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.record-success {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.record-warn,
+.record-unchecked {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.record-failed {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.dryRunArtifactRecordSafetyBox,
+.dryRunArtifactRecordControls,
+.dryRunArtifactRecordSummaryGrid section,
+.dryRunArtifactRecordForm,
+.dryRunArtifactRecordStatusBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.dryRunArtifactRecordSafetyBox strong,
+.dryRunArtifactRecordSummaryGrid h4,
+.dryRunArtifactRecordStatusBox strong,
+.dryRunArtifactRecordStatusList strong {
+  color: #35513d;
+}
+
+.dryRunArtifactRecordControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.dryRunArtifactRecordControls button,
+.dryRunArtifactRecordCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.dryRunArtifactRecordControls .secondaryArtifactRecordButton {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.dryRunArtifactRecordCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.dryRunArtifactRecordCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.dryRunArtifactRecordControls span,
+.dryRunArtifactRecordStatusBox > div:first-child span,
+.dryRunArtifactRecordStatusList span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.dryRunArtifactRecordSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.dryRunArtifactRecordSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.dryRunArtifactRecordSummaryGrid h4,
+.dryRunArtifactRecordSummaryGrid p {
+  margin: 0;
+}
+
+.dryRunArtifactRecordSummaryGrid p {
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.dryRunArtifactRecordForm {
+  display: grid;
+  gap: 12px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.dryRunArtifactRecordForm label {
+  display: grid;
+  gap: 8px;
+  color: #475241;
+  font-weight: 900;
+}
+
+.dryRunArtifactRecordForm input,
+.dryRunArtifactRecordForm textarea {
+  width: 100%;
+  border: 1px solid rgba(68, 59, 39, 0.18);
+  border-radius: 16px;
+  padding: 12px 13px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.72);
+  outline: none;
+  resize: vertical;
+}
+
+.dryRunArtifactRecordStatusBox {
+  display: grid;
+  gap: 12px;
+}
+
+.dryRunArtifactRecordStatusBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dryRunArtifactRecordStatusList {
+  display: grid;
+  gap: 10px;
+}
+
+.dryRunArtifactRecordStatusList article {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.dryRunArtifactRecordStatusList article > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dryRunArtifactRecordStatusList p {
+  margin: 0;
+}
+
+.dryRunArtifactRecordOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dryRunArtifactRecordOptions button {
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 999px;
+  padding: 8px 10px;
+  color: #475241;
+  background: rgba(255, 250, 240, 0.72);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.dryRunArtifactRecordOptions button.active {
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.artifact-status-warn,
+.artifact-status-unchecked {
+  border-color: rgba(185, 130, 46, 0.25) !important;
+}
+
+.artifact-status-warn span,
+.artifact-status-unchecked span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.artifact-status-failed {
+  border-color: rgba(180, 91, 93, 0.24) !important;
+}
+
+.artifact-status-failed span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.artifact-status-failed .dryRunArtifactRecordOptions button.active {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+@media (max-width: 1080px) {
+  .dryRunArtifactRecordSummaryGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .dryRunArtifactRecordHero,
+  .dryRunArtifactRecordSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .dryRunArtifactRecordControls,
+  .dryRunArtifactRecordControls button,
+  .dryRunArtifactRecordCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dryRunArtifactRecordStatusBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .dryRunArtifactRecordOptions button {
+    flex: 1 1 42%;
+  }
+}
