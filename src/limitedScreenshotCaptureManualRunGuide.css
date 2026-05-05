@@ -1,0 +1,230 @@
+.limitedCaptureManualPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.limitedCaptureManualHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.limitedCaptureManualHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.limitedCaptureManualHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.limitedCaptureManualHero p:not(.eyebrow),
+.limitedCaptureManualSafetyBox p,
+.limitedCaptureManualControls span,
+.limitedCaptureManualSummaryGrid p,
+.limitedCaptureManualStepItem p,
+.limitedCaptureManualStepItem small,
+.limitedCaptureManualGrid span {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.limitedCaptureManualSafetyBox,
+.limitedCaptureManualControls,
+.limitedCaptureManualSummaryGrid section,
+.limitedCaptureManualStepsBox,
+.limitedCaptureManualGrid section {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.limitedCaptureManualSafetyBox strong,
+.limitedCaptureManualStepsBox strong,
+.limitedCaptureManualSummaryGrid h4,
+.limitedCaptureManualStepItem strong,
+.limitedCaptureManualGrid h4 {
+  color: #35513d;
+}
+
+.limitedCaptureManualControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.limitedCaptureManualControls button,
+.limitedCaptureManualCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.limitedCaptureManualCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.limitedCaptureManualCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.limitedCaptureManualControls span,
+.limitedCaptureManualStepsBox > div:first-child span,
+.limitedCaptureManualGrid span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.limitedCaptureManualSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.limitedCaptureManualSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.limitedCaptureManualSummaryGrid h4,
+.limitedCaptureManualSummaryGrid p {
+  margin: 0;
+}
+
+.limitedCaptureManualSummaryGrid p {
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.limitedCaptureManualStepsBox {
+  display: grid;
+  gap: 12px;
+}
+
+.limitedCaptureManualStepsBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.limitedCaptureManualStepList {
+  display: grid;
+  gap: 10px;
+}
+
+.limitedCaptureManualStepItem {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.limitedCaptureManualStepItem > span {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  color: #fffaf0;
+  background: #4c7c55;
+  font-weight: 900;
+}
+
+.limitedCaptureManualStepItem > div {
+  display: grid;
+  gap: 4px;
+}
+
+.limitedCaptureManualStepItem p,
+.limitedCaptureManualStepItem small {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.limitedCaptureManualStepItem small {
+  font-weight: 900;
+}
+
+.limitedCaptureManualGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.limitedCaptureManualGrid section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.limitedCaptureManualGrid h4 {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+.limitedCaptureManualGrid section:nth-child(2) {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.limitedCaptureManualGrid section:nth-child(2) span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+@media (max-width: 900px) {
+  .limitedCaptureManualSummaryGrid,
+  .limitedCaptureManualGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .limitedCaptureManualHero {
+    grid-template-columns: 1fr;
+  }
+
+  .limitedCaptureManualControls,
+  .limitedCaptureManualControls button,
+  .limitedCaptureManualCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .limitedCaptureManualStepsBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
