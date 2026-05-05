@@ -1,0 +1,289 @@
+.realCaptureWorkflowPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.realCaptureWorkflowHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.realCaptureWorkflowHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.realCaptureWorkflowHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.realCaptureWorkflowHero p:not(.eyebrow),
+.realCaptureWorkflowSafetyBox p,
+.realCaptureWorkflowControls span,
+.realCaptureWorkflowSummaryGrid p,
+.realCaptureWorkflowJob p,
+.realCaptureWorkflowNotesBox span,
+.realCaptureWorkflowGrid span {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.real-capture-ready-to-plan {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.real-capture-needs-review {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.real-capture-not-ready {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.realCaptureWorkflowSafetyBox,
+.realCaptureWorkflowControls,
+.realCaptureWorkflowSummaryGrid section,
+.realCaptureWorkflowGrid section,
+.realCaptureWorkflowJobsBox,
+.realCaptureWorkflowYamlBox,
+.realCaptureWorkflowNotesBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.realCaptureWorkflowSafetyBox strong,
+.realCaptureWorkflowSummaryGrid h4,
+.realCaptureWorkflowGrid h4,
+.realCaptureWorkflowJobsBox strong,
+.realCaptureWorkflowYamlBox strong,
+.realCaptureWorkflowNotesBox strong,
+.realCaptureWorkflowJob strong {
+  color: #35513d;
+}
+
+.realCaptureWorkflowControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.realCaptureWorkflowControls button,
+.realCaptureWorkflowCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.realCaptureWorkflowCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.realCaptureWorkflowCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.realCaptureWorkflowControls span,
+.realCaptureWorkflowGrid span,
+.realCaptureWorkflowJobsBox > div:first-child span,
+.realCaptureWorkflowJob span,
+.realCaptureWorkflowYamlBox > div:first-child span,
+.realCaptureWorkflowNotesBox > div:first-child span,
+.realCaptureWorkflowNotesBox > div:last-child span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.realCaptureWorkflowSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.realCaptureWorkflowSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.realCaptureWorkflowSummaryGrid h4,
+.realCaptureWorkflowSummaryGrid p {
+  margin: 0;
+}
+
+.realCaptureWorkflowSummaryGrid p {
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.realCaptureWorkflowGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.realCaptureWorkflowGrid section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.realCaptureWorkflowGrid h4 {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+.realCaptureWorkflowGrid section:nth-child(3) {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.realCaptureWorkflowGrid section:nth-child(3) span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.realCaptureWorkflowJobsBox,
+.realCaptureWorkflowYamlBox,
+.realCaptureWorkflowNotesBox {
+  display: grid;
+  gap: 12px;
+}
+
+.realCaptureWorkflowJobsBox > div:first-child,
+.realCaptureWorkflowYamlBox > div:first-child,
+.realCaptureWorkflowNotesBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.realCaptureWorkflowJobsList {
+  display: grid;
+  gap: 10px;
+}
+
+.realCaptureWorkflowJob {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.realCaptureWorkflowJob > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.realCaptureWorkflowJob p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.risk-medium {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.risk-medium span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.risk-high {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.risk-high span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.realCaptureWorkflowYamlBox pre {
+  max-height: 460px;
+  overflow: auto;
+  margin: 0;
+  padding: 14px;
+  border-radius: 16px;
+  color: #2f332d;
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.realCaptureWorkflowNotesBox > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 1080px) {
+  .realCaptureWorkflowSummaryGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .realCaptureWorkflowGrid,
+  .realCaptureWorkflowSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .realCaptureWorkflowHero {
+    grid-template-columns: 1fr;
+  }
+
+  .realCaptureWorkflowControls,
+  .realCaptureWorkflowControls button,
+  .realCaptureWorkflowCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .realCaptureWorkflowJobsBox > div:first-child,
+  .realCaptureWorkflowYamlBox > div:first-child,
+  .realCaptureWorkflowNotesBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
