@@ -1,0 +1,87 @@
+name: Playwright Setup Dry Run
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_setup:
+        description: Type PLAYWRIGHT_SETUP_DRY_RUN to allow setup check
+        required: true
+        type: string
+      browser:
+        description: Browser to install for setup check
+        required: true
+        default: 'chromium'
+        type: choice
+        options:
+          - 'chromium'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  setup-dry-run:
+    name: Verify Playwright Chromium setup only
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate manual setup gate
+        run: |
+          if [ "${{ inputs.confirm_setup }}" != "PLAYWRIGHT_SETUP_DRY_RUN" ]; then
+            echo "confirm_setup must be PLAYWRIGHT_SETUP_DRY_RUN."
+            exit 1
+          fi
+          if [ "${{ inputs.browser }}" != "chromium" ]; then
+            echo "Only chromium is allowed in this setup dry-run."
+            exit 1
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium dependencies only
+        run: npx --yes playwright@latest install --with-deps chromium
+
+      - name: Write setup report
+        run: |
+          mkdir -p artifacts
+          NODE_VERSION="$(node --version)"
+          NPM_VERSION="$(npm --version)"
+          PLAYWRIGHT_VERSION="$(npx --yes playwright@latest --version | tr -d '\n')"
+          cat > artifacts/playwright-setup-report.json <<JSON
+          {
+            "schemaVersion": "darake-playwright-setup-dry-run-v1",
+            "status": "success",
+            "browser": "${{ inputs.browser }}",
+            "nodeVersion": "$NODE_VERSION",
+            "npmVersion": "$NPM_VERSION",
+            "playwrightVersion": "$PLAYWRIGHT_VERSION",
+            "openedUrl": false,
+            "capturedScreenshot": false,
+            "launchedBrowser": false,
+            "notes": [
+              "This workflow verifies dependency and Chromium install only.",
+              "No Preview URL is opened.",
+              "No screenshot is captured.",
+              "No external worker is called."
+            ]
+          }
+          JSON
+          python -m json.tool artifacts/playwright-setup-report.json > artifacts/playwright-setup-report.pretty.json
+          mv artifacts/playwright-setup-report.pretty.json artifacts/playwright-setup-report.json
+          cat artifacts/playwright-setup-report.json
+
+      - name: Upload setup report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-setup-dry-run
+          path: artifacts/playwright-setup-report.json
+          if-no-files-found: error
