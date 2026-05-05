@@ -18,6 +18,7 @@ import { Phase7SafetyPanel } from './components/Phase7SafetyPanel';
 import { PhaseQueuePanel } from './components/PhaseQueuePanel';
 import { PlaywrightSetupDryRunDraftPanel } from './components/PlaywrightSetupDryRunDraftPanel';
 import { PlaywrightSetupManualRunGuidePanel } from './components/PlaywrightSetupManualRunGuidePanel';
+import { PlaywrightSetupReportRecordPanel } from './components/PlaywrightSetupReportRecordPanel';
 import { PlaywrightSetupWorkflowFileStatusPanel } from './components/PlaywrightSetupWorkflowFileStatusPanel';
 import { PreviewUrlRecordPanel } from './components/PreviewUrlRecordPanel';
 import { PrCreationPreviewPanel } from './components/PrCreationPreviewPanel';
@@ -57,6 +58,7 @@ import './previewUrlRecord.css';
 import './dryRunArtifactCheckRecord.css';
 import './playwrightSetupDryRunDraft.css';
 import './playwrightSetupManualRunGuide.css';
+import './playwrightSetupReportRecord.css';
 import './playwrightSetupWorkflowFileStatus.css';
 import './realCaptureWorkflowDraft.css';
 import './screenshotCaptureGate.css';
@@ -153,6 +155,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <PlaywrightSetupManualRunGuidePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <PlaywrightSetupReportRecordPanel />
       </div>
       <div className="panel statusModePanel">
         <ScreenshotResultRecordPanel />

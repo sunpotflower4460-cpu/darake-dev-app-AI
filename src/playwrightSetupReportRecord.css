@@ -1,0 +1,279 @@
+.playwrightReportRecordPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.playwrightReportRecordHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.playwrightReportRecordHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.playwrightReportRecordHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.playwrightReportRecordHero p:not(.eyebrow),
+.playwrightReportRecordSafetyBox p,
+.playwrightReportRecordControls span,
+.playwrightReportSummaryGrid p,
+.playwrightReportStatusList p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.report-success {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.report-warn,
+.report-unchecked {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.report-failed {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.playwrightReportRecordSafetyBox,
+.playwrightReportRecordControls,
+.playwrightReportSummaryGrid section,
+.playwrightReportRecordForm,
+.playwrightReportStatusBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.playwrightReportRecordSafetyBox strong,
+.playwrightReportSummaryGrid h4,
+.playwrightReportStatusBox strong,
+.playwrightReportStatusList strong {
+  color: #35513d;
+}
+
+.playwrightReportRecordControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.playwrightReportRecordControls button,
+.playwrightReportCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.playwrightReportRecordControls .secondaryPlaywrightReportButton {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.playwrightReportCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.playwrightReportCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.playwrightReportRecordControls span,
+.playwrightReportStatusBox > div:first-child span,
+.playwrightReportStatusList span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.playwrightReportSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.playwrightReportSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.playwrightReportSummaryGrid h4,
+.playwrightReportSummaryGrid p {
+  margin: 0;
+}
+
+.playwrightReportSummaryGrid p {
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.playwrightReportRecordForm {
+  display: grid;
+  gap: 12px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.playwrightReportRecordForm label {
+  display: grid;
+  gap: 8px;
+  color: #475241;
+  font-weight: 900;
+}
+
+.playwrightReportRecordForm input,
+.playwrightReportRecordForm textarea {
+  width: 100%;
+  border: 1px solid rgba(68, 59, 39, 0.18);
+  border-radius: 16px;
+  padding: 12px 13px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.72);
+  outline: none;
+  resize: vertical;
+}
+
+.playwrightReportStatusBox {
+  display: grid;
+  gap: 12px;
+}
+
+.playwrightReportStatusBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.playwrightReportStatusList {
+  display: grid;
+  gap: 10px;
+}
+
+.playwrightReportStatusList article {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.playwrightReportStatusList article > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.playwrightReportStatusList p {
+  margin: 0;
+}
+
+.playwrightReportOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.playwrightReportOptions button {
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 999px;
+  padding: 8px 10px;
+  color: #475241;
+  background: rgba(255, 250, 240, 0.72);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.playwrightReportOptions button.active {
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.report-status-warn,
+.report-status-unchecked {
+  border-color: rgba(185, 130, 46, 0.25) !important;
+}
+
+.report-status-warn span,
+.report-status-unchecked span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.report-status-failed {
+  border-color: rgba(180, 91, 93, 0.24) !important;
+}
+
+.report-status-failed span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.report-status-failed .playwrightReportOptions button.active {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+@media (max-width: 1080px) {
+  .playwrightReportSummaryGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .playwrightReportRecordHero,
+  .playwrightReportSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .playwrightReportRecordControls,
+  .playwrightReportRecordControls button,
+  .playwrightReportCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .playwrightReportStatusBox > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .playwrightReportOptions button {
+    flex: 1 1 42%;
+  }
+}
