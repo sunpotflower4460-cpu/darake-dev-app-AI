@@ -31,20 +31,16 @@ const VALID_NAV_GROUPS = new Set<string>([
 
 function getFirstStartVisiblePanelIds() {
   const report = buildFirstAppStartCompletionReport();
-  const ids = ['first-start-route-guard'];
 
   if (!report.onboardingComplete) {
-    ids.push('first-launch-care');
-    return new Set(ids);
+    return new Set(['first-start-route-guard', 'first-launch-care']);
   }
 
   if (!report.formCanStart) {
-    ids.push('gentle-app-start-form');
-    return new Set(ids);
+    return new Set(['gentle-app-start-form']);
   }
 
-  ids.push('pon-start', 'beginner-next-step-card', 'first-start-advanced-open');
-  return new Set(ids);
+  return new Set(['pon-start', 'beginner-next-step-card', 'first-start-advanced-open']);
 }
 
 function loadSavedNavGroup(): DarakeNavGroupId | 'all' {
