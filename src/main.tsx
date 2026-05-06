@@ -8,105 +8,9 @@ import { ALL_PANELS } from './utils/panelRegistry';
 import { getFocusedModeById, loadFocusedModeId, saveFocusedModeId } from './utils/focusedMode';
 import type { FocusedModeId } from './utils/focusedMode';
 import type { DarakeNavGroupId } from './utils/navigationGroups';
-// CSS imports — all existing CSS preserved
-import './styles.css';
-import './phase2.css';
-import './phase25.css';
-import './repoSnapshot.css';
-import './darakeMode.css';
-import './issueDraft.css';
-import './issueEdit.css';
-import './finalCheck.css';
-import './manualGate.css';
-import './issueRecord.css';
-import './phaseQueue.css';
-import './autoRunPlan.css';
-import './prCreationPreview.css';
-import './lowRiskPrCandidate.css';
-import './lowRiskMergeCandidate.css';
-import './previewUrlRecord.css';
-import './dryRunArtifactCheckRecord.css';
-import './limitedScreenshotCaptureManualRunGuide.css';
-import './limitedScreenshotCaptureWorkflowDraft.css';
-import './limitedScreenshotCaptureWorkflowFileStatus.css';
-import './playwrightSetupDryRunDraft.css';
-import './playwrightSetupManualRunGuide.css';
-import './playwrightSetupReportRecord.css';
-import './playwrightSetupWorkflowFileStatus.css';
-import './realCaptureWorkflowDraft.css';
-import './screenshotCaptureGate.css';
-import './screenshotCaptureManifestRecord.css';
-import './screenshotManifestToResultBridge.css';
-import './screenshotDryRunArtifactCheck.css';
-import './screenshotJobDraft.css';
-import './screenshotPlanExport.css';
-import './screenshotResultRecord.css';
-import './screenshotRunGate.css';
-import './screenshotToUiCheckBridge.css';
-import './screenshotWorkflowDispatchDraft.css';
-import './screenshotWorkflowFileStatus.css';
-import './screenshotWorkflowManualRunGuide.css';
-import './uiMachineCheckDraft.css';
-import './uiCheckReadinessGate.css';
-import './uiMachineCheckInputPack.css';
-import './uiCheckResultBridge.css';
-import './uiCheckResultRecord.css';
-import './uiCheckCompletionReport.css';
-import './phase10ScreenshotUiCompletionReport.css';
-import './notificationDraft.css';
-import './notificationDigest.css';
-import './appStoreMetadataDraft.css';
-import './submissionControlRoom.css';
-import './rejectionControlRoom.css';
-import './reviewWatch.css';
-import './phase15to18.css';
-import './phase19to23.css';
-import './prWatch.css';
-import './ciWatch.css';
-import './phase7Safety.css';
-import './actionPreview.css';
-// Phase 24 CSS
-import './phase24.css';
-import './currentIntegrationAudit.css';
-import './safetyInvariantAudit.css';
-import './localStorageKeyRegistry.css';
-import './phase24IntegrationCompletionReport.css';
-import './darakeTopCommand.css';
-import './aiProviderCandidates.css';
-// Phase 26 CSS
-import './notificationDryRunTarget.css';
-import './notificationPayloadDryRunBuilder.css';
-import './notificationSafetyGate.css';
-import './manualNotificationSendPack.css';
-import './notificationSentRecord.css';
-import './externalNotificationDryRunCompletionReport.css';
-// Phase 27-29 CSS
-import './githubDryRunOperation.css';
-// Phase 30-32 CSS
-import './oneActionCandidate.css';
-import './humanCheckMinimal.css';
-import './autoProgressSimulation.css';
-// Phase 33-35 CSS
-import './darakeAutopilotPolicy.css';
-import './noOkAutoAdvanceQueue.css';
-import './darakeReviewInbox.css';
-// Phase 36-38 CSS
-import './darakePreferenceMemory.css';
-import './completionFirstDashboard.css';
-import './oneScreenCommandCenter.css';
-// Phase 39-41 CSS
-import './darakeSleepMode.css';
-import './darakeMorningReport.css';
-import './darakeFinalForm.css';
-import './darakeMobilePolish.css';
-// Phase 42-44 CSS
-import './realUseRehearsal.css';
-import './frictionCutAudit.css';
-import './darakeV1Readiness.css';
-// Phase 45-47 CSS
-import './firstLaunchCare.css';
-import './gentleAppStartForm.css';
-import './ponStart.css';
+import { buildFirstAppStartCompletionReport } from './utils/firstAppStartCompletionReport';
+import { subscribeDarakeRuntimeEvents } from './utils/darakeRuntimeEvents';
+import './styleImports';
 
 const VALID_NAV_GROUPS = new Set<string>([
   'all',
@@ -124,6 +28,16 @@ const VALID_NAV_GROUPS = new Set<string>([
   'first-start',
 ]);
 
+const FIRST_START_PANEL_IDS = new Set([
+  'first-start-route-guard',
+  'first-launch-care',
+  'gentle-app-start-form',
+  'gentle-blueprint-preview',
+  'pon-start',
+  'beginner-next-step-card',
+  'first-app-start-completion-report',
+]);
+
 function loadSavedNavGroup(): DarakeNavGroupId | 'all' {
   try {
     const stored = localStorage.getItem('darake.navGroup.v1');
@@ -136,7 +50,13 @@ function loadSavedNavGroup(): DarakeNavGroupId | 'all' {
   return 'all';
 }
 
-function DarakeControlRoom() {
+function useDarakeRuntimeRevision(): number {
+  const [revision, setRevision] = useState(0);
+  useEffect(() => subscribeDarakeRuntimeEvents(() => setRevision((v) => v + 1)), []);
+  return revision;
+}
+
+function DarakeControlRoom({ firstStartActive }: { firstStartActive: boolean }) {
   const [activeGroup, setActiveGroup] = useState<DarakeNavGroupId | 'all'>(loadSavedNavGroup);
   const [focusedMode, setFocusedMode] = useState<FocusedModeId>(loadFocusedModeId);
 
@@ -153,13 +73,29 @@ function DarakeControlRoom() {
   }, [focusedMode]);
 
   const filteredPanels = useMemo(() => {
+    if (firstStartActive) {
+      return ALL_PANELS.filter((panel) => FIRST_START_PANEL_IDS.has(panel.id));
+    }
+
     const mode = getFocusedModeById(focusedMode);
     return ALL_PANELS.filter((panel) => {
       if (activeGroup !== 'all' && panel.group !== activeGroup) return false;
       if (focusedMode !== 'all' && !mode.navGroups.includes(panel.group)) return false;
       return true;
     });
-  }, [activeGroup, focusedMode]);
+  }, [activeGroup, focusedMode, firstStartActive]);
+
+  if (firstStartActive) {
+    return (
+      <>
+        {filteredPanels.map((item) => (
+          <div key={item.id} className="panel statusModePanel">
+            {item.component}
+          </div>
+        ))}
+      </>
+    );
+  }
 
   return (
     <>
@@ -188,11 +124,30 @@ function DarakeControlRoom() {
   );
 }
 
+function DarakeRoot() {
+  const revision = useDarakeRuntimeRevision();
+  const firstStartActive = useMemo(
+    () => !buildFirstAppStartCompletionReport().beginnerFlowReady,
+    [revision],
+  );
+
+  useEffect(() => {
+    document.body.classList.toggle('darake-first-start-active', firstStartActive);
+    return () => document.body.classList.remove('darake-first-start-active');
+  }, [firstStartActive]);
+
+  return (
+    <>
+      {!firstStartActive && <App />}
+      <section className="appShell boundaryShell">
+        <DarakeControlRoom firstStartActive={firstStartActive} />
+      </section>
+    </>
+  );
+}
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <App />
-    <section className="appShell boundaryShell">
-      <DarakeControlRoom />
-    </section>
+    <DarakeRoot />
   </React.StrictMode>,
 );
