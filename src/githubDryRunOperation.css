@@ -1,0 +1,375 @@
+/* Phase 27-29 Shared Styles */
+
+.phase27Panel {
+  display: grid;
+  gap: 18px;
+}
+
+.phase27Hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(30, 90, 170, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(240, 248, 255, 0.95), rgba(235, 245, 255, 0.9));
+}
+
+.phase27Hero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #1e5aaa, #2e3597);
+}
+
+.phase27Hero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+  letter-spacing: -0.04em;
+}
+
+.phase27Hero p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.phase27Hero .eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #1e5aaa;
+  margin: 0 0 4px;
+}
+
+.phase27SafetyBox {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(220, 80, 80, 0.08);
+  border: 1px solid rgba(220, 80, 80, 0.22);
+  font-size: 0.84rem;
+  color: #6e1a1a;
+}
+
+.phase27StatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.phase27StatusBadge.ready-to-copy,
+.phase27StatusBadge.safe-draft,
+.phase27StatusBadge.ready-for-manual-merge {
+  background: rgba(60, 150, 80, 0.12);
+  color: #2a6035;
+  border: 1px solid rgba(60, 150, 80, 0.28);
+}
+
+.phase27StatusBadge.needs-review,
+.phase27StatusBadge.review-needed {
+  background: rgba(185, 130, 46, 0.12);
+  color: #8a5e12;
+  border: 1px solid rgba(185, 130, 46, 0.3);
+}
+
+.phase27StatusBadge.blocked,
+.phase27StatusBadge.manual-gate {
+  background: rgba(220, 80, 80, 0.1);
+  color: #8b2020;
+  border: 1px solid rgba(220, 80, 80, 0.28);
+}
+
+.phase27StatusBadge.draft,
+.phase27StatusBadge.executed-manually {
+  background: rgba(60, 120, 200, 0.1);
+  color: #1a3d7a;
+  border: 1px solid rgba(60, 120, 200, 0.25);
+}
+
+.phase27RiskBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.phase27RiskBadge.safe-draft {
+  background: rgba(60, 150, 80, 0.1);
+  color: #2a6035;
+  border: 1px solid rgba(60, 150, 80, 0.22);
+}
+
+.phase27RiskBadge.review-needed {
+  background: rgba(185, 130, 46, 0.1);
+  color: #8a5e12;
+  border: 1px solid rgba(185, 130, 46, 0.25);
+}
+
+.phase27RiskBadge.manual-gate {
+  background: rgba(220, 140, 0, 0.1);
+  color: #7a4c00;
+  border: 1px solid rgba(220, 140, 0, 0.25);
+}
+
+.phase27RiskBadge.blocked {
+  background: rgba(220, 80, 80, 0.1);
+  color: #8b2020;
+  border: 1px solid rgba(220, 80, 80, 0.25);
+}
+
+.phase27SummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.phase27SummaryGrid section {
+  background: rgba(30, 90, 170, 0.06);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.phase27SummaryGrid h4 {
+  font-size: 0.73rem;
+  margin: 0 0 4px;
+  color: var(--muted);
+}
+
+.phase27SummaryGrid p {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 0;
+  color: #1e3d7a;
+}
+
+.phase27Section {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(30, 90, 170, 0.04);
+  border: 1px solid rgba(30, 90, 170, 0.12);
+}
+
+.phase27Section h4 {
+  margin: 0 0 8px;
+  font-size: 0.84rem;
+  color: #1e3d7a;
+  font-weight: 700;
+}
+
+.phase27CodeBlock {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.phase27Textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(30, 90, 170, 0.25);
+  border-radius: 10px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  resize: vertical;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.phase27Input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(30, 90, 170, 0.25);
+  border-radius: 10px;
+  font-size: 0.84rem;
+  box-sizing: border-box;
+}
+
+.phase27CheckList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.phase27CheckList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.phase27CheckList li.pass { color: #2a6035; }
+.phase27CheckList li.fail { color: #8b2020; }
+.phase27CheckList li.warn { color: #7a4c00; }
+.phase27CheckList li.unchecked { color: var(--muted); }
+
+.phase27BlockerList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.phase27BlockerList li {
+  font-size: 0.82rem;
+  color: #8b2020;
+  padding: 6px 10px;
+  background: rgba(220, 80, 80, 0.07);
+  border-radius: 8px;
+}
+
+.phase27WarningList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.phase27WarningList li {
+  font-size: 0.82rem;
+  color: #7a4c00;
+  padding: 6px 10px;
+  background: rgba(185, 130, 46, 0.07);
+  border-radius: 8px;
+}
+
+.phase27StepList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 5px;
+  counter-reset: step-counter;
+}
+
+.phase27StepList li {
+  font-size: 0.82rem;
+  padding: 6px 10px;
+  background: rgba(30, 90, 170, 0.05);
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
+.phase27CopyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 12px;
+  border: none;
+  background: #1e5aaa;
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.phase27CopyBtn:hover { background: #154488; }
+.phase27CopyBtn.copied { background: #2a7a40; }
+.phase27CopyBtn.failed { background: #992020; }
+
+.phase27BtnRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.phase27SmallBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(30, 90, 170, 0.3);
+  background: rgba(30, 90, 170, 0.06);
+  color: #1e3d7a;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.phase27SmallBtn:hover { background: rgba(30, 90, 170, 0.12); }
+
+.phase27RecordCard {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(30, 90, 170, 0.04);
+  border: 1px solid rgba(30, 90, 170, 0.14);
+  display: grid;
+  gap: 8px;
+}
+
+.phase27RecordCard h5 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.phase27RecordCard p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.phase27TagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.phase27Tag {
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 0.73rem;
+  font-weight: 600;
+  background: rgba(30, 90, 170, 0.08);
+  color: #1e3d7a;
+  border: 1px solid rgba(30, 90, 170, 0.18);
+}
+
+.phase27Select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(30, 90, 170, 0.3);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+@media (max-width: 760px) {
+  .phase27Hero {
+    grid-template-columns: 1fr;
+  }
+
+  .phase27SummaryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .phase27BtnRow {
+    flex-direction: column;
+  }
+}
