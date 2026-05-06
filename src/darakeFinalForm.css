@@ -1,0 +1,155 @@
+/* Phase 41: Final Form UI CSS */
+.phase41Panel {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.phase41Hero {
+  margin-bottom: 20px;
+}
+
+.phase41Title {
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.phase41MainMsg {
+  font-size: clamp(1.1rem, 4vw, 1.6rem);
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.phase41SubMsg {
+  color: #666;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.phase41StatusCard {
+  border-radius: 24px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+.phase41StatusCard.sleep {
+  background: #e8f5e9;
+}
+
+.phase41StatusCard.quiet {
+  background: #f3f3f3;
+}
+
+.phase41StatusCard.review-later {
+  background: #fff8e1;
+}
+
+.phase41StatusCard.human-needed {
+  background: #fff3e0;
+}
+
+.phase41StatusCard.blocked {
+  background: #fce4ec;
+}
+
+.phase41Counters {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.phase41Counter {
+  background: white;
+  border-radius: 16px;
+  padding: 14px 10px;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.phase41Counter h4 {
+  font-size: 1.6rem;
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+.phase41Counter p {
+  font-size: 0.72rem;
+  color: #777;
+  margin: 0;
+}
+
+.phase41PrimaryNeed {
+  background: #fff8e1;
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 16px;
+  border-left: 4px solid #ff9800;
+}
+
+.phase41BtnRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.phase41Btn {
+  padding: 12px 20px;
+  border-radius: 14px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  cursor: pointer;
+  font-size: 0.95rem;
+  min-height: 48px;
+}
+
+.phase41Btn:hover {
+  background: #f0f0f0;
+}
+
+.phase41PrimaryBtn {
+  background: #1976d2;
+  color: white;
+  border-color: #1976d2;
+  font-weight: 600;
+}
+
+.phase41PrimaryBtn:hover {
+  background: #1565c0;
+}
+
+.phase41DangerBtn {
+  background: #d32f2f;
+  color: white;
+  border-color: #d32f2f;
+}
+
+.phase41DangerBtn:hover {
+  background: #c62828;
+}
+
+.phase41Drawer {
+  background: #f9f9f9;
+  border-radius: 20px;
+  padding: 20px;
+  margin-top: 14px;
+}
+
+.phase41DrawerSection {
+  margin-bottom: 16px;
+}
+
+.phase41DrawerSection h4 {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.phase41DrawerSection p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+}

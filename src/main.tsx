@@ -94,6 +94,11 @@ import './darakeReviewInbox.css';
 import './darakePreferenceMemory.css';
 import './completionFirstDashboard.css';
 import './oneScreenCommandCenter.css';
+// Phase 39-41 CSS
+import './darakeSleepMode.css';
+import './darakeMorningReport.css';
+import './darakeFinalForm.css';
+import './darakeMobilePolish.css';
 
 const VALID_NAV_GROUPS = new Set<string>([
   'all',
