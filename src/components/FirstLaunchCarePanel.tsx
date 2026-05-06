@@ -9,6 +9,7 @@ import {
   FIRST_LAUNCH_STEP_LABELS,
 } from '../utils/firstLaunchCareOnboarding';
 import { loadGentleAppStartForm, saveGentleAppStartForm, buildEmptyGentleAppStartForm } from '../utils/gentleAppStartForm';
+import { clearFirstStartStep, saveFirstStartStep } from '../utils/firstStartStep';
 import type { GentleAppStartForm } from '../utils/gentleAppStartForm';
 import type { FirstLaunchCareState, FirstLaunchCareStep } from '../utils/firstLaunchCareOnboarding';
 
@@ -81,6 +82,7 @@ export function FirstLaunchCarePanel() {
 
   function handleReset() {
     clearFirstLaunchCareState();
+    clearFirstStartStep();
     setState(buildInitialFirstLaunchCareState());
   }
 
@@ -89,6 +91,7 @@ export function FirstLaunchCarePanel() {
     setState(completed);
     saveFirstLaunchCareState(completed);
     saveGentleAppStartForm(buildGentleFormFromOnboarding(completed));
+    saveFirstStartStep('form');
   }
 
   return (
