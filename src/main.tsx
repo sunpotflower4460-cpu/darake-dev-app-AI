@@ -90,6 +90,10 @@ import './autoProgressSimulation.css';
 import './darakeAutopilotPolicy.css';
 import './noOkAutoAdvanceQueue.css';
 import './darakeReviewInbox.css';
+// Phase 36-38 CSS
+import './darakePreferenceMemory.css';
+import './completionFirstDashboard.css';
+import './oneScreenCommandCenter.css';
 
 const VALID_NAV_GROUPS = new Set<string>([
   'all',

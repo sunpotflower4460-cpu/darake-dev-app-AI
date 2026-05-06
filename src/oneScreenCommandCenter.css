@@ -1,0 +1,239 @@
+/* Phase 38: One Screen Command Center */
+
+/* One Screen Command Center */
+.phase38Panel {
+  display: grid;
+  gap: 14px;
+}
+
+.phase38Hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(20, 40, 120, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(220, 228, 255, 0.97), rgba(200, 215, 255, 0.93));
+}
+
+.phase38Hero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #1428a0, #080e60);
+}
+
+.phase38Hero h3 { margin: 0 0 6px; font-size: clamp(1.1rem, 2.5vw, 1.7rem); letter-spacing: -0.04em; }
+.phase38Hero p { margin: 0; font-size: 0.88rem; color: var(--muted); }
+.phase38Hero .eyebrow { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #1428a0; margin: 0 0 4px; }
+
+.phase38StatusCard {
+  padding: 22px 24px;
+  border-radius: 20px;
+  background: rgba(20, 40, 120, 0.05);
+  border: 1px solid rgba(20, 40, 120, 0.14);
+  text-align: center;
+}
+
+.phase38StatusCard h2 {
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  margin: 0 0 6px;
+  color: #080e60;
+}
+
+.phase38StatusCard .subline {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.phase38BlockedBanner {
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: rgba(220, 40, 40, 0.09);
+  border: 2px solid rgba(220, 40, 40, 0.32);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #7a0a0a;
+}
+
+.phase38PrimaryCard {
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: rgba(185, 130, 46, 0.08);
+  border: 1px solid rgba(185, 130, 46, 0.25);
+  display: grid;
+  gap: 10px;
+}
+
+.phase38PrimaryCard h4 { margin: 0; font-size: 0.84rem; font-weight: 700; color: #8a5e12; }
+.phase38PrimaryCard p { margin: 0; font-size: 0.9rem; color: #4a2e00; }
+
+.phase38SecondaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.phase38SecondaryGrid section { border-radius: 12px; padding: 12px; text-align: center; }
+.phase38SecondaryGrid h4 { font-size: 0.73rem; margin: 0 0 4px; color: var(--muted); }
+.phase38SecondaryGrid p { font-size: 1.1rem; font-weight: 800; margin: 0; }
+
+.phase38SecondaryGrid section.tone-quiet { background: rgba(160, 160, 160, 0.06); }
+.phase38SecondaryGrid section.tone-quiet p { color: #888; }
+.phase38SecondaryGrid section.tone-good { background: rgba(40, 160, 80, 0.07); }
+.phase38SecondaryGrid section.tone-good p { color: #1a6040; }
+.phase38SecondaryGrid section.tone-warn { background: rgba(185, 130, 46, 0.08); }
+.phase38SecondaryGrid section.tone-warn p { color: #8a5e12; }
+.phase38SecondaryGrid section.tone-danger { background: rgba(220, 40, 40, 0.07); }
+.phase38SecondaryGrid section.tone-danger p { color: #8b1010; }
+
+.phase38BtnRow { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.phase38SmallBtn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 10px;
+  border: 1px solid rgba(20, 40, 120, 0.28); background: rgba(20, 40, 120, 0.06);
+  color: #080e60; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.15s;
+}
+.phase38SmallBtn:hover { background: rgba(20, 40, 120, 0.12); }
+.phase38SmallBtn.copied { background: rgba(60, 150, 80, 0.12); color: #2a6035; }
+
+.phase38PrimaryBtn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: 12px; border: none;
+  background: #1428a0; color: #fff; font-size: 0.84rem; font-weight: 700; cursor: pointer; transition: background 0.18s;
+}
+.phase38PrimaryBtn:hover { background: #080e60; }
+.phase38PrimaryBtn.copied { background: #2a7a40; }
+.phase38PrimaryBtn.failed { background: #992020; }
+
+/* Details Visibility Policy */
+.phase38vPanel { display: grid; gap: 18px; }
+
+.phase38vHero {
+  display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start;
+  padding: 20px; border: 1px solid rgba(80, 60, 180, 0.22); border-radius: 24px;
+  background: linear-gradient(135deg, rgba(238, 234, 255, 0.95), rgba(224, 218, 255, 0.9));
+}
+.phase38vHero > svg { width: 44px; height: 44px; padding: 10px; border-radius: 16px; color: #fff; background: linear-gradient(135deg, #4a30cf, #2a1a8a); }
+.phase38vHero h3 { margin: 0 0 6px; font-size: clamp(1.1rem, 2.5vw, 1.7rem); letter-spacing: -0.04em; }
+.phase38vHero p { margin: 0; font-size: 0.88rem; color: var(--muted); }
+.phase38vHero .eyebrow { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #4a30cf; margin: 0 0 4px; }
+
+.phase38vSection { padding: 14px 16px; border-radius: 14px; background: rgba(80, 60, 180, 0.04); border: 1px solid rgba(80, 60, 180, 0.12); }
+.phase38vSection h4 { margin: 0 0 8px; font-size: 0.84rem; color: #2a1a8a; font-weight: 700; }
+
+.phase38vDecisionCard {
+  padding: 10px 14px; border-radius: 10px; font-size: 0.81rem;
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  background: rgba(80, 60, 180, 0.04); border: 1px solid rgba(80, 60, 180, 0.1);
+}
+.phase38vDecisionCard.visible { border-left: 3px solid rgba(40, 160, 80, 0.5); }
+.phase38vDecisionCard.hidden { border-left: 3px solid rgba(160, 160, 160, 0.4); opacity: 0.75; }
+
+.phase38vBtnRow { display: flex; flex-wrap: wrap; gap: 10px; }
+.phase38vSmallBtn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 10px;
+  border: 1px solid rgba(80, 60, 180, 0.3); background: rgba(80, 60, 180, 0.06);
+  color: #2a1a8a; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.15s;
+}
+.phase38vSmallBtn:hover { background: rgba(80, 60, 180, 0.12); }
+.phase38vSmallBtn.active { background: rgba(74, 48, 207, 0.14); border-color: rgba(74, 48, 207, 0.4); }
+
+/* One Screen Settings */
+.phase38sPanel { display: grid; gap: 18px; }
+
+.phase38sHero {
+  display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start;
+  padding: 20px; border: 1px solid rgba(100, 100, 100, 0.22); border-radius: 24px;
+  background: linear-gradient(135deg, rgba(240, 240, 240, 0.95), rgba(230, 230, 230, 0.9));
+}
+.phase38sHero > svg { width: 44px; height: 44px; padding: 10px; border-radius: 16px; color: #fff; background: linear-gradient(135deg, #444, #222); }
+.phase38sHero h3 { margin: 0 0 6px; font-size: clamp(1.1rem, 2.5vw, 1.7rem); letter-spacing: -0.04em; }
+.phase38sHero p { margin: 0; font-size: 0.88rem; color: var(--muted); }
+.phase38sHero .eyebrow { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #444; margin: 0 0 4px; }
+
+.phase38sSection { padding: 14px 16px; border-radius: 14px; background: rgba(80, 80, 80, 0.04); border: 1px solid rgba(80, 80, 80, 0.12); }
+.phase38sSection h4 { margin: 0 0 8px; font-size: 0.84rem; color: #222; font-weight: 700; }
+
+.phase38sSettingRow {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 9px 12px; border-radius: 9px; font-size: 0.82rem;
+  background: rgba(80, 80, 80, 0.03); border: 1px solid rgba(80, 80, 80, 0.1);
+}
+
+.phase38sToggle {
+  appearance: none; width: 36px; height: 20px; border-radius: 10px;
+  background: rgba(160, 160, 160, 0.3); border: none; cursor: pointer;
+  position: relative; transition: background 0.2s;
+  flex-shrink: 0;
+}
+.phase38sToggle:checked { background: #1428a0; }
+
+.phase38sFixedBadge {
+  display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 10px;
+  font-size: 0.74rem; font-weight: 700;
+  background: rgba(220, 80, 80, 0.1); color: #8b2020; border: 1px solid rgba(220, 80, 80, 0.25);
+}
+
+.phase38sBtnRow { display: flex; flex-wrap: wrap; gap: 10px; }
+.phase38sSmallBtn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 10px;
+  border: 1px solid rgba(80, 80, 80, 0.28); background: rgba(80, 80, 80, 0.06);
+  color: #222; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.15s;
+}
+.phase38sSmallBtn:hover { background: rgba(80, 80, 80, 0.12); }
+.phase38sSmallBtn.copied { background: rgba(60, 150, 80, 0.12); color: #2a6035; }
+
+/* One Screen Completion Report */
+.phase38rPanel { display: grid; gap: 18px; }
+
+.phase38rHero {
+  display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start;
+  padding: 20px; border: 1px solid rgba(40, 180, 140, 0.22); border-radius: 24px;
+  background: linear-gradient(135deg, rgba(228, 255, 248, 0.95), rgba(210, 248, 238, 0.9));
+}
+.phase38rHero > svg { width: 44px; height: 44px; padding: 10px; border-radius: 16px; color: #fff; background: linear-gradient(135deg, #1aab80, #0c6a50); }
+.phase38rHero h3 { margin: 0 0 6px; font-size: clamp(1.1rem, 2.5vw, 1.7rem); letter-spacing: -0.04em; }
+.phase38rHero p { margin: 0; font-size: 0.88rem; color: var(--muted); }
+.phase38rHero .eyebrow { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #1aab80; margin: 0 0 4px; }
+
+.phase38rSection { padding: 14px 16px; border-radius: 14px; background: rgba(40, 180, 140, 0.04); border: 1px solid rgba(40, 180, 140, 0.12); }
+.phase38rSection h4 { margin: 0 0 8px; font-size: 0.84rem; color: #0c6a50; font-weight: 700; }
+
+.phase38rStatusBadge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 700;
+}
+.phase38rStatusBadge.safe { background: rgba(40, 160, 80, 0.12); color: #1a6040; border: 1px solid rgba(40, 160, 80, 0.3); }
+.phase38rStatusBadge.warning { background: rgba(185, 130, 46, 0.12); color: #8a5e12; border: 1px solid rgba(185, 130, 46, 0.28); }
+.phase38rStatusBadge.danger { background: rgba(220, 80, 80, 0.1); color: #8b2020; border: 1px solid rgba(220, 80, 80, 0.28); }
+
+.phase38rList { list-style: none; padding: 0; margin: 0; display: grid; gap: 5px; }
+.phase38rList li { font-size: 0.82rem; padding: 6px 10px; border-radius: 8px; color: #0a3028; background: rgba(40, 180, 140, 0.05); border: 1px solid rgba(40, 180, 140, 0.12); }
+
+.phase38rBtnRow { display: flex; flex-wrap: wrap; gap: 10px; }
+.phase38rSmallBtn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 10px;
+  border: 1px solid rgba(40, 180, 140, 0.3); background: rgba(40, 180, 140, 0.06);
+  color: #0c6a50; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.15s;
+}
+.phase38rSmallBtn:hover { background: rgba(40, 180, 140, 0.12); }
+.phase38rSmallBtn.copied { background: rgba(60, 150, 80, 0.12); color: #2a6035; }
+.phase38rCopyBtn {
+  display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 12px;
+  border: none; background: #1aab80; color: #fff; font-size: 0.84rem; font-weight: 700; cursor: pointer; transition: background 0.18s;
+}
+.phase38rCopyBtn:hover { background: #0c6a50; }
+.phase38rCopyBtn.copied { background: #2a7a40; }
+.phase38rCopyBtn.failed { background: #992020; }
+
+@media (max-width: 760px) {
+  .phase38Hero, .phase38vHero, .phase38sHero, .phase38rHero { grid-template-columns: 1fr; }
+  .phase38SecondaryGrid { grid-template-columns: repeat(2, 1fr); }
+  .phase38BtnRow, .phase38vBtnRow, .phase38sBtnRow, .phase38rBtnRow { flex-direction: column; }
+}
