@@ -97,7 +97,7 @@ export function OneScreenCommandCenterPanel() {
         ))}
       </div>
 
-      {state.primaryCard.body !== '（今は何もない）' && (
+      {state.primaryCard.actionType !== 'none' && (
         <div className="phase38PrimaryCard">
           <h4>{state.primaryCard.title}</h4>
           <p>{state.primaryCard.body}</p>

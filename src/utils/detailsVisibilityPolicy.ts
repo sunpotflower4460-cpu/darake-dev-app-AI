@@ -5,6 +5,7 @@ export type DetailsVisibilityReason =
   | 'urgent'
   | 'human-required'
   | 'user-opened'
+  | 'default-visible'
   | 'success-hidden'
   | 'report-only-hidden'
   | 'copy-only-hidden'
@@ -129,7 +130,7 @@ export function computeDetailsVisibility(
   return {
     panelId,
     visible: true,
-    reason: 'user-opened',
+    reason: 'default-visible' as const,
     whenToShow: '常に表示',
   };
 }
