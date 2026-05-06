@@ -89,7 +89,6 @@ export function FirstLaunchCarePanel() {
     setState(completed);
     saveFirstLaunchCareState(completed);
     saveGentleAppStartForm(buildGentleFormFromOnboarding(completed));
-    window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 60);
   }
 
   return (
