@@ -1,0 +1,57 @@
+body.darake-first-start-active main.appShell:not(.boundaryShell) {
+  display: none !important;
+}
+
+body.darake-first-start-active .boundaryShell > .panel.statusModePanel {
+  display: none !important;
+}
+
+body.darake-first-start-active .boundaryShell > .panel.statusModePanel:has(.phase48RouteGuard),
+body.darake-first-start-active .boundaryShell > .panel.statusModePanel:has(.flcPanel),
+body.darake-first-start-active .boundaryShell > .panel.statusModePanel:has(.gasPanel),
+body.darake-first-start-active .boundaryShell > .panel.statusModePanel:has(.gbpPanel),
+body.darake-first-start-active .boundaryShell > .panel.statusModePanel:has(.ponPanel),
+body.darake-first-start-active .boundaryShell > .panel.statusModePanel:has(.bnsPanel),
+body.darake-first-start-active .boundaryShell > .panel.statusModePanel:has(.gasCrPanel) {
+  display: block !important;
+}
+
+.phase48RouteGuard {
+  border-radius: 24px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f7fff8, #eef6ff);
+  border: 1px solid rgba(80, 130, 120, 0.18);
+  box-shadow: 0 18px 45px rgba(50, 90, 80, 0.12);
+  text-align: center;
+}
+
+.phase48RouteGuardEmoji {
+  font-size: 2.1rem;
+  margin-bottom: 8px;
+}
+
+.phase48RouteGuardTitle {
+  font-size: clamp(1.25rem, 5vw, 1.8rem);
+  font-weight: 800;
+  color: #263b32;
+  margin-bottom: 8px;
+}
+
+.phase48RouteGuardLead {
+  color: #63736b;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin: 0 auto 14px;
+  max-width: 560px;
+}
+
+.phase48RouteGuardButton {
+  min-height: 48px;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: #2f6f5f;
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+}
