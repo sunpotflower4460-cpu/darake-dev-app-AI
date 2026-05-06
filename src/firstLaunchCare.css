@@ -1,0 +1,261 @@
+/* Phase 45: First Launch Care Onboarding CSS */
+.flcPanel {
+  padding: 20px 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.flcHero {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.flcHeroEmoji {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.flcHeroTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.flcHeroSub {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.flcStepIndicator {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.flcStepDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ddd;
+  transition: background 0.2s;
+}
+
+.flcStepDot.active {
+  background: #4caf50;
+  width: 24px;
+  border-radius: 4px;
+}
+
+.flcStepDot.done {
+  background: #81c784;
+}
+
+.flcStepBody {
+  margin-bottom: 24px;
+}
+
+.flcStepTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 14px;
+}
+
+.flcLabel {
+  display: block;
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.flcInput {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  font-size: 1rem;
+  margin-bottom: 16px;
+  min-height: 48px;
+  resize: vertical;
+}
+
+.flcInput:focus {
+  outline: none;
+  border-color: #4caf50;
+  background: #fff;
+}
+
+.flcChoiceRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.flcChoiceBtn {
+  padding: 10px 16px;
+  border-radius: 14px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  cursor: pointer;
+  font-size: 0.9rem;
+  min-height: 44px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.flcChoiceBtn:hover {
+  background: #f0f9e8;
+}
+
+.flcChoiceBtn.selected {
+  background: #e8f5e9;
+  border-color: #4caf50;
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.flcSafetyList {
+  background: #f0f9e8;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.flcSafetyItem {
+  font-size: 0.9rem;
+  color: #444;
+  padding: 4px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.flcSafetyIcon {
+  color: #4caf50;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.flcReadyCard {
+  background: linear-gradient(135deg, #f0f9e8 0%, #e8f5e9 100%);
+  border-radius: 18px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.flcReadyTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 6px;
+}
+
+.flcReadySub {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.flcBtnRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.flcBtnPrimary {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  border: none;
+  background: #4caf50;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 52px;
+  transition: background 0.15s;
+}
+
+.flcBtnPrimary:hover {
+  background: #388e3c;
+}
+
+.flcBtnSecondary {
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  color: #555;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.flcBtnSecondary:hover {
+  background: #f0f0f0;
+}
+
+.flcPhaseTag {
+  display: inline-block;
+  font-size: 0.72rem;
+  color: #888;
+  background: #f0f0f0;
+  border-radius: 6px;
+  padding: 2px 7px;
+  margin-bottom: 12px;
+}
+
+.flcCrSummary {
+  padding: 16px;
+}
+
+.flcCrTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.flcCrStatusBadge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.flcCrStatusBadge.complete {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.flcCrStatusBadge.incomplete {
+  background: #fff8e1;
+  color: #e65100;
+}
+
+.flcCrSection {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444;
+  margin: 10px 0 5px;
+}
+
+.flcCrList {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.flcCrList li {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 3px;
+}

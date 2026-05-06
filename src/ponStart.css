@@ -1,0 +1,245 @@
+/* Phase 47: Pon Start Pack CSS */
+.ponPanel {
+  padding: 20px 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.ponPhaseTag {
+  display: inline-block;
+  font-size: 0.72rem;
+  color: #888;
+  background: #f0f0f0;
+  border-radius: 6px;
+  padding: 2px 7px;
+  margin-bottom: 10px;
+}
+
+.ponTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 4px;
+}
+
+.ponSub {
+  font-size: 0.88rem;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.ponStatusBadge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.ponStatusBadge.ready-to-copy {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.ponStatusBadge.needs-review {
+  background: #fff8e1;
+  color: #f57f17;
+}
+
+.ponStatusBadge.not-ready {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.ponIncludedList {
+  background: #fafafa;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.ponIncludedTitle {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.ponIncludedItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #555;
+  padding: 3px 0;
+}
+
+.ponIncludedIcon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.ponNextAction {
+  background: #e8f5e9;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.ponWarnBox {
+  background: #fff3e0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  color: #e65100;
+}
+
+.ponBtnRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ponBtnPrimary {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  border: none;
+  background: #4caf50;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s;
+}
+
+.ponBtnPrimary:hover:not(:disabled) {
+  background: #388e3c;
+}
+
+.ponBtnPrimary:disabled {
+  background: #c8e6c9;
+  cursor: not-allowed;
+}
+
+.ponBtnSecondary {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  color: #555;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.ponBtnSecondary:hover {
+  background: #f0f0f0;
+}
+
+/* Beginner Next Step Card */
+.bnsPanel {
+  padding: 20px 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.bnsCard {
+  background: linear-gradient(135deg, #e8f5e9 0%, #f0f9e8 100%);
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.bnsCardTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 8px;
+}
+
+.bnsCardMessage {
+  font-size: 0.95rem;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.bnsNextStepLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.bnsNextStepDetail {
+  font-size: 0.88rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.bnsSectionTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444;
+  margin: 14px 0 6px;
+}
+
+.bnsList {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.bnsList li {
+  font-size: 0.85rem;
+  color: #555;
+  padding: 4px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.bnsStopBox {
+  background: #fff3e0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-top: 12px;
+}
+
+.bnsStopTitle {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #e65100;
+  margin-bottom: 6px;
+}
+
+.bnsStopList {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.bnsStopList li {
+  font-size: 0.85rem;
+  color: #bf360c;
+  padding: 3px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
