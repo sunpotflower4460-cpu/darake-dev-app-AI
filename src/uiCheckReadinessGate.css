@@ -1,0 +1,300 @@
+.uiCheckReadinessGatePanel {
+  display: grid;
+  gap: 18px;
+}
+
+.uiCheckReadinessGateHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.uiCheckReadinessGateHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.uiCheckReadinessGateHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.uiCheckReadinessGateHero p:not(.eyebrow),
+.uiCheckReadinessGateSafetyBox p,
+.uiCheckReadinessGateControls span,
+.uiCheckReadinessGateSummaryGrid p,
+.uiCheckReadinessGateCheckItem p,
+.uiCheckReadinessGateActionsBox li {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.gate-ready {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.gate-needs-review {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.gate-blocked {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.uiCheckReadinessGateSafetyBox,
+.uiCheckReadinessGateControls,
+.uiCheckReadinessGateSummaryGrid section,
+.uiCheckReadinessGateChecksBox,
+.uiCheckReadinessGateBlockersBox,
+.uiCheckReadinessGateWarningsBox,
+.uiCheckReadinessGateActionsBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.uiCheckReadinessGateSafetyBox strong,
+.uiCheckReadinessGateChecksBox strong,
+.uiCheckReadinessGateBlockersBox strong,
+.uiCheckReadinessGateWarningsBox strong,
+.uiCheckReadinessGateActionsBox strong,
+.uiCheckReadinessGateSummaryGrid h4,
+.uiCheckReadinessGateCheckItem strong {
+  color: #35513d;
+}
+
+.uiCheckReadinessGateControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.uiCheckReadinessGateControls button,
+.uiCheckReadinessGateCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.uiCheckReadinessGateCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.uiCheckReadinessGateCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.uiCheckReadinessGateControls span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.uiCheckReadinessGateSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.uiCheckReadinessGateSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.uiCheckReadinessGateSummaryGrid h4,
+.uiCheckReadinessGateSummaryGrid p {
+  margin: 0;
+}
+
+.uiCheckReadinessGateSummaryGrid p {
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.uiCheckReadinessGateChecksBox {
+  display: grid;
+  gap: 10px;
+}
+
+.uiCheckReadinessGateChecksBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.uiCheckReadinessGateChecksBox > div:first-child span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.uiCheckReadinessGateCheckList {
+  display: grid;
+  gap: 8px;
+}
+
+.uiCheckReadinessGateCheckItem {
+  display: grid;
+  gap: 6px;
+  padding: 10px 12px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 16px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.uiCheckReadinessGateCheckItem > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.uiCheckReadinessGateCheckItem p {
+  margin: 0;
+}
+
+.uiCheckReadinessGateCheckItem span {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.check-status-pass span {
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.15);
+}
+
+.check-status-warn span {
+  color: #76531d;
+  background: rgba(185, 130, 46, 0.13);
+}
+
+.check-status-fail span,
+.check-status-unchecked span {
+  color: #7e3436;
+  background: rgba(180, 91, 93, 0.12);
+}
+
+.check-status-warn {
+  border-color: rgba(185, 130, 46, 0.25);
+}
+
+.check-status-fail,
+.check-status-unchecked {
+  border-color: rgba(180, 91, 93, 0.24);
+}
+
+.uiCheckReadinessGateBlockersBox {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.07);
+}
+
+.uiCheckReadinessGateBlockersBox strong {
+  color: #7e3436;
+}
+
+.uiCheckReadinessGateBlockersBox ul {
+  margin: 6px 0 0;
+  padding-left: 1.2rem;
+  color: #7e3436;
+}
+
+.uiCheckReadinessGateWarningsBox {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.07);
+}
+
+.uiCheckReadinessGateWarningsBox strong {
+  color: #76531d;
+}
+
+.uiCheckReadinessGateWarningsBox ul {
+  margin: 6px 0 0;
+  padding-left: 1.2rem;
+  color: #76531d;
+}
+
+.uiCheckReadinessGateActionsBox {
+  display: grid;
+  gap: 10px;
+}
+
+.uiCheckReadinessGateActionsBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.uiCheckReadinessGateActionsBox > div:first-child span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.uiCheckReadinessGateActionsBox ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.uiCheckReadinessGateActionsBox li + li {
+  margin-top: 6px;
+}
+
+@media (max-width: 760px) {
+  .uiCheckReadinessGateHero,
+  .uiCheckReadinessGateSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .uiCheckReadinessGateControls,
+  .uiCheckReadinessGateControls button,
+  .uiCheckReadinessGateCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .uiCheckReadinessGateChecksBox > div:first-child,
+  .uiCheckReadinessGateActionsBox > div:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
