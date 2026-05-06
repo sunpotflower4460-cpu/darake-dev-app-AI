@@ -9,6 +9,7 @@ import { getFocusedModeById, loadFocusedModeId, saveFocusedModeId } from './util
 import type { FocusedModeId } from './utils/focusedMode';
 import type { DarakeNavGroupId } from './utils/navigationGroups';
 import { buildFirstAppStartCompletionReport } from './utils/firstAppStartCompletionReport';
+import { isFirstStartMinimalModeReleased } from './utils/firstStartMinimalMode';
 import { subscribeDarakeRuntimeEvents } from './utils/darakeRuntimeEvents';
 import './styleImports';
 
@@ -42,7 +43,7 @@ function getFirstStartVisiblePanelIds() {
     return new Set(ids);
   }
 
-  ids.push('pon-start', 'beginner-next-step-card');
+  ids.push('pon-start', 'beginner-next-step-card', 'first-start-advanced-open');
   return new Set(ids);
 }
 
@@ -136,7 +137,7 @@ function DarakeControlRoom({ firstStartActive }: { firstStartActive: boolean }) 
 function DarakeRoot() {
   const revision = useDarakeRuntimeRevision();
   const firstStartActive = useMemo(
-    () => !buildFirstAppStartCompletionReport().beginnerFlowReady,
+    () => !isFirstStartMinimalModeReleased(),
     [revision],
   );
 
