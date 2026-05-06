@@ -1,0 +1,216 @@
+.uiMachineCheckInputPackPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.uiMachineCheckInputPackHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.uiMachineCheckInputPackHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.uiMachineCheckInputPackHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.uiMachineCheckInputPackHero p:not(.eyebrow),
+.uiMachineCheckInputPackSafetyBox p,
+.uiMachineCheckInputPackControls span,
+.uiMachineCheckInputPackSummaryGrid p,
+.uiMachineCheckInputPackSourceBox li,
+.uiMachineCheckInputPackCheckList li,
+.uiMachineCheckInputPackRulesList li {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.input-pack-ready {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.input-pack-needs-review {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.input-pack-blocked {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.uiMachineCheckInputPackSafetyBox,
+.uiMachineCheckInputPackControls,
+.uiMachineCheckInputPackSummaryGrid section,
+.uiMachineCheckInputPackSourceBox,
+.uiMachineCheckInputPackCheckBox,
+.uiMachineCheckInputPackRulesBox,
+.uiMachineCheckInputPackHardStopsBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.uiMachineCheckInputPackSafetyBox strong,
+.uiMachineCheckInputPackSourceBox strong,
+.uiMachineCheckInputPackCheckBox strong,
+.uiMachineCheckInputPackRulesBox strong,
+.uiMachineCheckInputPackHardStopsBox strong,
+.uiMachineCheckInputPackSummaryGrid h4 {
+  color: #35513d;
+}
+
+.uiMachineCheckInputPackControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.uiMachineCheckInputPackControls button,
+.uiMachineCheckInputPackCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.uiMachineCheckInputPackCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.uiMachineCheckInputPackCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.uiMachineCheckInputPackControls span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.uiMachineCheckInputPackSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.uiMachineCheckInputPackSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.uiMachineCheckInputPackSummaryGrid h4,
+.uiMachineCheckInputPackSummaryGrid p {
+  margin: 0;
+}
+
+.uiMachineCheckInputPackSummaryGrid p {
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.uiMachineCheckInputPackSourceBox,
+.uiMachineCheckInputPackCheckBox,
+.uiMachineCheckInputPackRulesBox {
+  display: grid;
+  gap: 10px;
+}
+
+.uiMachineCheckInputPackSourceBox > div:first-child,
+.uiMachineCheckInputPackCheckBox > div:first-child,
+.uiMachineCheckInputPackRulesBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.uiMachineCheckInputPackSourceBox > div:first-child span,
+.uiMachineCheckInputPackCheckBox > div:first-child span,
+.uiMachineCheckInputPackRulesBox > div:first-child span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.uiMachineCheckInputPackSourceBox ul,
+.uiMachineCheckInputPackCheckList,
+.uiMachineCheckInputPackRulesList {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.uiMachineCheckInputPackSourceBox li + li,
+.uiMachineCheckInputPackCheckList li + li,
+.uiMachineCheckInputPackRulesList li + li {
+  margin-top: 6px;
+}
+
+.uiMachineCheckInputPackHardStopsBox {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.07);
+}
+
+.uiMachineCheckInputPackHardStopsBox strong {
+  color: #7e3436;
+}
+
+.uiMachineCheckInputPackHardStopsBox ul {
+  margin: 6px 0 0;
+  padding-left: 1.2rem;
+  color: #7e3436;
+}
+
+@media (max-width: 760px) {
+  .uiMachineCheckInputPackHero,
+  .uiMachineCheckInputPackSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .uiMachineCheckInputPackControls,
+  .uiMachineCheckInputPackControls button,
+  .uiMachineCheckInputPackCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .uiMachineCheckInputPackSourceBox > div:first-child,
+  .uiMachineCheckInputPackCheckBox > div:first-child,
+  .uiMachineCheckInputPackRulesBox > div:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

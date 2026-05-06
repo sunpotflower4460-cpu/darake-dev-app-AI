@@ -30,6 +30,7 @@ import { RealCaptureWorkflowDraftPanel } from './components/RealCaptureWorkflowD
 import { ReviewWatchPanel } from './components/ReviewWatchPanel';
 import { ScreenshotCaptureGatePanel } from './components/ScreenshotCaptureGatePanel';
 import { ScreenshotCaptureManifestRecordPanel } from './components/ScreenshotCaptureManifestRecordPanel';
+import { ScreenshotManifestToResultBridgePanel } from './components/ScreenshotManifestToResultBridgePanel';
 import { ScreenshotDryRunArtifactCheckPanel } from './components/ScreenshotDryRunArtifactCheckPanel';
 import { ScreenshotJobDraftPanel } from './components/ScreenshotJobDraftPanel';
 import { ScreenshotPlanExportPanel } from './components/ScreenshotPlanExportPanel';
@@ -41,8 +42,12 @@ import { ScreenshotWorkflowFileStatusPanel } from './components/ScreenshotWorkfl
 import { ScreenshotWorkflowManualRunGuidePanel } from './components/ScreenshotWorkflowManualRunGuidePanel';
 import { StatusPanel } from './components/StatusPanel';
 import { UiCheckCompletionReportPanel } from './components/UiCheckCompletionReportPanel';
+import { UiCheckReadinessGatePanel } from './components/UiCheckReadinessGatePanel';
+import { UiCheckResultBridgePanel } from './components/UiCheckResultBridgePanel';
 import { UiCheckResultRecordPanel } from './components/UiCheckResultRecordPanel';
 import { UiMachineCheckDraftPanel } from './components/UiMachineCheckDraftPanel';
+import { UiMachineCheckInputPackPanel } from './components/UiMachineCheckInputPackPanel';
+import { Phase10ScreenshotUiCompletionReportPanel } from './components/Phase10ScreenshotUiCompletionReportPanel';
 import './styles.css';
 import './phase2.css';
 import './phase25.css';
@@ -70,6 +75,7 @@ import './playwrightSetupWorkflowFileStatus.css';
 import './realCaptureWorkflowDraft.css';
 import './screenshotCaptureGate.css';
 import './screenshotCaptureManifestRecord.css';
+import './screenshotManifestToResultBridge.css';
 import './screenshotDryRunArtifactCheck.css';
 import './screenshotJobDraft.css';
 import './screenshotPlanExport.css';
@@ -80,8 +86,12 @@ import './screenshotWorkflowDispatchDraft.css';
 import './screenshotWorkflowFileStatus.css';
 import './screenshotWorkflowManualRunGuide.css';
 import './uiMachineCheckDraft.css';
+import './uiCheckReadinessGate.css';
+import './uiMachineCheckInputPack.css';
+import './uiCheckResultBridge.css';
 import './uiCheckResultRecord.css';
 import './uiCheckCompletionReport.css';
+import './phase10ScreenshotUiCompletionReport.css';
 import './reviewWatch.css';
 import './prWatch.css';
 import './ciWatch.css';
@@ -180,7 +190,13 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <ScreenshotCaptureManifestRecordPanel />
       </div>
       <div className="panel statusModePanel">
+        <ScreenshotManifestToResultBridgePanel />
+      </div>
+      <div className="panel statusModePanel">
         <ScreenshotResultRecordPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <UiCheckReadinessGatePanel />
       </div>
       <div className="panel statusModePanel">
         <ScreenshotToUiCheckBridgePanel />
@@ -189,10 +205,19 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <UiMachineCheckDraftPanel />
       </div>
       <div className="panel statusModePanel">
+        <UiMachineCheckInputPackPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <UiCheckResultBridgePanel />
+      </div>
+      <div className="panel statusModePanel">
         <UiCheckResultRecordPanel />
       </div>
       <div className="panel statusModePanel">
         <UiCheckCompletionReportPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <Phase10ScreenshotUiCompletionReportPanel />
       </div>
       <div className="panel statusModePanel">
         <ReviewWatchPanel />

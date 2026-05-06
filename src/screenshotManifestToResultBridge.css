@@ -1,0 +1,233 @@
+.manifestToResultBridgePanel {
+  display: grid;
+  gap: 18px;
+}
+
+.manifestToResultBridgeHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.manifestToResultBridgeHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.manifestToResultBridgeHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.manifestToResultBridgeHero p:not(.eyebrow),
+.manifestToResultBridgeSafetyBox p,
+.manifestToResultBridgeControls span,
+.manifestToResultBridgeSummaryGrid p,
+.manifestToResultBridgeSourceBox li,
+.manifestToResultBridgeSuggestedBox li,
+.manifestToResultBridgeActionsBox li {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.bridge-status-ready-to-copy {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.bridge-status-needs-review {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.bridge-status-blocked {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.manifestToResultBridgeSafetyBox,
+.manifestToResultBridgeControls,
+.manifestToResultBridgeSummaryGrid section,
+.manifestToResultBridgeSourceBox,
+.manifestToResultBridgeSuggestedBox,
+.manifestToResultBridgeBlockersBox,
+.manifestToResultBridgeWarningsBox,
+.manifestToResultBridgeActionsBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.manifestToResultBridgeSafetyBox strong,
+.manifestToResultBridgeSourceBox strong,
+.manifestToResultBridgeSuggestedBox strong,
+.manifestToResultBridgeBlockersBox strong,
+.manifestToResultBridgeWarningsBox strong,
+.manifestToResultBridgeActionsBox strong,
+.manifestToResultBridgeSummaryGrid h4 {
+  color: #35513d;
+}
+
+.manifestToResultBridgeControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.manifestToResultBridgeControls button,
+.manifestToResultBridgeCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.manifestToResultBridgeCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.manifestToResultBridgeCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.manifestToResultBridgeControls span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.manifestToResultBridgeSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.manifestToResultBridgeSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.manifestToResultBridgeSummaryGrid h4,
+.manifestToResultBridgeSummaryGrid p {
+  margin: 0;
+}
+
+.manifestToResultBridgeSummaryGrid p {
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.manifestToResultBridgeSourceBox,
+.manifestToResultBridgeSuggestedBox,
+.manifestToResultBridgeActionsBox {
+  display: grid;
+  gap: 10px;
+}
+
+.manifestToResultBridgeSourceBox > div:first-child,
+.manifestToResultBridgeSuggestedBox > div:first-child,
+.manifestToResultBridgeActionsBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.manifestToResultBridgeSourceBox span,
+.manifestToResultBridgeSuggestedBox span,
+.manifestToResultBridgeActionsBox span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.manifestToResultBridgeSourceBox ul,
+.manifestToResultBridgeSuggestedBox ul,
+.manifestToResultBridgeActionsBox ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.manifestToResultBridgeSourceBox li + li,
+.manifestToResultBridgeSuggestedBox li + li,
+.manifestToResultBridgeActionsBox li + li {
+  margin-top: 6px;
+}
+
+.manifestToResultBridgeBlockersBox {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.07);
+}
+
+.manifestToResultBridgeBlockersBox strong {
+  color: #7e3436;
+}
+
+.manifestToResultBridgeBlockersBox ul {
+  margin: 6px 0 0;
+  padding-left: 1.2rem;
+  color: #7e3436;
+}
+
+.manifestToResultBridgeWarningsBox {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.07);
+}
+
+.manifestToResultBridgeWarningsBox strong {
+  color: #76531d;
+}
+
+.manifestToResultBridgeWarningsBox ul {
+  margin: 6px 0 0;
+  padding-left: 1.2rem;
+  color: #76531d;
+}
+
+@media (max-width: 760px) {
+  .manifestToResultBridgeHero,
+  .manifestToResultBridgeSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .manifestToResultBridgeControls,
+  .manifestToResultBridgeControls button,
+  .manifestToResultBridgeCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .manifestToResultBridgeSourceBox > div:first-child,
+  .manifestToResultBridgeSuggestedBox > div:first-child,
+  .manifestToResultBridgeActionsBox > div:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

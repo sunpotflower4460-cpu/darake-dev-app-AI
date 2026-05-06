@@ -1,0 +1,287 @@
+.phase10CompletionReportPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.phase10CompletionReportHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.phase10CompletionReportHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.phase10CompletionReportHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: -0.05em;
+}
+
+.phase10CompletionReportHero p:not(.eyebrow),
+.phase10CompletionReportSafetyBox p,
+.phase10CompletionReportControls span,
+.phase10CompletionReportSummaryGrid p,
+.phase10CompletionReportListBox li,
+.phase10CompletionReportActionsBox li {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.phase10-ready-for-next-phase {
+  border-color: rgba(76, 124, 85, 0.25);
+  background: rgba(76, 124, 85, 0.1);
+}
+
+.phase10-needs-review {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.08);
+}
+
+.phase10-blocked {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.08);
+}
+
+.phase10CompletionReportSafetyBox,
+.phase10CompletionReportControls,
+.phase10CompletionReportSummaryGrid section,
+.phase10CompletionReportCompletedBox,
+.phase10CompletionReportRemainingBox,
+.phase10CompletionReportBlockersBox,
+.phase10CompletionReportWarningsBox,
+.phase10CompletionReportNextPhaseBox,
+.phase10CompletionReportActionsBox {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 22px;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.phase10CompletionReportSafetyBox strong,
+.phase10CompletionReportCompletedBox strong,
+.phase10CompletionReportRemainingBox strong,
+.phase10CompletionReportBlockersBox strong,
+.phase10CompletionReportWarningsBox strong,
+.phase10CompletionReportNextPhaseBox strong,
+.phase10CompletionReportActionsBox strong,
+.phase10CompletionReportSummaryGrid h4 {
+  color: #35513d;
+}
+
+.phase10CompletionReportControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.phase10CompletionReportControls button,
+.phase10CompletionReportCopyButton {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.phase10CompletionReportCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.phase10CompletionReportCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.phase10CompletionReportControls span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.phase10CompletionReportSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.phase10CompletionReportSummaryGrid section {
+  display: grid;
+  gap: 8px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.phase10CompletionReportSummaryGrid h4,
+.phase10CompletionReportSummaryGrid p {
+  margin: 0;
+}
+
+.phase10CompletionReportSummaryGrid p {
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.phase10CompletionReportListBox {
+  display: grid;
+  gap: 10px;
+}
+
+.phase10CompletionReportListBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.phase10CompletionReportListBox > div:first-child span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.phase10CompletionReportListBox ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.phase10CompletionReportListBox li + li {
+  margin-top: 6px;
+}
+
+.phase10CompletionReportCompletedBox {
+  display: grid;
+  gap: 10px;
+}
+
+.phase10CompletionReportRemainingBox {
+  display: grid;
+  gap: 10px;
+  border-color: rgba(185, 130, 46, 0.2);
+  background: rgba(185, 130, 46, 0.06);
+}
+
+.phase10CompletionReportRemainingBox strong {
+  color: #76531d;
+}
+
+.phase10CompletionReportBlockersBox {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.07);
+}
+
+.phase10CompletionReportBlockersBox strong {
+  color: #7e3436;
+}
+
+.phase10CompletionReportBlockersBox ul {
+  margin: 6px 0 0;
+  padding-left: 1.2rem;
+  color: #7e3436;
+}
+
+.phase10CompletionReportWarningsBox {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.07);
+}
+
+.phase10CompletionReportWarningsBox strong {
+  color: #76531d;
+}
+
+.phase10CompletionReportWarningsBox ul {
+  margin: 6px 0 0;
+  padding-left: 1.2rem;
+  color: #76531d;
+}
+
+.phase10CompletionReportNextPhaseBox {
+  display: grid;
+  gap: 8px;
+}
+
+.phase10CompletionReportNextPhaseBox p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.phase10CompletionReportActionsBox {
+  display: grid;
+  gap: 10px;
+}
+
+.phase10CompletionReportActionsBox > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.phase10CompletionReportActionsBox > div:first-child span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: #35513d;
+  background: rgba(76, 124, 85, 0.12);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.phase10CompletionReportActionsBox ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.phase10CompletionReportActionsBox li + li {
+  margin-top: 6px;
+}
+
+@media (max-width: 1080px) {
+  .phase10CompletionReportSummaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .phase10CompletionReportHero,
+  .phase10CompletionReportSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .phase10CompletionReportControls,
+  .phase10CompletionReportControls button,
+  .phase10CompletionReportCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .phase10CompletionReportListBox > div:first-child,
+  .phase10CompletionReportActionsBox > div:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
