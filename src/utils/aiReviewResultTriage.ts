@@ -42,7 +42,7 @@ export function buildAiReviewTriageItem(
   partial: Partial<AiReviewTriageItem> & Pick<AiReviewTriageItem, 'text' | 'category'>
 ): AiReviewTriageItem {
   return {
-    id: `triage-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+    id: `triage-${crypto.randomUUID()}`,
     priority: 'medium',
     action: categoryToDefaultAction(partial.category),
     ...partial,

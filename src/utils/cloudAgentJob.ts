@@ -58,7 +58,7 @@ export function buildCloudAgentJob(
 ): CloudAgentJob {
   const now = new Date().toISOString();
   return {
-    id: `ca-job-${Date.now()}`,
+    id: `ca-job-${crypto.randomUUID()}`,
     appId: '',
     appName: '',
     instruction: '',

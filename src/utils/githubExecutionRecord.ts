@@ -50,7 +50,7 @@ export function buildGitHubExecutionRecord(
     Pick<GitHubExecutionRecord, 'operationType' | 'title' | 'targetRepo'>
 ): GitHubExecutionRecord {
   return {
-    id: `exec-${Date.now()}`,
+    id: `exec-${crypto.randomUUID()}`,
     resultUrl: '',
     status: 'draft',
     executedAt: new Date().toISOString(),

@@ -42,7 +42,7 @@ export function buildCloudAgentResultRecord(
   partial: Partial<CloudAgentResultRecord> & Pick<CloudAgentResultRecord, 'jobId'>
 ): CloudAgentResultRecord {
   return {
-    id: `ca-result-${Date.now()}`,
+    id: `ca-result-${crypto.randomUUID()}`,
     prUrl: '',
     prNumber: '',
     branchName: '',

@@ -46,7 +46,7 @@ export function buildManualAiReviewSession(
 ): ManualAiReviewSession {
   const now = new Date().toISOString();
   return {
-    id: `ai-session-${Date.now()}`,
+    id: `ai-session-${crypto.randomUUID()}`,
     provider: 'ChatGPT / Claude / Gemini',
     taskType: 'code-review',
     expectedOutputFormat: 'Markdown リスト',

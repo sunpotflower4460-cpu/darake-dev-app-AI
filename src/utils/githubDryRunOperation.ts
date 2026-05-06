@@ -37,7 +37,7 @@ export function buildGitHubDryRunOperation(
 ): GitHubDryRunOperation {
   const risk = classifyGitHubDryRunRisk(partial.type);
   return {
-    id: `github-op-${Date.now()}`,
+    id: `github-op-${crypto.randomUUID()}`,
     targetBranch: '',
     baseBranch: 'main',
     summary: '',
