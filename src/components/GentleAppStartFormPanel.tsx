@@ -110,6 +110,7 @@ export function GentleAppStartFormPanel() {
           {(Object.keys(FEELING_LABELS) as Array<GentleAppStartForm['mainFeeling']>).map((f) => (
             <button
               key={f}
+              type="button"
               className={`gasChoiceBtn${form.mainFeeling === f ? ' selected' : ''}`}
               onClick={() => update({ mainFeeling: f })}
             >
@@ -123,6 +124,7 @@ export function GentleAppStartFormPanel() {
           {(Object.keys(PLATFORM_LABELS) as Array<GentleAppStartForm['platform']>).map((p) => (
             <button
               key={p}
+              type="button"
               className={`gasChoiceBtn${form.platform === p ? ' selected' : ''}`}
               onClick={() => update({ platform: p })}
             >
@@ -136,6 +138,7 @@ export function GentleAppStartFormPanel() {
           {(Object.keys(FIRST_GOAL_LABELS) as Array<GentleAppStartForm['firstGoal']>).map((g) => (
             <button
               key={g}
+              type="button"
               className={`gasChoiceBtn${form.firstGoal === g ? ' selected' : ''}`}
               onClick={() => update({ firstGoal: g })}
             >
@@ -149,6 +152,7 @@ export function GentleAppStartFormPanel() {
           {(Object.keys(AUTO_PREF_LABELS) as Array<GentleAppStartForm['autoPreference']>).map((a) => (
             <button
               key={a}
+              type="button"
               className={`gasChoiceBtn${form.autoPreference === a ? ' selected' : ''}`}
               onClick={() => update({ autoPreference: a })}
             >
@@ -159,6 +163,7 @@ export function GentleAppStartFormPanel() {
       </div>
 
       <button
+        type="button"
         className="gasAdvancedToggle"
         onClick={() => setShowAdvanced((v) => !v)}
       >
@@ -204,6 +209,7 @@ export function GentleAppStartFormPanel() {
 
       <div className="gasBtnRow">
         <button
+          type="button"
           className="gasBtnPrimary"
           onClick={handleSave}
           disabled={errors.length > 0 && validateGentleAppStartForm(mergeOnboardingIntoForm(form)).length > 0}

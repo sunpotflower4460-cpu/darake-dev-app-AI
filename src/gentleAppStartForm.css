@@ -85,11 +85,18 @@
   cursor: pointer;
   font-size: 0.88rem;
   min-height: 40px;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .gasChoiceBtn:hover {
   background: #f1f8e9;
+}
+
+.gasChoiceBtn:active {
+  transform: scale(0.98);
 }
 
 .gasChoiceBtn.selected {
@@ -109,10 +116,18 @@
   font-size: 0.85rem;
   cursor: pointer;
   margin-bottom: 14px;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .gasAdvancedToggle:hover {
   background: #f5f5f5;
+}
+
+.gasAdvancedToggle:active {
+  transform: scale(0.98);
 }
 
 .gasErrorBox {
@@ -145,11 +160,19 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: background 0.15s;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .gasBtnPrimary:hover:not(:disabled) {
   background: #388e3c;
+}
+
+.gasBtnPrimary:active:not(:disabled) {
+  background: #2e7d32;
+  transform: scale(0.98);
 }
 
 .gasBtnPrimary:disabled {
@@ -171,10 +194,19 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .gasBtnSecondary:hover {
   background: #f0f0f0;
+}
+
+.gasBtnSecondary:active {
+  background: #e0e0e0;
+  transform: scale(0.98);
 }
 
 /* Gentle Blueprint Preview */

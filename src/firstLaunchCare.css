@@ -106,11 +106,18 @@
   cursor: pointer;
   font-size: 0.9rem;
   min-height: 44px;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .flcChoiceBtn:hover {
   background: #f0f9e8;
+}
+
+.flcChoiceBtn:active {
+  transform: scale(0.98);
 }
 
 .flcChoiceBtn.selected {
@@ -180,11 +187,19 @@
   font-weight: 700;
   cursor: pointer;
   min-height: 52px;
-  transition: background 0.15s;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .flcBtnPrimary:hover {
   background: #388e3c;
+}
+
+.flcBtnPrimary:active {
+  background: #2e7d32;
+  transform: scale(0.98);
 }
 
 .flcBtnSecondary {
@@ -197,10 +212,19 @@
   font-size: 0.9rem;
   cursor: pointer;
   min-height: 44px;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .flcBtnSecondary:hover {
   background: #f0f0f0;
+}
+
+.flcBtnSecondary:active {
+  background: #e0e0e0;
+  transform: scale(0.98);
 }
 
 .flcPhaseTag {
