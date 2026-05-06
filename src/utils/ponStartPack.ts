@@ -1,5 +1,6 @@
 import { loadGentleAppStartForm } from './gentleAppStartForm';
 import { buildGentleFormToBlueprintBridge } from './gentleFormToBlueprintBridge';
+import type { GentleFormToBlueprintBridge } from './gentleFormToBlueprintBridge';
 
 export type PonStartPackStatus =
   | 'not-ready'
@@ -50,6 +51,17 @@ const FIRST_REVIEW_CHECKLIST_MARKDOWN = `# 最初のレビューチェックリ�
 - [ ] secret・API keyがない
 `;
 
+function formatPhaseMarkdown(phase: GentleFormToBlueprintBridge['suggestedPhases'][number]): string {
+  return [
+    `## ${phase.title}`,
+    `**目的**: ${phase.purpose}`,
+    '',
+    '**完了条件**:',
+    ...phase.doneConditions.map((c) => `- [ ] ${c}`),
+    '',
+  ].join('\n');
+}
+
 export function buildPonStartPack(): PonStartPack {
   const form = loadGentleAppStartForm();
   const bridge = buildGentleFormToBlueprintBridge(form);
@@ -71,14 +83,7 @@ export function buildPonStartPack(): PonStartPack {
   const phasePlanMarkdown = [
     `# Phase計画 — ${appName}`,
     '',
-    ...bridge.suggestedPhases.map((p) => [
-      `## ${p.title}`,
-      `**目的**: ${p.purpose}`,
-      '',
-      '**完了条件**:',
-      ...p.doneConditions.map((c) => `- [ ] ${c}`),
-      '',
-    ].join('\n')),
+    ...bridge.suggestedPhases.map(formatPhaseMarkdown),
   ].join('\n');
 
   const issueDraftMarkdown = `# ${bridge.issueDraftTitle}\n\n${bridge.issueDraftBody}`;

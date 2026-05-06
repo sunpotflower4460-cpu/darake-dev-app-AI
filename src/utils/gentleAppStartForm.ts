@@ -137,7 +137,7 @@ export function formatGentleAppStartFormMarkdown(form: GentleAppStartForm): stri
   ];
 
   if (form.mustHave) {
-    lines.push(`## 必ずいること`, form.mustHave, '');
+    lines.push(`## 必ず入れること`, form.mustHave, '');
   }
   if (form.mustNotDo) {
     lines.push(`## やらないこと`, form.mustNotDo, '');
