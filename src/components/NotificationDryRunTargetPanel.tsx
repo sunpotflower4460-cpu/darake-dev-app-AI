@@ -19,6 +19,7 @@ export function NotificationDryRunTargetPanel() {
   const [reloadKey, setReloadKey] = useState(0);
   const [copyState, setCopyState] = useState<CopyState>('idle');
 
+  // reloadKey is read here to suppress unused-variable lint; button increments it to trigger re-render
   void reloadKey;
   const targets = buildDefaultNotificationDryRunTargets();
 

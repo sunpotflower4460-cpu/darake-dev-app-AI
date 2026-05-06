@@ -67,7 +67,7 @@ export const DEFAULT_NOTIFICATION_DRY_RUN_TARGETS: NotificationDryRunTarget[] = 
     supportsMarkdown: false,
     supportsPlainText: true,
     supportsJsonPayload: true,
-    notes: 'channel access token等が必要。アプリ内保存禁止。短いplain textが適切。',
+    notes: 'Channel Access Token等が必要。アプリ内保存禁止。短いplain textが適切。',
   },
   {
     id: 'target-email',
