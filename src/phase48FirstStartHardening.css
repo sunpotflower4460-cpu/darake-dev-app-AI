@@ -12,6 +12,7 @@ body.darake-first-start-active .boundaryShell > .panel.statusModePanel:has(.gasP
 body.darake-first-start-active .boundaryShell > .panel.statusModePanel:has(.gbpPanel),
 body.darake-first-start-active .boundaryShell > .panel.statusModePanel:has(.ponPanel),
 body.darake-first-start-active .boundaryShell > .panel.statusModePanel:has(.bnsPanel),
+body.darake-first-start-active .boundaryShell > .panel.statusModePanel:has(.phase48AdvancedOpen),
 body.darake-first-start-active .boundaryShell > .panel.statusModePanel:has(.gasCrPanel) {
   display: block !important;
 }
@@ -53,5 +54,39 @@ body.darake-first-start-active .boundaryShell > .panel.statusModePanel:has(.gasC
   background: #2f6f5f;
   color: white;
   font-weight: 800;
+  cursor: pointer;
+}
+
+.phase48AdvancedOpen {
+  border-radius: 22px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px dashed rgba(74, 93, 82, 0.22);
+  text-align: center;
+  color: #5f6d65;
+}
+
+.phase48AdvancedTitle {
+  font-weight: 800;
+  color: #33453c;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.phase48AdvancedLead {
+  margin: 0 auto 14px;
+  max-width: 560px;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.phase48AdvancedButton {
+  min-height: 42px;
+  border: 1px solid rgba(74, 93, 82, 0.24);
+  border-radius: 999px;
+  background: white;
+  color: #4d655a;
+  font-weight: 700;
+  padding: 9px 16px;
   cursor: pointer;
 }
