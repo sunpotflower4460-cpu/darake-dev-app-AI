@@ -1,0 +1,104 @@
+/* Phase 42: Real-use Rehearsal Panel CSS */
+.phase42Panel {
+  padding: 16px;
+}
+
+.phase42Hero {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.phase42ScenarioSelect {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  font-size: 0.9rem;
+  margin-bottom: 14px;
+  min-height: 44px;
+}
+
+.phase42StatusCard {
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.phase42StatusCard.darake-success {
+  background: #f0f9e8;
+}
+
+.phase42StatusCard.too-much-human-work {
+  background: #fff8e1;
+}
+
+.phase42StatusCard.blocked {
+  background: #fff0f0;
+}
+
+.phase42StatusCard.needs-review {
+  background: #e8f4fd;
+}
+
+.phase42SectionTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444;
+  margin: 12px 0 6px;
+}
+
+.phase42List {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.phase42List li {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 3px;
+}
+
+.phase42BtnRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.phase42Btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  cursor: pointer;
+  font-size: 0.9rem;
+  min-height: 44px;
+}
+
+.phase42Btn:hover {
+  background: #f0f0f0;
+}
+
+.phase42Details {
+  margin-top: 12px;
+  background: #fafafa;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.phase42Tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  background: #e8f4fd;
+  color: #1976d2;
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
