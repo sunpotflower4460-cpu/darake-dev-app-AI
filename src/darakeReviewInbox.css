@@ -1,0 +1,407 @@
+/* Phase 35: Darake Review Inbox */
+
+.phase35Panel {
+  display: grid;
+  gap: 18px;
+}
+
+.phase35Hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(220, 80, 80, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 238, 238, 0.95), rgba(255, 224, 224, 0.9));
+}
+
+.phase35Hero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #c03030, #7a1a1a);
+}
+
+.phase35Hero h3 { margin: 0 0 6px; font-size: clamp(1.1rem, 2.5vw, 1.7rem); letter-spacing: -0.04em; }
+.phase35Hero p { margin: 0; font-size: 0.88rem; color: var(--muted); }
+.phase35Hero .eyebrow { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #c03030; margin: 0 0 4px; }
+
+.phase35SafetyBox {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(220, 80, 80, 0.08);
+  border: 1px solid rgba(220, 80, 80, 0.22);
+  font-size: 0.84rem;
+  color: #6e1a1a;
+}
+
+.phase35Section {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(220, 80, 80, 0.03);
+  border: 1px solid rgba(220, 80, 80, 0.1);
+}
+
+.phase35Section h4 { margin: 0 0 8px; font-size: 0.84rem; color: #7a1a1a; font-weight: 700; }
+
+.phase35SummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 10px;
+}
+.phase35SummaryGrid section { background: rgba(220, 80, 80, 0.05); border-radius: 12px; padding: 12px; text-align: center; }
+.phase35SummaryGrid h4 { font-size: 0.73rem; margin: 0 0 4px; color: var(--muted); }
+.phase35SummaryGrid p { font-size: 1.35rem; font-weight: 800; margin: 0; color: #7a1a1a; }
+
+.phase35InboxCard {
+  padding: 14px 16px;
+  border-radius: 12px;
+  display: grid;
+  gap: 8px;
+  font-size: 0.82rem;
+}
+
+.phase35InboxCard.priority-urgent { background: rgba(220, 40, 40, 0.07); border: 2px solid rgba(220, 40, 40, 0.3); }
+.phase35InboxCard.priority-high { background: rgba(220, 120, 40, 0.06); border: 1px solid rgba(220, 120, 40, 0.25); }
+.phase35InboxCard.priority-medium { background: rgba(220, 200, 40, 0.05); border: 1px solid rgba(220, 200, 40, 0.2); }
+.phase35InboxCard.priority-low { background: rgba(100, 180, 100, 0.04); border: 1px solid rgba(100, 180, 100, 0.18); }
+
+.phase35InboxCard.status-reviewed,
+.phase35InboxCard.status-resolved,
+.phase35InboxCard.status-ignored {
+  opacity: 0.6;
+}
+
+.phase35PriorityBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 10px;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+.phase35PriorityBadge.urgent { background: rgba(220, 40, 40, 0.12); color: #8b1010; border: 1px solid rgba(220, 40, 40, 0.3); }
+.phase35PriorityBadge.high { background: rgba(220, 120, 40, 0.12); color: #8a4010; border: 1px solid rgba(220, 120, 40, 0.28); }
+.phase35PriorityBadge.medium { background: rgba(185, 130, 46, 0.12); color: #8a5e12; border: 1px solid rgba(185, 130, 46, 0.28); }
+.phase35PriorityBadge.low { background: rgba(40, 160, 100, 0.12); color: #1a6040; border: 1px solid rgba(40, 160, 100, 0.28); }
+
+.phase35StatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 10px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  background: rgba(160, 160, 160, 0.1);
+  color: #555;
+  border: 1px solid rgba(160, 160, 160, 0.2);
+}
+
+.phase35InboxTitle {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #4a0a0a;
+  margin: 0;
+}
+
+.phase35BtnRow { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.phase35SmallBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 9px;
+  border: 1px solid rgba(220, 80, 80, 0.28);
+  background: rgba(220, 80, 80, 0.06);
+  color: #7a1a1a;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.phase35SmallBtn:hover { background: rgba(220, 80, 80, 0.12); }
+.phase35SmallBtn.copied { background: rgba(60, 150, 80, 0.12); color: #2a6035; }
+
+.phase35CopyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 12px;
+  border: none;
+  background: #c03030;
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.phase35CopyBtn:hover { background: #7a1a1a; }
+.phase35CopyBtn.copied { background: #2a7a40; }
+.phase35CopyBtn.failed { background: #992020; }
+
+.phase35Input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(220, 80, 80, 0.25);
+  border-radius: 10px;
+  font-size: 0.84rem;
+  box-sizing: border-box;
+}
+
+.phase35Select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(220, 80, 80, 0.25);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+.phase35Textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(220, 80, 80, 0.25);
+  border-radius: 10px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  resize: vertical;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+/* Maximum Darake Dashboard */
+.phase35dPanel {
+  display: grid;
+  gap: 16px;
+}
+
+.phase35dHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(30, 80, 200, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(230, 238, 255, 0.95), rgba(215, 228, 255, 0.9));
+}
+
+.phase35dHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #1a40c0, #0c1e70);
+}
+
+.phase35dHero h3 { margin: 0 0 6px; font-size: clamp(1.1rem, 2.5vw, 1.7rem); letter-spacing: -0.04em; }
+.phase35dHero p { margin: 0; font-size: 0.88rem; color: var(--muted); }
+.phase35dHero .eyebrow { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #1a40c0; margin: 0 0 4px; }
+
+.phase35dStatusCard {
+  padding: 20px 22px;
+  border-radius: 18px;
+  background: rgba(30, 80, 200, 0.05);
+  border: 1px solid rgba(30, 80, 200, 0.15);
+  text-align: center;
+}
+
+.phase35dStatusCard h2 {
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  margin: 0 0 8px;
+  color: #0c1e70;
+}
+
+.phase35dStatusCard p { font-size: 0.88rem; color: var(--muted); margin: 0; }
+
+.phase35dBlockedBanner {
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: rgba(220, 40, 40, 0.09);
+  border: 2px solid rgba(220, 40, 40, 0.32);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #7a0a0a;
+}
+
+.phase35dOneThingCard {
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: rgba(185, 130, 46, 0.08);
+  border: 1px solid rgba(185, 130, 46, 0.25);
+}
+
+.phase35dOneThingCard h4 { margin: 0 0 6px; font-size: 0.82rem; font-weight: 700; color: #8a5e12; }
+.phase35dOneThingCard p { margin: 0; font-size: 0.92rem; color: #4a2e00; }
+
+.phase35dCountGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.phase35dCountGrid section {
+  background: rgba(30, 80, 200, 0.05);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.phase35dCountGrid h4 { font-size: 0.73rem; margin: 0 0 4px; color: var(--muted); }
+.phase35dCountGrid p { font-size: 1.35rem; font-weight: 800; margin: 0; color: #0c1e70; }
+
+.phase35dBtnRow { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.phase35dSmallBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(30, 80, 200, 0.28);
+  background: rgba(30, 80, 200, 0.06);
+  color: #0c1e70;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.phase35dSmallBtn:hover { background: rgba(30, 80, 200, 0.12); }
+.phase35dSmallBtn.copied { background: rgba(60, 150, 80, 0.12); color: #2a6035; }
+
+.phase35dCopyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 12px;
+  border: none;
+  background: #1a40c0;
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.phase35dCopyBtn:hover { background: #0c1e70; }
+.phase35dCopyBtn.copied { background: #2a7a40; }
+.phase35dCopyBtn.failed { background: #992020; }
+
+/* No-OK Completion Report */
+.phase35rPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.phase35rHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(40, 160, 80, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(234, 255, 240, 0.95), rgba(220, 248, 230, 0.9));
+}
+
+.phase35rHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #1a8c44, #0c5c2c);
+}
+
+.phase35rHero h3 { margin: 0 0 6px; font-size: clamp(1.1rem, 2.5vw, 1.7rem); letter-spacing: -0.04em; }
+.phase35rHero p { margin: 0; font-size: 0.88rem; color: var(--muted); }
+.phase35rHero .eyebrow { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #1a8c44; margin: 0 0 4px; }
+
+.phase35rSection {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(40, 160, 80, 0.04);
+  border: 1px solid rgba(40, 160, 80, 0.12);
+}
+.phase35rSection h4 { margin: 0 0 8px; font-size: 0.84rem; color: #0c5c2c; font-weight: 700; }
+
+.phase35rStatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.phase35rStatusBadge.ready { background: rgba(40, 160, 80, 0.12); color: #1a6040; border: 1px solid rgba(40, 160, 80, 0.3); }
+.phase35rStatusBadge.needs-review { background: rgba(185, 130, 46, 0.12); color: #8a5e12; border: 1px solid rgba(185, 130, 46, 0.28); }
+.phase35rStatusBadge.blocked { background: rgba(220, 80, 80, 0.1); color: #8b2020; border: 1px solid rgba(220, 80, 80, 0.28); }
+
+.phase35rList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 5px;
+}
+.phase35rList li {
+  font-size: 0.82rem;
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: #1a3a20;
+  background: rgba(40, 160, 80, 0.05);
+  border: 1px solid rgba(40, 160, 80, 0.12);
+}
+
+.phase35rBtnRow { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.phase35rSmallBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(40, 160, 80, 0.3);
+  background: rgba(40, 160, 80, 0.06);
+  color: #0c5c2c;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.phase35rSmallBtn:hover { background: rgba(40, 160, 80, 0.12); }
+.phase35rSmallBtn.copied { background: rgba(60, 150, 80, 0.12); color: #2a6035; }
+
+.phase35rCopyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 12px;
+  border: none;
+  background: #1a8c44;
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.phase35rCopyBtn:hover { background: #0c5c2c; }
+.phase35rCopyBtn.copied { background: #2a7a40; }
+.phase35rCopyBtn.failed { background: #992020; }
+
+@media (max-width: 760px) {
+  .phase35Hero, .phase35dHero, .phase35rHero { grid-template-columns: 1fr; }
+  .phase35SummaryGrid, .phase35dCountGrid { grid-template-columns: repeat(2, 1fr); }
+  .phase35BtnRow, .phase35dBtnRow, .phase35rBtnRow { flex-direction: column; }
+}

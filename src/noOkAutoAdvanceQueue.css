@@ -1,0 +1,319 @@
+/* Phase 34: No-OK Auto Advance Queue */
+
+.phase34Panel {
+  display: grid;
+  gap: 18px;
+}
+
+.phase34Hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(40, 140, 220, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(230, 244, 255, 0.95), rgba(215, 235, 255, 0.9));
+}
+
+.phase34Hero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #1a6cc4, #0c3c7a);
+}
+
+.phase34Hero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+  letter-spacing: -0.04em;
+}
+
+.phase34Hero p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.phase34Hero .eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #1a6cc4;
+  margin: 0 0 4px;
+}
+
+.phase34SafetyBox {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(220, 80, 80, 0.08);
+  border: 1px solid rgba(220, 80, 80, 0.22);
+  font-size: 0.84rem;
+  color: #6e1a1a;
+}
+
+.phase34Section {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(40, 140, 220, 0.04);
+  border: 1px solid rgba(40, 140, 220, 0.12);
+}
+
+.phase34Section h4 {
+  margin: 0 0 8px;
+  font-size: 0.84rem;
+  color: #0c3c7a;
+  font-weight: 700;
+}
+
+.phase34SummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.phase34SummaryGrid section {
+  background: rgba(40, 140, 220, 0.05);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.phase34SummaryGrid h4 {
+  font-size: 0.73rem;
+  margin: 0 0 4px;
+  color: var(--muted);
+}
+
+.phase34SummaryGrid p {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 0;
+  color: #0c3c7a;
+}
+
+.phase34TaskCard {
+  padding: 12px 14px;
+  border-radius: 12px;
+  display: grid;
+  gap: 6px;
+  font-size: 0.82rem;
+  border: 1px solid rgba(40, 140, 220, 0.18);
+  background: rgba(40, 140, 220, 0.04);
+}
+
+.phase34TaskCard.auto-completed {
+  background: rgba(40, 160, 100, 0.05);
+  border-color: rgba(40, 160, 100, 0.2);
+}
+
+.phase34TaskCard.blocked {
+  background: rgba(220, 80, 80, 0.05);
+  border-color: rgba(220, 80, 80, 0.2);
+}
+
+.phase34TaskCard.needs-human {
+  background: rgba(185, 130, 46, 0.05);
+  border-color: rgba(185, 130, 46, 0.2);
+}
+
+.phase34TaskCard.skipped-by-policy {
+  background: rgba(160, 160, 160, 0.05);
+  border-color: rgba(160, 160, 160, 0.15);
+}
+
+.phase34StatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 10px;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.phase34StatusBadge.auto-completed { background: rgba(40, 160, 100, 0.12); color: #1a6040; border: 1px solid rgba(40, 160, 100, 0.28); }
+.phase34StatusBadge.queued { background: rgba(40, 140, 220, 0.1); color: #0c3c7a; border: 1px solid rgba(40, 140, 220, 0.25); }
+.phase34StatusBadge.skipped-by-policy { background: rgba(160, 160, 160, 0.1); color: #555; border: 1px solid rgba(160, 160, 160, 0.2); }
+.phase34StatusBadge.blocked { background: rgba(220, 80, 80, 0.1); color: #8b2020; border: 1px solid rgba(220, 80, 80, 0.28); }
+.phase34StatusBadge.needs-human { background: rgba(185, 130, 46, 0.12); color: #8a5e12; border: 1px solid rgba(185, 130, 46, 0.28); }
+
+.phase34BtnRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.phase34SmallBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(40, 140, 220, 0.3);
+  background: rgba(40, 140, 220, 0.06);
+  color: #0c3c7a;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.phase34SmallBtn:hover { background: rgba(40, 140, 220, 0.12); }
+.phase34SmallBtn.copied { background: rgba(60, 150, 80, 0.12); color: #2a6035; }
+
+.phase34CopyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 12px;
+  border: none;
+  background: #1a6cc4;
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.phase34CopyBtn:hover { background: #0c3c7a; }
+.phase34CopyBtn.copied { background: #2a7a40; }
+.phase34CopyBtn.failed { background: #992020; }
+
+.phase34Input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(40, 140, 220, 0.25);
+  border-radius: 10px;
+  font-size: 0.84rem;
+  box-sizing: border-box;
+}
+
+.phase34Select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(40, 140, 220, 0.3);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+/* Silent Batch Log */
+.phase34bPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.phase34bHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(80, 40, 130, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(245, 238, 255, 0.95), rgba(235, 225, 255, 0.9));
+}
+
+.phase34bHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #7b3fbf, #4a1a80);
+}
+
+.phase34bHero h3 { margin: 0 0 6px; font-size: clamp(1.1rem, 2.5vw, 1.7rem); letter-spacing: -0.04em; }
+.phase34bHero p { margin: 0; font-size: 0.88rem; color: var(--muted); }
+.phase34bHero .eyebrow { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #7b3fbf; margin: 0 0 4px; }
+
+.phase34bLogCard {
+  padding: 11px 14px;
+  border-radius: 11px;
+  font-size: 0.82rem;
+  display: grid;
+  gap: 4px;
+}
+
+.phase34bLogCard.blocked { background: rgba(220, 80, 80, 0.06); border: 1px solid rgba(220, 80, 80, 0.2); }
+.phase34bLogCard.manual-gate { background: rgba(185, 130, 46, 0.06); border: 1px solid rgba(185, 130, 46, 0.2); }
+.phase34bLogCard.warning { background: rgba(220, 170, 40, 0.06); border: 1px solid rgba(220, 170, 40, 0.2); }
+.phase34bLogCard.success { background: rgba(40, 160, 100, 0.05); border: 1px solid rgba(40, 160, 100, 0.18); }
+.phase34bLogCard.info { background: rgba(80, 40, 130, 0.04); border: 1px solid rgba(80, 40, 130, 0.14); }
+
+.phase34bSmallBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(80, 40, 130, 0.3);
+  background: rgba(80, 40, 130, 0.06);
+  color: #4a1a80;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.phase34bSmallBtn:hover { background: rgba(80, 40, 130, 0.12); }
+.phase34bSmallBtn.copied { background: rgba(60, 150, 80, 0.12); color: #2a6035; }
+
+.phase34bCopyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 12px;
+  border: none;
+  background: #7b3fbf;
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.phase34bCopyBtn:hover { background: #4a1a80; }
+.phase34bCopyBtn.copied { background: #2a7a40; }
+.phase34bCopyBtn.failed { background: #992020; }
+
+.phase34bBtnRow { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.phase34bSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 10px;
+}
+.phase34bSummaryGrid section { background: rgba(80, 40, 130, 0.05); border-radius: 12px; padding: 12px; text-align: center; }
+.phase34bSummaryGrid h4 { font-size: 0.73rem; margin: 0 0 4px; color: var(--muted); }
+.phase34bSummaryGrid p { font-size: 1.35rem; font-weight: 800; margin: 0; color: #4a1a80; }
+
+.phase34bInput {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(80, 40, 130, 0.25);
+  border-radius: 10px;
+  font-size: 0.84rem;
+  box-sizing: border-box;
+}
+
+.phase34bSelect {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(80, 40, 130, 0.3);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+@media (max-width: 760px) {
+  .phase34Hero, .phase34bHero { grid-template-columns: 1fr; }
+  .phase34SummaryGrid, .phase34bSummaryGrid { grid-template-columns: repeat(2, 1fr); }
+  .phase34BtnRow, .phase34bBtnRow { flex-direction: column; }
+}
