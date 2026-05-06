@@ -72,6 +72,7 @@ import './safetyInvariantAudit.css';
 import './localStorageKeyRegistry.css';
 import './phase24IntegrationCompletionReport.css';
 import './darakeTopCommand.css';
+import './aiProviderCandidates.css';
 
 const VALID_NAV_GROUPS = new Set<string>([
   'all',

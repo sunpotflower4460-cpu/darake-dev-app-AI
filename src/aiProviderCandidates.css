@@ -1,0 +1,132 @@
+.phase25Grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.phase25Card {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(76, 124, 85, 0.16);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.phase25CompactCard {
+  gap: 8px;
+}
+
+.phase25CardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.phase25CardHeader h4 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.phase25Muted {
+  margin: 4px 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.phase25MetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.76rem;
+  color: #35513d;
+}
+
+.phase25Badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.phase25Badge-manual-copy-only,
+.phase25Badge-draft-only,
+.phase25Badge-risk-low {
+  background: rgba(76, 124, 85, 0.12);
+  color: #35513d;
+}
+
+.phase25Badge-api-candidate,
+.phase25Badge-risk-medium {
+  background: rgba(185, 130, 46, 0.14);
+  color: #8a5e12;
+}
+
+.phase25Badge-blocked,
+.phase25Badge-risk-high {
+  background: rgba(220, 80, 80, 0.12);
+  color: #8b2020;
+}
+
+.phase25TwoColumn {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.phase25AlignStart {
+  align-items: start;
+}
+
+.phase25List,
+.phase25InlineList {
+  margin: 8px 0 0;
+  padding-left: 1.15rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.phase25InlineList {
+  margin: 0;
+}
+
+.phase25Note {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.phase25CodeBlock {
+  margin: 8px 0 0;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(17, 24, 39, 0.94);
+  color: #f9fafb;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow: auto;
+}
+
+.phase25Label {
+  margin: 0 0 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #35513d;
+}
+
+@media (max-width: 760px) {
+  .phase25TwoColumn {
+    grid-template-columns: 1fr;
+  }
+
+  .phase25CardHeader {
+    flex-direction: column;
+  }
+}
