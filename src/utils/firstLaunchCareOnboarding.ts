@@ -1,3 +1,8 @@
+import {
+  DARAKE_FIRST_LAUNCH_UPDATED_EVENT,
+  emitDarakeRuntimeEvent,
+} from './darakeRuntimeEvents';
+
 const STORAGE_KEY = 'darake.firstLaunchCare.v1';
 
 export type FirstLaunchCareStep =
@@ -89,6 +94,7 @@ export function saveFirstLaunchCareState(state: FirstLaunchCareState): void {
   try {
     const updated = { ...state, updatedAt: new Date().toISOString() };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    emitDarakeRuntimeEvent(DARAKE_FIRST_LAUNCH_UPDATED_EVENT);
   } catch {
     // ignore
   }
@@ -97,6 +103,7 @@ export function saveFirstLaunchCareState(state: FirstLaunchCareState): void {
 export function clearFirstLaunchCareState(): void {
   try {
     localStorage.removeItem(STORAGE_KEY);
+    emitDarakeRuntimeEvent(DARAKE_FIRST_LAUNCH_UPDATED_EVENT);
   } catch {
     // ignore
   }
