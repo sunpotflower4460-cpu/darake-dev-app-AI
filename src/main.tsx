@@ -28,15 +28,23 @@ const VALID_NAV_GROUPS = new Set<string>([
   'first-start',
 ]);
 
-const FIRST_START_PANEL_IDS = new Set([
-  'first-start-route-guard',
-  'first-launch-care',
-  'gentle-app-start-form',
-  'gentle-blueprint-preview',
-  'pon-start',
-  'beginner-next-step-card',
-  'first-app-start-completion-report',
-]);
+function getFirstStartVisiblePanelIds() {
+  const report = buildFirstAppStartCompletionReport();
+  const ids = ['first-start-route-guard'];
+
+  if (!report.onboardingComplete) {
+    ids.push('first-launch-care');
+    return new Set(ids);
+  }
+
+  if (!report.formCanStart) {
+    ids.push('gentle-app-start-form');
+    return new Set(ids);
+  }
+
+  ids.push('pon-start', 'beginner-next-step-card');
+  return new Set(ids);
+}
 
 function loadSavedNavGroup(): DarakeNavGroupId | 'all' {
   try {
@@ -74,7 +82,8 @@ function DarakeControlRoom({ firstStartActive }: { firstStartActive: boolean }) 
 
   const filteredPanels = useMemo(() => {
     if (firstStartActive) {
-      return ALL_PANELS.filter((panel) => FIRST_START_PANEL_IDS.has(panel.id));
+      const visibleIds = getFirstStartVisiblePanelIds();
+      return ALL_PANELS.filter((panel) => visibleIds.has(panel.id));
     }
 
     const mode = getFocusedModeById(focusedMode);
