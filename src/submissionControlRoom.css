@@ -1,0 +1,770 @@
+/* Phase 13 Submission Control Room */
+.submissionControlRoomPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.submissionControlRoomHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.submissionControlRoomHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.submissionControlRoomHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  letter-spacing: -0.05em;
+}
+
+.submissionControlRoom-blocked { border-color: rgba(180, 91, 93, 0.28); background: rgba(180, 91, 93, 0.07); }
+.submissionControlRoom-needs-review { border-color: rgba(185, 130, 46, 0.25); background: rgba(185, 130, 46, 0.07); }
+.submissionControlRoom-ready-to-open-app-store-connect { border-color: rgba(76, 124, 85, 0.25); background: rgba(76, 124, 85, 0.08); }
+
+.submissionControlRoomSafetyBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(76, 124, 85, 0.07);
+}
+
+.submissionControlRoomControls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.submissionControlRoomControls button {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.submissionControlRoomCopyButton.copy-copied { background: linear-gradient(135deg, #4c7c55, #4c7c55); }
+.submissionControlRoomCopyButton.copy-failed { background: linear-gradient(135deg, #b45b5d, #b9822e); }
+
+.submissionControlRoomStatusBadge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.submissionStatus-blocked { background: rgba(180, 91, 93, 0.14); color: #7e3436; }
+.submissionStatus-needs-review { background: rgba(185, 130, 46, 0.16); color: #76531d; }
+.submissionStatus-ready-to-open-app-store-connect { background: rgba(76, 124, 85, 0.14); color: #35513d; }
+
+.submissionControlRoomSections {
+  display: grid;
+  gap: 8px;
+}
+
+.submissionControlRoomSection {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 250, 240, 0.8);
+}
+
+.sectionStatus-fail { border-color: rgba(180, 91, 93, 0.25); background: rgba(180, 91, 93, 0.05); }
+.sectionStatus-warn { border-color: rgba(185, 130, 46, 0.25); background: rgba(185, 130, 46, 0.05); }
+.sectionStatus-pass { border-color: rgba(76, 124, 85, 0.2); background: rgba(76, 124, 85, 0.05); }
+.sectionStatus-unchecked { border-color: rgba(185, 130, 46, 0.18); }
+
+.submissionSectionIcon { font-size: 1.2rem; margin-top: 2px; }
+
+.submissionControlRoomSection strong { display: block; margin-bottom: 2px; }
+.submissionControlRoomSection p { margin: 0; color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+
+.submissionControlRoomManualBox,
+.submissionControlRoomActionsBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(185, 130, 46, 0.2);
+  border-radius: 18px;
+  background: rgba(185, 130, 46, 0.05);
+  display: grid;
+  gap: 8px;
+}
+
+.submissionControlRoomManualBox strong,
+.submissionControlRoomActionsBox strong { display: block; color: #76531d; }
+.submissionControlRoomManualBox ul,
+.submissionControlRoomActionsBox ul { margin: 0; padding-left: 1.2rem; }
+.submissionControlRoomManualBox li,
+.submissionControlRoomActionsBox li { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+.submissionControlRoomManualBox li + li,
+.submissionControlRoomActionsBox li + li { margin-top: 4px; }
+
+/* Phase 13.2 App Store Connect Input Pack */
+.appStoreInputPackPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.appStoreInputPackHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.appStoreInputPackHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.appStoreInputPackHero h3 { margin: 0 0 6px; font-size: clamp(1.3rem, 3vw, 1.9rem); letter-spacing: -0.05em; }
+
+.appStoreInputPack-blocked { border-color: rgba(180, 91, 93, 0.28); background: rgba(180, 91, 93, 0.07); }
+.appStoreInputPack-needs-review { border-color: rgba(185, 130, 46, 0.25); background: rgba(185, 130, 46, 0.07); }
+.appStoreInputPack-ready-to-copy { border-color: rgba(76, 124, 85, 0.25); background: rgba(76, 124, 85, 0.08); }
+
+.appStoreInputPackSafetyBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(76, 124, 85, 0.07);
+}
+
+.appStoreInputPackControls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.appStoreInputPackControls button {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.appStoreInputPackCopyButton.copy-copied { background: linear-gradient(135deg, #4c7c55, #4c7c55) !important; }
+.appStoreInputPackCopyButton.copy-failed { background: linear-gradient(135deg, #b45b5d, #b9822e) !important; }
+
+.appStoreInputPackStatusBadge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.appStoreInputPackSections {
+  display: grid;
+  gap: 10px;
+}
+
+.appStoreInputPackSection {
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 250, 240, 0.8);
+  display: grid;
+  gap: 8px;
+}
+
+.appStoreInputPackSection-empty {
+  border-color: rgba(180, 91, 93, 0.22);
+  background: rgba(180, 91, 93, 0.04);
+}
+
+.appStoreInputPackSectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.appStoreInputPackSectionHeader > span:first-child {
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: #35513d;
+}
+
+.appStoreInputPackSectionCopyButton {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  border: 0;
+  border-radius: 8px;
+  padding: 5px 10px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-size: 0.78rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.appStoreInputPackSectionCopyButton.copy-copied { background: linear-gradient(135deg, #4c7c55, #4c7c55); }
+.appStoreInputPackSectionCopyButton.copy-failed { background: linear-gradient(135deg, #b45b5d, #b9822e); }
+
+.appStoreInputPackEmpty {
+  font-size: 0.78rem;
+  color: #b45b5d;
+  font-weight: 900;
+}
+
+.appStoreInputPackSectionValue {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.appStoreInputPackSummaryBox {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(76, 124, 85, 0.06);
+}
+
+.appStoreInputPackSummaryBox > div { display: grid; gap: 2px; }
+.appStoreInputPackSummaryBox span { font-size: 0.8rem; font-weight: 900; color: #35513d; }
+.appStoreInputPackSummaryBox p { margin: 0; color: var(--muted); font-size: 0.88rem; }
+
+.appStoreInputPackManualBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(185, 130, 46, 0.2);
+  border-radius: 18px;
+  background: rgba(185, 130, 46, 0.05);
+}
+
+.appStoreInputPackManualBox strong { display: block; margin-bottom: 10px; color: #76531d; }
+.appStoreInputPackManualBox ol { margin: 0; padding-left: 1.4rem; }
+.appStoreInputPackManualBox li { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+.appStoreInputPackManualBox li + li { margin-top: 4px; }
+
+/* Phase 13.3 API Candidate Draft */
+.apiCandidateDraftPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.apiCandidateDraftHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(185, 130, 46, 0.25);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(255, 248, 220, 0.88));
+}
+
+.apiCandidateDraftHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #b9822e, #b45b5d);
+}
+
+.apiCandidateDraftHero h3 { margin: 0 0 6px; font-size: clamp(1.3rem, 3vw, 1.9rem); letter-spacing: -0.05em; }
+
+.apiCandidateDraftBlockBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(180, 91, 93, 0.28);
+  border-radius: 18px;
+  background: rgba(180, 91, 93, 0.07);
+}
+
+.apiCandidateDraftBlockBox strong { color: #7e3436; display: block; margin-bottom: 8px; }
+.apiCandidateDraftBlockBox ul { margin: 0; padding-left: 1.2rem; color: #7e3436; }
+.apiCandidateDraftBlockBox li + li { margin-top: 4px; }
+
+.apiCandidateDraftSection,
+.apiCandidateDraftBlockedSection,
+.apiCandidateDraftSafetyBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(76, 124, 85, 0.06);
+  display: grid;
+  gap: 8px;
+}
+
+.apiCandidateDraftBlockedSection { border-color: rgba(185, 130, 46, 0.22); background: rgba(185, 130, 46, 0.05); }
+
+.apiCandidateDraftSection strong,
+.apiCandidateDraftBlockedSection strong,
+.apiCandidateDraftSafetyBox strong { color: #35513d; }
+.apiCandidateDraftBlockedSection strong { color: #76531d; }
+
+.apiCandidateDraftSection ul,
+.apiCandidateDraftBlockedSection ul,
+.apiCandidateDraftSafetyBox ul { margin: 0; padding-left: 1.2rem; }
+.apiCandidateDraftSection li,
+.apiCandidateDraftBlockedSection li,
+.apiCandidateDraftSafetyBox li { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+.apiCandidateDraftSection li + li,
+.apiCandidateDraftBlockedSection li + li,
+.apiCandidateDraftSafetyBox li + li { margin-top: 4px; }
+
+/* Phase 13.4 TestFlight Checklist */
+.testFlightChecklistPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.testFlightChecklistHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.testFlightChecklistHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.testFlightChecklistHero h3 { margin: 0 0 6px; font-size: clamp(1.3rem, 3vw, 1.9rem); letter-spacing: -0.05em; }
+
+.testFlightChecklist-blocked { border-color: rgba(180, 91, 93, 0.28); background: rgba(180, 91, 93, 0.07); }
+.testFlightChecklist-needs-review { border-color: rgba(185, 130, 46, 0.25); background: rgba(185, 130, 46, 0.07); }
+.testFlightChecklist-ready { border-color: rgba(76, 124, 85, 0.25); background: rgba(76, 124, 85, 0.08); }
+
+.testFlightChecklistSafetyBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(76, 124, 85, 0.07);
+}
+
+.testFlightChecklistBlockedBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(180, 91, 93, 0.28);
+  border-radius: 18px;
+  background: rgba(180, 91, 93, 0.06);
+  color: #7e3436;
+}
+
+.testFlightChecklistBlockedBox ul { margin: 8px 0 0; padding-left: 1.2rem; }
+
+.testFlightChecklistItems { display: grid; gap: 8px; }
+
+.testFlightChecklistItem {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 250, 240, 0.8);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.testFlightChecklistItem-success { border-color: rgba(76, 124, 85, 0.2); background: rgba(76, 124, 85, 0.05); }
+.testFlightChecklistItem-warn { border-color: rgba(185, 130, 46, 0.25); background: rgba(185, 130, 46, 0.05); }
+.testFlightChecklistItem-failed { border-color: rgba(180, 91, 93, 0.25); background: rgba(180, 91, 93, 0.05); }
+.testFlightChecklistItem-unchecked { border-color: rgba(185, 130, 46, 0.2); }
+
+.testFlightChecklistItemControls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.testFlightStatusBtn {
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 1rem;
+  background: rgba(255, 250, 240, 0.8);
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.testFlightStatusBtn.active { opacity: 1; border-color: #4c7c55; }
+
+.testFlightChecklistItemControls input {
+  flex: 1;
+  min-width: 100px;
+  padding: 6px 10px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 10px;
+  background: rgba(255, 250, 240, 0.85);
+  font-size: 0.82rem;
+}
+
+.testFlightChecklistControls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.testFlightChecklistControls button {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.testFlightSaved { background: linear-gradient(135deg, #4c7c55, #4c7c55) !important; }
+.testFlightCopyButton.copy-copied { background: linear-gradient(135deg, #4c7c55, #4c7c55) !important; }
+.testFlightCopyButton.copy-failed { background: linear-gradient(135deg, #b45b5d, #b9822e) !important; }
+
+.testFlightStatusBadge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+/* Phase 13.5 Final Submission Gate */
+.finalSubmissionGatePanel {
+  display: grid;
+  gap: 18px;
+}
+
+.finalSubmissionGateHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.finalSubmissionGateHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.finalSubmissionGateHero h3 { margin: 0 0 6px; font-size: clamp(1.3rem, 3vw, 1.9rem); letter-spacing: -0.05em; }
+
+.finalSubmissionGate-blocked { border-color: rgba(180, 91, 93, 0.28); background: rgba(180, 91, 93, 0.07); }
+.finalSubmissionGate-needs-review { border-color: rgba(185, 130, 46, 0.25); background: rgba(185, 130, 46, 0.07); }
+.finalSubmissionGate-ready-manual-submit { border-color: rgba(76, 124, 85, 0.25); background: rgba(76, 124, 85, 0.08); }
+
+.finalSubmissionGateSafetyBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(180, 91, 93, 0.22);
+  border-radius: 18px;
+  background: rgba(180, 91, 93, 0.06);
+}
+
+.finalSubmissionGateSafetyBox strong { color: #7e3436; }
+
+.finalSubmissionGateControls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.finalSubmissionGateControls button {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.finalSubmissionGateCopyButton.copy-copied { background: linear-gradient(135deg, #4c7c55, #4c7c55) !important; }
+.finalSubmissionGateCopyButton.copy-failed { background: linear-gradient(135deg, #b45b5d, #b9822e) !important; }
+
+.finalSubmissionGateStatusBadge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.finalSubmissionGateSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.finalSubmissionGateSummaryGrid section {
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.finalSubmissionGateSummaryGrid h4 { margin: 0 0 6px; color: #35513d; font-size: 0.85rem; }
+.finalSubmissionGateSummaryGrid p { margin: 0; font-weight: 900; color: var(--muted); }
+
+.finalSubmissionGateListBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(76, 124, 85, 0.06);
+  display: grid;
+  gap: 8px;
+}
+
+.finalSubmissionGateListBox strong { display: block; }
+.finalSubmissionGateListBox ul { margin: 0; padding-left: 1.2rem; }
+.finalSubmissionGateListBox li { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+.finalSubmissionGateListBox li + li { margin-top: 4px; }
+
+.finalSubmissionGateBlockersBox { border-color: rgba(180, 91, 93, 0.25); background: rgba(180, 91, 93, 0.06); }
+.finalSubmissionGateBlockersBox strong { color: #7e3436; }
+.finalSubmissionGateBlockersBox li { color: #7e3436; }
+
+.finalSubmissionGateWarningsBox { border-color: rgba(185, 130, 46, 0.25); background: rgba(185, 130, 46, 0.06); }
+.finalSubmissionGateWarningsBox strong { color: #76531d; }
+.finalSubmissionGateWarningsBox li { color: #76531d; }
+
+.finalSubmissionGateReadyBox strong { color: #35513d; }
+
+.finalSubmissionGateManualBox {
+  padding: 16px;
+  border: 2px solid rgba(180, 91, 93, 0.3);
+  border-radius: 20px;
+  background: rgba(180, 91, 93, 0.06);
+}
+
+.finalSubmissionGateManualBox strong { display: block; margin-bottom: 10px; color: #7e3436; font-size: 1rem; }
+.finalSubmissionGateManualBox ol { margin: 0; padding-left: 1.4rem; }
+.finalSubmissionGateManualBox li { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+.finalSubmissionGateManualBox li + li { margin-top: 4px; }
+
+/* Phase 13.6 Submit for Review Manual Guide */
+.submitManualGuidePanel {
+  display: grid;
+  gap: 18px;
+}
+
+.submitManualGuideHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.submitManualGuideHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.submitManualGuideHero h3 { margin: 0 0 6px; font-size: clamp(1.3rem, 3vw, 1.9rem); letter-spacing: -0.05em; }
+
+.submitManualGuideSafetyBox {
+  padding: 14px 16px;
+  border: 2px solid rgba(180, 91, 93, 0.3);
+  border-radius: 18px;
+  background: rgba(180, 91, 93, 0.07);
+}
+
+.submitManualGuideSafetyBox strong { color: #7e3436; display: block; margin-bottom: 6px; }
+
+.submitManualGuideControls {
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.submitManualGuideCopyButton {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.submitManualGuideCopyButton.copy-copied { background: linear-gradient(135deg, #4c7c55, #4c7c55); }
+.submitManualGuideCopyButton.copy-failed { background: linear-gradient(135deg, #b45b5d, #b9822e); }
+
+.submitManualGuideSteps {
+  display: grid;
+  gap: 8px;
+}
+
+.submitManualGuideStep {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 250, 240, 0.8);
+}
+
+.submitManualGuideStepFinal {
+  border-color: rgba(180, 91, 93, 0.3);
+  background: rgba(180, 91, 93, 0.07);
+  border-width: 2px;
+}
+
+.submitManualGuideStepNumber {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  flex-shrink: 0;
+}
+
+.submitManualGuideStepFinal .submitManualGuideStepNumber {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.submitManualGuideStep strong { display: block; margin-bottom: 2px; }
+.submitManualGuideStep p { margin: 0; color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+
+.submitManualGuideStopBox,
+.submitManualGuidePreCheckBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(76, 124, 85, 0.06);
+  display: grid;
+  gap: 8px;
+}
+
+.submitManualGuideStopBox { border-color: rgba(180, 91, 93, 0.25); background: rgba(180, 91, 93, 0.06); }
+.submitManualGuideStopBox strong { color: #7e3436; }
+.submitManualGuideStopBox ul { margin: 0; padding-left: 1.2rem; }
+.submitManualGuideStopBox li { color: #7e3436; font-size: 0.9rem; line-height: 1.6; }
+.submitManualGuideStopBox li + li { margin-top: 4px; }
+
+.submitManualGuidePreCheckBox strong { color: #35513d; }
+.submitManualGuidePreCheckBox ul { margin: 0; padding-left: 1.2rem; }
+.submitManualGuidePreCheckBox li { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+.submitManualGuidePreCheckBox li + li { margin-top: 4px; }
+
+@media (max-width: 760px) {
+  .submissionControlRoomHero,
+  .appStoreInputPackHero,
+  .apiCandidateDraftHero,
+  .testFlightChecklistHero,
+  .finalSubmissionGateHero,
+  .submitManualGuideHero {
+    grid-template-columns: 1fr;
+  }
+
+  .submissionControlRoomSection,
+  .submitManualGuideStep {
+    grid-template-columns: 1fr;
+  }
+
+  .submissionControlRoomControls,
+  .appStoreInputPackControls,
+  .testFlightChecklistControls,
+  .finalSubmissionGateControls {
+    flex-direction: column;
+  }
+
+  .submissionControlRoomControls button,
+  .appStoreInputPackControls button,
+  .testFlightChecklistControls button,
+  .finalSubmissionGateControls button,
+  .submitManualGuideCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .finalSubmissionGateSummaryGrid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,348 @@
+/* Phase 11.3 Notification Digest */
+.notificationDigestPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.notificationDigestHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.notificationDigestHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.notificationDigestHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  letter-spacing: -0.05em;
+}
+
+.notificationDigest-blocked {
+  border-color: rgba(180, 91, 93, 0.3);
+  background: rgba(180, 91, 93, 0.07);
+}
+
+.notificationDigest-needs-attention {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.07);
+}
+
+.notificationDigest-has-warning {
+  border-color: rgba(185, 130, 46, 0.2);
+  background: rgba(185, 130, 46, 0.05);
+}
+
+.notificationDigest-quiet {
+  border-color: rgba(76, 124, 85, 0.22);
+  background: rgba(76, 124, 85, 0.07);
+}
+
+.notificationDigestControls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.notificationDigestControls button {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.notificationDigestCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.notificationDigestCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.digestStatusBadge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.digest-quiet { background: rgba(76, 124, 85, 0.12); color: #35513d; }
+.digest-has-warning { background: rgba(185, 130, 46, 0.15); color: #76531d; }
+.digest-needs-attention { background: rgba(185, 130, 46, 0.18); color: #76531d; }
+.digest-blocked { background: rgba(180, 91, 93, 0.15); color: #7e3436; }
+
+.notificationDigestSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.notificationDigestSummaryGrid section {
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.notificationDigestSummaryGrid h4 {
+  margin: 0 0 6px;
+  color: #35513d;
+  font-size: 0.85rem;
+}
+
+.notificationDigestSummaryGrid p {
+  margin: 0;
+  font-weight: 900;
+  color: var(--muted);
+}
+
+.notificationDigestListBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(76, 124, 85, 0.06);
+}
+
+.notificationDigestImmediateBox {
+  border-color: rgba(180, 91, 93, 0.24);
+  background: rgba(180, 91, 93, 0.06);
+}
+
+.notificationDigestListBox strong {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.notificationDigestListBox ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.notificationDigestListBox li + li {
+  margin-top: 6px;
+}
+
+.notificationDigestListBox li {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.notificationDigestQuiet {
+  padding: 20px;
+  text-align: center;
+  color: var(--muted);
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(76, 124, 85, 0.05);
+}
+
+/* Phase 11.4 Manual Gate Templates */
+.manualGateNotifPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.manualGateNotifHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(180, 91, 93, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(255, 235, 235, 0.85));
+}
+
+.manualGateNotifHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+.manualGateNotifHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  letter-spacing: -0.05em;
+}
+
+.manualGateNotifSafetyBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(76, 124, 85, 0.07);
+}
+
+.manualGateNotifSelector {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.manualGateNotifSelector label {
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+
+.manualGateNotifSelector select {
+  flex: 1;
+  min-width: 200px;
+  padding: 8px 12px;
+  border: 1px solid rgba(76, 124, 85, 0.3);
+  border-radius: 12px;
+  background: rgba(255, 250, 240, 0.9);
+  font-size: 0.9rem;
+}
+
+.manualGateNotifCard {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 20px;
+  background: rgba(255, 250, 240, 0.75);
+}
+
+.manualGateNotifCard-blocked {
+  border-color: rgba(180, 91, 93, 0.3);
+  background: rgba(180, 91, 93, 0.06);
+}
+
+.manualGateNotifCard-manual-gate {
+  border-color: rgba(185, 130, 46, 0.3);
+  background: rgba(185, 130, 46, 0.06);
+}
+
+.manualGateNotifCard-warning {
+  border-color: rgba(185, 130, 46, 0.25);
+  background: rgba(185, 130, 46, 0.05);
+}
+
+.manualGateNotifCardHeader {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.manualGateSeverityBadge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.sev-blocked { background: rgba(180, 91, 93, 0.18); color: #7e3436; }
+.sev-manual-gate { background: rgba(185, 130, 46, 0.18); color: #76531d; }
+.sev-warning { background: rgba(185, 130, 46, 0.14); color: #76531d; }
+.sev-info { background: rgba(76, 124, 85, 0.12); color: #35513d; }
+.sev-success { background: rgba(76, 124, 85, 0.14); color: #35513d; }
+
+.manualGateNotifShort {
+  margin: 0;
+  font-weight: 900;
+}
+
+.manualGateNotifDetail {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.manualGateNotifMeta {
+  display: grid;
+  gap: 8px;
+}
+
+.manualGateNotifMeta > div span {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: #35513d;
+  margin-bottom: 2px;
+}
+
+.manualGateNotifMeta > div p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.manualGateNotifActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.manualGateCopyButton {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-size: 0.82rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.manualGateCopyButton.copy-copied {
+  background: linear-gradient(135deg, #4c7c55, #4c7c55);
+}
+
+.manualGateCopyButton.copy-failed {
+  background: linear-gradient(135deg, #b45b5d, #b9822e);
+}
+
+@media (max-width: 760px) {
+  .notificationDigestHero,
+  .manualGateNotifHero {
+    grid-template-columns: 1fr;
+  }
+
+  .notificationDigestSummaryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .notificationDigestControls,
+  .manualGateNotifActions {
+    flex-direction: column;
+  }
+
+  .notificationDigestControls button,
+  .manualGateCopyButton {
+    width: 100%;
+    justify-content: center;
+  }
+}
