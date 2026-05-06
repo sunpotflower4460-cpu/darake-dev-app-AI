@@ -8,6 +8,7 @@ import { GentleBlueprintPreviewPanel } from '../components/GentleBlueprintPrevie
 import { GentleStartCompletionReportPanel } from '../components/GentleStartCompletionReportPanel';
 import { PonStartPanel } from '../components/PonStartPanel';
 import { BeginnerNextStepCardPanel } from '../components/BeginnerNextStepCardPanel';
+import { FirstStartAdvancedOpenPanel } from '../components/FirstStartAdvancedOpenPanel';
 import { FirstAppStartCompletionReportPanel } from '../components/FirstAppStartCompletionReportPanel';
 
 export const PANEL_REGISTRY_PHASE45TO47: PanelRegistryItem[] = [
@@ -90,6 +91,16 @@ export const PANEL_REGISTRY_PHASE45TO47: PanelRegistryItem[] = [
     defaultVisible: true,
     priority: 259,
     tags: ['darake', 'beginner', 'first-start', 'home', 'next-step'],
+  },
+  {
+    id: 'first-start-advanced-open',
+    label: '詳細な管制室を開く',
+    group: 'home',
+    phase: '48.5',
+    component: React.createElement(FirstStartAdvancedOpenPanel),
+    defaultVisible: true,
+    priority: 260,
+    tags: ['darake', 'first-start', 'advanced', 'optional'],
   },
   {
     id: 'first-app-start-completion-report',
