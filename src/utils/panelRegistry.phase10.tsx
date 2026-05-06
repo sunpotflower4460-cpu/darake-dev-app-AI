@@ -1,0 +1,313 @@
+import React from 'react';
+import type { PanelRegistryItem } from './panelRegistry';
+import { LimitedScreenshotCaptureManualRunGuidePanel } from '../components/LimitedScreenshotCaptureManualRunGuidePanel';
+import { LimitedScreenshotCaptureWorkflowDraftPanel } from '../components/LimitedScreenshotCaptureWorkflowDraftPanel';
+import { LimitedScreenshotCaptureWorkflowFileStatusPanel } from '../components/LimitedScreenshotCaptureWorkflowFileStatusPanel';
+import { Phase10ScreenshotUiCompletionReportPanel } from '../components/Phase10ScreenshotUiCompletionReportPanel';
+import { PlaywrightSetupDryRunDraftPanel } from '../components/PlaywrightSetupDryRunDraftPanel';
+import { PlaywrightSetupManualRunGuidePanel } from '../components/PlaywrightSetupManualRunGuidePanel';
+import { PlaywrightSetupReportRecordPanel } from '../components/PlaywrightSetupReportRecordPanel';
+import { PlaywrightSetupWorkflowFileStatusPanel } from '../components/PlaywrightSetupWorkflowFileStatusPanel';
+import { RealCaptureWorkflowDraftPanel } from '../components/RealCaptureWorkflowDraftPanel';
+import { ScreenshotAiReviewPromptBuilderPanel } from '../components/ScreenshotAiReviewPromptBuilderPanel';
+import { ScreenshotCaptureGatePanel } from '../components/ScreenshotCaptureGatePanel';
+import { ScreenshotCaptureManifestRecordPanel } from '../components/ScreenshotCaptureManifestRecordPanel';
+import { ScreenshotDryRunArtifactCheckPanel } from '../components/ScreenshotDryRunArtifactCheckPanel';
+import { ScreenshotJobDraftPanel } from '../components/ScreenshotJobDraftPanel';
+import { ScreenshotManifestToResultBridgePanel } from '../components/ScreenshotManifestToResultBridgePanel';
+import { ScreenshotPlanExportPanel } from '../components/ScreenshotPlanExportPanel';
+import { ScreenshotResultRecordPanel } from '../components/ScreenshotResultRecordPanel';
+import { ScreenshotRunGatePanel } from '../components/ScreenshotRunGatePanel';
+import { ScreenshotToUiCheckBridgePanel } from '../components/ScreenshotToUiCheckBridgePanel';
+import { ScreenshotWorkflowDispatchDraftPanel } from '../components/ScreenshotWorkflowDispatchDraftPanel';
+import { ScreenshotWorkflowFileStatusPanel } from '../components/ScreenshotWorkflowFileStatusPanel';
+import { ScreenshotWorkflowManualRunGuidePanel } from '../components/ScreenshotWorkflowManualRunGuidePanel';
+import { UiCheckCompletionReportPanel } from '../components/UiCheckCompletionReportPanel';
+import { UiCheckReadinessGatePanel } from '../components/UiCheckReadinessGatePanel';
+import { UiCheckResultBridgePanel } from '../components/UiCheckResultBridgePanel';
+import { UiCheckResultRecordPanel } from '../components/UiCheckResultRecordPanel';
+import { UiMachineCheckDraftPanel } from '../components/UiMachineCheckDraftPanel';
+import { UiMachineCheckInputPackPanel } from '../components/UiMachineCheckInputPackPanel';
+
+export const PANEL_REGISTRY_PHASE10: PanelRegistryItem[] = [
+  {
+    id: 'screenshot-job-draft',
+    label: 'Screenshot Job Draft',
+    group: 'screenshots',
+    phase: '9',
+    component: React.createElement(ScreenshotJobDraftPanel),
+    defaultVisible: true,
+    priority: 50,
+    tags: ['screenshots', 'draft'],
+  },
+  {
+    id: 'screenshot-plan-export',
+    label: 'Screenshot Plan Export',
+    group: 'screenshots',
+    phase: '9',
+    component: React.createElement(ScreenshotPlanExportPanel),
+    defaultVisible: true,
+    priority: 51,
+    tags: ['screenshots'],
+  },
+  {
+    id: 'screenshot-run-gate',
+    label: 'Screenshot Run Gate',
+    group: 'screenshots',
+    phase: '9',
+    component: React.createElement(ScreenshotRunGatePanel),
+    defaultVisible: true,
+    priority: 52,
+    tags: ['screenshots', 'readiness-gate'],
+  },
+  {
+    id: 'screenshot-workflow-dispatch',
+    label: 'Screenshot Workflow Dispatch Draft',
+    group: 'screenshots',
+    phase: '10',
+    component: React.createElement(ScreenshotWorkflowDispatchDraftPanel),
+    defaultVisible: true,
+    priority: 53,
+    tags: ['screenshots', 'draft'],
+  },
+  {
+    id: 'screenshot-workflow-file-status',
+    label: 'Screenshot Workflow File Status',
+    group: 'screenshots',
+    phase: '10',
+    component: React.createElement(ScreenshotWorkflowFileStatusPanel),
+    defaultVisible: true,
+    priority: 54,
+    tags: ['screenshots', 'record'],
+  },
+  {
+    id: 'screenshot-workflow-manual-run-guide',
+    label: 'Screenshot Workflow Manual Run Guide',
+    group: 'screenshots',
+    phase: '10',
+    component: React.createElement(ScreenshotWorkflowManualRunGuidePanel),
+    defaultVisible: true,
+    priority: 55,
+    tags: ['screenshots', 'manual-gate'],
+  },
+  {
+    id: 'screenshot-dry-run-artifact',
+    label: 'Screenshot Dry Run Artifact Check',
+    group: 'screenshots',
+    phase: '10',
+    component: React.createElement(ScreenshotDryRunArtifactCheckPanel),
+    defaultVisible: true,
+    priority: 56,
+    tags: ['screenshots', 'readiness-gate'],
+  },
+  {
+    id: 'screenshot-capture-gate',
+    label: 'Screenshot Capture Gate',
+    group: 'screenshots',
+    phase: '10',
+    component: React.createElement(ScreenshotCaptureGatePanel),
+    defaultVisible: true,
+    priority: 57,
+    tags: ['screenshots', 'readiness-gate'],
+  },
+  {
+    id: 'real-capture-workflow',
+    label: 'Real Capture Workflow Draft',
+    group: 'screenshots',
+    phase: '10',
+    component: React.createElement(RealCaptureWorkflowDraftPanel),
+    defaultVisible: true,
+    priority: 58,
+    tags: ['screenshots', 'draft'],
+  },
+  {
+    id: 'playwright-dry-run',
+    label: 'Playwright Setup Dry Run Draft',
+    group: 'screenshots',
+    phase: '10',
+    component: React.createElement(PlaywrightSetupDryRunDraftPanel),
+    defaultVisible: true,
+    priority: 60,
+    tags: ['screenshots', 'draft'],
+  },
+  {
+    id: 'playwright-workflow-status',
+    label: 'Playwright Setup Workflow File Status',
+    group: 'screenshots',
+    phase: '10',
+    component: React.createElement(PlaywrightSetupWorkflowFileStatusPanel),
+    defaultVisible: true,
+    priority: 61,
+    tags: ['screenshots', 'record'],
+  },
+  {
+    id: 'playwright-manual-run-guide',
+    label: 'Playwright Setup Manual Run Guide',
+    group: 'screenshots',
+    phase: '10',
+    component: React.createElement(PlaywrightSetupManualRunGuidePanel),
+    defaultVisible: true,
+    priority: 62,
+    tags: ['screenshots', 'manual-gate'],
+  },
+  {
+    id: 'playwright-report-record',
+    label: 'Playwright Setup Report Record',
+    group: 'screenshots',
+    phase: '10',
+    component: React.createElement(PlaywrightSetupReportRecordPanel),
+    defaultVisible: true,
+    priority: 63,
+    tags: ['screenshots', 'record'],
+  },
+  {
+    id: 'limited-screenshot-workflow',
+    label: 'Limited Screenshot Capture Workflow Draft',
+    group: 'screenshots',
+    phase: '10',
+    component: React.createElement(LimitedScreenshotCaptureWorkflowDraftPanel),
+    defaultVisible: true,
+    priority: 64,
+    tags: ['screenshots', 'draft'],
+  },
+  {
+    id: 'limited-screenshot-file-status',
+    label: 'Limited Screenshot Capture Workflow File Status',
+    group: 'screenshots',
+    phase: '10',
+    component: React.createElement(LimitedScreenshotCaptureWorkflowFileStatusPanel),
+    defaultVisible: true,
+    priority: 65,
+    tags: ['screenshots', 'record'],
+  },
+  {
+    id: 'limited-screenshot-manual-guide',
+    label: 'Limited Screenshot Capture Manual Run Guide',
+    group: 'screenshots',
+    phase: '10',
+    component: React.createElement(LimitedScreenshotCaptureManualRunGuidePanel),
+    defaultVisible: true,
+    priority: 66,
+    tags: ['screenshots', 'manual-gate'],
+  },
+  {
+    id: 'screenshot-manifest-record',
+    label: 'Screenshot Capture Manifest Record',
+    group: 'screenshots',
+    phase: '10.26',
+    component: React.createElement(ScreenshotCaptureManifestRecordPanel),
+    defaultVisible: true,
+    priority: 67,
+    tags: ['screenshots', 'record'],
+  },
+  {
+    id: 'screenshot-manifest-result-bridge',
+    label: 'Screenshot Manifest to Result Bridge',
+    group: 'screenshots',
+    phase: '10.27',
+    component: React.createElement(ScreenshotManifestToResultBridgePanel),
+    defaultVisible: true,
+    priority: 68,
+    tags: ['screenshots', 'bridge'],
+  },
+  {
+    id: 'screenshot-result-record',
+    label: 'Screenshot Result Record',
+    group: 'screenshots',
+    phase: '10.27',
+    component: React.createElement(ScreenshotResultRecordPanel),
+    defaultVisible: true,
+    priority: 69,
+    tags: ['screenshots', 'record'],
+  },
+  {
+    id: 'ui-check-readiness-gate',
+    label: 'UI Check Readiness Gate',
+    group: 'screenshots',
+    phase: '10.28',
+    component: React.createElement(UiCheckReadinessGatePanel),
+    defaultVisible: true,
+    priority: 70,
+    tags: ['screenshots', 'readiness-gate'],
+  },
+  {
+    id: 'screenshot-to-ui-check-bridge',
+    label: 'Screenshot to UI Check Bridge',
+    group: 'screenshots',
+    phase: '10.28',
+    component: React.createElement(ScreenshotToUiCheckBridgePanel),
+    defaultVisible: true,
+    priority: 71,
+    tags: ['screenshots', 'bridge'],
+  },
+  {
+    id: 'ui-machine-check-draft',
+    label: 'UI Machine Check Draft',
+    group: 'screenshots',
+    phase: '10.29',
+    component: React.createElement(UiMachineCheckDraftPanel),
+    defaultVisible: true,
+    priority: 72,
+    tags: ['screenshots', 'draft'],
+  },
+  {
+    id: 'ui-machine-check-input-pack',
+    label: 'UI Machine Check Input Pack',
+    group: 'screenshots',
+    phase: '10.29',
+    component: React.createElement(UiMachineCheckInputPackPanel),
+    defaultVisible: true,
+    priority: 73,
+    tags: ['screenshots'],
+  },
+  {
+    id: 'ui-check-result-bridge',
+    label: 'UI Check Result Bridge',
+    group: 'screenshots',
+    phase: '10.30',
+    component: React.createElement(UiCheckResultBridgePanel),
+    defaultVisible: true,
+    priority: 74,
+    tags: ['screenshots', 'bridge'],
+  },
+  {
+    id: 'ui-check-result-record',
+    label: 'UI Check Result Record',
+    group: 'screenshots',
+    phase: '10.30',
+    component: React.createElement(UiCheckResultRecordPanel),
+    defaultVisible: true,
+    priority: 75,
+    tags: ['screenshots', 'record'],
+  },
+  {
+    id: 'ui-check-completion-report',
+    label: 'UI Check Completion Report',
+    group: 'screenshots',
+    phase: '10.30',
+    component: React.createElement(UiCheckCompletionReportPanel),
+    defaultVisible: true,
+    priority: 76,
+    tags: ['screenshots', 'reports'],
+  },
+  {
+    id: 'phase10-completion-report',
+    label: 'Phase 10 Screenshot UI Completion Report',
+    group: 'screenshots',
+    phase: '10',
+    component: React.createElement(Phase10ScreenshotUiCompletionReportPanel),
+    defaultVisible: true,
+    priority: 77,
+    tags: ['screenshots', 'reports'],
+  },
+  {
+    id: 'screenshot-ai-review-prompt',
+    label: 'Screenshot AI Review Prompt Builder',
+    group: 'screenshots',
+    phase: '21',
+    component: React.createElement(ScreenshotAiReviewPromptBuilderPanel),
+    defaultVisible: true,
+    priority: 78,
+    tags: ['screenshots', 'ai-review'],
+  },
+];

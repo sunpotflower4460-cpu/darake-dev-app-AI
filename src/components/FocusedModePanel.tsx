@@ -3,8 +3,19 @@ import { Sliders } from 'lucide-react';
 import { FOCUSED_MODES, getFocusedModeById, loadFocusedModeId, saveFocusedModeId } from '../utils/focusedMode';
 import type { FocusedModeId } from '../utils/focusedMode';
 
-export function FocusedModePanel() {
-  const [modeId, setModeId] = useState<FocusedModeId>(loadFocusedModeId);
+type Props = {
+  value?: FocusedModeId;
+  onModeChange?: (id: FocusedModeId) => void;
+};
+
+export function FocusedModePanel({ value, onModeChange }: Props = {}) {
+  const [localModeId, setLocalModeId] = useState<FocusedModeId>(loadFocusedModeId);
+  const modeId = value ?? localModeId;
+
+  function setModeId(id: FocusedModeId) {
+    setLocalModeId(id);
+    onModeChange?.(id);
+  }
 
   useEffect(() => {
     saveFocusedModeId(modeId);
