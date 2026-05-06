@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { Copy, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import {
   buildInitialFirstLaunchCareState,
   loadFirstLaunchCareState,
   saveFirstLaunchCareState,
   clearFirstLaunchCareState,
-  formatFirstLaunchCareMarkdown,
   FIRST_LAUNCH_STEPS,
   FIRST_LAUNCH_STEP_LABELS,
 } from '../utils/firstLaunchCareOnboarding';
@@ -31,8 +30,6 @@ const STEP_INDEX: Record<FirstLaunchCareStep, number> = {
 
 export function FirstLaunchCarePanel() {
   const [state, setState] = useState<FirstLaunchCareState>(getInitialState);
-  const [copied, setCopied] = useState(false);
-
   const currentIndex = STEP_INDEX[state.currentStep];
 
   function update(partial: Partial<FirstLaunchCareState>) {
@@ -61,21 +58,10 @@ export function FirstLaunchCarePanel() {
     setState(buildInitialFirstLaunchCareState());
   }
 
-  async function handleCopy() {
-    try {
-      await navigator.clipboard.writeText(formatFirstLaunchCareMarkdown(state));
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1800);
-    } catch {
-      // ignore
-    }
-  }
-
   return (
     <div className="flcPanel">
       <span className="flcPhaseTag">Phase 45</span>
 
-      {/* Step indicator */}
       <div className="flcStepIndicator">
         {FIRST_LAUNCH_STEPS.map((step, i) => (
           <div
@@ -194,20 +180,19 @@ export function FirstLaunchCarePanel() {
           <div className="flcReadyCard">
             <div className="flcReadyTitle">🎉 準備できました</div>
             <div className="flcReadySub">
-              最初の設計書とCloud Agent指示書を作れます。<br />
+              次は内容を確認して、ぽん開始パックを作ります。<br />
               {state.appName && <span>アプリ: <strong>{state.appName}</strong></span>}
             </div>
           </div>
           <div className="flcBtnRow">
-            <button className="flcBtnPrimary" onClick={handleCopy}>
-              {copied ? <><Check size={16} /> コピー済み</> : '設定をMarkdownでコピー'}
+            <button className="flcBtnPrimary" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <Check size={16} /> 次へ進む
             </button>
             <button className="flcBtnSecondary" onClick={handleReset}>最初からやり直す</button>
           </div>
         </div>
       )}
 
-      {/* Current step label */}
       <div style={{ textAlign: 'center', fontSize: '0.78rem', color: '#aaa', marginTop: 16 }}>
         {FIRST_LAUNCH_STEP_LABELS[state.currentStep]}
       </div>
