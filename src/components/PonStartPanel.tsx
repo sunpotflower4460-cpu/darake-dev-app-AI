@@ -36,7 +36,7 @@ export function PonStartPanel() {
       <div className="ponSub">{summarizePonStartPack(pack)}</div>
 
       <span className={`ponStatusBadge ${pack.status}`}>
-        {pack.status === 'ready-to-copy' ? '✅ コピー準備OK'
+        {pack.status === 'ready-to-copy' ? '✅ これを貼れば始められます'
           : pack.status === 'needs-review' ? '🔍 要確認'
           : '🚫 未準備'}
       </span>
@@ -44,28 +44,30 @@ export function PonStartPanel() {
       {pack.blockers.length > 0 && <div className="ponWarnBox">{pack.blockers.map((b) => <div key={b}>🚫 {b}</div>)}</div>}
       {pack.warnings.length > 0 && <div className="ponWarnBox">{pack.warnings.map((w) => <div key={w}>⚠️ {w}</div>)}</div>}
 
+      <div className="ponNextAction">
+        次にやること：下の緑ボタンを押して、Cloud Agentのチャットに貼るだけです。
+      </div>
+
+      <div className="ponBtnRow">
+        <button className="ponBtnPrimary" onClick={() => copyText('agent', pack.cloudAgentInstructionMarkdown)} disabled={pack.status === 'not-ready'}>
+          {copied === 'agent' ? <><Check size={16} /> コピー済み</> : 'Cloud Agentに貼る指示をコピー'}
+        </button>
+        <button className="ponBtnSecondary" onClick={() => copyText('all', pack.allInOneMarkdown)} disabled={pack.status === 'not-ready'}>
+          {copied === 'all' ? <><Check size={14} /> コピー済み</> : <><Copy size={14} /> 全部まとめてコピー</>}
+        </button>
+        <button className="ponBtnSecondary" onClick={() => copyText('issue', pack.issueDraftMarkdown)} disabled={pack.status === 'not-ready'}>
+          {copied === 'issue' ? <><Check size={14} /> コピー済み</> : <><Copy size={14} /> Issue下書きだけコピー</>}
+        </button>
+      </div>
+
       <div className="ponIncludedList">
-        <div className="ponIncludedTitle">入っているもの</div>
+        <div className="ponIncludedTitle">中身</div>
         {(Object.entries(pack.included) as [keyof typeof pack.included, boolean][]).map(([key, val]) => (
           <div key={key} className="ponIncludedItem">
             <span className="ponIncludedIcon">{val ? '✅' : '⬜'}</span>
             <span>{INCLUDED_LABELS[key] ?? key}</span>
           </div>
         ))}
-      </div>
-
-      <div className="ponNextAction">次にやること：{pack.nextHumanAction}</div>
-
-      <div className="ponBtnRow">
-        <button className="ponBtnPrimary" onClick={() => copyText('all', pack.allInOneMarkdown)} disabled={pack.status === 'not-ready'}>
-          {copied === 'all' ? <><Check size={16} /> コピー済み</> : '全部コピー'}
-        </button>
-        <button className="ponBtnSecondary" onClick={() => copyText('agent', pack.cloudAgentInstructionMarkdown)} disabled={pack.status === 'not-ready'}>
-          {copied === 'agent' ? <><Check size={14} /> コピー済み</> : <><Copy size={14} /> Cloud Agent指示だけコピー</>}
-        </button>
-        <button className="ponBtnSecondary" onClick={() => copyText('issue', pack.issueDraftMarkdown)} disabled={pack.status === 'not-ready'}>
-          {copied === 'issue' ? <><Check size={14} /> コピー済み</> : <><Copy size={14} /> Issue下書きだけコピー</>}
-        </button>
       </div>
 
       <div style={{ fontSize: '0.78rem', color: '#aaa', marginTop: 14, textAlign: 'center' }}>
