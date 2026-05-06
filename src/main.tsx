@@ -10,6 +10,7 @@ import type { FocusedModeId } from './utils/focusedMode';
 import type { DarakeNavGroupId } from './utils/navigationGroups';
 import { buildFirstAppStartCompletionReport } from './utils/firstAppStartCompletionReport';
 import { isFirstStartMinimalModeReleased } from './utils/firstStartMinimalMode';
+import { loadFirstStartStep } from './utils/firstStartStep';
 import { subscribeDarakeRuntimeEvents } from './utils/darakeRuntimeEvents';
 import './styleImports';
 
@@ -30,16 +31,21 @@ const VALID_NAV_GROUPS = new Set<string>([
 ]);
 
 function getFirstStartVisiblePanelIds() {
-  const report = buildFirstAppStartCompletionReport();
+  const explicitStep = loadFirstStartStep();
+  if (explicitStep === 'form') {
+    return new Set(['gentle-app-start-form']);
+  }
+  if (explicitStep === 'pon') {
+    return new Set(['pon-start', 'beginner-next-step-card', 'first-start-advanced-open']);
+  }
 
+  const report = buildFirstAppStartCompletionReport();
   if (!report.onboardingComplete) {
     return new Set(['first-start-route-guard', 'first-launch-care']);
   }
-
   if (!report.formCanStart) {
     return new Set(['gentle-app-start-form']);
   }
-
   return new Set(['pon-start', 'beginner-next-step-card', 'first-start-advanced-open']);
 }
 
