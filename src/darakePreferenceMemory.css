@@ -1,0 +1,187 @@
+/* Phase 36: Darake Preference Memory */
+
+.phase36Panel {
+  display: grid;
+  gap: 18px;
+}
+
+.phase36Hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(160, 80, 200, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(248, 234, 255, 0.95), rgba(238, 218, 255, 0.9));
+}
+
+.phase36Hero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #8a2dcf, #5a1a8a);
+}
+
+.phase36Hero h3 { margin: 0 0 6px; font-size: clamp(1.1rem, 2.5vw, 1.7rem); letter-spacing: -0.04em; }
+.phase36Hero p { margin: 0; font-size: 0.88rem; color: var(--muted); }
+.phase36Hero .eyebrow { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #8a2dcf; margin: 0 0 4px; }
+
+.phase36SafetyBox {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(220, 80, 80, 0.08);
+  border: 1px solid rgba(220, 80, 80, 0.22);
+  font-size: 0.84rem;
+  color: #6e1a1a;
+}
+
+.phase36Section {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(160, 80, 200, 0.04);
+  border: 1px solid rgba(160, 80, 200, 0.12);
+}
+
+.phase36Section h4 { margin: 0 0 8px; font-size: 0.84rem; color: #5a1a8a; font-weight: 700; }
+
+.phase36SummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.phase36SummaryGrid section { background: rgba(160, 80, 200, 0.05); border-radius: 12px; padding: 12px; text-align: center; }
+.phase36SummaryGrid h4 { font-size: 0.73rem; margin: 0 0 4px; color: var(--muted); }
+.phase36SummaryGrid p { font-size: 1.1rem; font-weight: 800; margin: 0; color: #5a1a8a; }
+
+.phase36TagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.phase36Tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: rgba(160, 80, 200, 0.1);
+  color: #5a1a8a;
+  border: 1px solid rgba(160, 80, 200, 0.25);
+}
+
+.phase36ModeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: rgba(138, 45, 207, 0.12);
+  color: #5a1a8a;
+  border: 1px solid rgba(138, 45, 207, 0.3);
+}
+
+.phase36BtnRow { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.phase36SmallBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(160, 80, 200, 0.3);
+  background: rgba(160, 80, 200, 0.06);
+  color: #5a1a8a;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.phase36SmallBtn:hover { background: rgba(160, 80, 200, 0.12); }
+.phase36SmallBtn.active { background: rgba(138, 45, 207, 0.15); border-color: rgba(138, 45, 207, 0.45); }
+.phase36SmallBtn.copied { background: rgba(60, 150, 80, 0.12); color: #2a6035; }
+
+.phase36CopyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 12px;
+  border: none;
+  background: #8a2dcf;
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.phase36CopyBtn:hover { background: #5a1a8a; }
+.phase36CopyBtn.copied { background: #2a7a40; }
+.phase36CopyBtn.failed { background: #992020; }
+
+/* Phase 36 Completion Report */
+.phase36rPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.phase36rHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(40, 160, 80, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(234, 255, 240, 0.95), rgba(220, 248, 230, 0.9));
+}
+
+.phase36rHero > svg { width: 44px; height: 44px; padding: 10px; border-radius: 16px; color: #fff; background: linear-gradient(135deg, #1a8c44, #0c5c2c); }
+.phase36rHero h3 { margin: 0 0 6px; font-size: clamp(1.1rem, 2.5vw, 1.7rem); letter-spacing: -0.04em; }
+.phase36rHero p { margin: 0; font-size: 0.88rem; color: var(--muted); }
+.phase36rHero .eyebrow { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #1a8c44; margin: 0 0 4px; }
+
+.phase36rSection { padding: 14px 16px; border-radius: 14px; background: rgba(40, 160, 80, 0.04); border: 1px solid rgba(40, 160, 80, 0.12); }
+.phase36rSection h4 { margin: 0 0 8px; font-size: 0.84rem; color: #0c5c2c; font-weight: 700; }
+
+.phase36rStatusBadge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 700;
+}
+.phase36rStatusBadge.active { background: rgba(40, 160, 80, 0.12); color: #1a6040; border: 1px solid rgba(40, 160, 80, 0.3); }
+.phase36rStatusBadge.inactive { background: rgba(160, 160, 160, 0.1); color: #555; border: 1px solid rgba(160, 160, 160, 0.2); }
+
+.phase36rList { list-style: none; padding: 0; margin: 0; display: grid; gap: 5px; }
+.phase36rList li { font-size: 0.82rem; padding: 6px 10px; border-radius: 8px; color: #1a3a20; background: rgba(40, 160, 80, 0.05); border: 1px solid rgba(40, 160, 80, 0.12); }
+
+.phase36rBtnRow { display: flex; flex-wrap: wrap; gap: 10px; }
+.phase36rSmallBtn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 10px;
+  border: 1px solid rgba(40, 160, 80, 0.3); background: rgba(40, 160, 80, 0.06);
+  color: #0c5c2c; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: background 0.15s;
+}
+.phase36rSmallBtn:hover { background: rgba(40, 160, 80, 0.12); }
+.phase36rSmallBtn.copied { background: rgba(60, 150, 80, 0.12); color: #2a6035; }
+
+.phase36rCopyBtn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: 12px; border: none;
+  background: #1a8c44; color: #fff; font-size: 0.84rem; font-weight: 700; cursor: pointer; transition: background 0.18s;
+}
+.phase36rCopyBtn:hover { background: #0c5c2c; }
+.phase36rCopyBtn.copied { background: #2a7a40; }
+.phase36rCopyBtn.failed { background: #992020; }
+
+@media (max-width: 760px) {
+  .phase36Hero, .phase36rHero { grid-template-columns: 1fr; }
+  .phase36SummaryGrid { grid-template-columns: repeat(2, 1fr); }
+  .phase36BtnRow, .phase36rBtnRow { flex-direction: column; }
+}
