@@ -10,6 +10,7 @@ import {
 } from '../utils/gentleAppStartForm';
 import type { GentleAppStartForm } from '../utils/gentleAppStartForm';
 import { loadFirstLaunchCareState } from '../utils/firstLaunchCareOnboarding';
+import { saveFirstStartStep } from '../utils/firstStartStep';
 import { useState } from 'react';
 import { Check, Save } from 'lucide-react';
 
@@ -61,6 +62,7 @@ export function GentleAppStartFormPanel() {
       return;
     }
     saveGentleAppStartForm(normalized);
+    saveFirstStartStep('pon');
     setForm(normalized);
     setSaved(true);
     window.setTimeout(() => setSaved(false), 1800);
