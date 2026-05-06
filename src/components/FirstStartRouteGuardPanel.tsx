@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import { buildFirstAppStartMode } from '../utils/firstAppStartMode';
-import { loadFirstLaunchCareState } from '../utils/firstLaunchCareOnboarding';
+import { buildFirstAppStartCompletionReport } from '../utils/firstAppStartCompletionReport';
 import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
 import '../phase48FirstStartHardening.css';
 
 function getActive(): boolean {
-  return buildFirstAppStartMode(loadFirstLaunchCareState()?.hasCompletedFirstLaunch === true).enabled;
+  return !buildFirstAppStartCompletionReport().beginnerFlowReady;
 }
 
 export function FirstStartRouteGuardPanel() {
