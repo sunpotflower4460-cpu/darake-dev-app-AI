@@ -49,13 +49,13 @@ export function PonStartPanel() {
       </div>
 
       <div className="ponBtnRow">
-        <button className="ponBtnPrimary" onClick={() => copyText('agent', pack.cloudAgentInstructionMarkdown)} disabled={pack.status === 'not-ready'}>
+        <button type="button" className="ponBtnPrimary" onClick={() => copyText('agent', pack.cloudAgentInstructionMarkdown)} disabled={pack.status === 'not-ready'}>
           {copied === 'agent' ? <><Check size={16} /> コピー済み</> : 'Cloud Agentに貼る指示をコピー'}
         </button>
-        <button className="ponBtnSecondary" onClick={() => copyText('all', pack.allInOneMarkdown)} disabled={pack.status === 'not-ready'}>
+        <button type="button" className="ponBtnSecondary" onClick={() => copyText('all', pack.allInOneMarkdown)} disabled={pack.status === 'not-ready'}>
           {copied === 'all' ? <><Check size={14} /> コピー済み</> : <><Copy size={14} /> 全部まとめてコピー</>}
         </button>
-        <button className="ponBtnSecondary" onClick={() => copyText('issue', pack.issueDraftMarkdown)} disabled={pack.status === 'not-ready'}>
+        <button type="button" className="ponBtnSecondary" onClick={() => copyText('issue', pack.issueDraftMarkdown)} disabled={pack.status === 'not-ready'}>
           {copied === 'issue' ? <><Check size={14} /> コピー済み</> : <><Copy size={14} /> Issue下書きだけコピー</>}
         </button>
       </div>

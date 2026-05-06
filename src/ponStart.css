@@ -120,11 +120,19 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: background 0.15s;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .ponBtnPrimary:hover:not(:disabled) {
   background: #388e3c;
+}
+
+.ponBtnPrimary:active:not(:disabled) {
+  background: #2e7d32;
+  transform: scale(0.98);
 }
 
 .ponBtnPrimary:disabled {
@@ -146,10 +154,19 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .ponBtnSecondary:hover {
   background: #f0f0f0;
+}
+
+.ponBtnSecondary:active {
+  background: #e0e0e0;
+  transform: scale(0.98);
 }
 
 /* Beginner Next Step Card */

@@ -120,7 +120,7 @@ export function FirstLaunchCarePanel() {
             </div>
           </div>
           <div className="flcBtnRow">
-            <button className="flcBtnPrimary" onClick={goNext}>はじめる</button>
+            <button type="button" className="flcBtnPrimary" onClick={goNext}>はじめる</button>
           </div>
         </div>
       )}
@@ -157,8 +157,8 @@ export function FirstLaunchCarePanel() {
           />
 
           <div className="flcBtnRow">
-            <button className="flcBtnPrimary" onClick={goNext}>次へ</button>
-            <button className="flcBtnSecondary" onClick={goBack}>戻る</button>
+            <button type="button" className="flcBtnPrimary" onClick={goNext}>次へ</button>
+            <button type="button" className="flcBtnSecondary" onClick={goBack}>戻る</button>
           </div>
         </div>
       )}
@@ -170,6 +170,7 @@ export function FirstLaunchCarePanel() {
             {(Object.keys(DARAKE_LEVEL_LABELS) as Array<keyof typeof DARAKE_LEVEL_LABELS>).map((level) => (
               <button
                 key={level}
+                type="button"
                 className={`flcChoiceBtn${state.darakeLevel === level ? ' selected' : ''}`}
                 onClick={() => update({ darakeLevel: level })}
               >
@@ -178,8 +179,8 @@ export function FirstLaunchCarePanel() {
             ))}
           </div>
           <div className="flcBtnRow">
-            <button className="flcBtnPrimary" onClick={goNext}>次へ</button>
-            <button className="flcBtnSecondary" onClick={goBack}>戻る</button>
+            <button type="button" className="flcBtnPrimary" onClick={goNext}>次へ</button>
+            <button type="button" className="flcBtnSecondary" onClick={goBack}>戻る</button>
           </div>
         </div>
       )}
@@ -218,10 +219,10 @@ export function FirstLaunchCarePanel() {
             </div>
           </div>
           <div className="flcBtnRow">
-            <button className="flcBtnPrimary" onClick={proceedToGentleForm}>
+            <button type="button" className="flcBtnPrimary" onClick={proceedToGentleForm}>
               <Check size={16} /> 次へ進む
             </button>
-            <button className="flcBtnSecondary" onClick={handleReset}>最初からやり直す</button>
+            <button type="button" className="flcBtnSecondary" onClick={handleReset}>最初からやり直す</button>
           </div>
         </div>
       )}
