@@ -125,9 +125,9 @@ export function formatAppFactoryRoadmapMarkdown(roadmap: AppFactoryRoadmap): str
   ].join('\n');
 }
 
-function chunkByCondition(ideas: AppIdea[], primaryCondition: (i: AppIdea) => boolean): AppIdea[][] {
+function chunkByCondition(ideas: AppIdea[], primaryCondition: (idea: AppIdea) => boolean): AppIdea[][] {
   const primary = ideas.filter(primaryCondition);
-  const rest = ideas.filter((i) => !primaryCondition(i));
+  const rest = ideas.filter((idea) => !primaryCondition(idea));
   const result: AppIdea[][] = [];
   if (primary.length > 0) result.push(primary);
   if (rest.length > 0) result.push(rest);

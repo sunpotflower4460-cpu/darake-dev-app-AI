@@ -11,8 +11,8 @@ export type IdeaToBlueprintOutput = {
   cloudAgentFirstInstruction: string;
 };
 
-const TEMPLATE_MAPPING: Record<string, string> = {
-  simple: 'simple-utility',
+const TEMPLATE_MAPPING: Record<AppIdea['complexity'], string> = {
+  small: 'simple-utility',
   medium: 'content-creator',
   large: 'productivity-tool',
 };
