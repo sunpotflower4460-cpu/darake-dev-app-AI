@@ -12,12 +12,13 @@ import type { DarakeMorningReport } from '../utils/darakeMorningReport';
 type CopyState = 'idle' | 'copied';
 
 const SNOOZE_KEY = 'darake.morningReport.snooze.v1';
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
 function isSnoozeActive(): boolean {
   try {
     const raw = localStorage.getItem(SNOOZE_KEY);
     if (!raw) return false;
-    return Date.now() - parseInt(raw, 10) < 24 * 60 * 60 * 1000;
+    return Date.now() - parseInt(raw, 10) < ONE_DAY_MS;
   } catch {
     return false;
   }

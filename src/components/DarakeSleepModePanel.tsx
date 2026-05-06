@@ -13,13 +13,14 @@ import type { DarakeSleepMode } from '../utils/darakeSleepMode';
 type CopyState = 'idle' | 'copied';
 
 const SNOOZE_KEY = 'darake.sleepMode.snooze.v1';
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
 function isSnoozeActive(): boolean {
   try {
     const raw = localStorage.getItem(SNOOZE_KEY);
     if (!raw) return false;
     const ts = parseInt(raw, 10);
-    return Date.now() - ts < 24 * 60 * 60 * 1000;
+    return Date.now() - ts < ONE_DAY_MS;
   } catch {
     return false;
   }
