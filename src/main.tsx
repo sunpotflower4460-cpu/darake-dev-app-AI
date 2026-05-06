@@ -80,6 +80,8 @@ import './notificationSafetyGate.css';
 import './manualNotificationSendPack.css';
 import './notificationSentRecord.css';
 import './externalNotificationDryRunCompletionReport.css';
+// Phase 27-29 CSS
+import './githubDryRunOperation.css';
 
 const VALID_NAV_GROUPS = new Set<string>([
   'all',
