@@ -1,0 +1,178 @@
+/* Phase 26 Shared Styles */
+
+.phase26Panel {
+  display: grid;
+  gap: 18px;
+}
+
+.phase26Hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(90, 70, 150, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(240, 235, 255, 0.9));
+}
+
+.phase26Hero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #5a3c9a, #2e5597);
+}
+
+.phase26Hero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+  letter-spacing: -0.04em;
+}
+
+.phase26Hero p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.phase26StatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.phase26StatusBadge.manual-copy-ready,
+.phase26StatusBadge.safe-to-copy,
+.phase26StatusBadge.ready-for-manual-notification {
+  background: rgba(76, 124, 85, 0.12);
+  color: #35513d;
+  border: 1px solid rgba(76, 124, 85, 0.25);
+}
+
+.phase26StatusBadge.needs-review {
+  background: rgba(185, 130, 46, 0.12);
+  color: #8a5e12;
+  border: 1px solid rgba(185, 130, 46, 0.3);
+}
+
+.phase26StatusBadge.blocked,
+.phase26StatusBadge.draft-only {
+  background: rgba(220, 80, 80, 0.1);
+  color: #8b2020;
+  border: 1px solid rgba(220, 80, 80, 0.25);
+}
+
+.phase26Table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.phase26Table th {
+  text-align: left;
+  padding: 8px 10px;
+  background: rgba(90, 70, 150, 0.08);
+  color: #3a2870;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(90, 70, 150, 0.18);
+}
+
+.phase26Table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  vertical-align: top;
+}
+
+.phase26Table tr:last-child td {
+  border-bottom: none;
+}
+
+.phase26Table tr:hover td {
+  background: rgba(90, 70, 150, 0.04);
+}
+
+.phase26SummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.phase26SummaryGrid section {
+  background: rgba(90, 70, 150, 0.07);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.phase26SummaryGrid h4 {
+  font-size: 0.75rem;
+  margin: 0 0 4px;
+  color: var(--muted);
+}
+
+.phase26SummaryGrid p {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0;
+  color: #3a2870;
+}
+
+.phase26Select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(90, 70, 150, 0.3);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+.phase26Textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(90, 70, 150, 0.25);
+  border-radius: 10px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  resize: vertical;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.phase26CodeBlock {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.phase26MessageBox {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(90, 70, 150, 0.06);
+  border: 1px solid rgba(90, 70, 150, 0.15);
+  font-size: 0.84rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 760px) {
+  .phase26Hero {
+    grid-template-columns: 1fr;
+  }
+
+  .phase26SummaryGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

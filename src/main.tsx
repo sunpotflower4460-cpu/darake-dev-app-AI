@@ -73,6 +73,13 @@ import './localStorageKeyRegistry.css';
 import './phase24IntegrationCompletionReport.css';
 import './darakeTopCommand.css';
 import './aiProviderCandidates.css';
+// Phase 26 CSS
+import './notificationDryRunTarget.css';
+import './notificationPayloadDryRunBuilder.css';
+import './notificationSafetyGate.css';
+import './manualNotificationSendPack.css';
+import './notificationSentRecord.css';
+import './externalNotificationDryRunCompletionReport.css';
 
 const VALID_NAV_GROUPS = new Set<string>([
   'all',
