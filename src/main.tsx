@@ -86,6 +86,10 @@ import './githubDryRunOperation.css';
 import './oneActionCandidate.css';
 import './humanCheckMinimal.css';
 import './autoProgressSimulation.css';
+// Phase 33-35 CSS
+import './darakeAutopilotPolicy.css';
+import './noOkAutoAdvanceQueue.css';
+import './darakeReviewInbox.css';
 
 const VALID_NAV_GROUPS = new Set<string>([
   'all',
