@@ -1,0 +1,534 @@
+/* Phase 15: Post-Release Operations Room */
+
+/* Shared hero pattern for Phase 15-18 */
+.phase15Hero,
+.phase16Hero,
+.phase17Hero,
+.phase18Hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.phase15Hero > svg,
+.phase16Hero > svg,
+.phase17Hero > svg,
+.phase18Hero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.phase15Hero h3,
+.phase16Hero h3,
+.phase17Hero h3,
+.phase18Hero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  letter-spacing: -0.05em;
+}
+
+.phase15Hero-blocked,
+.phase16Hero-blocked { border-color: rgba(180, 91, 93, 0.28); background: rgba(180, 91, 93, 0.07); }
+.phase15Hero-warning,
+.phase16Hero-warning { border-color: rgba(185, 130, 46, 0.25); background: rgba(185, 130, 46, 0.07); }
+.phase15Hero-ok,
+.phase16Hero-ok { border-color: rgba(76, 124, 85, 0.25); background: rgba(76, 124, 85, 0.08); }
+
+/* Shared panel grid */
+.phase15Panel,
+.phase16Panel,
+.phase17Panel,
+.phase18Panel {
+  display: grid;
+  gap: 18px;
+}
+
+/* Safety box */
+.phaseSafetyBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(76, 124, 85, 0.07);
+  font-size: 0.88rem;
+}
+
+/* Blockers box */
+.phaseBlockersBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(180, 91, 93, 0.28);
+  border-radius: 18px;
+  background: rgba(180, 91, 93, 0.06);
+  color: #7e3436;
+}
+
+.phaseBlockersBox strong { color: #7e3436; display: block; margin-bottom: 6px; }
+.phaseBlockersBox ul { margin: 0; padding-left: 1.2rem; }
+
+/* Warnings box */
+.phaseWarningsBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(185, 130, 46, 0.25);
+  border-radius: 18px;
+  background: rgba(185, 130, 46, 0.06);
+  color: #76531d;
+}
+
+.phaseWarningsBox strong { color: #76531d; display: block; margin-bottom: 6px; }
+.phaseWarningsBox ul { margin: 0; padding-left: 1.2rem; }
+
+/* Info box */
+.phaseInfoBox {
+  padding: 14px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+  display: grid;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.phaseInfoBox strong { display: block; margin-bottom: 4px; }
+.phaseInfoBox ul { margin: 0; padding-left: 1.2rem; }
+.phaseInfoBox li { color: var(--muted); line-height: 1.6; }
+
+/* Summary grid */
+.phaseSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.phaseSummaryGrid section {
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+  text-align: center;
+}
+
+.phaseSummaryGrid h4 { margin: 0 0 6px; color: #35513d; font-size: 0.82rem; }
+.phaseSummaryGrid p { margin: 0; font-weight: 900; font-size: 1.2rem; color: var(--muted); }
+
+/* Controls */
+.phaseControls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+}
+
+.phaseControls button {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  font-weight: 900;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.phaseControls button:hover { opacity: 0.9; }
+
+.phaseSavedBtn { background: linear-gradient(135deg, #4c7c55, #4c7c55) !important; }
+.phaseCopyBtn.copy-copied { background: linear-gradient(135deg, #4c7c55, #4c7c55) !important; }
+.phaseCopyBtn.copy-failed { background: linear-gradient(135deg, #b45b5d, #b9822e) !important; }
+
+/* Status badge */
+.phaseStatusBadge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.phaseStatusBadge-ok { background: rgba(76, 124, 85, 0.14); color: #35513d; }
+.phaseStatusBadge-warning { background: rgba(185, 130, 46, 0.16); color: #76531d; }
+.phaseStatusBadge-blocked { background: rgba(180, 91, 93, 0.14); color: #7e3436; }
+.phaseStatusBadge-draft { background: rgba(150, 150, 150, 0.14); color: #555; }
+
+/* Form elements shared */
+.phaseForm {
+  display: grid;
+  gap: 14px;
+}
+
+.phaseForm fieldset {
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 18px;
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.phaseForm legend {
+  padding: 0 8px;
+  font-weight: 900;
+  font-size: 0.88rem;
+  color: #35513d;
+}
+
+.phaseForm label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #35513d;
+}
+
+.phaseForm input,
+.phaseForm textarea,
+.phaseForm select {
+  padding: 8px 12px;
+  border: 1px solid rgba(76, 124, 85, 0.25);
+  border-radius: 12px;
+  background: rgba(255, 250, 240, 0.85);
+  font-size: 0.9rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.phaseForm textarea { resize: vertical; }
+
+/* Item list */
+.phaseItemList {
+  display: grid;
+  gap: 10px;
+}
+
+.phaseItem {
+  padding: 12px 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 250, 240, 0.8);
+  display: grid;
+  gap: 6px;
+}
+
+.phaseItem-selected { border-color: #4c7c55; background: rgba(76, 124, 85, 0.08); }
+.phaseItem-critical { border-color: rgba(180, 91, 93, 0.4); background: rgba(180, 91, 93, 0.07); }
+.phaseItem-high { border-color: rgba(185, 130, 46, 0.35); background: rgba(185, 130, 46, 0.07); }
+
+.phaseItemTitle {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #35513d;
+}
+
+.phaseItemMeta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.phaseItemBadge {
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  background: rgba(76, 124, 85, 0.12);
+  color: #35513d;
+}
+
+.phaseItemBadge-critical { background: rgba(180, 91, 93, 0.14); color: #7e3436; }
+.phaseItemBadge-high { background: rgba(185, 130, 46, 0.14); color: #76531d; }
+.phaseItemBadge-medium { background: rgba(76, 124, 85, 0.12); color: #35513d; }
+.phaseItemBadge-low { background: rgba(150, 150, 150, 0.12); color: #555; }
+
+/* Code / Markdown output box */
+.phaseCodeBox {
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 14px;
+  background: rgba(238, 247, 231, 0.6);
+  font-family: monospace;
+  font-size: 0.82rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.6;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+/* Recommendation list */
+.phaseRecommendList {
+  display: grid;
+  gap: 8px;
+}
+
+.phaseRecommendItem {
+  padding: 10px 14px;
+  border: 1px solid rgba(76, 124, 85, 0.16);
+  border-radius: 12px;
+  background: rgba(255, 250, 240, 0.8);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* App card */
+.phaseAppCard {
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 16px;
+  background: rgba(255, 250, 240, 0.8);
+  display: grid;
+  gap: 8px;
+}
+
+.phaseAppCard-blocked { border-color: rgba(180, 91, 93, 0.35); background: rgba(180, 91, 93, 0.06); }
+.phaseAppCard-manual-gate { border-color: rgba(185, 130, 46, 0.35); background: rgba(185, 130, 46, 0.06); }
+.phaseAppCard-dream-core { border-color: rgba(76, 124, 85, 0.35); background: rgba(76, 124, 85, 0.06); }
+
+.phaseAppCardName {
+  font-size: 1rem;
+  font-weight: 900;
+  color: #35513d;
+}
+
+.phaseAppCardMeta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+/* Navigation bar */
+.darakeNavBar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 20px;
+  background: rgba(255, 250, 240, 0.85);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.darakeNavBtn {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: #35513d;
+  background: rgba(255, 250, 240, 0.85);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.darakeNavBtn:hover { background: rgba(76, 124, 85, 0.1); }
+.darakeNavBtn.active {
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  color: #fffaf0;
+  border-color: transparent;
+}
+
+/* Safety toggle */
+.phaseSafetyToggle {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 250, 240, 0.8);
+}
+
+.phaseSafetyToggleFixed {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid rgba(180, 91, 93, 0.25);
+  border-radius: 14px;
+  background: rgba(180, 91, 93, 0.05);
+  font-size: 0.88rem;
+  color: #7e3436;
+}
+
+.phaseSafetyToggleLabel {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #35513d;
+  flex: 1;
+}
+
+.phaseSafetyToggleDesc {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* Phase plan list */
+.phasePlanList {
+  display: grid;
+  gap: 12px;
+}
+
+.phasePlanItem {
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 250, 240, 0.8);
+}
+
+.phasePlanItemTitle {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #35513d;
+  margin-bottom: 6px;
+}
+
+.phasePlanItemBody {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.phasePlanItemBody ul {
+  margin: 4px 0;
+  padding-left: 1.2rem;
+}
+
+/* Focus mode selector */
+.focusModeSelector {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.focusModeSelectorBtn {
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: #35513d;
+  background: rgba(255, 250, 240, 0.85);
+  cursor: pointer;
+}
+
+.focusModeSelectorBtn.active {
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  color: #fffaf0;
+  border-color: transparent;
+}
+
+/* Template selector */
+.templateSelector {
+  display: grid;
+  gap: 8px;
+}
+
+.templateSelectorBtn {
+  padding: 12px 14px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 14px;
+  background: rgba(255, 250, 240, 0.8);
+  text-align: left;
+  cursor: pointer;
+  display: grid;
+  gap: 4px;
+}
+
+.templateSelectorBtn.active {
+  border-color: #4c7c55;
+  background: rgba(76, 124, 85, 0.08);
+}
+
+.templateSelectorBtnLabel {
+  font-size: 0.92rem;
+  font-weight: 900;
+  color: #35513d;
+}
+
+.templateSelectorBtnSub {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* Home summary special */
+.darakeHomeComment {
+  padding: 16px 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(76, 124, 85, 0.08), rgba(185, 130, 46, 0.06));
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #35513d;
+  line-height: 1.6;
+}
+
+/* Eyebrow label */
+.eyebrow {
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #4c7c55;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+
+/* Responsive */
+@media (max-width: 1080px) {
+  .phaseSummaryGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 760px) {
+  .phase15Hero,
+  .phase16Hero,
+  .phase17Hero,
+  .phase18Hero {
+    grid-template-columns: 1fr;
+  }
+
+  .phaseControls {
+    flex-direction: column;
+  }
+
+  .phaseControls button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .phaseSummaryGrid { grid-template-columns: 1fr; }
+
+  .darakeNavBar {
+    position: static;
+    gap: 4px;
+  }
+
+  .darakeNavBtn {
+    font-size: 0.76rem;
+    padding: 6px 10px;
+  }
+
+  .focusModeSelector { gap: 6px; }
+
+  .focusModeSelectorBtn {
+    font-size: 0.76rem;
+    padding: 6px 10px;
+  }
+}

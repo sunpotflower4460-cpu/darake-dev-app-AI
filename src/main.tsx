@@ -70,6 +70,29 @@ import { AppReviewRejectionRecordPanel } from './components/AppReviewRejectionRe
 import { AppReviewResponseDraftPanel } from './components/AppReviewResponseDraftPanel';
 import { RejectionFixIssueDraftPanel } from './components/RejectionFixIssueDraftPanel';
 import { ResubmissionChecklistPanel } from './components/ResubmissionChecklistPanel';
+// Phase 15: Post-Release Operations Room
+import { ReleaseRecordPanel } from './components/ReleaseRecordPanel';
+import { PostReleaseFeedbackPanel } from './components/PostReleaseFeedbackPanel';
+import { FeedbackIssueDraftPanel } from './components/FeedbackIssueDraftPanel';
+import { NextUpdatePlanPanel } from './components/NextUpdatePlanPanel';
+import { PostReleaseCompletionReportPanel } from './components/PostReleaseCompletionReportPanel';
+// Phase 16: Portfolio Control Room
+import { AppRegistryPanel } from './components/AppRegistryPanel';
+import { PortfolioDashboardPanel } from './components/PortfolioDashboardPanel';
+import { TodaysFocusPanel } from './components/TodaysFocusPanel';
+import { CrossAppNotificationDigestPanel } from './components/CrossAppNotificationDigestPanel';
+import { PortfolioCompletionReportPanel } from './components/PortfolioCompletionReportPanel';
+// Phase 17: Template Factory
+import { BlueprintGeneratorPanel } from './components/BlueprintGeneratorPanel';
+import { CloudAgentInstructionGeneratorPanel } from './components/CloudAgentInstructionGeneratorPanel';
+import { IssueDraftBatchGeneratorPanel } from './components/IssueDraftBatchGeneratorPanel';
+import { SavedBlueprintsPanel } from './components/SavedBlueprintsPanel';
+// Phase 18: Darake Dev OS
+import { DarakeNavigationBar } from './components/DarakeNavigationBar';
+import { FocusedModePanel } from './components/FocusedModePanel';
+import { DarakeHomeSummaryPanel } from './components/DarakeHomeSummaryPanel';
+import { DarakeSafetySettingsPanel } from './components/DarakeSafetySettingsPanel';
+import { DarakeDevOsCompletionReportPanel } from './components/DarakeDevOsCompletionReportPanel';
 import './styles.css';
 import './phase2.css';
 import './phase25.css';
@@ -120,6 +143,7 @@ import './appStoreMetadataDraft.css';
 import './submissionControlRoom.css';
 import './rejectionControlRoom.css';
 import './reviewWatch.css';
+import './phase15to18.css';
 import './prWatch.css';
 import './ciWatch.css';
 import './phase7Safety.css';
@@ -327,6 +351,67 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <InfoPanel />
+      </div>
+      {/* Phase 15: Post-Release Operations Room */}
+      <div className="panel statusModePanel">
+        <ReleaseRecordPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <PostReleaseFeedbackPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <FeedbackIssueDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <NextUpdatePlanPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <PostReleaseCompletionReportPanel />
+      </div>
+      {/* Phase 16: Portfolio Control Room */}
+      <div className="panel statusModePanel">
+        <DarakeHomeSummaryPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <AppRegistryPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <PortfolioDashboardPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <TodaysFocusPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <CrossAppNotificationDigestPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <PortfolioCompletionReportPanel />
+      </div>
+      {/* Phase 17: Template Factory */}
+      <div className="panel statusModePanel">
+        <BlueprintGeneratorPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <CloudAgentInstructionGeneratorPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <IssueDraftBatchGeneratorPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <SavedBlueprintsPanel />
+      </div>
+      {/* Phase 18: Darake Dev OS */}
+      <div className="panel statusModePanel">
+        <DarakeNavigationBar activeGroup="all" onSelect={() => {}} />
+      </div>
+      <div className="panel statusModePanel">
+        <FocusedModePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <DarakeSafetySettingsPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <DarakeDevOsCompletionReportPanel />
       </div>
     </section>
   </React.StrictMode>,
