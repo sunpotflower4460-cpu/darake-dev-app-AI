@@ -21,17 +21,17 @@ export function buildNextUpdatePlan(
   const appFeedbacks = feedbacks.filter((f) => f.appId === release.appId || !f.appId);
 
   const criticalFixes = appFeedbacks
-    .filter((f) => f.priority === 'critical' && f.category === 'bug' || f.category === 'crash')
+    .filter((f) => f.priority === 'critical' && (f.category === 'bug' || f.category === 'crash'))
     .map((f) => f.title);
 
   const improvements = appFeedbacks
     .filter((f) => f.category === 'feature-request' || f.category === 'ui' || f.category === 'copy')
     .map((f) => f.title);
 
-  const knowIssues = release.knownIssues;
+  const knownIssues = release.knownIssues;
   const ideas = release.nextUpdateIdeas;
 
-  const includedFixes = [...criticalFixes, ...knowIssues].filter(Boolean);
+  const includedFixes = [...criticalFixes, ...knownIssues].filter(Boolean);
   const includedImprovements = [...improvements, ...ideas].filter(Boolean);
 
   const risks = appFeedbacks
