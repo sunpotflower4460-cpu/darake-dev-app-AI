@@ -1,4 +1,5 @@
 import type { RealUseRehearsalScenario } from './realUseRehearsalScenario';
+import { isSafetyCritical } from './safetyConstants';
 
 export type RealUseRehearsalStatus =
   | 'darake-success'
@@ -60,9 +61,8 @@ export function runRealUseRehearsal(scenario: RealUseRehearsalScenario): RealUse
 
   // Determine status
   let status: RealUseRehearsalStatus;
-  const isBlocked = scenario.blockedIf.some((b) =>
-    b.includes('secret') || b.includes('CI失敗') || b.includes('リジェクト')
-  ) && scenario.currentStage === 'submission-gate';
+  const isBlocked = scenario.blockedIf.some((b) => isSafetyCritical(b)) &&
+    scenario.currentStage === 'submission-gate';
 
   if (isBlocked) {
     status = 'blocked';

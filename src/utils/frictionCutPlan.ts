@@ -1,5 +1,6 @@
 import { detectFrictionItems } from './frictionDetector';
 import type { FrictionItem } from './frictionDetector';
+import { DO_NOT_CUT_LABELS } from './safetyConstants';
 
 export type FrictionCutAction =
   | 'hide-by-default'
@@ -27,19 +28,8 @@ export type FrictionCutPlan = {
   summary: string;
 };
 
-// Items that must never be cut
-const DO_NOT_CUT: string[] = [
-  'blocked状態',
-  'secret未設定の警告',
-  'production risk警告',
-  'App Store Submit操作',
-  '課金・billing',
-  '認証・auth',
-  'DB変更',
-  'CI / build失敗',
-  'プライベート情報の警告',
-  '本番デプロイ確認',
-];
+// Items that must never be cut — imported from shared safety constants
+const DO_NOT_CUT: string[] = DO_NOT_CUT_LABELS;
 
 function frictionItemToCutEntry(item: FrictionItem): FrictionCutEntry {
   let action: FrictionCutAction;
