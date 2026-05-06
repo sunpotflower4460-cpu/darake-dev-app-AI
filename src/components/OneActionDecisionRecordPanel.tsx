@@ -126,7 +126,7 @@ export function OneActionDecisionRecordPanel() {
             <div key={r.id} className="phase30RecordCard">
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                 <span style={{ fontSize: '1rem' }}>{decisionIcon(r.decision)}</span>
-                <strong style={{ flex: 1, fontSize: '0.84rem' }}>{r.candidateId.slice(0, 24)}…</strong>
+                <strong style={{ flex: 1, fontSize: '0.84rem' }}>{r.candidateId.length > 24 ? r.candidateId.slice(0, 24) + '…' : r.candidateId}</strong>
                 <span style={{ fontSize: '0.73rem', color: 'var(--muted)' }}>
                   {r.decidedAt.slice(0, 16).replace('T', ' ')}
                 </span>
