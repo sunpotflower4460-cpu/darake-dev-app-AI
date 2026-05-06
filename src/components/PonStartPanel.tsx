@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Copy, Check } from 'lucide-react';
 import { buildPonStartPack, summarizePonStartPack } from '../utils/ponStartPack';
+import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
 
 const INCLUDED_LABELS: Record<string, string> = {
   productBrief: 'アプリ概要',
@@ -12,36 +13,17 @@ const INCLUDED_LABELS: Record<string, string> = {
 };
 
 export function PonStartPanel() {
-  const [pack] = useState(() => buildPonStartPack());
-  const [copiedAll, setCopiedAll] = useState(false);
-  const [copiedAgent, setCopiedAgent] = useState(false);
-  const [copiedIssue, setCopiedIssue] = useState(false);
+  const [revision, setRevision] = useState(0);
+  const [copied, setCopied] = useState<'all' | 'agent' | 'issue' | null>(null);
+  const pack = useMemo(() => buildPonStartPack(), [revision]);
 
-  async function handleCopyAll() {
-    try {
-      await navigator.clipboard.writeText(pack.allInOneMarkdown);
-      setCopiedAll(true);
-      window.setTimeout(() => setCopiedAll(false), 1800);
-    } catch {
-      // ignore
-    }
-  }
+  useEffect(() => subscribeDarakeRuntimeEvents(() => setRevision((v) => v + 1)), []);
 
-  async function handleCopyAgent() {
+  async function copyText(kind: 'all' | 'agent' | 'issue', text: string) {
     try {
-      await navigator.clipboard.writeText(pack.cloudAgentInstructionMarkdown);
-      setCopiedAgent(true);
-      window.setTimeout(() => setCopiedAgent(false), 1800);
-    } catch {
-      // ignore
-    }
-  }
-
-  async function handleCopyIssue() {
-    try {
-      await navigator.clipboard.writeText(pack.issueDraftMarkdown);
-      setCopiedIssue(true);
-      window.setTimeout(() => setCopiedIssue(false), 1800);
+      await navigator.clipboard.writeText(text);
+      setCopied(kind);
+      window.setTimeout(() => setCopied(null), 1800);
     } catch {
       // ignore
     }
@@ -59,18 +41,9 @@ export function PonStartPanel() {
           : '🚫 未準備'}
       </span>
 
-      {pack.blockers.length > 0 && (
-        <div className="ponWarnBox">
-          {pack.blockers.map((b, i) => <div key={i}>🚫 {b}</div>)}
-        </div>
-      )}
-      {pack.warnings.length > 0 && (
-        <div className="ponWarnBox">
-          {pack.warnings.map((w, i) => <div key={i}>⚠️ {w}</div>)}
-        </div>
-      )}
+      {pack.blockers.length > 0 && <div className="ponWarnBox">{pack.blockers.map((b) => <div key={b}>🚫 {b}</div>)}</div>}
+      {pack.warnings.length > 0 && <div className="ponWarnBox">{pack.warnings.map((w) => <div key={w}>⚠️ {w}</div>)}</div>}
 
-      {/* Included items */}
       <div className="ponIncludedList">
         <div className="ponIncludedTitle">入っているもの</div>
         {(Object.entries(pack.included) as [keyof typeof pack.included, boolean][]).map(([key, val]) => (
@@ -81,33 +54,17 @@ export function PonStartPanel() {
         ))}
       </div>
 
-      {/* Next action */}
-      <div className="ponNextAction">
-        次にやること：{pack.nextHumanAction}
-      </div>
+      <div className="ponNextAction">次にやること：{pack.nextHumanAction}</div>
 
-      {/* Buttons */}
       <div className="ponBtnRow">
-        <button
-          className="ponBtnPrimary"
-          onClick={handleCopyAll}
-          disabled={pack.status === 'not-ready'}
-        >
-          {copiedAll ? <><Check size={16} /> コピー済み</> : '全部コピー'}
+        <button className="ponBtnPrimary" onClick={() => copyText('all', pack.allInOneMarkdown)} disabled={pack.status === 'not-ready'}>
+          {copied === 'all' ? <><Check size={16} /> コピー済み</> : '全部コピー'}
         </button>
-        <button
-          className="ponBtnSecondary"
-          onClick={handleCopyAgent}
-          disabled={pack.status === 'not-ready'}
-        >
-          {copiedAgent ? <><Check size={14} /> コピー済み</> : <><Copy size={14} /> Cloud Agent指示だけコピー</>}
+        <button className="ponBtnSecondary" onClick={() => copyText('agent', pack.cloudAgentInstructionMarkdown)} disabled={pack.status === 'not-ready'}>
+          {copied === 'agent' ? <><Check size={14} /> コピー済み</> : <><Copy size={14} /> Cloud Agent指示だけコピー</>}
         </button>
-        <button
-          className="ponBtnSecondary"
-          onClick={handleCopyIssue}
-          disabled={pack.status === 'not-ready'}
-        >
-          {copiedIssue ? <><Check size={14} /> コピー済み</> : <><Copy size={14} /> Issue下書きだけコピー</>}
+        <button className="ponBtnSecondary" onClick={() => copyText('issue', pack.issueDraftMarkdown)} disabled={pack.status === 'not-ready'}>
+          {copied === 'issue' ? <><Check size={14} /> コピー済み</> : <><Copy size={14} /> Issue下書きだけコピー</>}
         </button>
       </div>
 
