@@ -48,6 +48,28 @@ import { UiCheckResultRecordPanel } from './components/UiCheckResultRecordPanel'
 import { UiMachineCheckDraftPanel } from './components/UiMachineCheckDraftPanel';
 import { UiMachineCheckInputPackPanel } from './components/UiMachineCheckInputPackPanel';
 import { Phase10ScreenshotUiCompletionReportPanel } from './components/Phase10ScreenshotUiCompletionReportPanel';
+// Phase 11
+import { NotificationDraftPanel } from './components/NotificationDraftPanel';
+import { NotificationDigestPanel } from './components/NotificationDigestPanel';
+import { ManualGateNotificationTemplatePanel } from './components/ManualGateNotificationTemplatePanel';
+// Phase 12
+import { AppStoreMetadataDraftPanel } from './components/AppStoreMetadataDraftPanel';
+import { StoreCopyTemplatePanel } from './components/StoreCopyTemplatePanel';
+import { PrivacyAgeRatingDraftPanel } from './components/PrivacyAgeRatingDraftPanel';
+import { AppStoreScreenshotChecklistPanel } from './components/AppStoreScreenshotChecklistPanel';
+import { AppStorePrepCompletionReportPanel } from './components/AppStorePrepCompletionReportPanel';
+// Phase 13
+import { SubmissionControlRoomPanel } from './components/SubmissionControlRoomPanel';
+import { AppStoreConnectInputPackPanel } from './components/AppStoreConnectInputPackPanel';
+import { AppStoreConnectApiCandidateDraftPanel } from './components/AppStoreConnectApiCandidateDraftPanel';
+import { TestFlightPrepChecklistPanel } from './components/TestFlightPrepChecklistPanel';
+import { FinalSubmissionGatePanel } from './components/FinalSubmissionGatePanel';
+import { SubmitForReviewManualGuidePanel } from './components/SubmitForReviewManualGuidePanel';
+// Phase 14
+import { AppReviewRejectionRecordPanel } from './components/AppReviewRejectionRecordPanel';
+import { AppReviewResponseDraftPanel } from './components/AppReviewResponseDraftPanel';
+import { RejectionFixIssueDraftPanel } from './components/RejectionFixIssueDraftPanel';
+import { ResubmissionChecklistPanel } from './components/ResubmissionChecklistPanel';
 import './styles.css';
 import './phase2.css';
 import './phase25.css';
@@ -92,6 +114,11 @@ import './uiCheckResultBridge.css';
 import './uiCheckResultRecord.css';
 import './uiCheckCompletionReport.css';
 import './phase10ScreenshotUiCompletionReport.css';
+import './notificationDraft.css';
+import './notificationDigest.css';
+import './appStoreMetadataDraft.css';
+import './submissionControlRoom.css';
+import './rejectionControlRoom.css';
 import './reviewWatch.css';
 import './prWatch.css';
 import './ciWatch.css';
@@ -218,6 +245,64 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <Phase10ScreenshotUiCompletionReportPanel />
+      </div>
+      {/* Phase 11: Notification System */}
+      <div className="panel statusModePanel">
+        <NotificationDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <NotificationDigestPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <ManualGateNotificationTemplatePanel />
+      </div>
+      {/* Phase 12: App Store Submission Prep */}
+      <div className="panel statusModePanel">
+        <AppStoreMetadataDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <StoreCopyTemplatePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <PrivacyAgeRatingDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <AppStoreScreenshotChecklistPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <AppStorePrepCompletionReportPanel />
+      </div>
+      {/* Phase 13: Submission Control Room */}
+      <div className="panel statusModePanel">
+        <SubmissionControlRoomPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <AppStoreConnectInputPackPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <AppStoreConnectApiCandidateDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <TestFlightPrepChecklistPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <FinalSubmissionGatePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <SubmitForReviewManualGuidePanel />
+      </div>
+      {/* Phase 14: Rejection Control Room */}
+      <div className="panel statusModePanel">
+        <AppReviewRejectionRecordPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <AppReviewResponseDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <RejectionFixIssueDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <ResubmissionChecklistPanel />
       </div>
       <div className="panel statusModePanel">
         <ReviewWatchPanel />
