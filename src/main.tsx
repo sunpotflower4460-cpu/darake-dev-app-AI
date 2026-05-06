@@ -93,6 +93,33 @@ import { FocusedModePanel } from './components/FocusedModePanel';
 import { DarakeHomeSummaryPanel } from './components/DarakeHomeSummaryPanel';
 import { DarakeSafetySettingsPanel } from './components/DarakeSafetySettingsPanel';
 import { DarakeDevOsCompletionReportPanel } from './components/DarakeDevOsCompletionReportPanel';
+// Phase 19: External Notification Candidate Room
+import { ExternalNotificationChannelPanel } from './components/ExternalNotificationChannelPanel';
+import { WebhookPayloadDraftPanel } from './components/WebhookPayloadDraftPanel';
+import { ManualNotificationSendGuidePanel } from './components/ManualNotificationSendGuidePanel';
+import { ExternalNotificationCompletionReportPanel } from './components/ExternalNotificationCompletionReportPanel';
+// Phase 20: GitHub Semi-Automation Room
+import { GitHubOperationCandidatePanel } from './components/GitHubOperationCandidatePanel';
+import { WorkflowDispatchCandidateDraftPanel } from './components/WorkflowDispatchCandidateDraftPanel';
+import { PrMergeCandidateGatePanel } from './components/PrMergeCandidateGatePanel';
+import { GitHubManualOperationGuidePanel } from './components/GitHubManualOperationGuidePanel';
+import { GitHubSemiAutomationCompletionReportPanel } from './components/GitHubSemiAutomationCompletionReportPanel';
+// Phase 21: AI Review Integration Room
+import { AiReviewInputPackPanel } from './components/AiReviewInputPackPanel';
+import { ScreenshotAiReviewPromptBuilderPanel } from './components/ScreenshotAiReviewPromptBuilderPanel';
+import { AiReviewResultRecordPanel } from './components/AiReviewResultRecordPanel';
+import { AiReviewFixIssueDraftPanel } from './components/AiReviewFixIssueDraftPanel';
+import { AiReviewCompletionReportPanel } from './components/AiReviewCompletionReportPanel';
+// Phase 22: Revenue & Operations Notes
+import { MonetizationPlanPanel } from './components/MonetizationPlanPanel';
+import { OperationCostChecklistPanel } from './components/OperationCostChecklistPanel';
+import { LaunchPromotionMemoPanel } from './components/LaunchPromotionMemoPanel';
+import { RevenueOperationsReportPanel } from './components/RevenueOperationsReportPanel';
+// Phase 23: App Studio Factory Mode
+import { AppIdeaBatchPanel } from './components/AppIdeaBatchPanel';
+import { IdeaToBlueprintConverterPanel } from './components/IdeaToBlueprintConverterPanel';
+import { AppFactoryRoadmapPanel } from './components/AppFactoryRoadmapPanel';
+import { AppFactoryCompletionReportPanel } from './components/AppFactoryCompletionReportPanel';
 import './styles.css';
 import './phase2.css';
 import './phase25.css';
@@ -144,6 +171,7 @@ import './submissionControlRoom.css';
 import './rejectionControlRoom.css';
 import './reviewWatch.css';
 import './phase15to18.css';
+import './phase19to23.css';
 import './prWatch.css';
 import './ciWatch.css';
 import './phase7Safety.css';
@@ -412,6 +440,77 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </div>
       <div className="panel statusModePanel">
         <DarakeDevOsCompletionReportPanel />
+      </div>
+      {/* Phase 19: External Notification Candidate Room */}
+      <div className="panel statusModePanel">
+        <ExternalNotificationChannelPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <WebhookPayloadDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <ManualNotificationSendGuidePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <ExternalNotificationCompletionReportPanel />
+      </div>
+      {/* Phase 20: GitHub Semi-Automation Room */}
+      <div className="panel statusModePanel">
+        <GitHubOperationCandidatePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <WorkflowDispatchCandidateDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <PrMergeCandidateGatePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <GitHubManualOperationGuidePanel />
+      </div>
+      <div className="panel statusModePanel">
+        <GitHubSemiAutomationCompletionReportPanel />
+      </div>
+      {/* Phase 21: AI Review Integration Room */}
+      <div className="panel statusModePanel">
+        <AiReviewInputPackPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <ScreenshotAiReviewPromptBuilderPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <AiReviewResultRecordPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <AiReviewFixIssueDraftPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <AiReviewCompletionReportPanel />
+      </div>
+      {/* Phase 22: Revenue & Operations Notes */}
+      <div className="panel statusModePanel">
+        <MonetizationPlanPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <OperationCostChecklistPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <LaunchPromotionMemoPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <RevenueOperationsReportPanel />
+      </div>
+      {/* Phase 23: App Studio Factory Mode */}
+      <div className="panel statusModePanel">
+        <AppIdeaBatchPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <IdeaToBlueprintConverterPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <AppFactoryRoadmapPanel />
+      </div>
+      <div className="panel statusModePanel">
+        <AppFactoryCompletionReportPanel />
       </div>
     </section>
   </React.StrictMode>,

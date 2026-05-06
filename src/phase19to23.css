@@ -1,0 +1,418 @@
+/* Phase 19-23 Shared Styles */
+
+/* ==========================================
+   Shared hero pattern for Phase 19-23
+   ========================================== */
+.phase19Hero,
+.phase20Hero,
+.phase21Hero,
+.phase22Hero,
+.phase23Hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.9));
+}
+
+.phase19Hero > svg,
+.phase20Hero > svg,
+.phase21Hero > svg,
+.phase22Hero > svg,
+.phase23Hero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.phase19Hero h3,
+.phase20Hero h3,
+.phase21Hero h3,
+.phase22Hero h3,
+.phase23Hero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+  letter-spacing: -0.04em;
+}
+
+.phase19Hero p,
+.phase20Hero p,
+.phase21Hero p,
+.phase22Hero p,
+.phase23Hero p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* ==========================================
+   Shared panel grid
+   ========================================== */
+.phase19Panel,
+.phase20Panel,
+.phase21Panel,
+.phase22Panel,
+.phase23Panel {
+  display: grid;
+  gap: 18px;
+}
+
+/* ==========================================
+   Code box (shared)
+   ========================================== */
+.phase19CodeBox {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-family: 'SFMono-Regular', 'Consolas', monospace;
+  font-size: 0.78rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+/* ==========================================
+   Phase 19: External Notification
+   ========================================== */
+.phase19ChannelList {
+  display: grid;
+  gap: 14px;
+}
+
+.phase19ChannelItem {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 20px;
+  background: rgba(255, 250, 240, 0.7);
+  display: grid;
+  gap: 12px;
+}
+
+.phase19ChannelHeader {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.phase19ChannelType {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #4c7c55;
+  background: rgba(76, 124, 85, 0.1);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.phase19SecretInfo {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+  padding: 8px 12px;
+  background: rgba(185, 130, 46, 0.07);
+  border: 1px solid rgba(185, 130, 46, 0.2);
+  border-radius: 12px;
+}
+
+.phase19SecretWarning {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #76531d;
+}
+
+.phase19DeleteBtn {
+  margin-left: auto;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #b45b5d;
+  padding: 4px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.phase19DeleteBtn:hover {
+  background: rgba(180, 91, 93, 0.1);
+}
+
+/* ==========================================
+   Phase 20: GitHub Semi-Automation
+   ========================================== */
+.phase20CandidateList {
+  display: grid;
+  gap: 14px;
+}
+
+.phase20CandidateItem {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 20px;
+  background: rgba(255, 250, 240, 0.7);
+  display: grid;
+  gap: 12px;
+}
+
+.phase20CandidateHeader {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.phase20OperationType {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #4c7c55;
+  background: rgba(76, 124, 85, 0.1);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.phase20CandidateActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.phase20SafeBadge {
+  font-size: 0.78rem;
+  color: #35513d;
+  margin-left: 6px;
+}
+
+.phase20MergeVerdict {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 20px;
+  background: rgba(255, 250, 240, 0.7);
+  text-align: center;
+}
+
+/* ==========================================
+   Phase 21: AI Review
+   ========================================== */
+.phase21RecordList {
+  display: grid;
+  gap: 14px;
+}
+
+.phase21RecordItem {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 20px;
+  background: rgba(255, 250, 240, 0.7);
+  display: grid;
+  gap: 12px;
+}
+
+.phase21RecordHeader {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.phase21TargetBadge {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #4c7c55;
+  background: rgba(76, 124, 85, 0.1);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+/* ==========================================
+   Phase 22: Revenue & Operations
+   ========================================== */
+.phase22PlanList,
+.phase22MemoList {
+  display: grid;
+  gap: 14px;
+}
+
+.phase22PlanItem,
+.phase22MemoItem {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 20px;
+  background: rgba(255, 250, 240, 0.7);
+  display: grid;
+  gap: 12px;
+}
+
+.phase22PlanHeader,
+.phase22MemoHeader {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.phase22AppName {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #35513d;
+  flex: 1;
+}
+
+.phase22CostList {
+  display: grid;
+  gap: 12px;
+}
+
+.phase22CostItem {
+  padding: 14px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 16px;
+  background: rgba(255, 250, 240, 0.7);
+  display: grid;
+  gap: 10px;
+  transition: background 0.2s;
+}
+
+.phase22CostItem-checked {
+  background: rgba(76, 124, 85, 0.07);
+  border-color: rgba(76, 124, 85, 0.3);
+}
+
+.phase22CostItemHeader {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.phase22CostItemBody {
+  display: grid;
+  gap: 8px;
+}
+
+/* ==========================================
+   Phase 23: App Studio Factory
+   ========================================== */
+.phase23IdeaList {
+  display: grid;
+  gap: 14px;
+}
+
+.phase23IdeaItem {
+  padding: 16px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 20px;
+  background: rgba(255, 250, 240, 0.7);
+  display: grid;
+  gap: 12px;
+}
+
+.phase23IdeaHeader {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.phase23Rank {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #4c7c55;
+  min-width: 32px;
+}
+
+.phase23PriorityScore {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #b9822e;
+  background: rgba(185, 130, 46, 0.1);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.phase23ScoreGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.phase23ScoreGrid label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #35513d;
+}
+
+.phase23ScoreGrid input {
+  padding: 6px 10px;
+  border: 1px solid rgba(76, 124, 85, 0.25);
+  border-radius: 10px;
+  font-size: 0.88rem;
+}
+
+.phase23WaveList {
+  display: grid;
+  gap: 12px;
+}
+
+.phase23WaveItem {
+  padding: 14px 16px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 16px;
+  background: rgba(255, 250, 240, 0.7);
+  display: grid;
+  gap: 8px;
+}
+
+.phase23WaveLabel {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.phase23WaveReason {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.phase23WaveOutcome {
+  font-size: 0.82rem;
+  color: #35513d;
+  margin: 0;
+}
+
+/* ==========================================
+   Responsive: mobile-friendly
+   ========================================== */
+@media (max-width: 480px) {
+  .phase19Hero,
+  .phase20Hero,
+  .phase21Hero,
+  .phase22Hero,
+  .phase23Hero {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .phase19Hero > svg,
+  .phase20Hero > svg,
+  .phase21Hero > svg,
+  .phase22Hero > svg,
+  .phase23Hero > svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .phase23ScoreGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
