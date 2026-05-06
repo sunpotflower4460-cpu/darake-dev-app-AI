@@ -8,6 +8,8 @@ import {
   FIRST_LAUNCH_STEPS,
   FIRST_LAUNCH_STEP_LABELS,
 } from '../utils/firstLaunchCareOnboarding';
+import { loadGentleAppStartForm, saveGentleAppStartForm, buildEmptyGentleAppStartForm } from '../utils/gentleAppStartForm';
+import type { GentleAppStartForm } from '../utils/gentleAppStartForm';
 import type { FirstLaunchCareState, FirstLaunchCareStep } from '../utils/firstLaunchCareOnboarding';
 
 function getInitialState(): FirstLaunchCareState {
@@ -27,6 +29,30 @@ const STEP_INDEX: Record<FirstLaunchCareStep, number> = {
   safety: 3,
   ready: 4,
 };
+
+function buildGentleFormFromOnboarding(state: FirstLaunchCareState): GentleAppStartForm {
+  const existing = loadGentleAppStartForm() ?? buildEmptyGentleAppStartForm();
+  return {
+    ...existing,
+    appName: existing.appName.trim() || state.appName,
+    oneLineIdea: existing.oneLineIdea.trim() || state.appSeed,
+    targetUser: existing.targetUser.trim() || state.targetUser,
+    platform: existing.platform !== 'not-sure'
+      ? existing.platform
+      : state.platform === 'ios'
+        ? 'iphone'
+        : state.platform === 'web'
+          ? 'web'
+          : 'not-sure',
+    autoPreference: existing.autoPreference !== 'ask-only-important'
+      ? existing.autoPreference
+      : state.darakeLevel === 'maximum-darake'
+        ? 'maximum-darake'
+        : state.darakeLevel === 'mostly-auto'
+          ? 'do-safe-things-silently'
+          : 'ask-only-important',
+  };
+}
 
 export function FirstLaunchCarePanel() {
   const [state, setState] = useState<FirstLaunchCareState>(getInitialState);
@@ -56,6 +82,14 @@ export function FirstLaunchCarePanel() {
   function handleReset() {
     clearFirstLaunchCareState();
     setState(buildInitialFirstLaunchCareState());
+  }
+
+  function proceedToGentleForm() {
+    const completed = { ...state, currentStep: 'ready' as const, hasCompletedFirstLaunch: true };
+    setState(completed);
+    saveFirstLaunchCareState(completed);
+    saveGentleAppStartForm(buildGentleFormFromOnboarding(completed));
+    window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 60);
   }
 
   return (
@@ -185,7 +219,7 @@ export function FirstLaunchCarePanel() {
             </div>
           </div>
           <div className="flcBtnRow">
-            <button className="flcBtnPrimary" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <button className="flcBtnPrimary" onClick={proceedToGentleForm}>
               <Check size={16} /> 次へ進む
             </button>
             <button className="flcBtnSecondary" onClick={handleReset}>最初からやり直す</button>
