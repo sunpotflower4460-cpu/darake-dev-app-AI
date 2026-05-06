@@ -122,7 +122,7 @@ export function formatDarakeReviewInboxMarkdown(items: DarakeReviewInboxItem[]):
     );
   });
 
-  return lines.filter((l) => l !== undefined).join('\n');
+  return lines.filter((l) => l !== '').join('\n');
 }
 
 const STORAGE_KEY = 'darake.reviewInbox.v1';

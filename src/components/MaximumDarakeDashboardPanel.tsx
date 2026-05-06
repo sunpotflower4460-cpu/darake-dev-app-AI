@@ -62,33 +62,56 @@ function buildLiveDashboard(): MaximumDarakeDashboard {
   return buildMaximumDarakeDashboard({
     title: 'Maximum Darake Dashboard',
     status,
-    headline:
-      status === 'blocked'
-        ? `ブロック中: ${blockedTask?.title ?? '不明'}`
-        : status === 'needs-human-now'
-          ? `urgent: ${urgentItem?.title ?? '不明'}`
-          : status === 'running-safely'
-            ? `だいたい順調（自動: ${autoCompleted}件）`
-            : status === 'needs-later-review'
-              ? `あとで見ればいい（${unread}件）`
-              : '今は何もない',
+    headline: buildHeadline(status, blockedTask, urgentItem, autoCompleted, unread),
     autoCompletedCount: autoCompleted,
     batchedWarningCount: warnings,
     reviewInboxCount: unread,
     urgentCount: urgent,
-    oneThingToSee:
-      urgentItem?.title ??
-      blockedTask?.title ??
-      (unread > 0 ? inboxItems.find((i) => i.status === 'unread')?.title ?? '' : '（今は何もない）'),
-    recommendedHumanAction:
-      urgentItem?.recommendedAction ??
-      (blocked > 0
-        ? '🚫 blockedタスクを確認してください'
-        : unread > 0
-          ? '📋 Review Inboxを確認してください'
-          : '😴 今は何もしなくてよいです'),
+    oneThingToSee: buildOneThingToSee(
+      urgentItem,
+      blockedTask,
+      inboxItems.find((i) => i.status === 'unread')
+    ),
+    recommendedHumanAction: buildRecommendedHumanAction(urgentItem, blocked, unread),
   });
 }
+
+function buildHeadline(
+  status: MaximumDarakeDashboard['status'],
+  blockedTask: { title: string } | undefined,
+  urgentItem: { title: string } | undefined,
+  autoCompleted: number,
+  unread: number
+): string {
+  if (status === 'blocked') return `ブロック中: ${blockedTask?.title ?? '不明'}`;
+  if (status === 'needs-human-now') return `urgent: ${urgentItem?.title ?? '不明'}`;
+  if (status === 'running-safely') return `だいたい順調（自動: ${autoCompleted}件）`;
+  if (status === 'needs-later-review') return `あとで見ればいい（${unread}件）`;
+  return '今は何もない';
+}
+
+function buildOneThingToSee(
+  urgentItem: { title: string } | undefined,
+  blockedTask: { title: string } | undefined,
+  unreadItem: { title: string } | undefined
+): string {
+  if (urgentItem) return urgentItem.title;
+  if (blockedTask) return blockedTask.title;
+  if (unreadItem) return unreadItem.title;
+  return '（今は何もない）';
+}
+
+function buildRecommendedHumanAction(
+  urgentItem: { recommendedAction?: string } | undefined,
+  blocked: number,
+  unread: number
+): string {
+  if (urgentItem?.recommendedAction) return urgentItem.recommendedAction;
+  if (blocked > 0) return '🚫 blockedタスクを確認してください';
+  if (unread > 0) return '📋 Review Inboxを確認してください';
+  return '😴 今は何もしなくてよいです';
+}
+
 
 export function MaximumDarakeDashboardPanel() {
   const [dashboard, setDashboard] = useState(() => loadDashboard());
