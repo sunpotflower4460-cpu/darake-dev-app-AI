@@ -13,16 +13,8 @@ export function emitDarakeRuntimeEvent(name: DarakeRuntimeEventName): void {
   window.dispatchEvent(new CustomEvent(DARAKE_FIRST_APP_START_UPDATED_EVENT));
 }
 
-export function subscribeDarakeRuntimeEvents(
-  listener: () => void,
-  eventNames: DarakeRuntimeEventName[] = [
-    DARAKE_FIRST_LAUNCH_UPDATED_EVENT,
-    DARAKE_GENTLE_FORM_UPDATED_EVENT,
-    DARAKE_FIRST_APP_START_UPDATED_EVENT,
-  ],
-): () => void {
+export function subscribeDarakeRuntimeEvents(listener: () => void): () => void {
   if (typeof window === 'undefined') return () => undefined;
-
-  eventNames.forEach((name) => window.addEventListener(name, listener));
-  return () => eventNames.forEach((name) => window.removeEventListener(name, listener));
+  window.addEventListener(DARAKE_FIRST_APP_START_UPDATED_EVENT, listener);
+  return () => window.removeEventListener(DARAKE_FIRST_APP_START_UPDATED_EVENT, listener);
 }
