@@ -9,7 +9,8 @@ export type DarakeNavGroupId =
   | 'portfolio'
   | 'templates'
   | 'reports'
-  | 'settings';
+  | 'settings'
+  | 'first-start';
 
 export type DarakeNavGroup = {
   id: DarakeNavGroupId;
@@ -30,6 +31,7 @@ export const NAV_GROUPS: DarakeNavGroup[] = [
   { id: 'templates', label: 'Templates', emoji: '🏭', description: 'テンプレ工場・設計書生成' },
   { id: 'reports', label: 'Reports', emoji: '📊', description: 'レポート・完成度確認' },
   { id: 'settings', label: 'Settings', emoji: '⚙️', description: '安全設定・システム設定' },
+  { id: 'first-start', label: 'はじめる', emoji: '🌱', description: 'はじめてのアプリ制作' },
 ];
 
 export function getNavGroupById(id: DarakeNavGroupId): DarakeNavGroup | undefined {

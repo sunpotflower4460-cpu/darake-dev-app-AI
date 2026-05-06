@@ -1,0 +1,278 @@
+/* Phase 46: Gentle App Start Form CSS */
+.gasPanel {
+  padding: 18px 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.gasHeader {
+  margin-bottom: 18px;
+}
+
+.gasPhaseTag {
+  display: inline-block;
+  font-size: 0.72rem;
+  color: #888;
+  background: #f0f0f0;
+  border-radius: 6px;
+  padding: 2px 7px;
+  margin-bottom: 8px;
+}
+
+.gasTitle {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.gasSection {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 16px;
+}
+
+.gasLabel {
+  display: block;
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+  margin-bottom: 6px;
+  margin-top: 12px;
+}
+
+.gasLabel:first-child {
+  margin-top: 0;
+}
+
+.gasRequired {
+  color: #e53935;
+  font-size: 0.85rem;
+}
+
+.gasInput {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #e0e0e0;
+  background: #fff;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 48px;
+}
+
+.gasInput:focus {
+  outline: none;
+  border-color: #66bb6a;
+  background: #fff;
+}
+
+.gasChoiceRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 4px;
+}
+
+.gasChoiceBtn {
+  padding: 9px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.88rem;
+  min-height: 40px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.gasChoiceBtn:hover {
+  background: #f1f8e9;
+}
+
+.gasChoiceBtn.selected {
+  background: #e8f5e9;
+  border-color: #66bb6a;
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.gasAdvancedToggle {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1.5px dashed #ccc;
+  background: transparent;
+  color: #888;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-bottom: 14px;
+}
+
+.gasAdvancedToggle:hover {
+  background: #f5f5f5;
+}
+
+.gasErrorBox {
+  background: #fff3e0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  font-size: 0.88rem;
+  color: #e65100;
+}
+
+.gasBtnRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gasBtnPrimary {
+  width: 100%;
+  padding: 15px;
+  border-radius: 14px;
+  border: none;
+  background: #4caf50;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s;
+}
+
+.gasBtnPrimary:hover:not(:disabled) {
+  background: #388e3c;
+}
+
+.gasBtnPrimary:disabled {
+  background: #c8e6c9;
+  cursor: not-allowed;
+}
+
+.gasBtnSecondary {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  color: #555;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.gasBtnSecondary:hover {
+  background: #f0f0f0;
+}
+
+/* Gentle Blueprint Preview */
+.gbpPanel {
+  padding: 18px 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.gbpPhaseTag {
+  display: inline-block;
+  font-size: 0.72rem;
+  color: #888;
+  background: #f0f0f0;
+  border-radius: 6px;
+  padding: 2px 7px;
+  margin-bottom: 10px;
+}
+
+.gbpTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 14px;
+}
+
+.gbpCard {
+  background: #f0f9e8;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.gbpCardTitle {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.gbpCardValue {
+  font-size: 0.95rem;
+  color: #222;
+  font-weight: 500;
+}
+
+.gbpList {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.gbpList li {
+  font-size: 0.88rem;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+.gbpWarnBox {
+  background: #fff8e1;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  color: #e65100;
+}
+
+.gbpStatusBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.gbpStatusBadge.ready {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.gbpStatusBadge.needs-review {
+  background: #fff8e1;
+  color: #f57f17;
+}
+
+.gbpStatusBadge.blocked {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.gbpBtnRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* Completion report reuse */
+.gasCrPanel {
+  padding: 16px;
+}

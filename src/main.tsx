@@ -103,6 +103,10 @@ import './darakeMobilePolish.css';
 import './realUseRehearsal.css';
 import './frictionCutAudit.css';
 import './darakeV1Readiness.css';
+// Phase 45-47 CSS
+import './firstLaunchCare.css';
+import './gentleAppStartForm.css';
+import './ponStart.css';
 
 const VALID_NAV_GROUPS = new Set<string>([
   'all',
@@ -117,6 +121,7 @@ const VALID_NAV_GROUPS = new Set<string>([
   'templates',
   'reports',
   'settings',
+  'first-start',
 ]);
 
 function loadSavedNavGroup(): DarakeNavGroupId | 'all' {
