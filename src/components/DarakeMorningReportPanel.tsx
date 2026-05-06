@@ -121,7 +121,7 @@ export function DarakeMorningReportPanel() {
       <div className="phase40BtnRow">
         <button className="phase40Btn" onClick={() => setShowDetails((v) => !v)}>
           {showDetails ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-          詳細を見る
+          {showDetails ? '詳細を閉じる' : '詳細を見る'}
         </button>
         <button className="phase40Btn" onClick={handleCopy}>
           {copyState === 'copied' ? <Check size={14} /> : <Copy size={14} />}
