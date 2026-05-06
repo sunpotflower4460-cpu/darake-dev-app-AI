@@ -1,3 +1,8 @@
+import {
+  DARAKE_GENTLE_FORM_UPDATED_EVENT,
+  emitDarakeRuntimeEvent,
+} from './darakeRuntimeEvents';
+
 const STORAGE_KEY = 'darake.gentleAppStartForm.v1';
 
 export type GentleAppStartForm = {
@@ -91,6 +96,7 @@ export function loadGentleAppStartForm(): GentleAppStartForm | null {
 export function saveGentleAppStartForm(form: GentleAppStartForm): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(form));
+    emitDarakeRuntimeEvent(DARAKE_GENTLE_FORM_UPDATED_EVENT);
   } catch {
     // ignore
   }
@@ -99,6 +105,7 @@ export function saveGentleAppStartForm(form: GentleAppStartForm): void {
 export function clearGentleAppStartForm(): void {
   try {
     localStorage.removeItem(STORAGE_KEY);
+    emitDarakeRuntimeEvent(DARAKE_GENTLE_FORM_UPDATED_EVENT);
   } catch {
     // ignore
   }
