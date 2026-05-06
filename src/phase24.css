@@ -1,0 +1,165 @@
+/* Phase 24 Shared Styles */
+
+.phase24Hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(231, 241, 255, 0.9));
+}
+
+.phase24Hero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #2e5597);
+}
+
+.phase24Hero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+  letter-spacing: -0.04em;
+}
+
+.phase24Hero p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.phase24Panel {
+  display: grid;
+  gap: 18px;
+}
+
+.phase24StatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.phase24StatusBadge.healthy {
+  background: rgba(76, 124, 85, 0.12);
+  color: #35513d;
+  border: 1px solid rgba(76, 124, 85, 0.25);
+}
+
+.phase24StatusBadge.needs-review {
+  background: rgba(185, 130, 46, 0.12);
+  color: #8a5e12;
+  border: 1px solid rgba(185, 130, 46, 0.3);
+}
+
+.phase24StatusBadge.blocked {
+  background: rgba(220, 80, 80, 0.1);
+  color: #8b2020;
+  border: 1px solid rgba(220, 80, 80, 0.25);
+}
+
+.phase24StatusBadge.safe {
+  background: rgba(76, 124, 85, 0.12);
+  color: #35513d;
+  border: 1px solid rgba(76, 124, 85, 0.25);
+}
+
+.phase24Table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.phase24Table th {
+  text-align: left;
+  padding: 8px 10px;
+  background: rgba(76, 124, 85, 0.08);
+  color: #35513d;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(76, 124, 85, 0.18);
+}
+
+.phase24Table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  vertical-align: top;
+}
+
+.phase24Table tr:last-child td {
+  border-bottom: none;
+}
+
+.phase24Table tr:hover td {
+  background: rgba(76, 124, 85, 0.04);
+}
+
+.phase24GroupFilter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.phase24GroupBtn {
+  padding: 4px 12px;
+  border: 1px solid rgba(76, 124, 85, 0.3);
+  border-radius: 14px;
+  background: transparent;
+  color: #35513d;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.phase24GroupBtn:hover,
+.phase24GroupBtn.active {
+  background: rgba(76, 124, 85, 0.15);
+  font-weight: 600;
+}
+
+.phase24SummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.phase24SummaryGrid section {
+  background: rgba(76, 124, 85, 0.07);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.phase24SummaryGrid h4 {
+  font-size: 0.75rem;
+  margin: 0 0 4px;
+  color: var(--muted);
+}
+
+.phase24SummaryGrid p {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 0;
+  color: #2e4d34;
+}
+
+.phase24InvariantList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.phase24InvariantList li {
+  font-size: 0.82rem;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(76, 124, 85, 0.07);
+}
