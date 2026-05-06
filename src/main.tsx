@@ -82,6 +82,10 @@ import './notificationSentRecord.css';
 import './externalNotificationDryRunCompletionReport.css';
 // Phase 27-29 CSS
 import './githubDryRunOperation.css';
+// Phase 30-32 CSS
+import './oneActionCandidate.css';
+import './humanCheckMinimal.css';
+import './autoProgressSimulation.css';
 
 const VALID_NAV_GROUPS = new Set<string>([
   'all',

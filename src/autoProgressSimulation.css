@@ -1,0 +1,330 @@
+/* Phase 32: Auto Progress Simulation Styles */
+
+.phase32Panel {
+  display: grid;
+  gap: 18px;
+}
+
+.phase32Hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(40, 160, 100, 0.22);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(236, 255, 244, 0.95), rgba(222, 248, 234, 0.9));
+}
+
+.phase32Hero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, #1a8c56, #0c5c38);
+}
+
+.phase32Hero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+  letter-spacing: -0.04em;
+}
+
+.phase32Hero p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.phase32Hero .eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #1a8c56;
+  margin: 0 0 4px;
+}
+
+.phase32SafetyBox {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(220, 80, 80, 0.08);
+  border: 1px solid rgba(220, 80, 80, 0.22);
+  font-size: 0.84rem;
+  color: #6e1a1a;
+}
+
+.phase32SimCard {
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: rgba(40, 160, 100, 0.04);
+  border: 1px solid rgba(40, 160, 100, 0.18);
+  display: grid;
+  gap: 10px;
+}
+
+.phase32SimTitle {
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #0c4c30;
+  margin: 0;
+}
+
+.phase32StatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.phase32StatusBadge.safe-preview {
+  background: rgba(60, 150, 80, 0.12);
+  color: #2a6035;
+  border: 1px solid rgba(60, 150, 80, 0.28);
+}
+
+.phase32StatusBadge.needs-review {
+  background: rgba(185, 130, 46, 0.12);
+  color: #8a5e12;
+  border: 1px solid rgba(185, 130, 46, 0.3);
+}
+
+.phase32StatusBadge.blocked {
+  background: rgba(220, 80, 80, 0.1);
+  color: #8b2020;
+  border: 1px solid rgba(220, 80, 80, 0.28);
+}
+
+.phase32StepList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.phase32StepItem {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+}
+
+.phase32StepItem.would-run {
+  background: rgba(40, 160, 100, 0.06);
+  border: 1px solid rgba(40, 160, 100, 0.18);
+}
+
+.phase32StepItem.would-wait-human {
+  background: rgba(185, 130, 46, 0.06);
+  border: 1px solid rgba(185, 130, 46, 0.2);
+}
+
+.phase32StepItem.would-block {
+  background: rgba(220, 80, 80, 0.06);
+  border: 1px solid rgba(220, 80, 80, 0.2);
+}
+
+.phase32StepItem.would-complete {
+  background: rgba(60, 130, 220, 0.06);
+  border: 1px solid rgba(60, 130, 220, 0.2);
+}
+
+.phase32StepItem.would-record {
+  background: rgba(120, 60, 200, 0.05);
+  border: 1px solid rgba(120, 60, 200, 0.16);
+}
+
+.phase32StepIcon {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.phase32StepLabel {
+  font-weight: 700;
+  color: #1a3a20;
+}
+
+.phase32StepDetail {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.phase32StopPointCard {
+  padding: 10px 14px;
+  border-radius: 10px;
+  display: grid;
+  gap: 4px;
+  font-size: 0.82rem;
+}
+
+.phase32StopPointCard.high {
+  background: rgba(220, 80, 80, 0.07);
+  border: 1px solid rgba(220, 80, 80, 0.2);
+}
+
+.phase32StopPointCard.medium {
+  background: rgba(185, 130, 46, 0.07);
+  border: 1px solid rgba(185, 130, 46, 0.2);
+}
+
+.phase32StopPointCard.low {
+  background: rgba(40, 160, 100, 0.05);
+  border: 1px solid rgba(40, 160, 100, 0.16);
+}
+
+.phase32Section {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(40, 160, 100, 0.04);
+  border: 1px solid rgba(40, 160, 100, 0.12);
+}
+
+.phase32Section h4 {
+  margin: 0 0 8px;
+  font-size: 0.84rem;
+  color: #0c4c30;
+  font-weight: 700;
+}
+
+.phase32SummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.phase32SummaryGrid section {
+  background: rgba(40, 160, 100, 0.06);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+.phase32SummaryGrid h4 {
+  font-size: 0.73rem;
+  margin: 0 0 4px;
+  color: var(--muted);
+}
+
+.phase32SummaryGrid p {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 0;
+  color: #0c4c30;
+}
+
+.phase32SmallBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(40, 160, 100, 0.3);
+  background: rgba(40, 160, 100, 0.06);
+  color: #0c4c30;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.phase32SmallBtn:hover { background: rgba(40, 160, 100, 0.12); }
+.phase32SmallBtn.copied { background: rgba(60, 150, 80, 0.12); color: #2a6035; }
+
+.phase32CopyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 12px;
+  border: none;
+  background: #1a8c56;
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.phase32CopyBtn:hover { background: #0c5c38; }
+.phase32CopyBtn.copied { background: #2a7a40; }
+.phase32CopyBtn.failed { background: #992020; }
+
+.phase32BtnRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.phase32Input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(40, 160, 100, 0.25);
+  border-radius: 10px;
+  font-size: 0.84rem;
+  box-sizing: border-box;
+}
+
+.phase32Textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(40, 160, 100, 0.25);
+  border-radius: 10px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  resize: vertical;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.phase32Select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(40, 160, 100, 0.3);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+.phase32CodeBlock {
+  background: #1e1e2e;
+  color: #cdd6f4;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.phase32CheckList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.phase32CheckList li {
+  font-size: 0.82rem;
+  padding: 6px 10px;
+  background: rgba(40, 160, 100, 0.05);
+  border-radius: 8px;
+  color: #1a3a20;
+}
+
+@media (max-width: 760px) {
+  .phase32Hero { grid-template-columns: 1fr; }
+  .phase32SummaryGrid { grid-template-columns: repeat(2, 1fr); }
+  .phase32BtnRow { flex-direction: column; }
+}
