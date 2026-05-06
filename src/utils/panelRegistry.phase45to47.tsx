@@ -1,5 +1,6 @@
 import React from 'react';
 import type { PanelRegistryItem } from './panelRegistry';
+import { FirstStartRouteGuardPanel } from '../components/FirstStartRouteGuardPanel';
 import { FirstLaunchCarePanel } from '../components/FirstLaunchCarePanel';
 import { FirstLaunchCompletionReportPanel } from '../components/FirstLaunchCompletionReportPanel';
 import { GentleAppStartFormPanel } from '../components/GentleAppStartFormPanel';
@@ -10,7 +11,16 @@ import { BeginnerNextStepCardPanel } from '../components/BeginnerNextStepCardPan
 import { FirstAppStartCompletionReportPanel } from '../components/FirstAppStartCompletionReportPanel';
 
 export const PANEL_REGISTRY_PHASE45TO47: PanelRegistryItem[] = [
-  // Phase 45: First Launch Care Onboarding
+  {
+    id: 'first-start-route-guard',
+    label: '初回導線ガード',
+    group: 'home',
+    phase: '48',
+    component: React.createElement(FirstStartRouteGuardPanel),
+    defaultVisible: true,
+    priority: 254,
+    tags: ['darake', 'first-start', 'route-guard', 'beginner'],
+  },
   {
     id: 'first-launch-care',
     label: '初回介護オンボーディング',
@@ -31,8 +41,6 @@ export const PANEL_REGISTRY_PHASE45TO47: PanelRegistryItem[] = [
     priority: 305,
     tags: ['darake', 'onboarding', 'first-start', 'reports', 'completion'],
   },
-
-  // Phase 46: Gentle App Start Form
   {
     id: 'gentle-app-start-form',
     label: 'やさしいフォーム',
@@ -63,8 +71,6 @@ export const PANEL_REGISTRY_PHASE45TO47: PanelRegistryItem[] = [
     priority: 306,
     tags: ['darake', 'form', 'first-start', 'reports', 'completion'],
   },
-
-  // Phase 47: Pon Start Pack
   {
     id: 'pon-start',
     label: 'ぽん開始パック',
