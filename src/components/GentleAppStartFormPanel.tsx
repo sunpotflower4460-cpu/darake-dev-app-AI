@@ -13,22 +13,35 @@ import { loadFirstLaunchCareState } from '../utils/firstLaunchCareOnboarding';
 import { useState } from 'react';
 import { Check, Save } from 'lucide-react';
 
+function mergeOnboardingIntoForm(form: GentleAppStartForm): GentleAppStartForm {
+  const onboarding = loadFirstLaunchCareState();
+  if (!onboarding) return form;
+
+  const merged: GentleAppStartForm = {
+    ...form,
+    appName: form.appName.trim() || onboarding.appName,
+    oneLineIdea: form.oneLineIdea.trim() || onboarding.appSeed,
+    targetUser: form.targetUser.trim() || onboarding.targetUser,
+  };
+
+  if (form.platform === 'not-sure') {
+    merged.platform = onboarding.platform === 'ios' ? 'iphone' : onboarding.platform === 'web' ? 'web' : 'not-sure';
+  }
+
+  if (form.autoPreference === 'ask-only-important') {
+    merged.autoPreference = onboarding.darakeLevel === 'maximum-darake'
+      ? 'maximum-darake'
+      : onboarding.darakeLevel === 'mostly-auto'
+        ? 'do-safe-things-silently'
+        : 'ask-only-important';
+  }
+
+  return merged;
+}
+
 function getInitialForm(): GentleAppStartForm {
   const saved = loadGentleAppStartForm();
-  if (saved) return saved;
-
-  const onboarding = loadFirstLaunchCareState();
-  const initial = buildEmptyGentleAppStartForm();
-  if (!onboarding) return initial;
-
-  return {
-    ...initial,
-    appName: onboarding.appName,
-    oneLineIdea: onboarding.appSeed,
-    targetUser: onboarding.targetUser,
-    platform: onboarding.platform === 'ios' ? 'iphone' : onboarding.platform === 'web' ? 'web' : 'not-sure',
-    autoPreference: onboarding.darakeLevel === 'maximum-darake' ? 'maximum-darake' : onboarding.darakeLevel === 'mostly-auto' ? 'do-safe-things-silently' : 'ask-only-important',
-  };
+  return mergeOnboardingIntoForm(saved ?? buildEmptyGentleAppStartForm());
 }
 
 export function GentleAppStartFormPanel() {
@@ -41,9 +54,14 @@ export function GentleAppStartFormPanel() {
   }
 
   function handleSave() {
-    const errors = validateGentleAppStartForm(form);
-    if (errors.length > 0) return;
-    saveGentleAppStartForm(form);
+    const normalized = mergeOnboardingIntoForm(form);
+    const errors = validateGentleAppStartForm(normalized);
+    if (errors.length > 0) {
+      setForm(normalized);
+      return;
+    }
+    saveGentleAppStartForm(normalized);
+    setForm(normalized);
     setSaved(true);
     window.setTimeout(() => setSaved(false), 1800);
   }
@@ -188,7 +206,7 @@ export function GentleAppStartFormPanel() {
         <button
           className="gasBtnPrimary"
           onClick={handleSave}
-          disabled={errors.length > 0}
+          disabled={errors.length > 0 && validateGentleAppStartForm(mergeOnboardingIntoForm(form)).length > 0}
         >
           {saved ? <><Check size={16} /> 保存しました</> : <><Save size={16} /> これで進める</>}
         </button>
