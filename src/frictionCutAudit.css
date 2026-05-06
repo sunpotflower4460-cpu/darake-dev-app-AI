@@ -1,0 +1,125 @@
+/* Phase 43: Friction Cut Audit Panel CSS */
+.phase43Panel {
+  padding: 16px;
+}
+
+.phase43Hero {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.phase43SummaryCard {
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.phase43SummaryCard.ready {
+  background: #f0f9e8;
+}
+
+.phase43SummaryCard.needs-review {
+  background: #fff8e1;
+}
+
+.phase43SummaryCard.blocked {
+  background: #fff0f0;
+}
+
+.phase43FrictionList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.phase43FrictionItem {
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.phase43FrictionItem.high {
+  border-left: 4px solid #e53935;
+}
+
+.phase43FrictionItem.medium {
+  border-left: 4px solid #fb8c00;
+}
+
+.phase43FrictionItem.low {
+  border-left: 4px solid #43a047;
+}
+
+.phase43FrictionLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.phase43FrictionMeta {
+  font-size: 0.78rem;
+  color: #666;
+}
+
+.phase43FrictionCut {
+  font-size: 0.8rem;
+  color: #1976d2;
+  margin-top: 4px;
+}
+
+.phase43SectionTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444;
+  margin: 14px 0 6px;
+}
+
+.phase43BtnRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.phase43Btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  cursor: pointer;
+  font-size: 0.9rem;
+  min-height: 44px;
+}
+
+.phase43Btn:hover {
+  background: #f0f0f0;
+}
+
+.phase43SafetyTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  background: #fff0f0;
+  color: #c62828;
+}
+
+.phase43AutoHideTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  background: #e8f4fd;
+  color: #1565c0;
+}

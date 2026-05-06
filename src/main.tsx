@@ -99,6 +99,10 @@ import './darakeSleepMode.css';
 import './darakeMorningReport.css';
 import './darakeFinalForm.css';
 import './darakeMobilePolish.css';
+// Phase 42-44 CSS
+import './realUseRehearsal.css';
+import './frictionCutAudit.css';
+import './darakeV1Readiness.css';
 
 const VALID_NAV_GROUPS = new Set<string>([
   'all',

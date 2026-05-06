@@ -1,0 +1,125 @@
+/* Phase 44: Darake v1 Readiness Panel CSS */
+.phase44Panel {
+  padding: 16px;
+}
+
+.phase44Hero {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.phase44StatusCard {
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.phase44StatusCard.ready-for-v1 {
+  background: #f0f9e8;
+}
+
+.phase44StatusCard.needs-review {
+  background: #fff8e1;
+}
+
+.phase44StatusCard.blocked {
+  background: #fff0f0;
+}
+
+.phase44ReqList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.phase44ReqItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.85rem;
+}
+
+.phase44ReqItem:last-child {
+  border-bottom: none;
+}
+
+.phase44ReqStatus {
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.phase44ReqLabel {
+  flex: 1;
+  color: #333;
+}
+
+.phase44SectionTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444;
+  margin: 14px 0 6px;
+}
+
+.phase44WarningList {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.phase44WarningList li {
+  font-size: 0.85rem;
+  color: #e65100;
+  margin-bottom: 3px;
+}
+
+.phase44BlockerList {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.phase44BlockerList li {
+  font-size: 0.85rem;
+  color: #c62828;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.phase44CheckList {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.phase44CheckList li {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 3px;
+}
+
+.phase44BtnRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.phase44Btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  cursor: pointer;
+  font-size: 0.9rem;
+  min-height: 44px;
+}
+
+.phase44Btn:hover {
+  background: #f0f0f0;
+}
