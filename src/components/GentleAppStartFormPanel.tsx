@@ -3,24 +3,37 @@ import {
   loadGentleAppStartForm,
   saveGentleAppStartForm,
   validateGentleAppStartForm,
-  formatGentleAppStartFormMarkdown,
   FEELING_LABELS,
   PLATFORM_LABELS,
   FIRST_GOAL_LABELS,
   AUTO_PREF_LABELS,
 } from '../utils/gentleAppStartForm';
 import type { GentleAppStartForm } from '../utils/gentleAppStartForm';
+import { loadFirstLaunchCareState } from '../utils/firstLaunchCareOnboarding';
 import { useState } from 'react';
-import { Copy, Check, Save } from 'lucide-react';
+import { Check, Save } from 'lucide-react';
 
 function getInitialForm(): GentleAppStartForm {
-  return loadGentleAppStartForm() ?? buildEmptyGentleAppStartForm();
+  const saved = loadGentleAppStartForm();
+  if (saved) return saved;
+
+  const onboarding = loadFirstLaunchCareState();
+  const initial = buildEmptyGentleAppStartForm();
+  if (!onboarding) return initial;
+
+  return {
+    ...initial,
+    appName: onboarding.appName,
+    oneLineIdea: onboarding.appSeed,
+    targetUser: onboarding.targetUser,
+    platform: onboarding.platform === 'ios' ? 'iphone' : onboarding.platform === 'web' ? 'web' : 'not-sure',
+    autoPreference: onboarding.darakeLevel === 'maximum-darake' ? 'maximum-darake' : onboarding.darakeLevel === 'mostly-auto' ? 'do-safe-things-silently' : 'ask-only-important',
+  };
 }
 
 export function GentleAppStartFormPanel() {
   const [form, setForm] = useState<GentleAppStartForm>(getInitialForm);
   const [saved, setSaved] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   function update(partial: Partial<GentleAppStartForm>) {
@@ -35,26 +48,15 @@ export function GentleAppStartFormPanel() {
     window.setTimeout(() => setSaved(false), 1800);
   }
 
-  async function handleCopy() {
-    try {
-      await navigator.clipboard.writeText(formatGentleAppStartFormMarkdown(form));
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1800);
-    } catch {
-      // ignore
-    }
-  }
-
   const errors = validateGentleAppStartForm(form);
 
   return (
     <div className="gasPanel">
       <div className="gasHeader">
         <span className="gasPhaseTag">Phase 46</span>
-        <strong className="gasTitle">作りたいアプリを教えてください</strong>
+        <strong className="gasTitle">作りたいアプリを確認してください</strong>
       </div>
 
-      {/* Section 1: Basic info */}
       <div className="gasSection">
         <label className="gasLabel">アプリ名 <span className="gasRequired">*</span></label>
         <input
@@ -84,7 +86,6 @@ export function GentleAppStartFormPanel() {
         />
       </div>
 
-      {/* Section 2: Style */}
       <div className="gasSection">
         <label className="gasLabel">雰囲気</label>
         <div className="gasChoiceRow">
@@ -139,7 +140,6 @@ export function GentleAppStartFormPanel() {
         </div>
       </div>
 
-      {/* Section 3: Advanced (optional) */}
       <button
         className="gasAdvancedToggle"
         onClick={() => setShowAdvanced((v) => !v)}
@@ -171,7 +171,7 @@ export function GentleAppStartFormPanel() {
           <textarea
             className="gasInput"
             rows={3}
-            placeholder="例：猫の写真を貼れると嬉しい"
+            placeholder="例：宝地図の見た目は明るく幻想的にしたい"
             value={form.notes}
             onChange={(e) => update({ notes: e.target.value })}
           />
@@ -190,10 +190,7 @@ export function GentleAppStartFormPanel() {
           onClick={handleSave}
           disabled={errors.length > 0}
         >
-          {saved ? <><Check size={16} /> 保存しました</> : <><Save size={16} /> 保存</>}
-        </button>
-        <button className="gasBtnSecondary" onClick={handleCopy}>
-          {copied ? <><Check size={14} /> コピー済み</> : <><Copy size={14} /> Markdownコピー</>}
+          {saved ? <><Check size={16} /> 保存しました</> : <><Save size={16} /> これで進める</>}
         </button>
       </div>
     </div>
