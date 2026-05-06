@@ -25,4 +25,4 @@ export const ALL_PANELS: PanelRegistryItem[] = [
   ...PANEL_REGISTRY_PHASE15TO18,
   ...PANEL_REGISTRY_PHASE19TO23,
   ...PANEL_REGISTRY_PHASE24,
-];
+].sort((a, b) => a.priority - b.priority);

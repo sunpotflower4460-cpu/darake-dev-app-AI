@@ -13,6 +13,27 @@ type Props = {
   onModeSelect: (mode: FocusedModeId) => void;
 };
 
+function getDarakeComment(
+  apps: ReturnType<typeof loadAppRegistry>,
+  blockedApps: ReturnType<typeof loadAppRegistry>,
+  manualGateApps: ReturnType<typeof loadAppRegistry>,
+  preSubmissionApps: ReturnType<typeof loadAppRegistry>,
+): string {
+  if (blockedApps.length > 0) {
+    return `⚠️ ${blockedApps.length}件がブロック中です。まず「提出準備」グループを確認しましょう。`;
+  }
+  if (manualGateApps.length > 0) {
+    return `🚪 ${manualGateApps.length}件が手動確認待ちです。`;
+  }
+  if (preSubmissionApps.length > 0) {
+    return `📦 ${preSubmissionApps.length}件が提出直前です！`;
+  }
+  if (apps.length === 0) {
+    return '🌱 まだアプリが登録されていません。Homeグループから始めましょう。';
+  }
+  return '😌 今は落ち着いています。グループを選んで作業を続けましょう。';
+}
+
 type ShortcutDef = {
   label: string;
   group: DarakeNavGroupId | 'all';
@@ -41,16 +62,7 @@ export function DarakeTopCommandPanel({
   const manualGateApps = apps.filter((a) => a.riskLevel === 'manual-gate');
   const preSubmissionApps = apps.filter((a) => a.lifecycleStage === 'submission-prep');
 
-  const darakeComment =
-    blockedApps.length > 0
-      ? `⚠️ ${blockedApps.length}件がブロック中です。まず「提出準備」グループを確認しましょう。`
-      : manualGateApps.length > 0
-        ? `🚪 ${manualGateApps.length}件が手動確認待ちです。`
-        : preSubmissionApps.length > 0
-          ? `📦 ${preSubmissionApps.length}件が提出直前です！`
-          : apps.length === 0
-            ? '🌱 まだアプリが登録されていません。Homeグループから始めましょう。'
-            : '😌 今は落ち着いています。グループを選んで作業を続けましょう。';
+  const darakeComment = getDarakeComment(apps, blockedApps, manualGateApps, preSubmissionApps);
 
   function handleShortcut(s: ShortcutDef) {
     onGroupSelect(s.group);

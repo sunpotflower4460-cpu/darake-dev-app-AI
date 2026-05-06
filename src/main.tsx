@@ -73,12 +73,31 @@ import './localStorageKeyRegistry.css';
 import './phase24IntegrationCompletionReport.css';
 import './darakeTopCommand.css';
 
+const VALID_NAV_GROUPS = new Set<string>([
+  'all',
+  'home',
+  'create',
+  'run',
+  'watch',
+  'screenshots',
+  'submit',
+  'post-release',
+  'portfolio',
+  'templates',
+  'reports',
+  'settings',
+]);
+
 function loadSavedNavGroup(): DarakeNavGroupId | 'all' {
   try {
-    return (localStorage.getItem('darake.navGroup.v1') as DarakeNavGroupId | 'all') ?? 'all';
+    const stored = localStorage.getItem('darake.navGroup.v1');
+    if (stored && VALID_NAV_GROUPS.has(stored)) {
+      return stored as DarakeNavGroupId | 'all';
+    }
   } catch {
-    return 'all';
+    // ignore
   }
+  return 'all';
 }
 
 function DarakeControlRoom() {
@@ -103,7 +122,7 @@ function DarakeControlRoom() {
       if (activeGroup !== 'all' && panel.group !== activeGroup) return false;
       if (focusedMode !== 'all' && !mode.navGroups.includes(panel.group)) return false;
       return true;
-    }).sort((a, b) => a.priority - b.priority);
+    });
   }, [activeGroup, focusedMode]);
 
   return (
