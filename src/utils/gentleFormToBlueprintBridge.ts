@@ -1,5 +1,6 @@
 import { loadGentleAppStartForm } from './gentleAppStartForm';
 import type { GentleAppStartForm } from './gentleAppStartForm';
+import { getUiTemplateOption } from './uiTemplateOptions';
 
 export type GentleFormToBlueprintBridge = {
   title: string;
@@ -43,6 +44,9 @@ function buildMvpScope(form: GentleAppStartForm): string[] {
   if (form.firstGoal === 'app-store-ready') {
     scope.push('App Store提出用メタデータ', 'スクリーンショット');
   }
+  if (form.uiTemplate === 'vision-board') {
+    scope.push('宝地図カード表示', 'ボード表示の土台');
+  }
   if (form.mustHave) {
     scope.push(form.mustHave);
   }
@@ -74,7 +78,13 @@ function buildSuggestedPhases(form: GentleAppStartForm): GentleFormToBlueprintBr
     },
   ];
 
-  if (form.firstGoal === 'usable-mvp' || form.firstGoal === 'app-store-ready') {
+  if (form.uiTemplate === 'vision-board') {
+    phases.push({
+      title: 'Phase 3: 宝地図ボード',
+      purpose: '生成画像カードを並べて眺められるボード体験を作る',
+      doneConditions: ['カード一覧が見える', 'ボード上にカードを配置できる土台がある'],
+    });
+  } else if (form.firstGoal === 'usable-mvp' || form.firstGoal === 'app-store-ready') {
     phases.push({
       title: 'Phase 3: MVPの磨き込み',
       purpose: 'UXを整えて実用的なMVPにする',
@@ -133,6 +143,7 @@ export function buildGentleFormToBlueprintBridge(
     };
   }
 
+  const uiTemplate = getUiTemplateOption(f.uiTemplate);
   const techStack = inferTechStack(f);
   const template = inferTemplate(f);
   const mvpScope = buildMvpScope(f);
@@ -146,6 +157,8 @@ export function buildGentleFormToBlueprintBridge(
     f.targetUser ? `**対象ユーザー**: ${f.targetUser}` : '',
     `**プラットフォーム**: ${f.platform}`,
     `**雰囲気**: ${f.mainFeeling}`,
+    `**UIテンプレート**: ${uiTemplate.label}`,
+    `**見た目の方針**: ${uiTemplate.description}`,
     `**最初の目標**: ${f.firstGoal}`,
   ].filter(Boolean).join('\n');
 
@@ -157,13 +170,22 @@ export function buildGentleFormToBlueprintBridge(
     `## 概要`,
     f.oneLineIdea || '（内容未入力）',
     '',
+    `## 対象ユーザー`,
+    f.targetUser || '未入力。アプリ内容から自然に補ってください。',
+    '',
     `## 技術スタック`,
     techStack,
+    '',
+    `## UIテンプレート / 見た目`,
+    `- 選択: ${uiTemplate.label}`,
+    `- 説明: ${uiTemplate.description}`,
+    `- 実装方針: ${uiTemplate.promptHint}`,
     '',
     `## 最初にやること`,
     `1. ${template} でプロジェクトを初期化する`,
     `2. ホーム画面を作る`,
     `3. 基本ナビゲーションを入れる`,
+    `4. UIテンプレートの雰囲気が分かる最小画面を作る`,
     '',
     `## 外部APIは実行しない`,
     `- GitHub APIは実行しない`,
@@ -176,6 +198,9 @@ export function buildGentleFormToBlueprintBridge(
   const issueDraftBody = [
     `## 概要`,
     f.oneLineIdea || '（内容未入力）',
+    '',
+    `## UIテンプレート`,
+    `- ${uiTemplate.label}: ${uiTemplate.description}`,
     '',
     `## やること`,
     ...mvpScope.slice(0, 3).map((m) => `- [ ] ${m}`),

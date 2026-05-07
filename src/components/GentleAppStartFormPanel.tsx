@@ -10,7 +10,9 @@ import {
 } from '../utils/gentleAppStartForm';
 import type { GentleAppStartForm } from '../utils/gentleAppStartForm';
 import { loadFirstLaunchCareState } from '../utils/firstLaunchCareOnboarding';
+import { loadFirstStartHandoff } from '../utils/firstStartHandoff';
 import { saveFirstStartStep } from '../utils/firstStartStep';
+import { UI_TEMPLATE_OPTIONS } from '../utils/uiTemplateOptions';
 import { useState } from 'react';
 import { Check, Save } from 'lucide-react';
 
@@ -18,22 +20,37 @@ function reloadToApplyStep() {
   window.setTimeout(() => window.location.reload(), 30);
 }
 
+function mergeHandoffIntoForm(form: GentleAppStartForm): GentleAppStartForm {
+  const handoff = loadFirstStartHandoff();
+  if (!handoff) return form;
+
+  return {
+    ...form,
+    appName: form.appName.trim() || handoff.appName,
+    oneLineIdea: form.oneLineIdea.trim() || handoff.oneLineIdea,
+    targetUser: form.targetUser.trim() || handoff.targetUser,
+    platform: form.platform === 'not-sure' ? handoff.platform : form.platform,
+    autoPreference: form.autoPreference === 'ask-only-important' ? handoff.autoPreference : form.autoPreference,
+  };
+}
+
 function mergeOnboardingIntoForm(form: GentleAppStartForm): GentleAppStartForm {
+  const handoffMerged = mergeHandoffIntoForm(form);
   const onboarding = loadFirstLaunchCareState();
-  if (!onboarding) return form;
+  if (!onboarding) return handoffMerged;
 
   const merged: GentleAppStartForm = {
-    ...form,
-    appName: form.appName.trim() || onboarding.appName,
-    oneLineIdea: form.oneLineIdea.trim() || onboarding.appSeed,
-    targetUser: form.targetUser.trim() || onboarding.targetUser,
+    ...handoffMerged,
+    appName: handoffMerged.appName.trim() || onboarding.appName,
+    oneLineIdea: handoffMerged.oneLineIdea.trim() || onboarding.appSeed,
+    targetUser: handoffMerged.targetUser.trim() || onboarding.targetUser,
   };
 
-  if (form.platform === 'not-sure') {
+  if (merged.platform === 'not-sure') {
     merged.platform = onboarding.platform === 'ios' ? 'iphone' : onboarding.platform === 'web' ? 'web' : 'not-sure';
   }
 
-  if (form.autoPreference === 'ask-only-important') {
+  if (merged.autoPreference === 'ask-only-important') {
     merged.autoPreference = onboarding.darakeLevel === 'maximum-darake'
       ? 'maximum-darake'
       : onboarding.darakeLevel === 'mostly-auto'
@@ -72,12 +89,13 @@ export function GentleAppStartFormPanel() {
     reloadToApplyStep();
   }
 
-  const errors = validateGentleAppStartForm(form);
+  const normalizedForValidation = mergeOnboardingIntoForm(form);
+  const errors = validateGentleAppStartForm(normalizedForValidation);
 
   return (
     <div className="gasPanel">
       <div className="gasHeader">
-        <span className="gasPhaseTag">Phase 46</span>
+        <span className="gasPhaseTag">アプリ確認</span>
         <strong className="gasTitle">作りたいアプリを確認してください</strong>
       </div>
 
@@ -108,6 +126,24 @@ export function GentleAppStartFormPanel() {
           value={form.targetUser}
           onChange={(e) => update({ targetUser: e.target.value })}
         />
+      </div>
+
+      <div className="gasSection">
+        <label className="gasLabel">見た目のテンプレート</label>
+        <div className="gasTemplateGrid">
+          {UI_TEMPLATE_OPTIONS.map((template) => (
+            <button
+              key={template.id}
+              type="button"
+              className={`gasTemplateBtn${form.uiTemplate === template.id ? ' selected' : ''}`}
+              onClick={() => update({ uiTemplate: template.id })}
+            >
+              <span className="gasTemplateShort">{template.shortLabel}</span>
+              <span className="gasTemplateLabel">{template.label}</span>
+              <span className="gasTemplateDescription">{template.description}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="gasSection">
@@ -218,7 +254,7 @@ export function GentleAppStartFormPanel() {
           type="button"
           className="gasBtnPrimary"
           onClick={handleSave}
-          disabled={errors.length > 0 && validateGentleAppStartForm(mergeOnboardingIntoForm(form)).length > 0}
+          disabled={errors.length > 0}
         >
           {saved ? <><Check size={16} /> 保存しました</> : <><Save size={16} /> これで進める</>}
         </button>
