@@ -3,6 +3,12 @@ type Env = {
   GITHUB_ALLOWED_REPOS?: string;
   GITHUB_ISSUE_CREATE_ENABLED?: string;
   GITHUB_AGENT_ASSIGN_ENABLED?: string;
+  DARAKE_RUN_REGISTRY_ENABLED?: string;
+  DARAKE_AUTOPILOT_SCHEDULE_ENABLED?: string;
+  TELEGRAM_BOT_TOKEN?: string;
+  TELEGRAM_CHAT_ID?: string;
+  NOTIFICATION_WEBHOOK_URL?: string;
+  RUN_REGISTRY_KV?: KVNamespace;
   ASSETS: Fetcher;
 };
 
@@ -538,6 +544,162 @@ async function handleCreatePrComment(request: Request, env: Env): Promise<Respon
   return json({ ok: true, commentUrl: ghJson?.html_url ?? "" });
 }
 
+import {
+  getRun,
+  saveRun,
+  createRunId,
+  isRegistryEnabled,
+  setNextCheckAfter,
+} from "./runRegistry";
+import {
+  sendTelegramNotification,
+  sendWebhookNotification,
+} from "./notificationSender";
+import type { DarakeWebhookPayload } from "../src/utils/darakeRemoteRun";
+
+async function handleRegisterRun(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "POST") {
+    return json({ ok: false, code: "INVALID_INPUT", error: "POSTだけ使えます" }, 405);
+  }
+
+  if (!isRegistryEnabled(env)) {
+    if (!env.RUN_REGISTRY_KV) {
+      return json({ ok: false, code: "MISSING_STORAGE", error: "RUN_REGISTRY_KVが設定されていません" }, 503);
+    }
+    return json({ ok: false, code: "DISABLED", error: "Run Registryはまだ有効化されていません" }, 403);
+  }
+
+  let bodyJson: { appName?: unknown; repoUrl?: unknown; issueUrl?: unknown; issueNumber?: unknown; prUrl?: unknown; prNumber?: unknown };
+  try {
+    bodyJson = await request.json();
+  } catch {
+    return json({ ok: false, code: "INVALID_INPUT", error: "JSONを読み取れません" }, 400);
+  }
+
+  const appName = String(bodyJson.appName ?? "").trim();
+  const repoUrl = String(bodyJson.repoUrl ?? "").trim();
+
+  if (!appName || !repoUrl) {
+    return json({ ok: false, code: "INVALID_INPUT", error: "appName と repoUrl は必須です" }, 400);
+  }
+
+  const parsed = parseGitHubRepoUrl(repoUrl);
+  if (!parsed.ok) {
+    return json({ ok: false, code: "INVALID_INPUT", error: parsed.error }, 400);
+  }
+
+  if (!isAllowedRepo(parsed.fullName, env.GITHUB_ALLOWED_REPOS)) {
+    return json({ ok: false, code: "REPO_NOT_ALLOWED", error: "このリポジトリは許可リストに入っていません" }, 403);
+  }
+
+  const now = new Date().toISOString();
+  const runId = createRunId();
+  const run = setNextCheckAfter(
+    {
+      id: runId,
+      appName,
+      repoUrl,
+      issueUrl: bodyJson.issueUrl ? String(bodyJson.issueUrl) : undefined,
+      issueNumber: bodyJson.issueNumber ? Number(bodyJson.issueNumber) : undefined,
+      prUrl: bodyJson.prUrl ? String(bodyJson.prUrl) : undefined,
+      prNumber: bodyJson.prNumber ? Number(bodyJson.prNumber) : undefined,
+      status: "active" as const,
+      autoFixAttempts: 0,
+      maxAutoFixAttempts: 2,
+      createdAt: now,
+      updatedAt: now,
+    },
+    "active",
+  );
+
+  try {
+    await saveRun(env.RUN_REGISTRY_KV!, run);
+  } catch {
+    return json({ ok: false, code: "UNKNOWN_ERROR", error: "Run の保存に失敗しました" }, 500);
+  }
+
+  return json({ ok: true, runId, status: "active" });
+}
+
+async function handleGetRun(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "POST") {
+    return json({ ok: false, code: "INVALID_INPUT", error: "POSTだけ使えます" }, 405);
+  }
+
+  if (!isRegistryEnabled(env)) {
+    return json({ ok: false, code: "DISABLED", error: "Run Registryはまだ有効化されていません" }, 403);
+  }
+
+  let bodyJson: { runId?: unknown };
+  try {
+    bodyJson = await request.json();
+  } catch {
+    return json({ ok: false, code: "INVALID_INPUT", error: "JSONを読み取れません" }, 400);
+  }
+
+  const runId = String(bodyJson.runId ?? "").trim();
+  if (!runId) {
+    return json({ ok: false, code: "INVALID_INPUT", error: "runIdは必須です" }, 400);
+  }
+
+  try {
+    const run = await getRun(env.RUN_REGISTRY_KV!, runId);
+    if (!run) {
+      return json({ ok: false, code: "NOT_FOUND", error: "Runが見つかりません" }, 404);
+    }
+    return json({ ok: true, run });
+  } catch {
+    return json({ ok: false, code: "UNKNOWN_ERROR", error: "Run の取得に失敗しました" }, 500);
+  }
+}
+
+async function handleTestNotification(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "POST") {
+    return json({ ok: false, code: "INVALID_INPUT", error: "POSTだけ使えます" }, 405);
+  }
+
+  let bodyJson: { channel?: unknown };
+  try {
+    bodyJson = await request.json();
+  } catch {
+    return json({ ok: false, code: "INVALID_INPUT", error: "JSONを読み取れません" }, 400);
+  }
+
+  const channel = String(bodyJson.channel ?? "");
+  if (channel !== "telegram" && channel !== "webhook") {
+    return json({ ok: false, code: "INVALID_INPUT", error: "channel は telegram か webhook にしてください" }, 400);
+  }
+
+  const testPayload: DarakeWebhookPayload = {
+    title: "だらけ管制室 通知テスト",
+    message: "通知設定の確認です。",
+    reason: "通知テスト",
+    nextActionLabel: "何もしなくてOK（テストです）",
+    createdAt: new Date().toISOString(),
+  };
+
+  if (channel === "telegram") {
+    if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) {
+      return json({ ok: false, code: "MISSING_SECRET", error: "TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID が設定されていません" }, 503);
+    }
+    const res = await sendTelegramNotification(env, testPayload);
+    if (!res.ok) {
+      return json({ ok: false, code: "SEND_FAILED", error: res.error }, 500);
+    }
+    return json({ ok: true, message: "通知テストを送信しました" });
+  }
+
+  // webhook
+  if (!env.NOTIFICATION_WEBHOOK_URL) {
+    return json({ ok: false, code: "MISSING_SECRET", error: "NOTIFICATION_WEBHOOK_URL が設定されていません" }, 503);
+  }
+  const res = await sendWebhookNotification(env, testPayload);
+  if (!res.ok) {
+    return json({ ok: false, code: "SEND_FAILED", error: res.error }, 500);
+  }
+  return json({ ok: true, message: "通知テストを送信しました" });
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -555,6 +717,15 @@ export default {
     }
     if (url.pathname === "/api/github/prs/comment") {
       return handleCreatePrComment(request, env);
+    }
+    if (url.pathname === "/api/darake/runs/register") {
+      return handleRegisterRun(request, env);
+    }
+    if (url.pathname === "/api/darake/runs/get") {
+      return handleGetRun(request, env);
+    }
+    if (url.pathname === "/api/darake/notifications/test") {
+      return handleTestNotification(request, env);
     }
     return env.ASSETS.fetch(request);
   },

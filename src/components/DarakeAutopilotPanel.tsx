@@ -15,12 +15,15 @@ import {
 import type { AutopilotPollerHandle } from '../utils/autopilotPoller';
 import { getLatestUnresolvedWakeItem, resolveWakeItem } from '../utils/darakeWakeQueue';
 import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
+import { registerRemoteRun, syncRemoteRunState } from '../utils/remoteRunClient';
+import { loadRemoteRunLink } from '../utils/remoteRunLink';
 
 export function DarakeAutopilotPanel() {
   const [revision, setRevision] = useState(0);
   const [running, setRunning] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const pollerRef = useRef<AutopilotPollerHandle | null>(null);
+  const didSyncRef = useRef(false);
 
   useEffect(() => subscribeDarakeRuntimeEvents(() => setRevision((v) => v + 1)), []);
 
@@ -32,6 +35,21 @@ export function DarakeAutopilotPanel() {
   const pollerSettings = useMemo(() => loadAutopilotPollerSettings(), [revision]);
 
   const wakeItem = useMemo(() => getLatestUnresolvedWakeItem(), [revision]);
+
+  // Sync remote run state on first mount if a link exists
+  useEffect(() => {
+    if (didSyncRef.current) return;
+    const link = loadRemoteRunLink();
+    if (!link) return;
+    didSyncRef.current = true;
+    syncRemoteRunState()
+      .then((run) => {
+        if (run) setRevision((v) => v + 1);
+      })
+      .catch(() => {
+        // Fail gracefully — do not crash the app
+      });
+  }, []);
 
   // Start/stop poller based on settings
   useEffect(() => {
@@ -55,8 +73,29 @@ export function DarakeAutopilotPanel() {
     if (running) return;
     setRunning(true);
     try {
-      await runDarakeAutopilot();
+      const newState = await runDarakeAutopilot();
       setRevision((v) => v + 1);
+
+      // After issue is created, register the run with the Worker Registry (best effort)
+      if (
+        (newState.status === 'agent-working' || newState.status === 'watching-pr') &&
+        newState.repoUrl &&
+        newState.appName
+      ) {
+        const existingLink = loadRemoteRunLink();
+        if (!existingLink) {
+          registerRemoteRun({
+            appName: newState.appName,
+            repoUrl: newState.repoUrl,
+            issueUrl: newState.issueUrl,
+            issueNumber: newState.issueNumber,
+            prUrl: newState.prUrl,
+            prNumber: newState.prNumber,
+          }).catch(() => {
+            // Best effort — registry may not be configured yet
+          });
+        }
+      }
     } finally {
       setRunning(false);
     }
