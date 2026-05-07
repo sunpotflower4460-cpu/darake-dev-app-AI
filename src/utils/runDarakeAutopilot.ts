@@ -334,7 +334,7 @@ async function handleAgentWorking(
         title: '複数のPR候補があります',
         message: `Issue #${issueNumber} に対して複数のPRが見つかりました。確認してください。`,
         nextActionLabel: 'PRを確認する',
-        actionUrl: `https://github.com/${repoUrl.replace('https://github.com/', '')}/pulls`,
+        actionUrl: `${repoUrl.replace(/\/?$/, '')}/pulls`,
       });
       return save({
         ...current,

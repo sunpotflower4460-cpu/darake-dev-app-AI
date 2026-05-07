@@ -41,9 +41,9 @@ export function DarakeAutopilotPanel() {
       return;
     }
 
-    if (!pollerRef.current) {
-      pollerRef.current = startAutopilotPoller();
-    }
+    // Stop any existing poller before starting a new one
+    pollerRef.current?.stop();
+    pollerRef.current = startAutopilotPoller();
 
     return () => {
       pollerRef.current?.stop();

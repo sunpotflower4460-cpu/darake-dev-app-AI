@@ -51,6 +51,7 @@ const MAX_INTERVAL_SECONDS = 600;
  */
 export function startAutopilotPoller(
   onError?: (err: unknown) => void,
+  onStop?: (reason: 'manual' | 'max-errors') => void,
 ): AutopilotPollerHandle {
   let stopped = false;
   let consecutiveErrors = 0;
@@ -101,6 +102,7 @@ export function startAutopilotPoller(
 
       if (consecutiveErrors >= MAX_CONSECUTIVE_ERRORS) {
         stopped = true;
+        onStop?.('max-errors');
         return;
       }
 
@@ -126,6 +128,7 @@ export function startAutopilotPoller(
         clearTimeout(timeoutId);
         timeoutId = null;
       }
+      onStop?.('manual');
     },
   };
 }

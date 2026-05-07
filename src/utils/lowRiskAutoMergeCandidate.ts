@@ -38,7 +38,7 @@ const SAFE_CHANGE_TYPES = new Set([
   'format',
 ]);
 
-const MANUAL_GATE_FILES = [
+const MANUAL_GATE_FILE_PATTERNS = [
   'package-lock.json',
   'wrangler.toml',
   '.github/',
@@ -60,6 +60,11 @@ const BLOCKED_PATTERNS = [
   'app-store',
   'workflow_dispatch',
 ];
+
+const BLOCKED_PATTERN_REGEX = new RegExp(
+  BLOCKED_PATTERNS.map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'),
+  'i',
+);
 
 export function decideLowRiskAutoMerge(
   input: LowRiskAutoMergeInput,
@@ -97,12 +102,10 @@ export function decideLowRiskAutoMerge(
 
   const changedFiles = input.changedFiles ?? [];
   const hasManualGateFile = changedFiles.some((f) =>
-    MANUAL_GATE_FILES.some((pat) => f.includes(pat)),
+    MANUAL_GATE_FILE_PATTERNS.some((pat) => f.includes(pat)),
   );
 
-  const hasBlockedPattern = changedFiles.some((f) =>
-    BLOCKED_PATTERNS.some((pat) => f.toLowerCase().includes(pat)),
-  );
+  const hasBlockedPattern = changedFiles.some((f) => BLOCKED_PATTERN_REGEX.test(f));
 
   if (hasBlockedPattern) {
     return {
