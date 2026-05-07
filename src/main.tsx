@@ -4,6 +4,7 @@ import App from './App';
 import { DarakeNavigationBar } from './components/DarakeNavigationBar';
 import { DarakeTopCommandPanel } from './components/DarakeTopCommandPanel';
 import { FocusedModePanel } from './components/FocusedModePanel';
+import { WakeActionPanel } from './components/WakeActionPanel';
 import { ALL_PANELS } from './utils/panelRegistry';
 import { getFocusedModeById, loadFocusedModeId, saveFocusedModeId } from './utils/focusedMode';
 import type { FocusedModeId } from './utils/focusedMode';
@@ -12,6 +13,7 @@ import { buildFirstAppStartCompletionReport } from './utils/firstAppStartComplet
 import { isFirstStartMinimalModeReleased } from './utils/firstStartMinimalMode';
 import { loadFirstStartStep } from './utils/firstStartStep';
 import { subscribeDarakeRuntimeEvents } from './utils/darakeRuntimeEvents';
+import { getWakeActionTokenId, clearWakeActionFromUrl } from './utils/wakeActionRouter';
 import './styleImports';
 
 const VALID_NAV_GROUPS = new Set<string>([
@@ -142,11 +144,24 @@ function DarakeRoot() {
     () => !isFirstStartMinimalModeReleased(),
     [revision],
   );
+  const [wakeActionTokenId, setWakeActionTokenId] = useState<string | null>(
+    () => getWakeActionTokenId(),
+  );
 
   useEffect(() => {
     document.body.classList.toggle('darake-first-start-active', firstStartActive);
     return () => document.body.classList.remove('darake-first-start-active');
   }, [firstStartActive]);
+
+  function handleWakeActionDismiss() {
+    clearWakeActionFromUrl();
+    setWakeActionTokenId(null);
+  }
+
+  // If opened via notification wake action, show only the WakeActionPanel
+  if (wakeActionTokenId) {
+    return <WakeActionPanel tokenId={wakeActionTokenId} onDismiss={handleWakeActionDismiss} />;
+  }
 
   return (
     <>

@@ -13,6 +13,11 @@ import {
   shouldSendWake,
   WAKE_NOTIFY_REASONS,
 } from './notificationSender';
+import {
+  buildWakeActionToken,
+  saveWakeActionToken,
+} from './wakeActionToken';
+import type { WakeActionKind } from './wakeActionToken';
 
 type RunnerEnv = {
   GITHUB_TOKEN?: string;
@@ -23,6 +28,7 @@ type RunnerEnv = {
   TELEGRAM_CHAT_ID?: string;
   NOTIFICATION_WEBHOOK_URL?: string;
   RUN_REGISTRY_KV?: KVNamespace;
+  APP_URL?: string;
 };
 
 type GitHubHeaders = Record<string, string>;
@@ -180,6 +186,51 @@ async function sendWakeNotification(
 }
 
 /**
+ * Create a Wake Action Token and save it to KV.
+ * Returns the token's wakeAction URL (e.g., https://app.example.com/?wakeAction=TOKEN_ID)
+ * or undefined if KV is unavailable or APP_URL is not configured.
+ */
+async function createWakeToken(
+  env: RunnerEnv,
+  run: DarakeRemoteRun,
+  reason: string,
+  nextActionLabel: string,
+  actionKind: WakeActionKind,
+  extra: {
+    prUrl?: string;
+    prNumber?: number;
+    issueUrl?: string;
+    issueNumber?: number;
+    fixRequestBody?: string;
+  } = {},
+): Promise<string | undefined> {
+  if (!env.RUN_REGISTRY_KV) return undefined;
+  try {
+    const token = buildWakeActionToken({
+      runId: run.id,
+      reason,
+      actionKind,
+      message: reason,
+      nextActionLabel,
+      prUrl: extra.prUrl ?? run.prUrl,
+      prNumber: extra.prNumber ?? run.prNumber,
+      issueUrl: extra.issueUrl ?? run.issueUrl,
+      issueNumber: extra.issueNumber ?? run.issueNumber,
+      repoUrl: run.repoUrl,
+      fixRequestBody: extra.fixRequestBody,
+    });
+    await saveWakeActionToken(env.RUN_REGISTRY_KV, token);
+    if (env.APP_URL) {
+      const base = env.APP_URL.replace(/\/$/, '');
+      return `${base}/?wakeAction=${token.tokenId}`;
+    }
+    return undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
  * Process a single active run: check PR/CI status and update accordingly.
  * Never merges, approves, or pushes to main.
  */
@@ -227,12 +278,19 @@ async function processRun(run: DarakeRemoteRun, env: RunnerEnv): Promise<DarakeR
 
   if (health === 'checks-passed' || health === 'ready-to-merge') {
     if (WAKE_NOTIFY_REASONS.has('merge-candidate')) {
+      const wakeActionUrl = await createWakeToken(
+        env,
+        updated,
+        'PRがマージ候補になりました',
+        'PRを開いて確認してください',
+        'open-pr',
+      );
       await sendWakeNotification(
         env,
         updated,
         'PRがマージ候補になりました',
         'PRを開いて確認してください',
-        updated.prUrl,
+        wakeActionUrl ?? updated.prUrl,
       );
     }
     const saved = {
@@ -250,12 +308,19 @@ async function processRun(run: DarakeRemoteRun, env: RunnerEnv): Promise<DarakeR
     const maxAttempts = updated.maxAutoFixAttempts ?? 2;
 
     if (updated.autoFixAttempts >= maxAttempts) {
+      const wakeActionUrl = await createWakeToken(
+        env,
+        updated,
+        `Build失敗が${maxAttempts}回続きました`,
+        '詳細を確認してください',
+        'show-details',
+      );
       await sendWakeNotification(
         env,
         updated,
         `Build失敗が${maxAttempts}回続きました`,
         '詳細を確認してください',
-        updated.prUrl,
+        wakeActionUrl ?? updated.prUrl,
       );
       const saved = {
         ...updated,
@@ -284,19 +349,27 @@ async function processRun(run: DarakeRemoteRun, env: RunnerEnv): Promise<DarakeR
       return saved;
     }
 
-    // Could not post comment — needs human
+    // Could not post comment — create send-fix-request token so user can trigger manually
+    const wakeActionUrl = await createWakeToken(
+      env,
+      updated,
+      'Buildに失敗しました',
+      'AIに修正をお願いする',
+      'send-fix-request',
+      { fixRequestBody: fixBody },
+    );
     await sendWakeNotification(
       env,
       updated,
-      '自動修正依頼を送れませんでした',
-      'PRを確認してください',
-      updated.prUrl,
+      'Buildに失敗しました',
+      'AIに修正をお願いする',
+      wakeActionUrl ?? updated.prUrl,
     );
     const saved = {
       ...updated,
       status: 'needs-human' as const,
       autoFixAttempts: updated.autoFixAttempts + 1,
-      lastWakeReason: '自動修正依頼を送れませんでした',
+      lastWakeReason: 'Buildに失敗しました',
       wakeSentAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
