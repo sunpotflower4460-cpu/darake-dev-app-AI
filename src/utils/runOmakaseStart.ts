@@ -7,6 +7,7 @@ import { buildCloudAgentStartInstruction } from './cloudAgentStartInstruction';
 import { saveOmakaseStartState, loadOmakaseStartState } from './omakaseStartState';
 import type { OmakaseStartState } from './omakaseStartState';
 import { loadGitHubIssueCreateState } from './githubIssueCreateState';
+import { saveAgentRunState } from './agentRunState';
 
 function saveFailedState(
   appName: string,
@@ -148,6 +149,17 @@ export async function runOmakaseStart(): Promise<OmakaseStartState> {
       cloudAgentInstruction,
       nextActionLabel: 'Cloud Agentに貼る指示をコピー',
       userMessage: '準備できました。次はCloud Agentに貼る指示をコピーするだけです。',
+    });
+
+    // 9. Also update AgentRunState
+    saveAgentRunState({
+      status: 'issue-created',
+      appName,
+      repoUrl,
+      issueUrl,
+      issueNumber,
+      nextActionLabel: 'AIに作業をお願いする',
+      userMessage: 'Issueを作成しました。AIに作業をお願いする準備ができています。',
     });
   } catch (err) {
     const errorMessage =

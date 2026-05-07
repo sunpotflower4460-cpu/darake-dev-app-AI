@@ -1,0 +1,409 @@
+/* Agent Start Panel */
+.agentStartPanel {
+  padding: 20px 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.agentStartTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.agentStartDesc {
+  font-size: 0.87rem;
+  color: #666;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.agentStartIssueRow {
+  margin-bottom: 14px;
+}
+
+.agentStartIssueLabel {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.agentStartIssueLink {
+  display: block;
+  font-size: 0.82rem;
+  color: #1565c0;
+  word-break: break-all;
+  text-decoration: none;
+  margin-top: 2px;
+}
+
+.agentStartIssueLink:hover {
+  text-decoration: underline;
+}
+
+.agentStartBtnRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.agentStartBtnPrimary {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  border: none;
+  background: #1565c0;
+  color: #fff;
+  font-size: 1.0rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.agentStartBtnPrimary:hover:not(:disabled) {
+  background: #0d47a1;
+}
+
+.agentStartBtnPrimary:active:not(:disabled) {
+  background: #0a3880;
+  transform: scale(0.98);
+}
+
+.agentStartBtnPrimary:disabled {
+  background: #bbdefb;
+  cursor: not-allowed;
+}
+
+.agentStartSuccessBox {
+  background: #e8f5e9;
+  border-radius: 14px;
+  padding: 18px 16px;
+  text-align: center;
+}
+
+.agentStartSuccessTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 6px;
+}
+
+.agentStartSuccessDetail {
+  font-size: 0.88rem;
+  color: #388e3c;
+}
+
+.agentStartFallbackBox {
+  background: #fff8e1;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.agentStartFallbackTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #f57f17;
+  margin-bottom: 6px;
+}
+
+.agentStartFallbackDetail {
+  font-size: 0.85rem;
+  color: #e65100;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.agentStartFallbackReason {
+  font-size: 0.8rem;
+  color: #bf360c;
+  margin-top: 4px;
+}
+
+.agentStartNextLabel {
+  font-size: 0.82rem;
+  color: #888;
+  margin-top: 8px;
+}
+
+.agentStartNextAction {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1565c0;
+  margin-top: 2px;
+}
+
+.agentStartSpinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: agentStartSpin 0.7s linear infinite;
+}
+
+@keyframes agentStartSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Agent Run Watch Panel */
+.agentWatchPanel {
+  padding: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.agentWatchStatus {
+  background: #f8f9fa;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.agentWatchTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.agentWatchTitleWarn {
+  color: #c62828;
+}
+
+.agentWatchDetail {
+  font-size: 0.87rem;
+  color: #555;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.agentWatchNextLabel {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.agentWatchNextAction {
+  font-weight: 700;
+  color: #2e7d32;
+}
+
+.agentWatchPrLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  color: #1565c0;
+  text-decoration: none;
+  margin-top: 8px;
+}
+
+.agentWatchPrLink:hover {
+  text-decoration: underline;
+}
+
+.agentWatchBtnSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  margin-top: 10px;
+  border-radius: 12px;
+  border: 1.5px solid #1565c0;
+  background: #fff;
+  color: #1565c0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.12s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.agentWatchBtnSecondary:hover {
+  background: #e3f2fd;
+}
+
+.agentWatchLastCheck {
+  font-size: 0.77rem;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+
+.agentWatchRefreshBtn {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  color: #666;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.12s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.agentWatchRefreshBtn:hover:not(:disabled) {
+  background: #f0f0f0;
+}
+
+.agentWatchRefreshBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Agent Fix Request Panel */
+.agentFixPanel {
+  padding: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+  background: #fff8f8;
+  border-radius: 14px;
+  border: 1.5px solid #ffcdd2;
+}
+
+.agentFixTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #c62828;
+  margin-bottom: 6px;
+}
+
+.agentFixReason {
+  font-size: 0.87rem;
+  color: #b71c1c;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.agentFixNextLabel {
+  font-size: 0.82rem;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.agentFixBtnRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.agentFixBtnPrimary {
+  width: 100%;
+  padding: 15px 16px;
+  border-radius: 14px;
+  border: none;
+  background: #c62828;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.agentFixBtnPrimary:hover:not(:disabled) {
+  background: #b71c1c;
+}
+
+.agentFixBtnPrimary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.agentFixBtnPrimary:disabled {
+  background: #ef9a9a;
+  cursor: not-allowed;
+}
+
+.agentFixBtnSecondary {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  color: #555;
+  font-size: 0.88rem;
+  cursor: pointer;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.12s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.agentFixBtnSecondary:hover {
+  background: #f0f0f0;
+}
+
+.agentFixSuccessBox {
+  background: #e8f5e9;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.agentFixSuccessTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 4px;
+}
+
+.agentFixSuccessDetail {
+  font-size: 0.85rem;
+  color: #388e3c;
+}
+
+.agentFixFallbackBox {
+  background: #fff3e0;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.agentFixFallbackTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #e65100;
+  margin-bottom: 4px;
+}
+
+.agentFixFallbackDetail {
+  font-size: 0.83rem;
+  color: #bf360c;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.agentFixSpinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: agentFixSpin 0.7s linear infinite;
+}
+
+@keyframes agentFixSpin {
+  to { transform: rotate(360deg); }
+}
