@@ -1,4 +1,4 @@
-/* Phase 46: Gentle App Start Form CSS */
+/* Gentle App Start Form CSS */
 .gasPanel {
   padding: 18px 16px;
   max-width: 480px;
@@ -12,11 +12,12 @@
 .gasPhaseTag {
   display: inline-block;
   font-size: 0.72rem;
-  color: #888;
-  background: #f0f0f0;
-  border-radius: 6px;
-  padding: 2px 7px;
+  color: #5f7468;
+  background: #eef8f0;
+  border-radius: 999px;
+  padding: 4px 10px;
   margin-bottom: 8px;
+  font-weight: 700;
 }
 
 .gasTitle {
@@ -104,6 +105,70 @@
   border-color: #66bb6a;
   color: #2e7d32;
   font-weight: 600;
+}
+
+.gasTemplateGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.gasTemplateBtn {
+  min-height: 92px;
+  padding: 10px;
+  border-radius: 16px;
+  border: 1.5px solid #e1e1e1;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s, box-shadow 0.15s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.gasTemplateBtn:active {
+  transform: scale(0.98);
+}
+
+.gasTemplateBtn.selected {
+  background: #eef8f0;
+  border-color: #66bb6a;
+  box-shadow: 0 10px 24px rgba(76, 175, 80, 0.12);
+}
+
+.gasTemplateShort {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  min-height: 22px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #f5f5f5;
+  color: #537063;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.gasTemplateBtn.selected .gasTemplateShort {
+  background: #dff3e3;
+  color: #2e7d32;
+}
+
+.gasTemplateLabel {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: #26382f;
+}
+
+.gasTemplateDescription {
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: #69746e;
 }
 
 .gasAdvancedToggle {
@@ -219,11 +284,12 @@
 .gbpPhaseTag {
   display: inline-block;
   font-size: 0.72rem;
-  color: #888;
-  background: #f0f0f0;
-  border-radius: 6px;
-  padding: 2px 7px;
+  color: #5f7468;
+  background: #eef8f0;
+  border-radius: 999px;
+  padding: 4px 10px;
   margin-bottom: 10px;
+  font-weight: 700;
 }
 
 .gbpTitle {
@@ -307,4 +373,10 @@
 /* Completion report reuse */
 .gasCrPanel {
   padding: 16px;
+}
+
+@media (max-width: 380px) {
+  .gasTemplateGrid {
+    grid-template-columns: 1fr;
+  }
 }
