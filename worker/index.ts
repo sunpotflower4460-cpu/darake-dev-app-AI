@@ -298,12 +298,13 @@ async function handleFindPrByIssue(request: Request, env: Env): Promise<Response
   type GhPr = { html_url: string; number: number; title: string; body: string | null };
   const prs = (await gh.json().catch(() => [])) as GhPr[];
 
-  const issueRef = `#${issueNumber}`;
+  // Use regex to match exact issue number (word boundary to avoid #12 matching #123)
+  const issueRefRegex = new RegExp(`#${issueNumber}(?![0-9])`, "g");
   const issueFullRef = `/${parsed.owner}/${parsed.repo}/issues/${issueNumber}`;
 
   const candidates = prs.filter((pr) => {
     const text = `${pr.title} ${pr.body ?? ""}`;
-    return text.includes(issueRef) || text.includes(issueFullRef);
+    return issueRefRegex.test(text) || text.includes(issueFullRef);
   });
 
   if (candidates.length === 0) {
@@ -425,7 +426,11 @@ async function handleGetPrHealth(request: Request, env: Env): Promise<Response> 
 
   const inProgress = runs.some((r) => r.status === "in_progress" || r.status === "queued");
   const failed = runs.some((r) => r.conclusion === "failure" || r.conclusion === "timed_out");
-  const allPassed = runs.every((r) => r.conclusion === "success" || r.conclusion === "skipped" || r.conclusion === "neutral");
+  // Only consider completed runs (non-null conclusion) when checking if all passed
+  const completedRuns = runs.filter((r) => r.conclusion !== null);
+  const allPassed =
+    completedRuns.length > 0 &&
+    completedRuns.every((r) => r.conclusion === "success" || r.conclusion === "skipped" || r.conclusion === "neutral");
 
   let health: string;
   let summary: string;

@@ -3,6 +3,16 @@ import { ExternalLink } from 'lucide-react';
 import { loadAgentRunState } from '../utils/agentRunState';
 import { watchAgentPr } from '../utils/githubPrWatcher';
 import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
+import type { AgentRunStatus } from '../utils/agentRunState';
+
+function isActiveWatchingStatus(status: AgentRunStatus): boolean {
+  return (
+    status === 'agent-working' ||
+    status === 'assigned-to-agent' ||
+    status === 'pr-created' ||
+    status === 'checks-running'
+  );
+}
 
 export function AgentRunWatchPanel() {
   const [revision, setRevision] = useState(0);
@@ -88,7 +98,7 @@ export function AgentRunWatchPanel() {
         </div>
       )}
 
-      {(state.status === 'agent-working' || state.status === 'assigned-to-agent' || state.status === 'pr-created' || state.status === 'checks-running') && (
+      {isActiveWatchingStatus(state.status) && (
         <button
           type="button"
           className="agentWatchRefreshBtn"

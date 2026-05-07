@@ -59,7 +59,7 @@ export async function watchAgentPr(): Promise<void> {
         });
         return;
       }
-      // not-found: still working
+      // PR not found yet: keep 'pr-created' if we already set it before, otherwise mark as agent-working
       saveAgentRunState({
         ...state,
         status: state.status === 'pr-created' ? 'pr-created' : 'agent-working',
