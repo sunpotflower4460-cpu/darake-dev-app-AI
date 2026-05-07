@@ -17,8 +17,14 @@ export type DarakeNotificationEvent =
   | 'billing-operation-needed'
   | 'production-deploy-needed'
   | 'app-store-submit-needed'
+  | 'agent-assign-failed'
+  | 'pr-multiple-candidates'
+  | 'merge-decision-needed'
   // Should NOT notify
   | 'issue-create-success'
+  | 'agent-assign-success'
+  | 'pr-waiting'
+  | 'ci-running'
   | 'readme-updated'
   | 'minor-ui-fix'
   | 'intermediate-step-success'
@@ -33,6 +39,7 @@ const NOTIFICATION_LEVELS: Record<DarakeNotificationEvent, DarakeNotificationLev
   'billing-operation-needed': 'blocked',
   'production-deploy-needed': 'blocked',
   'app-store-submit-needed': 'blocked',
+  'merge-decision-needed': 'blocked',
 
   // Needs action — something requires attention
   'issue-create-failed': 'needs-action',
@@ -40,9 +47,14 @@ const NOTIFICATION_LEVELS: Record<DarakeNotificationEvent, DarakeNotificationLev
   'ci-failed': 'needs-action',
   'build-failed': 'needs-action',
   'pr-review-needed': 'needs-action',
+  'agent-assign-failed': 'needs-action',
+  'pr-multiple-candidates': 'needs-action',
 
   // Silent — don't bother the user
   'issue-create-success': 'silent',
+  'agent-assign-success': 'silent',
+  'pr-waiting': 'silent',
+  'ci-running': 'silent',
   'readme-updated': 'silent',
   'minor-ui-fix': 'silent',
   'intermediate-step-success': 'silent',

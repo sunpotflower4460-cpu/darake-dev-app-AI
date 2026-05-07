@@ -36,7 +36,7 @@ function getFirstStartVisiblePanelIds() {
     return new Set(['gentle-app-start-form']);
   }
   if (explicitStep === 'pon') {
-    return new Set(['omakase-start', 'darake-now-card', 'pon-start', 'github-direct-issue-create', 'github-start', 'github-issue-record', 'cloud-agent-start', 'github-start-progress', 'beginner-next-step-card', 'first-start-advanced-open']);
+    return new Set(['omakase-start', 'darake-now-card', 'pon-start', 'github-direct-issue-create', 'github-start', 'github-issue-record', 'cloud-agent-start', 'github-start-progress', 'beginner-next-step-card', 'first-start-advanced-open', 'agent-start', 'agent-run-watch', 'agent-fix-request']);
   }
 
   const report = buildFirstAppStartCompletionReport();
@@ -46,7 +46,7 @@ function getFirstStartVisiblePanelIds() {
   if (!report.formCanStart) {
     return new Set(['gentle-app-start-form']);
   }
-  return new Set(['omakase-start', 'darake-now-card', 'pon-start', 'github-direct-issue-create', 'github-start', 'github-issue-record', 'cloud-agent-start', 'github-start-progress', 'beginner-next-step-card', 'first-start-advanced-open']);
+  return new Set(['omakase-start', 'darake-now-card', 'pon-start', 'github-direct-issue-create', 'github-start', 'github-issue-record', 'cloud-agent-start', 'github-start-progress', 'beginner-next-step-card', 'first-start-advanced-open', 'agent-start', 'agent-run-watch', 'agent-fix-request']);
 }
 
 function loadSavedNavGroup(): DarakeNavGroupId | 'all' {
