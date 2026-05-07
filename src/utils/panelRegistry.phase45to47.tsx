@@ -7,6 +7,7 @@ import { GentleAppStartFormPanel } from '../components/GentleAppStartFormPanel';
 import { GentleBlueprintPreviewPanel } from '../components/GentleBlueprintPreviewPanel';
 import { GentleStartCompletionReportPanel } from '../components/GentleStartCompletionReportPanel';
 import { PonStartPanel } from '../components/PonStartPanel';
+import { GitHubDirectIssueCreatePanel } from '../components/GitHubDirectIssueCreatePanel';
 import { GitHubStartPanel } from '../components/GitHubStartPanel';
 import { GitHubIssueRecordPanel } from '../components/GitHubIssueRecordPanel';
 import { CloudAgentStartPanel } from '../components/CloudAgentStartPanel';
@@ -85,6 +86,16 @@ export const PANEL_REGISTRY_PHASE45TO47: PanelRegistryItem[] = [
     defaultVisible: true,
     priority: 258,
     tags: ['darake', 'pon-start', 'first-start', 'home', 'beginner'],
+  },
+  {
+    id: 'github-direct-issue-create',
+    label: 'GitHub Issue直接作成',
+    group: 'home',
+    phase: '47.05',
+    component: React.createElement(GitHubDirectIssueCreatePanel),
+    defaultVisible: true,
+    priority: 258.4,
+    tags: ['darake', 'github', 'issue', 'direct-create', 'first-start', 'home', 'beginner'],
   },
   {
     id: 'github-start',
