@@ -1,0 +1,337 @@
+/* GitHub Issue Record Panel */
+.girPanel {
+  padding: 20px 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.girTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.girSub {
+  font-size: 0.88rem;
+  color: #666;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.girRecordedBadge {
+  display: inline-block;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  word-break: break-all;
+}
+
+.girField {
+  margin-bottom: 14px;
+}
+
+.girLabel {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.girInput {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  font-size: 0.9rem;
+  color: #222;
+  background: #fafafa;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+
+.girInput:focus {
+  border-color: #1565c0;
+  background: #fff;
+}
+
+.girInputError {
+  border-color: #e53935 !important;
+}
+
+.girFieldError {
+  margin-top: 5px;
+  font-size: 0.8rem;
+  color: #e53935;
+}
+
+.girFieldOk {
+  margin-top: 5px;
+  font-size: 0.8rem;
+  color: #2e7d32;
+}
+
+.girSafetyNote {
+  background: #f3f3f3;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.girBtnRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.girBtnPrimary {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  border: none;
+  background: #1565c0;
+  color: #fff;
+  font-size: 1.0rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.girBtnPrimary:hover:not(:disabled) {
+  background: #0d47a1;
+}
+
+.girBtnPrimary:active:not(:disabled) {
+  background: #0a3880;
+  transform: scale(0.98);
+}
+
+.girBtnPrimary:disabled {
+  background: #bbdefb;
+  cursor: not-allowed;
+}
+
+.girBtnTertiary {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  color: #aaa;
+  font-size: 0.82rem;
+  cursor: pointer;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: color 0.15s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.girBtnTertiary:hover {
+  color: #666;
+}
+
+/* Cloud Agent Start Panel */
+.casPanel {
+  padding: 20px 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.casReadyBadge {
+  display: inline-block;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 6px 14px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.casTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.casSub {
+  font-size: 0.88rem;
+  color: #666;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.casDisabledNote {
+  background: #f3f3f3;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  color: #888;
+  line-height: 1.6;
+}
+
+.casIssueRef {
+  font-size: 0.88rem;
+  color: #444;
+  margin-bottom: 14px;
+}
+
+.casIssueLabel {
+  color: #888;
+  margin-right: 4px;
+}
+
+.casIssueLink {
+  color: #1565c0;
+  font-weight: 600;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.casIssueLink:hover {
+  text-decoration: underline;
+}
+
+.casBtnPrimary {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  border: none;
+  background: #1565c0;
+  color: #fff;
+  font-size: 1.0rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  margin-bottom: 12px;
+}
+
+.casBtnPrimary:hover {
+  background: #0d47a1;
+}
+
+.casBtnPrimary:active {
+  background: #0a3880;
+  transform: scale(0.98);
+}
+
+.casDetails {
+  margin-top: 4px;
+}
+
+.casSummary {
+  font-size: 0.82rem;
+  color: #aaa;
+  cursor: pointer;
+  user-select: none;
+  padding: 4px 0;
+}
+
+.casSummary:hover {
+  color: #666;
+}
+
+.casInstructionPreview {
+  margin-top: 10px;
+  background: #f8f8f8;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.78rem;
+  color: #444;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+  border: 1px solid #e8e8e8;
+}
+
+/* GitHub Start Progress Panel ("いまここ") */
+.gspPanel {
+  padding: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.gspLabel {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.gspCard {
+  background: #f8f9fa;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gspStep {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.gspDone {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.gspPending {
+  color: #999;
+}
+
+.gspNextBox {
+  margin-top: 10px;
+  background: #e8f5e9;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.gspNextLabel {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 4px;
+}
+
+.gspNextDetail {
+  font-size: 0.85rem;
+  color: #388e3c;
+  line-height: 1.5;
+}
