@@ -1,0 +1,283 @@
+/* AutoFixLoopPanel */
+.autoFixLoopPanel {
+  padding: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.autoFixLoopCard {
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.autoFixLoopCard--checking {
+  background: #f8f9fa;
+  border: 1.5px solid #e0e0e0;
+}
+
+.autoFixLoopCard--needsFix {
+  background: #fff8f8;
+  border: 1.5px solid #ffcdd2;
+}
+
+.autoFixLoopCard--posted {
+  background: #e8f5e9;
+  border: 1.5px solid #c8e6c9;
+}
+
+.autoFixLoopCard--needsHuman {
+  background: #fff8e1;
+  border: 1.5px solid #ffe082;
+}
+
+.autoFixLoopCard--mergeCandidate {
+  background: #e8f5e9;
+  border: 1.5px solid #a5d6a7;
+}
+
+.autoFixLoopTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.autoFixLoopTitle--warn {
+  color: #c62828;
+}
+
+.autoFixLoopTitle--success {
+  color: #2e7d32;
+}
+
+.autoFixLoopTitle--caution {
+  color: #e65100;
+}
+
+.autoFixLoopReason {
+  font-size: 0.87rem;
+  color: #555;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.autoFixLoopNextLabel {
+  font-size: 0.82rem;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.autoFixLoopNextAction {
+  font-weight: 700;
+  color: #2e7d32;
+}
+
+.autoFixLoopAttemptNote {
+  font-size: 0.78rem;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+.autoFixLoopBtnRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.autoFixLoopBtnPrimary {
+  width: 100%;
+  padding: 15px 16px;
+  border-radius: 14px;
+  border: none;
+  background: #c62828;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.autoFixLoopBtnPrimary:hover:not(:disabled) {
+  background: #b71c1c;
+}
+
+.autoFixLoopBtnPrimary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.autoFixLoopBtnPrimary:disabled {
+  background: #ef9a9a;
+  cursor: not-allowed;
+}
+
+.autoFixLoopBtnPrimaryGreen {
+  width: 100%;
+  padding: 15px 16px;
+  border-radius: 14px;
+  border: none;
+  background: #1565c0;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.autoFixLoopBtnPrimaryGreen:hover {
+  background: #0d47a1;
+}
+
+.autoFixLoopBtnSecondary {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  color: #555;
+  font-size: 0.88rem;
+  cursor: pointer;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.12s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.autoFixLoopBtnSecondary:hover {
+  background: #f0f0f0;
+}
+
+.autoFixLoopSpinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: autoFixLoopSpin 0.7s linear infinite;
+}
+
+@keyframes autoFixLoopSpin {
+  to { transform: rotate(360deg); }
+}
+
+.autoFixLoopCheckAt {
+  font-size: 0.77rem;
+  color: #aaa;
+  margin-top: 6px;
+}
+
+/* MergeCandidateCard */
+.mergeCandidateCard {
+  padding: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.mergeCandidateInner {
+  background: #e8f5e9;
+  border-radius: 14px;
+  border: 1.5px solid #a5d6a7;
+  padding: 18px 16px;
+}
+
+.mergeCandidateTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 8px;
+}
+
+.mergeCandidateMessage {
+  font-size: 0.87rem;
+  color: #388e3c;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.mergeCandidateReasonList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mergeCandidateReasonItem {
+  font-size: 0.88rem;
+  color: #2e7d32;
+}
+
+.mergeCandidateRiskList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mergeCandidateRiskItem {
+  font-size: 0.85rem;
+  color: #c62828;
+}
+
+.mergeCandidateNextLabel {
+  font-size: 0.82rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.mergeCandidateOpenBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 15px 16px;
+  border-radius: 14px;
+  background: #2e7d32;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  min-height: 50px;
+  transition: background 0.15s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mergeCandidateOpenBtn:hover {
+  background: #1b5e20;
+}
+
+.mergeCandidateBlockedNote {
+  font-size: 0.85rem;
+  color: #c62828;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
