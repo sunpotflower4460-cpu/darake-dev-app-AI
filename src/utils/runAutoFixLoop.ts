@@ -42,7 +42,7 @@ export async function runAutoFixLoop(): Promise<AutoFixLoopState | null> {
     const humanState = {
       ...next,
       status: 'needs-human' as const,
-      userMessage: `AIに${maxAttempts}回修正をお願いしましたが、まだ止まっています。`,
+      userMessage: `AIに${maxAttempts}回修正をお願いしましたが、解決できませんでした。`,
       nextActionLabel: '詳細を見る',
     };
     saveAutoFixLoopState(humanState);
@@ -61,7 +61,7 @@ export async function runAutoFixLoop(): Promise<AutoFixLoopState | null> {
     prUrl: next.prUrl,
     prNumber: next.prNumber,
     failure,
-    attemptCount,
+    attemptCount: attemptCount + 1,
   });
 
   // Avoid duplicate instructions

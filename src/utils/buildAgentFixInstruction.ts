@@ -52,8 +52,8 @@ export function buildAgentFixInstruction(input: BuildAgentFixInstructionInput): 
     '- 残りの注意点',
   );
 
-  if (input.attemptCount > 0) {
-    lines.push('', `(修正試行 ${input.attemptCount + 1} 回目)`);
+  if (input.attemptCount > 1) {
+    lines.push('', `(修正試行 ${input.attemptCount} 回目)`);
   }
 
   return lines.join('\n');

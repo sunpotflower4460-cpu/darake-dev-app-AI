@@ -1,9 +1,8 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ExternalLink } from 'lucide-react';
 import { loadAutoFixLoopState } from '../utils/autoFixLoopState';
 import { buildMergeReadinessSummaryFromPrHealth } from '../utils/mergeReadiness';
 import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
-import { useState } from 'react';
 
 export function MergeCandidateCard() {
   const [revision, setRevision] = useState(0);
