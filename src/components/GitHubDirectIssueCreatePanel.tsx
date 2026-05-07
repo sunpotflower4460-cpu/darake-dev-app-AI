@@ -141,7 +141,7 @@ export function GitHubDirectIssueCreatePanel() {
         <div className="gdicSuccessBox">
           <div className="gdicSuccessTitle">✅ Issueを作成しました</div>
           <div className="gdicSuccessUrl">
-            <a href={result.issueUrl} target="_blank" rel="noopener noreferrer">
+            <a href={result.issueUrl} target="_blank" rel="noopener noreferrer" aria-label={`作成されたGitHub Issueを新しいタブで開く: ${result.issueUrl}`}>
               {result.issueUrl}
             </a>
           </div>
@@ -222,7 +222,7 @@ export function GitHubDirectIssueCreatePanel() {
 
       {record && !result?.ok && (
         <div style={{ marginTop: 14, fontSize: '0.78rem', color: '#aaa', textAlign: 'center' }}>
-          記録済み: <a href={record.issueUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#1565c0' }}>{record.fullName} #{record.issueNumber}</a>
+          記録済み: <a href={record.issueUrl} target="_blank" rel="noopener noreferrer" aria-label={`記録済みIssueを開く: ${record.fullName} #${record.issueNumber}`} style={{ color: '#1565c0' }}>{record.fullName} #{record.issueNumber}</a>
         </div>
       )}
     </div>
