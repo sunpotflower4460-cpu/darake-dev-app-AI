@@ -739,7 +739,7 @@ async function handleGetWakeAction(request: Request, env: Env): Promise<Response
     }
 
     if (token.usedAt) {
-      return json({ ok: false, code: "USED", error: "このアクションは実行済みです", }, 200);
+      return json({ ok: false, code: "USED", error: "このアクションは実行済みです", }, 409);
     }
 
     // Return the record without internal implementation fields
@@ -817,7 +817,7 @@ async function handleRunWakeAction(request: Request, env: Env): Promise<Response
       ok: false,
       code: "USED",
       error: "このアクションは実行済みです",
-    }, 200);
+    }, 409);
   }
 
   if (FORBIDDEN_ACTION_KINDS.has(token.actionKind)) {
