@@ -2,6 +2,8 @@ import {
   DARAKE_GENTLE_FORM_UPDATED_EVENT,
   emitDarakeRuntimeEvent,
 } from './darakeRuntimeEvents';
+import { getUiTemplateOption } from './uiTemplateOptions';
+import type { UiTemplateId } from './uiTemplateOptions';
 
 const STORAGE_KEY = 'darake.gentleAppStartForm.v1';
 
@@ -32,6 +34,7 @@ export type GentleAppStartForm = {
     | 'ask-only-important'
     | 'do-safe-things-silently'
     | 'maximum-darake';
+  uiTemplate: UiTemplateId;
   mustHave: string;
   mustNotDo: string;
   notes: string;
@@ -77,9 +80,18 @@ export function buildEmptyGentleAppStartForm(): GentleAppStartForm {
     platform: 'not-sure',
     firstGoal: 'not-sure',
     autoPreference: 'ask-only-important',
+    uiTemplate: 'not-sure',
     mustHave: '',
     mustNotDo: '',
     notes: '',
+  };
+}
+
+function normalizeGentleAppStartForm(form: Partial<GentleAppStartForm>): GentleAppStartForm {
+  return {
+    ...buildEmptyGentleAppStartForm(),
+    ...form,
+    uiTemplate: form.uiTemplate ?? 'not-sure',
   };
 }
 
@@ -87,7 +99,7 @@ export function loadGentleAppStartForm(): GentleAppStartForm | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    return JSON.parse(raw) as GentleAppStartForm;
+    return normalizeGentleAppStartForm(JSON.parse(raw) as Partial<GentleAppStartForm>);
   } catch {
     return null;
   }
@@ -95,7 +107,7 @@ export function loadGentleAppStartForm(): GentleAppStartForm | null {
 
 export function saveGentleAppStartForm(form: GentleAppStartForm): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(form));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizeGentleAppStartForm(form)));
     emitDarakeRuntimeEvent(DARAKE_GENTLE_FORM_UPDATED_EVENT);
   } catch {
     // ignore
@@ -123,10 +135,13 @@ export function summarizeGentleAppStartForm(form: GentleAppStartForm): string {
   if (form.appName) parts.push(`「${form.appName}」`);
   if (form.oneLineIdea) parts.push(form.oneLineIdea);
   if (form.targetUser) parts.push(`対象: ${form.targetUser}`);
+  const template = getUiTemplateOption(form.uiTemplate);
+  if (template.id !== 'not-sure') parts.push(`見た目: ${template.label}`);
   return parts.join(' — ') || '（未入力）';
 }
 
 export function formatGentleAppStartFormMarkdown(form: GentleAppStartForm): string {
+  const template = getUiTemplateOption(form.uiTemplate);
   const lines = [
     '# やさしいアプリ開始フォーム',
     '',
@@ -137,6 +152,7 @@ export function formatGentleAppStartFormMarkdown(form: GentleAppStartForm): stri
     '',
     `## スタイル・目標`,
     `- 雰囲気: ${FEELING_LABELS[form.mainFeeling]}`,
+    `- UIテンプレート: ${template.label}`,
     `- プラットフォーム: ${PLATFORM_LABELS[form.platform]}`,
     `- 最初の目標: ${FIRST_GOAL_LABELS[form.firstGoal]}`,
     `- 自動化希望: ${AUTO_PREF_LABELS[form.autoPreference]}`,
