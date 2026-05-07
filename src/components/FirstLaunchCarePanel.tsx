@@ -10,6 +10,11 @@ import {
 } from '../utils/firstLaunchCareOnboarding';
 import { loadGentleAppStartForm, saveGentleAppStartForm, buildEmptyGentleAppStartForm } from '../utils/gentleAppStartForm';
 import { clearFirstStartStep, saveFirstStartStep } from '../utils/firstStartStep';
+import {
+  buildFirstStartHandoffFromOnboarding,
+  clearFirstStartHandoff,
+  saveFirstStartHandoff,
+} from '../utils/firstStartHandoff';
 import type { GentleAppStartForm } from '../utils/gentleAppStartForm';
 import type { FirstLaunchCareState, FirstLaunchCareStep } from '../utils/firstLaunchCareOnboarding';
 
@@ -87,6 +92,7 @@ export function FirstLaunchCarePanel() {
   function handleReset() {
     clearFirstLaunchCareState();
     clearFirstStartStep();
+    clearFirstStartHandoff();
     setState(buildInitialFirstLaunchCareState());
     reloadToApplyStep();
   }
@@ -95,6 +101,7 @@ export function FirstLaunchCarePanel() {
     const completed = { ...state, currentStep: 'ready' as const, hasCompletedFirstLaunch: true };
     setState(completed);
     saveFirstLaunchCareState(completed);
+    saveFirstStartHandoff(buildFirstStartHandoffFromOnboarding(completed));
     saveGentleAppStartForm(buildGentleFormFromOnboarding(completed));
     saveFirstStartStep('form');
     reloadToApplyStep();
@@ -102,7 +109,7 @@ export function FirstLaunchCarePanel() {
 
   return (
     <div className="flcPanel">
-      <span className="flcPhaseTag">Phase 45</span>
+      <span className="flcPhaseTag">はじめの設定</span>
 
       <div className="flcStepIndicator">
         {FIRST_LAUNCH_STEPS.map((step, i) => (
