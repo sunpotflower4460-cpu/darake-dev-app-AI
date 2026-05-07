@@ -1,17 +1,25 @@
-// Worker Cron Trigger scaffold for darake autopilot scheduled checks.
-// Not yet active — Cron must be enabled in wrangler.toml to use this.
+// Worker Cron Trigger handler for darake autopilot scheduled checks.
 //
 // To activate, add to wrangler.toml:
 //   [triggers]
-//   crons = ["*/5 * * * *"]
+//   crons = ["*/10 * * * *"]
 //
-// Then wire scheduled() in the default export.
+// And add a KV namespace binding:
+//   [[kv_namespaces]]
+//   binding = "RUN_REGISTRY_KV"
+//   id = "<your-kv-namespace-id>"
 
-import type { ScheduledCheckInput, ScheduledCheckOutput } from '../src/utils/autopilotScheduledRun';
+import { runAutopilotScheduled } from './autopilotRunner';
 
 type Env = {
   GITHUB_TOKEN?: string;
   GITHUB_ALLOWED_REPOS?: string;
+  DARAKE_RUN_REGISTRY_ENABLED?: string;
+  DARAKE_AUTOPILOT_SCHEDULE_ENABLED?: string;
+  TELEGRAM_BOT_TOKEN?: string;
+  TELEGRAM_CHAT_ID?: string;
+  NOTIFICATION_WEBHOOK_URL?: string;
+  RUN_REGISTRY_KV?: KVNamespace;
   ASSETS: Fetcher;
 };
 
@@ -20,43 +28,13 @@ type ScheduledEvent = {
   scheduledTime: number;
 };
 
-/**
- * Placeholder scheduled handler.
- * In a full implementation this would:
- * 1. Read stored autopilot state (e.g. from KV or Durable Objects)
- * 2. Call GitHub API to check PR / CI status
- * 3. Post fix comments if needed
- * 4. Store result back to KV
- * 5. Trigger a notification if human attention is needed
- */
-async function handleScheduledRun(
-  _event: ScheduledEvent,
-  env: Env,
-): Promise<void> {
-  if (!env.GITHUB_TOKEN) {
-    console.warn('[darake-scheduled] GITHUB_TOKEN not set — skipping');
-    return;
-  }
-
-  // Scaffold: In the future, read from KV storage and run check
-  const input: ScheduledCheckInput = {
-    repoUrl: '',
-  };
-
-  // Import is dynamic to keep this scaffold typesafe without circular deps
-  const { runScheduledAutopilotCheck } = await import('../src/utils/autopilotScheduledRun');
-  const result: ScheduledCheckOutput = await runScheduledAutopilotCheck(input);
-
-  if (result.shouldNotify) {
-    console.log('[darake-scheduled] notify reason:', result.notifyReason);
-  } else {
-    console.log('[darake-scheduled] no action needed');
-  }
-}
-
 export default {
   async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
-    ctx.waitUntil(handleScheduledRun(event, env));
+    ctx.waitUntil(
+      runAutopilotScheduled(env).catch((err) => {
+        console.error('[darake-scheduled] Unhandled error:', err);
+      }),
+    );
   },
   async fetch(request: Request, env: Env): Promise<Response> {
     return env.ASSETS.fetch(request);

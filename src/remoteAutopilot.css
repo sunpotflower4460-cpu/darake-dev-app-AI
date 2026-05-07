@@ -1,0 +1,254 @@
+.remoteAutopilotCard {
+  background: var(--bg-card, #1a1a2e);
+  border: 1.5px solid var(--border-color, #2a2a4a);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-primary, #e0e0f0);
+}
+
+.remoteAutopilotCard--unconfigured {
+  border-color: var(--border-muted, #333355);
+  opacity: 0.8;
+}
+
+.remoteAutopilotCard--active {
+  border-color: #3a8ef6;
+}
+
+.remoteAutopilotCard--wake {
+  border-color: #f6983a;
+  background: #1e1606;
+}
+
+.remoteAutopilotCard--error {
+  border-color: #f63a3a;
+  opacity: 0.7;
+}
+
+.remoteAutopilotHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.remoteAutopilotBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.remoteAutopilotBadge--gray {
+  background: #2a2a3a;
+  color: #888;
+}
+
+.remoteAutopilotBadge--blue {
+  background: #0d2a5e;
+  color: #5eb8ff;
+}
+
+.remoteAutopilotBadge--orange {
+  background: #3a1a00;
+  color: #ffb85e;
+}
+
+.remoteAutopilotBadge--red {
+  background: #2a0000;
+  color: #ff7070;
+}
+
+.remoteAutopilotBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.remoteAutopilotTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary, #e0e0f0);
+}
+
+.remoteAutopilotDesc {
+  font-size: 13px;
+  color: var(--text-muted, #888);
+  line-height: 1.5;
+}
+
+.remoteAutopilotReason {
+  font-size: 13px;
+  color: #ffb85e;
+  line-height: 1.5;
+}
+
+.remoteAutopilotNext {
+  font-size: 13px;
+  color: var(--text-secondary, #aaa);
+  line-height: 1.5;
+}
+
+.remoteAutopilotAction {
+  font-weight: 700;
+  color: var(--text-primary, #e0e0f0);
+}
+
+.remoteAutopilotNote {
+  font-size: 12px;
+  color: var(--text-muted, #666);
+}
+
+.remoteAutopilotDetails {
+  margin-top: 6px;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.remoteAutopilotDetailRow {
+  font-size: 12px;
+  color: var(--text-muted, #888);
+}
+
+.remoteAutopilotDetailRow a {
+  color: #5eb8ff;
+  text-decoration: none;
+}
+
+.remoteAutopilotBtnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #3a8ef6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.remoteAutopilotBtnPrimary:hover {
+  background: #5aa0ff;
+}
+
+.remoteAutopilotBtnSecondary {
+  padding: 6px 12px;
+  background: transparent;
+  color: var(--text-secondary, #aaa);
+  border: 1px solid var(--border-color, #333);
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.remoteAutopilotBtnSecondary:hover {
+  border-color: #5eb8ff;
+  color: #5eb8ff;
+}
+
+.remoteAutopilotBtnSecondary:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.remoteAutopilotBtnText {
+  background: none;
+  border: none;
+  color: var(--text-muted, #666);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.remoteAutopilotBtnText:hover {
+  color: #5eb8ff;
+}
+
+.remoteAutopilotTestRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.remoteAutopilotTestSection {
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.remoteAutopilotTestDesc {
+  font-size: 12px;
+  color: var(--text-muted, #888);
+}
+
+.remoteAutopilotTestBtns {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.remoteAutopilotTestResult {
+  font-size: 12px;
+  color: var(--text-secondary, #aaa);
+  padding: 4px 0;
+}
+
+.remoteAutopilotSetupGuide {
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.remoteAutopilotSetupTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #e0e0f0);
+}
+
+.remoteAutopilotSetupDesc {
+  font-size: 12px;
+  color: var(--text-secondary, #aaa);
+  line-height: 1.5;
+}
+
+.remoteAutopilotSetupList {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-secondary, #aaa);
+  font-family: monospace;
+}
+
+.remoteAutopilotSetupNote {
+  font-size: 12px;
+  color: var(--text-muted, #666);
+  line-height: 1.5;
+}

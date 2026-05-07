@@ -7,3 +7,16 @@ directory = "./dist"
 not_found_handling = "single-page-application"
 binding = "ASSETS"
 run_worker_first = ["/api/*"]
+
+# Cron Trigger for background autopilot patrol.
+# Uncomment and configure to activate scheduled checks.
+# Requires DARAKE_AUTOPILOT_SCHEDULE_ENABLED=true in Worker Secrets.
+# [triggers]
+# crons = ["*/10 * * * *"]
+
+# KV namespace for Run Registry.
+# Uncomment and set your KV namespace ID to activate background patrol.
+# Requires DARAKE_RUN_REGISTRY_ENABLED=true in Worker Secrets.
+# [[kv_namespaces]]
+# binding = "RUN_REGISTRY_KV"
+# id = "<your-kv-namespace-id>"
