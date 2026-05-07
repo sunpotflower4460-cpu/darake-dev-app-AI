@@ -14,6 +14,10 @@ import { saveFirstStartStep } from '../utils/firstStartStep';
 import { useState } from 'react';
 import { Check, Save } from 'lucide-react';
 
+function reloadToApplyStep() {
+  window.setTimeout(() => window.location.reload(), 30);
+}
+
 function mergeOnboardingIntoForm(form: GentleAppStartForm): GentleAppStartForm {
   const onboarding = loadFirstLaunchCareState();
   if (!onboarding) return form;
@@ -65,7 +69,7 @@ export function GentleAppStartFormPanel() {
     saveFirstStartStep('pon');
     setForm(normalized);
     setSaved(true);
-    window.setTimeout(() => setSaved(false), 1800);
+    reloadToApplyStep();
   }
 
   const errors = validateGentleAppStartForm(form);
