@@ -9,6 +9,8 @@ type Env = {
   TELEGRAM_CHAT_ID?: string;
   NOTIFICATION_WEBHOOK_URL?: string;
   RUN_REGISTRY_KV?: KVNamespace;
+  /** Public URL of the Pages app, e.g. https://your-app.pages.dev */
+  APP_URL?: string;
   ASSETS: Fetcher;
 };
 
@@ -556,6 +558,177 @@ import {
   sendWebhookNotification,
 } from "./notificationSender";
 import type { DarakeWebhookPayload } from "../src/utils/darakeRemoteRun";
+import {
+  getWakeActionToken,
+  markWakeActionTokenUsed,
+  isTokenExpired,
+  EXECUTABLE_ACTION_KINDS,
+} from "./wakeActionToken";
+
+async function handleGetWakeAction(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "POST") {
+    return json({ ok: false, code: "INVALID_INPUT", error: "POSTだけ使えます" }, 405);
+  }
+
+  if (!env.RUN_REGISTRY_KV) {
+    return json({ ok: false, code: "DISABLED", error: "RUN_REGISTRY_KVが設定されていません" }, 503);
+  }
+
+  let bodyJson: { tokenId?: unknown };
+  try {
+    bodyJson = await request.json();
+  } catch {
+    return json({ ok: false, code: "INVALID_INPUT", error: "JSONを読み取れません" }, 400);
+  }
+
+  const tokenId = String(bodyJson.tokenId ?? "").trim();
+  if (!tokenId) {
+    return json({ ok: false, code: "NOT_FOUND", error: "tokenIdは必須です" }, 400);
+  }
+
+  try {
+    const token = await getWakeActionToken(env.RUN_REGISTRY_KV, tokenId);
+    if (!token) {
+      return json({ ok: false, code: "NOT_FOUND", error: "トークンが見つかりません" }, 404);
+    }
+    if (isTokenExpired(token)) {
+      return json({ ok: false, code: "EXPIRED", error: "この通知は期限切れです" }, 410);
+    }
+    if (token.usedAt) {
+      return json({ ok: false, code: "USED", error: "このアクションはすでに実行されました" }, 409);
+    }
+    // Return token without repoUrl (not needed by frontend)
+    const { repoUrl: _repoUrl, ...safeToken } = token;
+    return json({ ok: true, action: safeToken });
+  } catch {
+    return json({ ok: false, code: "UNKNOWN_ERROR", error: "トークンの取得に失敗しました" }, 500);
+  }
+}
+
+async function handleRunWakeAction(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "POST") {
+    return json({ ok: false, code: "INVALID_INPUT", error: "POSTだけ使えます" }, 405);
+  }
+
+  if (!env.RUN_REGISTRY_KV) {
+    return json({ ok: false, code: "DISABLED", error: "RUN_REGISTRY_KVが設定されていません" }, 503);
+  }
+
+  let bodyJson: { tokenId?: unknown };
+  try {
+    bodyJson = await request.json();
+  } catch {
+    return json({ ok: false, code: "INVALID_INPUT", error: "JSONを読み取れません" }, 400);
+  }
+
+  const tokenId = String(bodyJson.tokenId ?? "").trim();
+  if (!tokenId) {
+    return json({ ok: false, code: "NOT_FOUND", error: "tokenIdは必須です" }, 400);
+  }
+
+  let token: Awaited<ReturnType<typeof getWakeActionToken>>;
+  try {
+    token = await getWakeActionToken(env.RUN_REGISTRY_KV, tokenId);
+  } catch {
+    return json({ ok: false, code: "UNKNOWN_ERROR", error: "トークンの取得に失敗しました" }, 500);
+  }
+
+  if (!token) {
+    return json({ ok: false, code: "NOT_FOUND", error: "トークンが見つかりません" }, 404);
+  }
+  if (isTokenExpired(token)) {
+    return json({ ok: false, code: "EXPIRED", error: "この通知は期限切れです" }, 410);
+  }
+  if (token.usedAt) {
+    return json({ ok: false, code: "USED", error: "このアクションはすでに実行されました" }, 409);
+  }
+  if (!EXECUTABLE_ACTION_KINDS.has(token.actionKind)) {
+    return json({ ok: false, code: "ACTION_NOT_ALLOWED", error: "このアクションは実行できません" }, 403);
+  }
+
+  // Execute: send-fix-request → post PR comment
+  if (token.actionKind === "send-fix-request") {
+    if (!env.GITHUB_TOKEN) {
+      return json(
+        {
+          ok: false,
+          code: "GITHUB_ERROR",
+          error: "GitHub TokenがWorker Secretに設定されていません",
+          fallbackText: token.message,
+        },
+        500,
+      );
+    }
+
+    if (!token.repoUrl || !token.prNumber) {
+      return json(
+        {
+          ok: false,
+          code: "GITHUB_ERROR",
+          error: "PR情報が不足しています",
+          fallbackText: token.message,
+        },
+        400,
+      );
+    }
+
+    const repoMatch = token.repoUrl.trim().replace(/^https?:\/\//, "").match(/^github\.com\/([^/\s]+)\/([^/\s?#]+)\/?$/);
+    if (!repoMatch) {
+      return json(
+        {
+          ok: false,
+          code: "GITHUB_ERROR",
+          error: "リポジトリURLが不正です",
+          fallbackText: token.message,
+        },
+        400,
+      );
+    }
+
+    const owner = repoMatch[1];
+    const repo = repoMatch[2].replace(/\.git$/, "");
+
+    const gh = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/issues/${token.prNumber}/comments`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+          "X-GitHub-Api-Version": "2022-11-28",
+          "User-Agent": "darake-dev-app-ai",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ body: token.message }),
+      },
+    );
+
+    if (!gh.ok) {
+      const ghJson = (await gh.json().catch(() => null)) as { message?: string } | null;
+      return json(
+        {
+          ok: false,
+          code: "GITHUB_ERROR",
+          error: ghJson?.message ?? "PRコメントの投稿に失敗しました",
+          fallbackText: token.message,
+        },
+        gh.status,
+      );
+    }
+
+    const ghJson = (await gh.json().catch(() => null)) as { html_url?: string } | null;
+    await markWakeActionTokenUsed(env.RUN_REGISTRY_KV, token).catch(() => null);
+
+    return json({
+      ok: true,
+      status: "done",
+      message: "AIに修正をお願いしました",
+      actionUrl: ghJson?.html_url,
+    });
+  }
+
+  return json({ ok: false, code: "ACTION_NOT_ALLOWED", error: "このアクションは実行できません" }, 403);
+}
 
 async function handleRegisterRun(request: Request, env: Env): Promise<Response> {
   if (request.method !== "POST") {
@@ -726,6 +899,12 @@ export default {
     }
     if (url.pathname === "/api/darake/notifications/test") {
       return handleTestNotification(request, env);
+    }
+    if (url.pathname === "/api/darake/wake-action/get") {
+      return handleGetWakeAction(request, env);
+    }
+    if (url.pathname === "/api/darake/wake-action/run") {
+      return handleRunWakeAction(request, env);
     }
     return env.ASSETS.fetch(request);
   },
