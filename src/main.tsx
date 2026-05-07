@@ -36,7 +36,7 @@ function getFirstStartVisiblePanelIds() {
     return new Set(['gentle-app-start-form']);
   }
   if (explicitStep === 'pon') {
-    return new Set(['pon-start', 'beginner-next-step-card', 'first-start-advanced-open']);
+    return new Set(['pon-start', 'github-start', 'beginner-next-step-card', 'first-start-advanced-open']);
   }
 
   const report = buildFirstAppStartCompletionReport();
@@ -46,7 +46,7 @@ function getFirstStartVisiblePanelIds() {
   if (!report.formCanStart) {
     return new Set(['gentle-app-start-form']);
   }
-  return new Set(['pon-start', 'beginner-next-step-card', 'first-start-advanced-open']);
+  return new Set(['pon-start', 'github-start', 'beginner-next-step-card', 'first-start-advanced-open']);
 }
 
 function loadSavedNavGroup(): DarakeNavGroupId | 'all' {
