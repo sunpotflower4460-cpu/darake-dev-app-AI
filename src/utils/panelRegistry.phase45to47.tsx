@@ -8,6 +8,9 @@ import { GentleBlueprintPreviewPanel } from '../components/GentleBlueprintPrevie
 import { GentleStartCompletionReportPanel } from '../components/GentleStartCompletionReportPanel';
 import { PonStartPanel } from '../components/PonStartPanel';
 import { GitHubStartPanel } from '../components/GitHubStartPanel';
+import { GitHubIssueRecordPanel } from '../components/GitHubIssueRecordPanel';
+import { CloudAgentStartPanel } from '../components/CloudAgentStartPanel';
+import { GitHubStartProgressPanel } from '../components/GitHubStartProgressPanel';
 import { BeginnerNextStepCardPanel } from '../components/BeginnerNextStepCardPanel';
 import { FirstStartAdvancedOpenPanel } from '../components/FirstStartAdvancedOpenPanel';
 import { FirstAppStartCompletionReportPanel } from '../components/FirstAppStartCompletionReportPanel';
@@ -92,6 +95,36 @@ export const PANEL_REGISTRY_PHASE45TO47: PanelRegistryItem[] = [
     defaultVisible: true,
     priority: 258.5,
     tags: ['darake', 'github', 'first-start', 'home', 'beginner'],
+  },
+  {
+    id: 'github-issue-record',
+    label: '作ったIssueを記録する',
+    group: 'home',
+    phase: '47.2',
+    component: React.createElement(GitHubIssueRecordPanel),
+    defaultVisible: true,
+    priority: 258.6,
+    tags: ['darake', 'github', 'issue', 'first-start', 'home', 'beginner'],
+  },
+  {
+    id: 'cloud-agent-start',
+    label: 'Cloud Agentに作業を始めてもらう',
+    group: 'home',
+    phase: '47.2',
+    component: React.createElement(CloudAgentStartPanel),
+    defaultVisible: true,
+    priority: 258.7,
+    tags: ['darake', 'cloud-agent', 'first-start', 'home', 'beginner'],
+  },
+  {
+    id: 'github-start-progress',
+    label: 'いまここ',
+    group: 'home',
+    phase: '47.2',
+    component: React.createElement(GitHubStartProgressPanel),
+    defaultVisible: true,
+    priority: 258.8,
+    tags: ['darake', 'github', 'progress', 'first-start', 'home', 'beginner'],
   },
   {
     id: 'beginner-next-step-card',
