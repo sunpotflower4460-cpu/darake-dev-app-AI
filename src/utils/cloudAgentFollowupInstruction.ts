@@ -71,8 +71,14 @@ export function buildCloudAgentFollowupInstruction(
 
   if (input.prUrl || input.issueUrl) {
     lines.push('## 対象');
-    if (input.prUrl) lines.push(`PR:\n${input.prUrl}`);
-    if (input.issueUrl) lines.push(`Issue:\n${input.issueUrl}`);
+    if (input.prUrl) {
+      lines.push('PR:');
+      lines.push(input.prUrl);
+    }
+    if (input.issueUrl) {
+      lines.push('Issue:');
+      lines.push(input.issueUrl);
+    }
     lines.push('');
   }
 

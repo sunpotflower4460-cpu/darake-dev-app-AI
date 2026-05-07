@@ -149,8 +149,10 @@ export async function runOmakaseStart(): Promise<OmakaseStartState> {
       nextActionLabel: 'Cloud Agentに貼る指示をコピー',
       userMessage: '準備できました。次はCloud Agentに貼る指示をコピーするだけです。',
     });
-  } catch {
-    const msg = 'ネットワークエラーが発生しました。接続を確認して、もう一度試してください。';
+  } catch (err) {
+    const errorMessage =
+      err instanceof Error ? err.message : '不明なエラーが発生しました。';
+    const msg = `ネットワークエラーが発生しました。接続を確認して、もう一度試してください。(${errorMessage})`;
     saveFailedState(appName, repoUrl, msg, 'もう一度試す', msg);
   }
 

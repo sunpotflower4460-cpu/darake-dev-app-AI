@@ -53,7 +53,7 @@ const NOTIFICATION_LEVELS: Record<DarakeNotificationEvent, DarakeNotificationLev
 export function getNotificationLevel(
   event: DarakeNotificationEvent,
 ): DarakeNotificationLevel {
-  return NOTIFICATION_LEVELS[event] ?? 'silent';
+  return NOTIFICATION_LEVELS[event];
 }
 
 export function shouldNotify(event: DarakeNotificationEvent): boolean {

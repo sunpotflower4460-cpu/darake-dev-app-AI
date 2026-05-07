@@ -43,7 +43,6 @@ export function computeDarakeNowState(): DarakeNowState {
     omakase?.cloudAgentInstruction ||
     omakase?.status === 'cloud-agent-ready'
   );
-  const cloudAgentWorking = cloudAgentReady;
 
   const steps: DarakeNowStep[] = [
     { label: 'アプリ内容を入力しました', done: formFilled },
@@ -71,7 +70,7 @@ export function computeDarakeNowState(): DarakeNowState {
     phase = 'issue-created';
     nextActionLabel = 'Cloud Agentに貼る指示をコピーしてください。';
     nextActionDetail = 'Cloud Agentのチャットに貼るだけです。';
-  } else if (cloudAgentWorking) {
+  } else if (cloudAgentReady) {
     phase = 'cloud-agent-working';
     nextActionLabel = '何もしなくてOK';
     nextActionDetail = 'Cloud Agentが作業中です。失敗した時だけ通知されます。';

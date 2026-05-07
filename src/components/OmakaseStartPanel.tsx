@@ -7,10 +7,29 @@ import { parseGitHubRepoUrl } from '../utils/githubRepoUrl';
 import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
 import { loadDarakeLevelSettings, getDarakeLevelVisibility } from '../utils/darakeLevelSettings';
 
+function CopyAgentInstructionButton({ instruction }: { instruction: string }) {
+  const [copied, setCopied] = useState(false);
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(instruction);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // ignore
+    }
+  }
+
+  return (
+    <button type="button" className="omkBtnPrimaryGreen" onClick={handleCopy}>
+      {copied ? <><Check size={16} /> コピー済み</> : <><Copy size={16} /> Cloud Agentに貼る指示をコピー</>}
+    </button>
+  );
+}
+
 export function OmakaseStartPanel() {
   const [revision, setRevision] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [repoUrl, setRepoUrl] = useState('');
 
   useEffect(() => subscribeDarakeRuntimeEvents(() => setRevision((v) => v + 1)), []);
@@ -45,17 +64,6 @@ export function OmakaseStartPanel() {
       setRevision((v) => v + 1);
     } finally {
       setLoading(false);
-    }
-  }
-
-  async function handleCopy() {
-    if (!omakase?.cloudAgentInstruction) return;
-    try {
-      await navigator.clipboard.writeText(omakase.cloudAgentInstruction);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1800);
-    } catch {
-      // ignore
     }
   }
 
@@ -100,13 +108,9 @@ export function OmakaseStartPanel() {
           )}
         </div>
         <div className="omkBtnRow">
-          <button
-            type="button"
-            className="omkBtnPrimaryGreen"
-            onClick={handleCopy}
-          >
-            {copied ? <><Check size={16} /> コピー済み</> : <><Copy size={16} /> Cloud Agentに貼る指示をコピー</>}
-          </button>
+          {omakase?.cloudAgentInstruction && (
+            <CopyAgentInstructionButton instruction={omakase.cloudAgentInstruction} />
+          )}
           {omakase?.issueUrl && (
             <a
               href={omakase.issueUrl}
@@ -214,13 +218,9 @@ export function OmakaseStartPanel() {
       <div className="omkBtnRow">
         {isReady ? (
           <>
-            <button
-              type="button"
-              className="omkBtnPrimaryGreen"
-              onClick={handleCopy}
-            >
-              {copied ? <><Check size={16} /> コピー済み</> : <><Copy size={16} /> Cloud Agentに貼る指示をコピー</>}
-            </button>
+            {omakase?.cloudAgentInstruction && (
+              <CopyAgentInstructionButton instruction={omakase.cloudAgentInstruction} />
+            )}
             {omakase?.issueUrl && (
               <a
                 href={omakase.issueUrl}
