@@ -9,7 +9,7 @@ export function GitHubStartProgressPanel() {
 
   const progress = useMemo(() => computeGitHubStartProgress(), [revision]);
 
-  const issueRecorded = progress === 'issue-recorded' || progress === 'cloud-agent-ready';
+  const issueRecorded = progress === 'issue-recorded';
 
   return (
     <div className="gspPanel">
