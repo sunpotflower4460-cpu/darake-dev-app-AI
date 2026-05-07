@@ -5,7 +5,7 @@ import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
 
 const INCLUDED_LABELS: Record<string, string> = {
   productBrief: 'アプリ概要',
-  phasePlan: 'Phase計画',
+  phasePlan: '作る順番',
   cloudAgentInstruction: 'Cloud Agent指示書',
   issueDraft: 'Issue下書き',
   safetyRules: '安全ルール',
@@ -31,8 +31,8 @@ export function PonStartPanel() {
 
   return (
     <div className="ponPanel">
-      <span className="ponPhaseTag">Phase 47</span>
-      <div className="ponTitle">ぽん開始パック</div>
+      <span className="ponPhaseTag">ぽん開始</span>
+      <div className="ponTitle">Cloud Agentに渡す準備ができました</div>
       <div className="ponSub">{summarizePonStartPack(pack)}</div>
 
       <span className={`ponStatusBadge ${pack.status}`}>
