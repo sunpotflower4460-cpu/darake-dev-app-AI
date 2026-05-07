@@ -31,6 +31,10 @@ const STEP_INDEX: Record<FirstLaunchCareStep, number> = {
   ready: 4,
 };
 
+function reloadToApplyStep() {
+  window.setTimeout(() => window.location.reload(), 30);
+}
+
 function buildGentleFormFromOnboarding(state: FirstLaunchCareState): GentleAppStartForm {
   const existing = loadGentleAppStartForm() ?? buildEmptyGentleAppStartForm();
   return {
@@ -84,6 +88,7 @@ export function FirstLaunchCarePanel() {
     clearFirstLaunchCareState();
     clearFirstStartStep();
     setState(buildInitialFirstLaunchCareState());
+    reloadToApplyStep();
   }
 
   function proceedToGentleForm() {
@@ -92,6 +97,7 @@ export function FirstLaunchCarePanel() {
     saveFirstLaunchCareState(completed);
     saveGentleAppStartForm(buildGentleFormFromOnboarding(completed));
     saveFirstStartStep('form');
+    reloadToApplyStep();
   }
 
   return (
@@ -206,8 +212,8 @@ export function FirstLaunchCarePanel() {
             ))}
           </div>
           <div className="flcBtnRow">
-            <button className="flcBtnPrimary" onClick={goNext}>確認しました</button>
-            <button className="flcBtnSecondary" onClick={goBack}>戻る</button>
+            <button type="button" className="flcBtnPrimary" onClick={goNext}>確認しました</button>
+            <button type="button" className="flcBtnSecondary" onClick={goBack}>戻る</button>
           </div>
         </div>
       )}
