@@ -35,7 +35,7 @@ export function parseGitHubRepoUrl(url: string): ParseGitHubRepoUrlResult {
   }
 
   // pathname is like /owner/repo or /owner/repo/
-  const parts = parsed.pathname.replace(/^\//, '').replace(/\/$/, '').split('/');
+  const parts = parsed.pathname.replace(/^\/|\/$/g, '').split('/');
   if (parts.length < 2 || !parts[0] || !parts[1]) {
     return { ok: false, error: 'リポジトリURLを入力してください（例: https://github.com/owner/repo）' };
   }

@@ -43,12 +43,14 @@ export function GitHubStartPanel() {
 
   const issueCreateResult = useMemo(() => {
     if (!hasValidRepo || !settings?.repoUrl) return null;
+    const firstLine = pack.issueDraftMarkdown.split('\n').find((l) => l.trim().length > 0) ?? '';
+    const title = firstLine.replace(/^#+\s*/, '').trim() || pack.appName;
     return buildGitHubIssueCreateUrl({
       repoUrl: settings.repoUrl,
-      title: pack.issueDraftMarkdown.split('\n')[0].replace(/^#+\s*/, ''),
+      title,
       body: pack.issueDraftMarkdown,
     });
-  }, [hasValidRepo, settings?.repoUrl, pack.issueDraftMarkdown]);
+  }, [hasValidRepo, settings?.repoUrl, pack.issueDraftMarkdown, pack.appName]);
 
   const urlInputParsed = urlInput ? parseGitHubRepoUrl(urlInput) : null;
   const urlInputError = urlInput && urlInputParsed && !urlInputParsed.ok ? urlInputParsed.error : '';
@@ -130,7 +132,7 @@ export function GitHubStartPanel() {
             type="button"
             className="ghsBtnPrimary"
             onClick={handleSave}
-            disabled={!!urlInputError || (!!urlInput && !urlInputParsed?.ok)}
+            disabled={!!urlInput && !urlInputParsed?.ok}
           >
             保存する
           </button>
