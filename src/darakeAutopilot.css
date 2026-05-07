@@ -1,0 +1,258 @@
+/* Darake Autopilot Panel - Phase 51 */
+
+.autopilotPanel {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.autopilotCard {
+  border-radius: 10px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.autopilotCard--idle {
+  background: #f8f9fa;
+  border: 1.5px solid #dee2e6;
+}
+
+.autopilotCard--working {
+  background: #e8f4f8;
+  border: 1.5px solid #90cdf4;
+}
+
+.autopilotCard--fixing {
+  background: #fff8e1;
+  border: 1.5px solid #f6d860;
+}
+
+.autopilotCard--mergeCandidate {
+  background: #e6f9f0;
+  border: 1.5px solid #68d391;
+}
+
+.autopilotCard--needsHuman {
+  background: #fff5f5;
+  border: 1.5px solid #fc8181;
+}
+
+.autopilotCard--failed {
+  background: #fff5f5;
+  border: 1.5px solid #e53e3e;
+}
+
+.autopilotTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.autopilotTitle--success {
+  color: #276749;
+}
+
+.autopilotTitle--caution {
+  color: #c53030;
+}
+
+.autopilotAppName {
+  font-size: 13px;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.autopilotReason {
+  font-size: 14px;
+  color: #4a5568;
+  line-height: 1.5;
+}
+
+.autopilotNextLabel {
+  font-size: 13px;
+  color: #718096;
+  margin-top: 4px;
+}
+
+.autopilotNextAction {
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.autopilotSubNote {
+  font-size: 12px;
+  color: #718096;
+}
+
+.autopilotCheckAt {
+  font-size: 11px;
+  color: #a0aec0;
+  margin-top: 2px;
+}
+
+.autopilotBtnRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.autopilotBtnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  background: #3182ce;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.autopilotBtnPrimary:hover:not(:disabled) {
+  background: #2c5282;
+}
+
+.autopilotBtnPrimary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.autopilotBtnSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #edf2f7;
+  color: #2d3748;
+  border: 1.5px solid #cbd5e0;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.autopilotBtnSecondary:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+
+.autopilotBtnSecondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.autopilotBtnToggle {
+  padding: 6px 12px;
+  background: none;
+  color: #4a5568;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.autopilotBtnToggle:hover {
+  background: #f7fafc;
+}
+
+.autopilotBtnMicro {
+  padding: 4px 10px;
+  background: none;
+  color: #718096;
+  border: 1px solid #e2e8f0;
+  border-radius: 5px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.autopilotBtnMicro:hover {
+  color: #4a5568;
+  border-color: #cbd5e0;
+}
+
+.autopilotDetails {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.autopilotDetailsRow {
+  font-size: 12px;
+  color: #718096;
+  word-break: break-all;
+}
+
+.autopilotDetailsRow a {
+  color: #3182ce;
+  text-decoration: underline;
+}
+
+.autopilotDetailsRow--error {
+  color: #e53e3e;
+}
+
+.autopilotPollerRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.autopilotPollerNote {
+  font-size: 11px;
+  color: #a0aec0;
+}
+
+/* NothingToDoCard */
+
+.nothingToDoCard {
+  padding: 16px;
+}
+
+.nothingToDoInner {
+  background: #e8f4f8;
+  border: 1.5px solid #90cdf4;
+  border-radius: 10px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+
+.nothingToDoAppName {
+  font-size: 12px;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.nothingToDoHeadline {
+  font-size: 20px;
+  font-weight: 800;
+  color: #2b6cb0;
+  letter-spacing: 0.01em;
+}
+
+.nothingToDoSub {
+  font-size: 14px;
+  color: #4a5568;
+}
+
+.nothingToDoNote {
+  font-size: 12px;
+  color: #718096;
+  margin-top: 4px;
+}
