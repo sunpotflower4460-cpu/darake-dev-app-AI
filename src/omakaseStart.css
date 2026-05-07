@@ -1,0 +1,350 @@
+/* Omakase Start Panel */
+.omkPanel {
+  padding: 20px 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.omkTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.omkSub {
+  font-size: 0.88rem;
+  color: #666;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.omkSafetyNote {
+  background: #f3f3f3;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.omkPreparingBox {
+  background: #e3f2fd;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.omkPreparingTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1565c0;
+  margin-bottom: 6px;
+}
+
+.omkPreparingDetail {
+  font-size: 0.85rem;
+  color: #1976d2;
+  line-height: 1.5;
+}
+
+.omkSuccessBox {
+  background: #e8f5e9;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.omkSuccessTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-bottom: 8px;
+}
+
+.omkSuccessDetail {
+  font-size: 0.85rem;
+  color: #388e3c;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.omkIssueLink {
+  display: block;
+  font-size: 0.83rem;
+  color: #1565c0;
+  word-break: break-all;
+  text-decoration: none;
+  margin-top: 4px;
+}
+
+.omkIssueLink:hover {
+  text-decoration: underline;
+}
+
+.omkIssueLabel {
+  font-size: 0.8rem;
+  color: #555;
+  margin-top: 10px;
+  display: block;
+}
+
+.omkErrorBox {
+  background: #ffebee;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.omkErrorTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #c62828;
+  margin-bottom: 6px;
+}
+
+.omkErrorDetail {
+  font-size: 0.82rem;
+  color: #c62828;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.omkNextActionLabel {
+  font-size: 0.82rem;
+  color: #b71c1c;
+  font-weight: 600;
+}
+
+.omkBtnRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.omkBtnPrimary {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  border: none;
+  background: #1565c0;
+  color: #fff;
+  font-size: 1.0rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.omkBtnPrimary:hover:not(:disabled) {
+  background: #0d47a1;
+}
+
+.omkBtnPrimary:active:not(:disabled) {
+  background: #0a3880;
+  transform: scale(0.98);
+}
+
+.omkBtnPrimary:disabled {
+  background: #bbdefb;
+  cursor: not-allowed;
+}
+
+.omkBtnPrimaryGreen {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  border: none;
+  background: #4caf50;
+  color: #fff;
+  font-size: 1.0rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.omkBtnPrimaryGreen:hover {
+  background: #388e3c;
+}
+
+.omkBtnPrimaryGreen:active {
+  background: #2e7d32;
+  transform: scale(0.98);
+}
+
+.omkBtnSecondary {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  color: #555;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.omkBtnSecondary:hover {
+  background: #f0f0f0;
+}
+
+.omkBtnSecondary:active {
+  background: #e0e0e0;
+  transform: scale(0.98);
+}
+
+.omkSpinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: omkSpin 0.7s linear infinite;
+}
+
+@keyframes omkSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Darake Now Card */
+.darakeNowPanel {
+  padding: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.darakeNowLabel {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #888;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.darakeNowCard {
+  background: #f8f9fa;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.darakeNowStep {
+  font-size: 0.88rem;
+  color: #555;
+  padding: 3px 0;
+  line-height: 1.5;
+}
+
+.darakeNowStepDone {
+  color: #2e7d32;
+}
+
+.darakeNowStepPending {
+  color: #aaa;
+}
+
+.darakeNowStepInProgress {
+  color: #1565c0;
+}
+
+.darakeNowNextBox {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.darakeNowNextLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.darakeNowNextDetail {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1565c0;
+  line-height: 1.4;
+}
+
+.darakeNowAllDone {
+  font-size: 0.9rem;
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+/* Darake Level Panel */
+.darakeLvPanel {
+  padding: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.darakeLvTitle {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.darakeLvBtnRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.darakeLvBtn {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  color: #555;
+  font-size: 0.88rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s, border-color 0.12s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.darakeLvBtn:hover {
+  background: #f0f0f0;
+  border-color: #bbb;
+}
+
+.darakeLvBtnActive {
+  background: #e3f2fd;
+  border-color: #1565c0;
+  color: #1565c0;
+  font-weight: 700;
+}

@@ -91,3 +91,4 @@ import './githubStart.css';
 import './githubIssueStart.css';
 import './githubDirectIssueCreate.css';
 import './phase48FirstStartHardening.css';
+import './omakaseStart.css';
