@@ -7,6 +7,7 @@ import { GentleAppStartFormPanel } from '../components/GentleAppStartFormPanel';
 import { GentleBlueprintPreviewPanel } from '../components/GentleBlueprintPreviewPanel';
 import { GentleStartCompletionReportPanel } from '../components/GentleStartCompletionReportPanel';
 import { PonStartPanel } from '../components/PonStartPanel';
+import { GitHubStartPanel } from '../components/GitHubStartPanel';
 import { BeginnerNextStepCardPanel } from '../components/BeginnerNextStepCardPanel';
 import { FirstStartAdvancedOpenPanel } from '../components/FirstStartAdvancedOpenPanel';
 import { FirstAppStartCompletionReportPanel } from '../components/FirstAppStartCompletionReportPanel';
@@ -81,6 +82,16 @@ export const PANEL_REGISTRY_PHASE45TO47: PanelRegistryItem[] = [
     defaultVisible: true,
     priority: 258,
     tags: ['darake', 'pon-start', 'first-start', 'home', 'beginner'],
+  },
+  {
+    id: 'github-start',
+    label: 'GitHubで始める',
+    group: 'home',
+    phase: '47.1',
+    component: React.createElement(GitHubStartPanel),
+    defaultVisible: true,
+    priority: 258.5,
+    tags: ['darake', 'github', 'first-start', 'home', 'beginner'],
   },
   {
     id: 'beginner-next-step-card',

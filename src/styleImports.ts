@@ -87,4 +87,5 @@ import './darakeV1Readiness.css';
 import './firstLaunchCare.css';
 import './gentleAppStartForm.css';
 import './ponStart.css';
+import './githubStart.css';
 import './phase48FirstStartHardening.css';

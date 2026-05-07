@@ -1,6 +1,8 @@
 import { loadGentleAppStartForm } from './gentleAppStartForm';
 import { buildGentleFormToBlueprintBridge } from './gentleFormToBlueprintBridge';
 import type { GentleFormToBlueprintBridge } from './gentleFormToBlueprintBridge';
+import { loadGitHubStartSettings } from './githubStartSettings';
+import { parseGitHubRepoUrl } from './githubRepoUrl';
 
 export type PonStartPackStatus =
   | 'not-ready'
@@ -62,9 +64,24 @@ function formatPhaseMarkdown(phase: GentleFormToBlueprintBridge['suggestedPhases
   ].join('\n');
 }
 
+function buildGitHubRepoSection(repoUrl: string): string {
+  if (!repoUrl) return '';
+  const parsed = parseGitHubRepoUrl(repoUrl);
+  if (!parsed.ok) return '';
+  return [
+    `## 対象リポジトリ`,
+    `https://github.com/${parsed.owner}/${parsed.repo}`,
+    '',
+    `## 作業開始方法`,
+    `この指示をもとに、まずIssueまたはPRの作業計画を作成してください。`,
+    `危険な操作、secret、課金、App Store提出は行わないでください。`,
+  ].join('\n');
+}
+
 export function buildPonStartPack(): PonStartPack {
   const form = loadGentleAppStartForm();
   const bridge = buildGentleFormToBlueprintBridge(form);
+  const githubSettings = loadGitHubStartSettings();
 
   const blockers = [...bridge.blockers];
   const warnings = [...bridge.warnings];
@@ -88,6 +105,12 @@ export function buildPonStartPack(): PonStartPack {
 
   const issueDraftMarkdown = `# ${bridge.issueDraftTitle}\n\n${bridge.issueDraftBody}`;
 
+  // Append GitHub repo section to cloud agent instruction if URL is set
+  const githubSection = buildGitHubRepoSection(githubSettings?.repoUrl ?? '');
+  const cloudAgentInstructionMarkdown = githubSection
+    ? `${bridge.cloudAgentFirstInstruction}\n\n${githubSection}`
+    : bridge.cloudAgentFirstInstruction;
+
   const included = {
     productBrief: bridge.productBrief.length > 0,
     phasePlan: bridge.suggestedPhases.length > 0,
@@ -106,7 +129,7 @@ export function buildPonStartPack(): PonStartPack {
     '',
     '---',
     '',
-    bridge.cloudAgentFirstInstruction,
+    cloudAgentInstructionMarkdown,
     '',
     '---',
     '',
@@ -140,7 +163,7 @@ export function buildPonStartPack(): PonStartPack {
     included,
     productBriefMarkdown: bridge.productBrief,
     phasePlanMarkdown,
-    cloudAgentInstructionMarkdown: bridge.cloudAgentFirstInstruction,
+    cloudAgentInstructionMarkdown,
     issueDraftMarkdown,
     allInOneMarkdown,
     nextHumanAction,

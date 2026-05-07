@@ -1,0 +1,233 @@
+/* GitHub Safe Start Mode Panel */
+.ghsPanel {
+  padding: 20px 16px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.ghsTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.ghsSub {
+  font-size: 0.88rem;
+  color: #666;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.ghsReadyBadge {
+  display: inline-block;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 6px 14px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.ghsRepoName {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.ghsRepoLabel {
+  color: #888;
+  margin-right: 4px;
+}
+
+.ghsRepoValue {
+  font-weight: 600;
+  color: #1565c0;
+}
+
+.ghsNextNote {
+  background: #e8f5e9;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 0.88rem;
+  color: #2e7d32;
+  font-weight: 600;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.ghsSafetyNote {
+  background: #f3f3f3;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.ghsField {
+  margin-bottom: 14px;
+}
+
+.ghsLabel {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.ghsInput {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  font-size: 0.9rem;
+  color: #222;
+  background: #fafafa;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+
+.ghsInput:focus {
+  border-color: #1565c0;
+  background: #fff;
+}
+
+.ghsInputError {
+  border-color: #e53935 !important;
+}
+
+.ghsFieldError {
+  margin-top: 5px;
+  font-size: 0.8rem;
+  color: #e53935;
+}
+
+.ghsFieldOk {
+  margin-top: 5px;
+  font-size: 0.8rem;
+  color: #2e7d32;
+}
+
+.ghsSelect {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #ddd;
+  font-size: 0.9rem;
+  color: #222;
+  background: #fafafa;
+  box-sizing: border-box;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.ghsSelect:focus {
+  border-color: #1565c0;
+  background: #fff;
+}
+
+.ghsBtnRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ghsBtnPrimary {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  border: none;
+  background: #1565c0;
+  color: #fff;
+  font-size: 1.0rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.ghsBtnPrimary:hover:not(:disabled) {
+  background: #0d47a1;
+}
+
+.ghsBtnPrimary:active:not(:disabled) {
+  background: #0a3880;
+  transform: scale(0.98);
+}
+
+.ghsBtnPrimary:disabled {
+  background: #bbdefb;
+  cursor: not-allowed;
+}
+
+.ghsBtnSecondary {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1.5px solid #ddd;
+  background: #fafafa;
+  color: #555;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.ghsBtnSecondary:hover:not(:disabled) {
+  background: #f0f0f0;
+}
+
+.ghsBtnSecondary:active:not(:disabled) {
+  background: #e0e0e0;
+  transform: scale(0.98);
+}
+
+.ghsBtnSecondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ghsBtnTertiary {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  color: #aaa;
+  font-size: 0.82rem;
+  cursor: pointer;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.ghsBtnTertiary:hover {
+  color: #666;
+}
