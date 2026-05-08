@@ -28,7 +28,7 @@ export async function sendTelegramNotification(
     '起きる必要があります。',
     `理由：\n${payload.reason}`,
     `次にやること：\n${payload.nextActionLabel}`,
-    payload.actionUrl ? payload.actionUrl : '',
+    payload.actionUrl ? `開く:\n${payload.actionUrl}` : '',
   ]
     .filter(Boolean)
     .join('\n\n');
