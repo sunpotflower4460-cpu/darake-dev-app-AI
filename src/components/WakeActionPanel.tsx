@@ -1,28 +1,32 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { ExternalLink } from 'lucide-react';
 import { OneActionCard } from './OneActionCard';
 import { getWakeAction, runWakeAction } from '../utils/wakeActionTokenClient';
+import { clearWakeActionFromUrl } from '../utils/wakeActionRouter';
 import { loadDarakeLevelSettings } from '../utils/darakeLevelSettings';
-import type { WakeActionTokenRecord } from '../utils/darakeRemoteRun';
+import type { WakeActionTokenRecord } from '../utils/wakeActionTokenClient';
 
 type PanelState =
-  | { kind: 'loading' }
-  | { kind: 'expired' }
-  | { kind: 'used'; action: WakeActionTokenRecord }
-  | { kind: 'error'; message: string }
-  | { kind: 'active'; action: WakeActionTokenRecord }
-  | { kind: 'done'; message: string; detailText?: string }
-  | { kind: 'fallback'; copyText: string };
+  | { phase: 'loading' }
+  | { phase: 'error'; code: string; message: string }
+  | { phase: 'expired' }
+  | { phase: 'used' }
+  | { phase: 'ready'; action: WakeActionTokenRecord }
+  | { phase: 'running' }
+  | { phase: 'done'; message: string; actionUrl?: string }
+  | { phase: 'failed'; error: string; fallbackText?: string };
 
-type Props = {
+type WakeActionPanelProps = {
   tokenId: string;
   onDismiss: () => void;
 };
 
-export function WakeActionPanel({ tokenId, onDismiss }: Props) {
-  const [state, setState] = useState<PanelState>({ kind: 'loading' });
-  const [running, setRunning] = useState(false);
-  const levelSettings = useMemo(() => loadDarakeLevelSettings(), []);
-  const isCareful = levelSettings.level === 'careful';
+export function WakeActionPanel({ tokenId, onDismiss }: WakeActionPanelProps) {
+  const [state, setState] = useState<PanelState>({ phase: 'loading' });
+  const [copyDone, setCopyDone] = useState(false);
+  const level = loadDarakeLevelSettings().level;
+  const isWakeMeOnly = level === 'wake-me-only-if-needed';
+  const isCareful = level === 'careful';
 
   useEffect(() => {
     let cancelled = false;
@@ -30,257 +34,306 @@ export function WakeActionPanel({ tokenId, onDismiss }: Props) {
       if (cancelled) return;
       if (!res.ok) {
         if (res.code === 'EXPIRED') {
-          setState({ kind: 'expired' });
+          setState({ phase: 'expired' });
         } else if (res.code === 'USED') {
-          setState({ kind: 'error', message: 'このアクションは実行済みです。何もしなくてOK。' });
-        } else if (res.code === 'NOT_FOUND') {
-          setState({ kind: 'expired' });
+          setState({ phase: 'used' });
         } else {
-          setState({ kind: 'error', message: res.error });
+          setState({ phase: 'error', code: res.code, message: res.error });
         }
         return;
       }
-      setState({ kind: 'active', action: res.action });
+      setState({ phase: 'ready', action: res.action });
     });
     return () => { cancelled = true; };
   }, [tokenId]);
 
-  async function handlePrimary(action: WakeActionTokenRecord) {
-    // open-pr: just open the URL — no API call, no token marking
+  async function handlePrimary() {
+    if (state.phase !== 'ready') return;
+    const { action } = state;
+
     if (action.actionKind === 'open-pr') {
-      const url = action.prUrl ?? action.actionUrl;
-      if (url) {
-        window.open(url, '_blank', 'noopener,noreferrer');
+      if (action.prUrl) {
+        window.open(action.prUrl, '_blank', 'noopener,noreferrer');
       }
-      return;
-    }
-
-    // copy-fallback-instruction: copy to clipboard only
-    if (action.actionKind === 'copy-fallback-instruction') {
-      await copyToClipboard(action.message ?? '');
-      setState({ kind: 'done', message: 'コピーしました' });
-      return;
-    }
-
-    // show-setup / show-details: dismiss back to main app
-    if (action.actionKind === 'show-setup' || action.actionKind === 'show-details') {
+      clearWakeActionFromUrl();
       onDismiss();
       return;
     }
 
-    // open-issue: open the issue URL
     if (action.actionKind === 'open-issue') {
-      const url = action.issueUrl ?? action.actionUrl;
-      if (url) {
-        window.open(url, '_blank', 'noopener,noreferrer');
+      if (action.issueUrl) {
+        window.open(action.issueUrl, '_blank', 'noopener,noreferrer');
       }
+      clearWakeActionFromUrl();
+      onDismiss();
       return;
     }
 
-    // send-fix-request: call the run API
-    setRunning(true);
-    try {
+    if (action.actionKind === 'copy-fallback-instruction') {
+      await copyToClipboard(action.message);
+      setCopyDone(true);
+      return;
+    }
+
+    if (action.actionKind === 'show-setup' || action.actionKind === 'show-details') {
+      clearWakeActionFromUrl();
+      onDismiss();
+      return;
+    }
+
+    if (action.actionKind === 'send-fix-request') {
+      setState({ phase: 'running' });
       const res = await runWakeAction(tokenId);
       if (res.ok) {
-        setState({ kind: 'done', message: 'AIに修正依頼を送りました' });
-      } else if (res.code === 'USED') {
-        setState({ kind: 'done', message: '修正依頼は送済みです。何もしなくてOK。' });
+        setState({ phase: 'done', message: res.message, actionUrl: res.actionUrl });
+        clearWakeActionFromUrl();
       } else {
-        // fallback: let user copy the text
-        const copyText = (res as { fallbackText?: string }).fallbackText ?? action.message;
-        setState({ kind: 'fallback', copyText });
+        setState({
+          phase: 'failed',
+          error: res.error,
+          fallbackText: res.fallbackText,
+        });
       }
-    } finally {
-      setRunning(false);
     }
   }
 
   async function handleCopyFallback(text: string) {
     await copyToClipboard(text);
-    setState({ kind: 'done', message: 'コピーしました。PRに貼り付けてください。' });
+    setCopyDone(true);
   }
 
-  // ── Render states ──────────────────────────────────────────────────────────
+  function handleViewLatest() {
+    clearWakeActionFromUrl();
+    onDismiss();
+  }
 
-  if (state.kind === 'loading') {
+  // ── Loading ──────────────────────────────────────────────────────────────
+  if (state.phase === 'loading') {
     return (
-      <div className="wakeActionPanel">
-        <div className="wakeActionPanel__inner wakeActionPanel__inner--loading">
-          <div className="wakeActionPanel__loadingText">確認中...</div>
-        </div>
+      <div className="wakeActionPanel wakeActionPanel--loading">
+        <div className="wakeActionPanel__spinner" aria-hidden="true" />
+        <div className="wakeActionPanel__loadingText">確認中...</div>
       </div>
     );
   }
 
-  if (state.kind === 'expired') {
+  // ── Expired ──────────────────────────────────────────────────────────────
+  if (state.phase === 'expired') {
     return (
-      <div className="wakeActionPanel">
-        <div className="wakeActionPanel__inner">
-          <OneActionCard
-            title="この通知は古くなっています"
-            message="最新の状態を確認してください。"
-            primaryLabel="最新状態を見る"
-            onPrimary={onDismiss}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  if (state.kind === 'error') {
-    return (
-      <div className="wakeActionPanel">
-        <div className="wakeActionPanel__inner">
-          <OneActionCard
-            title="確認できませんでした"
-            message={state.message}
-            primaryLabel="最新状態を見る"
-            onPrimary={onDismiss}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  if (state.kind === 'done') {
-    return (
-      <div className="wakeActionPanel">
-        <div className="wakeActionPanel__inner">
-          <OneActionCard
-            title={state.message}
-            message="今やること："
-            primaryLabel="何もしなくてOK"
-            onPrimary={onDismiss}
-            detailText={isCareful ? state.detailText : undefined}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  if (state.kind === 'fallback') {
-    return (
-      <div className="wakeActionPanel">
-        <div className="wakeActionPanel__inner">
-          <OneActionCard
-            title="送れませんでした"
-            message="次にやること：この文章をコピーしてPRに貼ってください"
-            primaryLabel="コピー"
-            onPrimary={() => handleCopyFallback(state.copyText)}
-            detailText={isCareful ? state.copyText : undefined}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  if (state.kind === 'used') {
-    return (
-      <div className="wakeActionPanel">
-        <div className="wakeActionPanel__inner">
-          <OneActionCard
-            title="このアクションは実行済みです"
-            message="今やること："
-            primaryLabel="何もしなくてOK"
-            onPrimary={onDismiss}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  // active
-  const { action } = state;
-  return (
-    <div className="wakeActionPanel">
-      <div className="wakeActionPanel__inner">
-        {renderActiveCard(action, running, isCareful, () => handlePrimary(action), onDismiss)}
-      </div>
-    </div>
-  );
-}
-
-function renderActiveCard(
-  action: WakeActionTokenRecord,
-  running: boolean,
-  isCareful: boolean,
-  onPrimary: () => void,
-  onDismiss: () => void,
-) {
-  switch (action.actionKind) {
-    case 'open-pr':
-      return (
+      <div className="wakeActionPanel wakeActionPanel--expired">
         <OneActionCard
-          title="マージ候補です"
-          message={`PRは問題なさそうです。\n次にやること：\nPRを開いて確認してください`}
-          primaryLabel="PRを開く"
-          onPrimary={onPrimary}
-          secondaryLabel="あとで見る"
-          onSecondary={onDismiss}
-          detailText={isCareful ? `PR: ${action.prUrl ?? ''}` : undefined}
+          title="この通知は古くなっています"
+          message="最新の状態を確認します。"
+          primaryLabel="最新状態を見る"
+          onPrimary={handleViewLatest}
         />
-      );
+      </div>
+    );
+  }
 
-    case 'send-fix-request':
-      return (
+  // ── Used ─────────────────────────────────────────────────────────────────
+  if (state.phase === 'used') {
+    return (
+      <div className="wakeActionPanel wakeActionPanel--used">
         <OneActionCard
-          title="止まりました"
-          message={`理由：\n${action.reason}\n\n次にやること：\nAIに修正をお願いする`}
-          primaryLabel="AIに修正をお願いする"
-          onPrimary={onPrimary}
-          primaryLoading={running}
-          secondaryLabel="あとで見る"
-          onSecondary={onDismiss}
-          detailText={isCareful ? action.message : undefined}
+          title="すでに完了しています"
+          message="このアクションはすでに実行されました。"
+          primaryLabel="最新状態を見る"
+          onPrimary={handleViewLatest}
         />
-      );
+      </div>
+    );
+  }
 
-    case 'copy-fallback-instruction':
-      return (
+  // ── Error ─────────────────────────────────────────────────────────────────
+  if (state.phase === 'error') {
+    return (
+      <div className="wakeActionPanel wakeActionPanel--error">
+        <OneActionCard
+          title="取得できませんでした"
+          message="通知を読み込めませんでした。"
+          primaryLabel="最新状態を見る"
+          onPrimary={handleViewLatest}
+        />
+      </div>
+    );
+  }
+
+  // ── Running ───────────────────────────────────────────────────────────────
+  if (state.phase === 'running') {
+    return (
+      <div className="wakeActionPanel wakeActionPanel--running">
+        <div className="wakeActionPanel__spinner" aria-hidden="true" />
+        <div className="wakeActionPanel__loadingText">送信中...</div>
+      </div>
+    );
+  }
+
+  // ── Done ──────────────────────────────────────────────────────────────────
+  if (state.phase === 'done') {
+    return (
+      <div className="wakeActionPanel wakeActionPanel--done">
+        <div className="wakeActionPanel__doneTitle">完了しました</div>
+        <div className="wakeActionPanel__doneMessage">{state.message}</div>
+        <div className="wakeActionPanel__nowLabel">
+          今やること：
+          <br />
+          <span className="wakeActionPanel__nowAction">何もしなくてOK</span>
+        </div>
+        {state.actionUrl && (
+          <a
+            href={state.actionUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="wakeActionPanel__linkBtn"
+          >
+            <ExternalLink size={14} /> 確認する
+          </a>
+        )}
+      </div>
+    );
+  }
+
+  // ── Failed ────────────────────────────────────────────────────────────────
+  if (state.phase === 'failed') {
+    return (
+      <div className="wakeActionPanel wakeActionPanel--failed">
         <OneActionCard
           title="送れませんでした"
-          message="次にやること：\nこの文章をコピーしてPRに貼ってください"
-          primaryLabel="コピー"
-          onPrimary={onPrimary}
-          detailText={isCareful ? action.message : undefined}
+          message="次にやること："
+          primaryLabel={copyDone ? 'コピー済み ✓' : 'この文章をコピーしてPRに貼ってください'}
+          onPrimary={() => state.fallbackText && handleCopyFallback(state.fallbackText)}
+          secondaryLabel="最新状態を見る"
+          onSecondary={handleViewLatest}
+          detailText={isCareful ? state.error : undefined}
         />
-      );
+        {state.fallbackText && (
+          <div className="wakeActionPanel__fallback">
+            <div className="wakeActionPanel__fallbackLabel">貼り付ける文章：</div>
+            <pre className="wakeActionPanel__fallbackBody">{state.fallbackText}</pre>
+          </div>
+        )}
+      </div>
+    );
+  }
 
-    case 'show-setup':
-      return (
+  // ── Ready ─────────────────────────────────────────────────────────────────
+  const { action } = state;
+
+  if (action.actionKind === 'open-pr') {
+    return (
+      <div className="wakeActionPanel wakeActionPanel--ready">
+        <OneActionCard
+          title="マージ候補です"
+          message={
+            isWakeMeOnly
+              ? `次にやること：\nPRを開いて確認してください`
+              : `${action.reason}\n\n次にやること：\nPRを開いて確認してください`
+          }
+          primaryLabel={
+            <span className="wakeActionPanel__btnInner">
+              <ExternalLink size={14} /> PRを開く
+            </span> as unknown as string
+          }
+          onPrimary={handlePrimary}
+          detailText={isCareful ? buildCarefulDetail(action) : undefined}
+        />
+      </div>
+    );
+  }
+
+  if (action.actionKind === 'send-fix-request') {
+    return (
+      <div className="wakeActionPanel wakeActionPanel--ready">
+        <OneActionCard
+          title="止まりました"
+          message={
+            isWakeMeOnly
+              ? `次にやること：\nAIに修正をお願いする`
+              : `理由：\n${action.reason}\n\n次にやること：\nAIに修正をお願いする`
+          }
+          primaryLabel="AIに修正をお願いする"
+          onPrimary={handlePrimary}
+          detailText={isCareful ? buildCarefulDetail(action) : undefined}
+        />
+      </div>
+    );
+  }
+
+  if (action.actionKind === 'show-setup') {
+    return (
+      <div className="wakeActionPanel wakeActionPanel--ready">
         <OneActionCard
           title="設定が必要です"
-          message="CloudflareのWorker Secretを設定してください。\n（RUN_REGISTRY_KV、GITHUB_TOKENなど）"
-          primaryLabel="設定方法を見る"
-          onPrimary={onDismiss}
+          message={action.message}
+          primaryLabel="確認する"
+          onPrimary={handlePrimary}
         />
-      );
-
-    case 'open-issue':
-      return (
-        <OneActionCard
-          title="Issueがあります"
-          message={`理由：\n${action.reason}\n\n次にやること：\nIssueを確認してください`}
-          primaryLabel="Issueを開く"
-          onPrimary={onPrimary}
-          secondaryLabel="あとで見る"
-          onSecondary={onDismiss}
-          detailText={isCareful ? `Issue: ${action.issueUrl ?? ''}` : undefined}
-        />
-      );
-
-    case 'show-details':
-    default:
-      return (
-        <OneActionCard
-          title="確認が必要です"
-          message={`理由：\n${action.reason}`}
-          primaryLabel="詳細を見る"
-          onPrimary={onDismiss}
-          detailText={isCareful ? action.message : undefined}
-        />
-      );
+      </div>
+    );
   }
+
+  if (action.actionKind === 'show-details') {
+    return (
+      <div className="wakeActionPanel wakeActionPanel--ready">
+        <OneActionCard
+          title={action.nextActionLabel}
+          message={
+            isWakeMeOnly
+              ? `次にやること：\n${action.nextActionLabel}`
+              : `理由：\n${action.reason}\n\n次にやること：\n${action.nextActionLabel}`
+          }
+          primaryLabel="最新状態を見る"
+          onPrimary={handleViewLatest}
+          detailText={isCareful ? buildCarefulDetail(action) : undefined}
+        />
+      </div>
+    );
+  }
+
+  if (action.actionKind === 'copy-fallback-instruction') {
+    return (
+      <div className="wakeActionPanel wakeActionPanel--ready">
+        <OneActionCard
+          title={action.nextActionLabel}
+          message={action.message}
+          primaryLabel={copyDone ? 'コピー済み ✓' : 'コピーする'}
+          onPrimary={handlePrimary}
+          secondaryLabel="最新状態を見る"
+          onSecondary={handleViewLatest}
+        />
+      </div>
+    );
+  }
+
+  if (action.actionKind === 'open-issue') {
+    return (
+      <div className="wakeActionPanel wakeActionPanel--ready">
+        <OneActionCard
+          title={action.nextActionLabel}
+          message={action.message}
+          primaryLabel={
+            <span className="wakeActionPanel__btnInner">
+              <ExternalLink size={14} /> Issueを開く
+            </span> as unknown as string
+          }
+          onPrimary={handlePrimary}
+          detailText={isCareful ? buildCarefulDetail(action) : undefined}
+        />
+      </div>
+    );
+  }
+
+  return null;
+}
+
+function buildCarefulDetail(action: WakeActionTokenRecord): string {
+  const parts: string[] = [];
+  if (action.reason) parts.push(`理由: ${action.reason}`);
+  if (action.prUrl) parts.push(`PR: ${action.prUrl}`);
+  if (action.issueUrl) parts.push(`Issue: ${action.issueUrl}`);
+  if (action.message) parts.push(`メッセージ: ${action.message}`);
+  return parts.join('\n');
 }
 
 async function copyToClipboard(text: string): Promise<void> {

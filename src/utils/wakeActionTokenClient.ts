@@ -1,47 +1,44 @@
 import type {
+  WakeActionKind,
+  WakeActionTokenRecord,
   GetWakeActionRequest,
   GetWakeActionResponse,
   RunWakeActionRequest,
   RunWakeActionResponse,
-} from './darakeRemoteRun';
+} from './wakeActionTypes';
 
-/**
- * Fetch a Wake Action Token record from the Worker.
- * Token types are NOT exposed — only the decoded record is returned.
- */
-export async function getWakeAction(tokenId: string): Promise<GetWakeActionResponse> {
-  const req: GetWakeActionRequest = { tokenId };
+export type { WakeActionKind, WakeActionTokenRecord, GetWakeActionResponse, RunWakeActionResponse };
+
+export async function getWakeAction(
+  tokenId: string,
+): Promise<GetWakeActionResponse> {
   try {
     const res = await fetch('/api/darake/wake-action/get', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req),
+      body: JSON.stringify({ tokenId } satisfies GetWakeActionRequest),
     });
     return (await res.json()) as GetWakeActionResponse;
   } catch {
-    return { ok: false, code: 'UNKNOWN_ERROR', error: 'ネットワークエラーが発生しました' };
+    return { ok: false, code: 'UNKNOWN_ERROR', error: 'Wake Action の取得に失敗しました' };
   }
 }
 
-/**
- * Execute the action described by the Wake Action Token.
- * Only safe, non-destructive actions are allowed on the Worker side.
- * merge / approve / secret changes are never executed here.
- */
-export async function runWakeAction(tokenId: string): Promise<RunWakeActionResponse> {
-  const req: RunWakeActionRequest = { tokenId };
+export async function runWakeAction(
+  tokenId: string,
+): Promise<RunWakeActionResponse> {
   try {
     const res = await fetch('/api/darake/wake-action/run', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req),
+      body: JSON.stringify({ tokenId } satisfies RunWakeActionRequest),
     });
     return (await res.json()) as RunWakeActionResponse;
   } catch {
     return {
       ok: false,
       code: 'UNKNOWN_ERROR',
-      error: 'ネットワークエラーが発生しました',
+      error: 'Wake Action の実行に失敗しました',
     };
   }
 }

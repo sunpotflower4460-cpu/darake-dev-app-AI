@@ -1,29 +1,28 @@
+const WAKE_ACTION_PARAM = 'wakeAction';
+
 /**
- * Parse ?wakeAction=TOKEN_ID from the current page URL.
- * Returns the token ID string, or null if not present.
+ * Read the wakeAction token ID from the current URL query string.
+ * Returns null if not present.
  */
-export function getWakeActionTokenId(): string | null {
+export function getWakeActionTokenIdFromUrl(): string | null {
   try {
     const params = new URLSearchParams(window.location.search);
-    const id = params.get('wakeAction');
-    return id && id.trim().length > 0 ? id.trim() : null;
+    const tokenId = params.get(WAKE_ACTION_PARAM);
+    return tokenId && tokenId.trim() ? tokenId.trim() : null;
   } catch {
     return null;
   }
 }
 
 /**
- * Remove ?wakeAction from the browser URL without reloading the page.
- * Call this after the panel has loaded / been dismissed.
+ * Remove the wakeAction param from the URL without a page reload.
  */
 export function clearWakeActionFromUrl(): void {
   try {
     const url = new URL(window.location.href);
-    if (url.searchParams.has('wakeAction')) {
-      url.searchParams.delete('wakeAction');
-      window.history.replaceState(null, '', url.pathname + (url.search || '') + url.hash);
-    }
+    url.searchParams.delete(WAKE_ACTION_PARAM);
+    window.history.replaceState(null, '', url.toString());
   } catch {
-    // ignore — URL manipulation is best-effort
+    // ignore
   }
 }

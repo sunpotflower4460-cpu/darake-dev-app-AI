@@ -13,7 +13,7 @@ import { buildFirstAppStartCompletionReport } from './utils/firstAppStartComplet
 import { isFirstStartMinimalModeReleased } from './utils/firstStartMinimalMode';
 import { loadFirstStartStep } from './utils/firstStartStep';
 import { subscribeDarakeRuntimeEvents } from './utils/darakeRuntimeEvents';
-import { getWakeActionTokenId, clearWakeActionFromUrl } from './utils/wakeActionRouter';
+import { getWakeActionTokenIdFromUrl, clearWakeActionFromUrl } from './utils/wakeActionRouter';
 import './styleImports';
 
 const VALID_NAV_GROUPS = new Set<string>([
@@ -144,24 +144,21 @@ function DarakeRoot() {
     () => !isFirstStartMinimalModeReleased(),
     [revision],
   );
-  const [wakeActionTokenId, setWakeActionTokenId] = useState<string | null>(
-    () => getWakeActionTokenId(),
+
+  // Detect ?wakeAction=TOKEN_ID in URL
+  const [wakeTokenId, setWakeTokenId] = useState<string | null>(() =>
+    getWakeActionTokenIdFromUrl(),
   );
+
+  function handleWakeActionDismiss() {
+    clearWakeActionFromUrl();
+    setWakeTokenId(null);
+  }
 
   useEffect(() => {
     document.body.classList.toggle('darake-first-start-active', firstStartActive);
     return () => document.body.classList.remove('darake-first-start-active');
   }, [firstStartActive]);
-
-  function handleWakeActionDismiss() {
-    clearWakeActionFromUrl();
-    setWakeActionTokenId(null);
-  }
-
-  // If opened via notification wake action, show only the WakeActionPanel
-  if (wakeActionTokenId) {
-    return <WakeActionPanel tokenId={wakeActionTokenId} onDismiss={handleWakeActionDismiss} />;
-  }
 
   return (
     <>
@@ -169,6 +166,23 @@ function DarakeRoot() {
       <section className="appShell boundaryShell">
         <DarakeControlRoom firstStartActive={firstStartActive} />
       </section>
+      {wakeTokenId && (
+        <div className="wakeActionOverlay">
+          <div className="wakeActionOverlay__inner">
+            <WakeActionPanel
+              tokenId={wakeTokenId}
+              onDismiss={handleWakeActionDismiss}
+            />
+            <button
+              type="button"
+              className="wakeActionOverlay__dismiss"
+              onClick={handleWakeActionDismiss}
+            >
+              閉じる（通常画面に戻る）
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

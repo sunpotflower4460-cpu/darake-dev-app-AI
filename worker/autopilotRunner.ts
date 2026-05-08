@@ -14,7 +14,7 @@ import {
   WAKE_NOTIFY_REASONS,
 } from './notificationSender';
 import {
-  buildWakeActionToken,
+  createWakeActionToken,
   saveWakeActionToken,
 } from './wakeActionToken';
 import type { WakeActionKind } from './wakeActionToken';
@@ -28,6 +28,7 @@ type RunnerEnv = {
   TELEGRAM_CHAT_ID?: string;
   NOTIFICATION_WEBHOOK_URL?: string;
   RUN_REGISTRY_KV?: KVNamespace;
+  /** Public URL of the Pages app, e.g. https://your-app.pages.dev */
   APP_URL?: string;
 };
 
@@ -161,16 +162,38 @@ async function sendWakeNotification(
   run: DarakeRemoteRun,
   reason: string,
   nextActionLabel: string,
+  actionKind: WakeActionKind,
   actionUrl?: string,
+  fixCommentBody?: string,
 ): Promise<void> {
   if (!shouldSendWake(run.lastWakeReason, run.wakeSentAt, reason)) return;
+
+  // Create a wake action token so the user can act with one tap
+  let wakeActionUrl: string | undefined;
+  if (env.RUN_REGISTRY_KV && env.APP_URL) {
+    const token = createWakeActionToken({
+      runId: run.id,
+      reason,
+      actionKind,
+      actionUrl,
+      prUrl: run.prUrl,
+      prNumber: run.prNumber,
+      issueUrl: run.issueUrl,
+      issueNumber: run.issueNumber,
+      repoUrl: run.repoUrl,
+      message: fixCommentBody ?? reason,
+      nextActionLabel,
+    });
+    await saveWakeActionToken(env.RUN_REGISTRY_KV, token).catch(() => null);
+    wakeActionUrl = `${env.APP_URL.replace(/\/$/, '')}/?wakeAction=${token.tokenId}`;
+  }
 
   const payload: DarakeWebhookPayload = {
     title: 'だらけ管制室 - 起きる必要があります',
     message: `${run.appName} で確認が必要です`,
     reason,
     nextActionLabel,
-    actionUrl,
+    actionUrl: wakeActionUrl ?? actionUrl,
     createdAt: new Date().toISOString(),
   };
 
@@ -182,51 +205,6 @@ async function sendWakeNotification(
   // Try Webhook
   if (env.NOTIFICATION_WEBHOOK_URL) {
     await sendWebhookNotification(env, payload).catch(() => null);
-  }
-}
-
-/**
- * Create a Wake Action Token and save it to KV.
- * Returns the token's wakeAction URL (e.g., https://app.example.com/?wakeAction=TOKEN_ID)
- * or undefined if KV is unavailable or APP_URL is not configured.
- */
-async function createWakeToken(
-  env: RunnerEnv,
-  run: DarakeRemoteRun,
-  reason: string,
-  nextActionLabel: string,
-  actionKind: WakeActionKind,
-  extra: {
-    prUrl?: string;
-    prNumber?: number;
-    issueUrl?: string;
-    issueNumber?: number;
-    fixRequestBody?: string;
-  } = {},
-): Promise<string | undefined> {
-  if (!env.RUN_REGISTRY_KV) return undefined;
-  try {
-    const token = buildWakeActionToken({
-      runId: run.id,
-      reason,
-      actionKind,
-      message: reason,
-      nextActionLabel,
-      prUrl: extra.prUrl ?? run.prUrl,
-      prNumber: extra.prNumber ?? run.prNumber,
-      issueUrl: extra.issueUrl ?? run.issueUrl,
-      issueNumber: extra.issueNumber ?? run.issueNumber,
-      repoUrl: run.repoUrl,
-      fixRequestBody: extra.fixRequestBody,
-    });
-    await saveWakeActionToken(env.RUN_REGISTRY_KV, token);
-    if (env.APP_URL) {
-      const base = env.APP_URL.replace(/\/$/, '');
-      return `${base}/?wakeAction=${token.tokenId}`;
-    }
-    return undefined;
-  } catch {
-    return undefined;
   }
 }
 
@@ -278,19 +256,13 @@ async function processRun(run: DarakeRemoteRun, env: RunnerEnv): Promise<DarakeR
 
   if (health === 'checks-passed' || health === 'ready-to-merge') {
     if (WAKE_NOTIFY_REASONS.has('merge-candidate')) {
-      const wakeActionUrl = await createWakeToken(
-        env,
-        updated,
-        'PRがマージ候補になりました',
-        'PRを開いて確認してください',
-        'open-pr',
-      );
       await sendWakeNotification(
         env,
         updated,
         'PRがマージ候補になりました',
         'PRを開いて確認してください',
-        wakeActionUrl ?? updated.prUrl,
+        'open-pr',
+        updated.prUrl,
       );
     }
     const saved = {
@@ -308,19 +280,13 @@ async function processRun(run: DarakeRemoteRun, env: RunnerEnv): Promise<DarakeR
     const maxAttempts = updated.maxAutoFixAttempts ?? 2;
 
     if (updated.autoFixAttempts >= maxAttempts) {
-      const wakeActionUrl = await createWakeToken(
-        env,
-        updated,
-        `Build失敗が${maxAttempts}回続きました`,
-        '詳細を確認してください',
-        'show-details',
-      );
       await sendWakeNotification(
         env,
         updated,
         `Build失敗が${maxAttempts}回続きました`,
         '詳細を確認してください',
-        wakeActionUrl ?? updated.prUrl,
+        'show-details',
+        updated.prUrl,
       );
       const saved = {
         ...updated,
@@ -333,46 +299,28 @@ async function processRun(run: DarakeRemoteRun, env: RunnerEnv): Promise<DarakeR
       return saved;
     }
 
-    // Post fix comment (auto-fix attempt)
-    const fixBody = `## だらけ自動修正リクエスト (試行 ${updated.autoFixAttempts + 1}/${maxAttempts})\n\nCIが失敗しました。エラーを確認して修正してください。`;
-    const commented = await postPrComment(owner, repo, updated.prNumber, fixBody, env.GITHUB_TOKEN);
-
-    if (commented) {
-      const saved = setNextCheckAfter(
-        {
-          ...updated,
-          autoFixAttempts: updated.autoFixAttempts + 1,
-        },
-        'active',
-      );
-      await saveRun(env.RUN_REGISTRY_KV, saved);
-      return saved;
-    }
-
-    // Could not post comment — create send-fix-request token so user can trigger manually
-    const wakeActionUrl = await createWakeToken(
-      env,
-      updated,
-      'Buildに失敗しました',
-      'AIに修正をお願いする',
-      'send-fix-request',
-      { fixRequestBody: fixBody },
-    );
+    // Send wake notification so user can send fix request with one tap
+    const attemptNum = updated.autoFixAttempts + 1;
+    const fixBody = `## だらけ自動修正リクエスト (試行 ${attemptNum}/${maxAttempts})\n\nCIが失敗しました。エラーを確認して修正してください。`;
     await sendWakeNotification(
       env,
       updated,
       'Buildに失敗しました',
       'AIに修正をお願いする',
-      wakeActionUrl ?? updated.prUrl,
+      'send-fix-request',
+      updated.prUrl,
+      fixBody,
     );
-    const saved = {
-      ...updated,
-      status: 'needs-human' as const,
-      autoFixAttempts: updated.autoFixAttempts + 1,
-      lastWakeReason: 'Buildに失敗しました',
-      wakeSentAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+
+    const saved = setNextCheckAfter(
+      {
+        ...updated,
+        autoFixAttempts: updated.autoFixAttempts + 1,
+        lastWakeReason: 'Buildに失敗しました',
+        wakeSentAt: new Date().toISOString(),
+      },
+      'active',
+    );
     await saveRun(env.RUN_REGISTRY_KV, saved);
     return saved;
   }

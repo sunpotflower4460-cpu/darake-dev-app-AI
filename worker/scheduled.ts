@@ -20,6 +20,8 @@ type Env = {
   TELEGRAM_CHAT_ID?: string;
   NOTIFICATION_WEBHOOK_URL?: string;
   RUN_REGISTRY_KV?: KVNamespace;
+  /** Public URL of the Pages app, e.g. https://your-app.pages.dev */
+  APP_URL?: string;
   ASSETS: Fetcher;
 };
 

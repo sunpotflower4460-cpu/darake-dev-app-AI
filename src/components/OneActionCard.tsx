@@ -5,7 +5,6 @@ export type OneActionCardProps = {
   message: string;
   primaryLabel: string;
   onPrimary: () => void;
-  primaryLoading?: boolean;
   secondaryLabel?: string;
   onSecondary?: () => void;
   detailText?: string;
@@ -16,7 +15,6 @@ export function OneActionCard({
   message,
   primaryLabel,
   onPrimary,
-  primaryLoading,
   secondaryLabel,
   onSecondary,
   detailText,
@@ -33,9 +31,8 @@ export function OneActionCard({
           type="button"
           className="oneActionCard__primaryBtn"
           onClick={onPrimary}
-          disabled={primaryLoading}
         >
-          {primaryLoading ? '送信中...' : primaryLabel}
+          {primaryLabel}
         </button>
 
         {secondaryLabel && onSecondary && (
@@ -43,7 +40,6 @@ export function OneActionCard({
             type="button"
             className="oneActionCard__secondaryBtn"
             onClick={onSecondary}
-            disabled={primaryLoading}
           >
             {secondaryLabel}
           </button>
@@ -51,7 +47,7 @@ export function OneActionCard({
       </div>
 
       {detailText && (
-        <div className="oneActionCard__detail">
+        <div className="oneActionCard__detailSection">
           <button
             type="button"
             className="oneActionCard__detailToggle"
@@ -60,7 +56,7 @@ export function OneActionCard({
             {detailOpen ? '詳細を閉じる' : '詳細を見る'}
           </button>
           {detailOpen && (
-            <pre className="oneActionCard__detailText">{detailText}</pre>
+            <div className="oneActionCard__detailBody">{detailText}</div>
           )}
         </div>
       )}
