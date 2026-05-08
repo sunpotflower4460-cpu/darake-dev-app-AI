@@ -4,6 +4,7 @@ import App from './App';
 import { DarakeNavigationBar } from './components/DarakeNavigationBar';
 import { DarakeTopCommandPanel } from './components/DarakeTopCommandPanel';
 import { FocusedModePanel } from './components/FocusedModePanel';
+import { WakeActionPanel } from './components/WakeActionPanel';
 import { ALL_PANELS } from './utils/panelRegistry';
 import { getFocusedModeById, loadFocusedModeId, saveFocusedModeId } from './utils/focusedMode';
 import type { FocusedModeId } from './utils/focusedMode';
@@ -12,6 +13,7 @@ import { buildFirstAppStartCompletionReport } from './utils/firstAppStartComplet
 import { isFirstStartMinimalModeReleased } from './utils/firstStartMinimalMode';
 import { loadFirstStartStep } from './utils/firstStartStep';
 import { subscribeDarakeRuntimeEvents } from './utils/darakeRuntimeEvents';
+import { getWakeActionTokenIdFromUrl, clearWakeActionFromUrl } from './utils/wakeActionRouter';
 import './styleImports';
 
 const VALID_NAV_GROUPS = new Set<string>([
@@ -143,6 +145,16 @@ function DarakeRoot() {
     [revision],
   );
 
+  // Detect ?wakeAction=TOKEN_ID in URL
+  const [wakeTokenId, setWakeTokenId] = useState<string | null>(() =>
+    getWakeActionTokenIdFromUrl(),
+  );
+
+  function handleWakeActionDismiss() {
+    clearWakeActionFromUrl();
+    setWakeTokenId(null);
+  }
+
   useEffect(() => {
     document.body.classList.toggle('darake-first-start-active', firstStartActive);
     return () => document.body.classList.remove('darake-first-start-active');
@@ -154,6 +166,23 @@ function DarakeRoot() {
       <section className="appShell boundaryShell">
         <DarakeControlRoom firstStartActive={firstStartActive} />
       </section>
+      {wakeTokenId && (
+        <div className="wakeActionOverlay">
+          <div className="wakeActionOverlay__inner">
+            <WakeActionPanel
+              tokenId={wakeTokenId}
+              onDismiss={handleWakeActionDismiss}
+            />
+            <button
+              type="button"
+              className="wakeActionOverlay__dismiss"
+              onClick={handleWakeActionDismiss}
+            >
+              閉じる（通常画面に戻る）
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
