@@ -913,9 +913,14 @@ async function handleGetPrRiskInput(request: Request, env: Env): Promise<Respons
   );
 
   type GhPrFile = { filename: string; patch?: string };
-  const prFiles = filesRes.ok
-    ? ((await filesRes.json().catch(() => [])) as GhPrFile[])
-    : [];
+  let prFiles: GhPrFile[] = [];
+  if (filesRes.ok) {
+    try {
+      prFiles = (await filesRes.json()) as GhPrFile[];
+    } catch {
+      prFiles = [];
+    }
+  }
 
   const changedFiles = prFiles.map((f) => f.filename);
   const patchText = prFiles
@@ -1018,9 +1023,9 @@ async function handleMergePr(request: Request, env: Env): Promise<Response> {
   );
 
   if (!gh.ok) {
-    const ghJson2 = (await gh.json().catch(() => null)) as { message?: string } | null;
+    const prFetchError = (await gh.json().catch(() => null)) as { message?: string } | null;
     return json(
-      { ok: false, code: "GITHUB_ERROR", error: ghJson2?.message ?? "PRの取得に失敗しました" },
+      { ok: false, code: "GITHUB_ERROR", error: prFetchError?.message ?? "PRの取得に失敗しました" },
       gh.status,
     );
   }

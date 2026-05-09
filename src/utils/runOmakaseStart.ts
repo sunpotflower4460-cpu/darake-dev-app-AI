@@ -192,7 +192,9 @@ export async function runOmakaseStart(): Promise<OmakaseStartState> {
         userMessage: 'AIが作業中です。',
       });
     } else {
-      // Copilot assign failed — provide copy fallback, keep message short
+      // Copilot assign failed — provide copy fallback, keep message short.
+      // cloudAgentInstruction is stored for backward compatibility with other panels.
+      // fallbackInstruction signals the MainBuildFlowCard to show a copy button.
       saveOmakaseStartState({
         status: 'cloud-agent-ready',
         appName,
