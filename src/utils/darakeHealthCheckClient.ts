@@ -135,8 +135,7 @@ function buildItems(res: DarakeHealthApiResponse): DarakeHealthItem[] {
 function calcReadinessScore(res: DarakeHealthApiResponse): number {
   const hasToken = res.githubToken === 'set';
   let score = 5; // worker responding (always true if we got here)
-  if (hasToken) score += 25; // token is the most critical
-  if (hasToken) score += 5; // PR watch/comment also requires token
+  if (hasToken) score += 30; // token enables Issue creation, PR watch, and PR comment
   if (res.issueCreateEnabled) score += 15;
   if (res.allowedReposConfigured) score += 10;
   if (res.agentAssignEnabled) score += 5;
@@ -204,7 +203,9 @@ function buildResult(res: DarakeHealthApiResponse): DarakeHealthCheckResult {
 
 export async function fetchDarakeHealth(): Promise<DarakeHealthCheckResult> {
   const res = await fetch('/api/darake/health');
-  if (!res.ok) throw new Error('health check fetch failed');
+  if (!res.ok) {
+    throw new Error(`health check fetch failed (HTTP ${res.status})`);
+  }
   const data = (await res.json()) as DarakeHealthApiResponse;
   if (!data.ok) throw new Error('health check response not ok');
   return buildResult(data);
