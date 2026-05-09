@@ -826,6 +826,29 @@ async function handleGetRun(request: Request, env: Env): Promise<Response> {
   }
 }
 
+async function handleSettingsHealth(_request: Request, env: Env): Promise<Response> {
+  return json({
+    ok: true,
+    github: {
+      tokenConfigured: !!env.GITHUB_TOKEN,
+      repoAllowlistConfigured: !!env.GITHUB_ALLOWED_REPOS?.trim(),
+      issueCreateEnabled: env.GITHUB_ISSUE_CREATE_ENABLED === "true",
+      agentAssignEnabled: env.GITHUB_AGENT_ASSIGN_ENABLED === "true",
+    },
+    kv: {
+      configured: !!env.RUN_REGISTRY_KV,
+      runRegistryEnabled: env.DARAKE_RUN_REGISTRY_ENABLED === "true",
+    },
+    notifications: {
+      telegramConfigured: !!(env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID),
+      webhookConfigured: !!env.NOTIFICATION_WEBHOOK_URL,
+    },
+    cron: {
+      scheduleEnabled: env.DARAKE_AUTOPILOT_SCHEDULE_ENABLED === "true",
+    },
+  });
+}
+
 async function handleTestNotification(request: Request, env: Env): Promise<Response> {
   if (request.method !== "POST") {
     return json({ ok: false, code: "INVALID_INPUT", error: "POSTだけ使えます" }, 405);
@@ -896,6 +919,9 @@ export default {
     }
     if (url.pathname === "/api/darake/runs/get") {
       return handleGetRun(request, env);
+    }
+    if (url.pathname === "/api/darake/settings/health") {
+      return handleSettingsHealth(request, env);
     }
     if (url.pathname === "/api/darake/notifications/test") {
       return handleTestNotification(request, env);
