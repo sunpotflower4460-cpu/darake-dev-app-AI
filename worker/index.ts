@@ -892,18 +892,46 @@ async function handleGetPrRiskInput(request: Request, env: Env): Promise<Respons
     changed_files: number;
     additions: number;
     deletions: number;
+    draft?: boolean;
+    state?: string;
+    mergeable?: boolean | null;
   };
   const pr = (await prRes.json()) as GhPrFull;
   const prUrl = `https://github.com/${parsed.owner}/${parsed.repo}/pull/${prNumber}`;
+
+  // Fetch changed file paths
+  const filesRes = await fetch(
+    `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/pulls/${prNumber}/files?per_page=100`,
+    {
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "darake-dev-app-ai",
+      },
+    },
+  );
+
+  type GhPrFile = { filename: string; patch?: string };
+  const prFiles = filesRes.ok
+    ? ((await filesRes.json().catch(() => [])) as GhPrFile[])
+    : [];
+
+  const changedFiles = prFiles.map((f) => f.filename);
+  const patchText = prFiles
+    .map((f) => (f.patch ? `--- ${f.filename}\n${f.patch}` : ""))
+    .filter(Boolean)
+    .join("\n\n");
 
   return json({
     ok: true,
     prUrl,
     prNumber: pr.number,
     headSha: pr.head.sha,
-    changedFiles: pr.changed_files,
+    changedFiles,
     additions: pr.additions,
     deletions: pr.deletions,
+    patchText: patchText || undefined,
   });
 }
 
@@ -978,6 +1006,58 @@ async function handleMergePr(request: Request, env: Env): Promise<Response> {
   }
 
   const gh = await fetch(
+    `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/pulls/${prNumber}`,
+    {
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "darake-dev-app-ai",
+      },
+    },
+  );
+
+  if (!gh.ok) {
+    const ghJson2 = (await gh.json().catch(() => null)) as { message?: string } | null;
+    return json(
+      { ok: false, code: "GITHUB_ERROR", error: ghJson2?.message ?? "PRの取得に失敗しました" },
+      gh.status,
+    );
+  }
+
+  type GhPrCheck = {
+    state?: string;
+    draft?: boolean;
+    mergeable?: boolean | null;
+    head?: { sha?: string };
+  };
+  const prData = (await gh.json().catch(() => null)) as GhPrCheck | null;
+
+  if (!prData) {
+    return json({ ok: false, code: "GITHUB_ERROR", error: "PR情報を取得できませんでした" }, 500);
+  }
+
+  if (prData.state !== "open") {
+    return json({ ok: false, code: "SAFETY_GATE", error: "PRがオープン状態ではありません" }, 400);
+  }
+
+  if (prData.draft === true) {
+    return json({ ok: false, code: "SAFETY_GATE", error: "DraftのPRはマージできません" }, 400);
+  }
+
+  if (prData.mergeable === false) {
+    return json({ ok: false, code: "SAFETY_GATE", error: "PRがマージ可能な状態ではありません（コンフリクトなど）" }, 400);
+  }
+
+  const currentHeadSha = prData.head?.sha ?? "";
+  if (currentHeadSha !== expectedHeadSha) {
+    return json(
+      { ok: false, code: "SAFETY_GATE", error: "headShaが一致しません。PRが更新された可能性があります。" },
+      409,
+    );
+  }
+
+  const mergeGh = await fetch(
     `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/pulls/${prNumber}/merge`,
     {
       method: "PUT",
@@ -995,16 +1075,16 @@ async function handleMergePr(request: Request, env: Env): Promise<Response> {
     },
   );
 
-  const ghJson = (await gh.json().catch(() => null)) as {
+  const ghJson = (await mergeGh.json().catch(() => null)) as {
     sha?: string;
     merged?: boolean;
     message?: string;
   } | null;
 
-  if (!gh.ok) {
+  if (!mergeGh.ok) {
     return json(
       { ok: false, code: "GITHUB_ERROR", error: ghJson?.message ?? "PRのマージに失敗しました" },
-      gh.status,
+      mergeGh.status,
     );
   }
 

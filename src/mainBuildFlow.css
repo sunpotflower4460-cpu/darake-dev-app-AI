@@ -196,3 +196,17 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
+
+.mainBuildFlowCard__detailsPre {
+  font-size: 11px;
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px;
+  color: #374151;
+  max-height: 200px;
+  overflow-y: auto;
+}

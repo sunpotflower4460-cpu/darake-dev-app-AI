@@ -454,19 +454,23 @@ async function handleWaitingForChecks(
           const riskData = await riskRes.json() as {
             ok?: boolean;
             headSha?: string;
-            changedFiles?: number;
+            changedFiles?: string[];
             additions?: number;
             deletions?: number;
+            patchText?: string;
           };
 
           if (riskData.ok && riskData.headSha) {
-            const riskResult = detectRiskyChanges({ changedFiles: [], diffContent: '' });
+            const riskResult = detectRiskyChanges({
+              changedFiles: riskData.changedFiles ?? [],
+              diffContent: riskData.patchText ?? '',
+            });
             const judgement = judgeMergeSafety(
               {
                 ciPassed: true,
                 buildPassed: true,
                 typecheckPassed: true,
-                changedFiles: riskData.changedFiles ?? 0,
+                changedFiles: riskData.changedFiles?.length ?? 0,
                 additions: riskData.additions ?? 0,
                 deletions: riskData.deletions ?? 0,
                 riskLevel: riskResult.riskLevel,

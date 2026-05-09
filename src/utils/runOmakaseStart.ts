@@ -8,6 +8,8 @@ import { saveOmakaseStartState, loadOmakaseStartState } from './omakaseStartStat
 import type { OmakaseStartState } from './omakaseStartState';
 import { loadGitHubIssueCreateState } from './githubIssueCreateState';
 import { saveAgentRunState } from './agentRunState';
+import { assignAgentToIssue } from './githubAgentClient';
+import { saveDarakeAutopilotState } from './darakeAutopilotState';
 
 function saveFailedState(
   appName: string,
@@ -136,31 +138,73 @@ export async function runOmakaseStart(): Promise<OmakaseStartState> {
       fullName: res.fullName,
     });
 
-    // 7. Build Cloud Agent instruction
+    // 7. Build Cloud Agent instruction (fallback for manual copy)
     const cloudAgentInstruction = buildCloudAgentStartInstruction(record);
 
-    // 8. Save cloud-agent-ready state
-    saveOmakaseStartState({
-      status: 'cloud-agent-ready',
+    // 8. Try to assign Copilot agent to the issue
+    const assignRes = await assignAgentToIssue({
+      repoUrl,
+      issueNumber: res.issueNumber,
+      agent: 'copilot',
+    }).catch(() => null);
+
+    const copilotAssigned = assignRes?.ok === true;
+
+    // 9. Save AgentRunState
+    saveAgentRunState({
+      status: copilotAssigned ? 'assigned-to-agent' : 'issue-created',
       appName,
       repoUrl,
       issueUrl,
       issueNumber,
-      cloudAgentInstruction,
-      nextActionLabel: 'Cloud Agentに貼る指示をコピー',
-      userMessage: '準備できました。次はCloud Agentに貼る指示をコピーするだけです。',
+      nextActionLabel: copilotAssigned ? '何もしなくてOK' : 'Cloud Agentに貼る指示をコピー',
+      userMessage: copilotAssigned
+        ? 'AIが作業中です。'
+        : 'Issueは作れました。AIへの自動割り当てだけ失敗しました。',
     });
 
-    // 9. Also update AgentRunState
-    saveAgentRunState({
-      status: 'issue-created',
+    // 10. Save DarakeAutopilotState so Autopilot picks up naturally
+    saveDarakeAutopilotState({
+      enabled: true,
+      status: 'agent-working',
       appName,
       repoUrl,
       issueUrl,
       issueNumber,
-      nextActionLabel: 'AIに作業をお願いする',
-      userMessage: 'Issueを作成しました。AIに作業をお願いする準備ができています。',
+      autoFixAttempts: 0,
+      maxAutoFixAttempts: 2,
+      userMessage: 'AIが作業中です',
+      nextActionLabel: '何もしなくてOK',
+      shouldWakeUser: false,
     });
+
+    // 11. Save OmakaseStartState
+    if (copilotAssigned) {
+      // Copilot assigned — show "何もしなくてOK"
+      saveOmakaseStartState({
+        status: 'assigned-to-agent',
+        appName,
+        repoUrl,
+        issueUrl,
+        issueNumber,
+        cloudAgentInstruction,
+        nextActionLabel: '何もしなくてOK',
+        userMessage: 'AIが作業中です。',
+      });
+    } else {
+      // Copilot assign failed — provide copy fallback, keep message short
+      saveOmakaseStartState({
+        status: 'cloud-agent-ready',
+        appName,
+        repoUrl,
+        issueUrl,
+        issueNumber,
+        cloudAgentInstruction,
+        fallbackInstruction: cloudAgentInstruction,
+        nextActionLabel: 'Cloud Agentに貼る指示をコピー',
+        userMessage: 'Issueは作れました。AIへの自動割り当てだけ失敗しました。',
+      });
+    }
   } catch (err) {
     const errorMessage =
       err instanceof Error ? err.message : '不明なエラーが発生しました。';

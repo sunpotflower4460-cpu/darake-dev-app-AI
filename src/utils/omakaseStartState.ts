@@ -6,6 +6,7 @@ export type OmakaseStartStatus =
   | 'idle'
   | 'preparing'
   | 'issue-created'
+  | 'assigned-to-agent'
   | 'cloud-agent-ready'
   | 'blocked'
   | 'failed';
@@ -17,6 +18,8 @@ export type OmakaseStartState = {
   issueUrl?: string;
   issueNumber?: number;
   cloudAgentInstruction?: string;
+  /** Long-form Cloud Agent instruction kept separate for copy-only use (not shown in main card). */
+  fallbackInstruction?: string;
   nextActionLabel: string;
   userMessage: string;
   error?: string;
