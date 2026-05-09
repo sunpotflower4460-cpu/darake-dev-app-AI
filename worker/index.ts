@@ -1034,6 +1034,22 @@ async function handleSettingsHealth(_request: Request, env: Env): Promise<Respon
   });
 }
 
+async function handleDarakeHealth(_request: Request, env: Env): Promise<Response> {
+  return json({
+    ok: true,
+    githubToken: env.GITHUB_TOKEN ? "set" : "missing",
+    issueCreateEnabled: env.GITHUB_ISSUE_CREATE_ENABLED === "true",
+    allowedReposConfigured: !!(env.GITHUB_ALLOWED_REPOS?.trim()),
+    agentAssignEnabled: env.GITHUB_AGENT_ASSIGN_ENABLED === "true",
+    runRegistryEnabled: env.DARAKE_RUN_REGISTRY_ENABLED === "true",
+    runRegistryKvBound: !!env.RUN_REGISTRY_KV,
+    scheduledAutopilotEnabled: env.DARAKE_AUTOPILOT_SCHEDULE_ENABLED === "true",
+    telegramConfigured: !!(env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID),
+    webhookConfigured: !!env.NOTIFICATION_WEBHOOK_URL,
+    prMergeEnabled: env.GITHUB_PR_MERGE_ENABLED === "true",
+  });
+}
+
 async function handleSetupStatus(_request: Request, env: Env): Promise<Response> {
   return json({
     ok: true,
@@ -1127,6 +1143,9 @@ export default {
     }
     if (url.pathname === "/api/github/prs/merge") {
       return handleMergePr(request, env);
+    }
+    if (url.pathname === "/api/darake/health") {
+      return handleDarakeHealth(request, env);
     }
     if (url.pathname === "/api/darake/setup/status") {
       return handleSetupStatus(request, env);
