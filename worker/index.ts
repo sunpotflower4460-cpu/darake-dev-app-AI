@@ -833,7 +833,7 @@ async function handleSettingsHealth(_request: Request, env: Env): Promise<Respon
       tokenConfigured: !!env.GITHUB_TOKEN,
       repoAllowlistConfigured: !!env.GITHUB_ALLOWED_REPOS?.trim(),
       issueCreateEnabled: env.GITHUB_ISSUE_CREATE_ENABLED === "true",
-      mergeEnabled: env.GITHUB_AGENT_ASSIGN_ENABLED === "true",
+      agentAssignEnabled: env.GITHUB_AGENT_ASSIGN_ENABLED === "true",
     },
     kv: {
       configured: !!env.RUN_REGISTRY_KV,

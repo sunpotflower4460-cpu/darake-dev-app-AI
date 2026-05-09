@@ -24,7 +24,7 @@ export type SettingsHealthResponse = {
     tokenConfigured: boolean;
     repoAllowlistConfigured: boolean;
     issueCreateEnabled: boolean;
-    mergeEnabled: boolean;
+    agentAssignEnabled: boolean;
   };
   kv: {
     configured: boolean;

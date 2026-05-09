@@ -58,7 +58,7 @@ export function buildSettingsHealthSummary(input: SettingsHealthResponse): Setti
   }
 
   // Auto merge
-  if (input.github.mergeEnabled) {
+  if (input.github.agentAssignEnabled) {
     items.push({
       id: 'github-merge',
       title: '自動マージ',

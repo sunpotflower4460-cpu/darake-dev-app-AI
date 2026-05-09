@@ -23,7 +23,7 @@ export function calculateReadyScore(
   const score = Math.round((raw / total) * 100);
 
   let label: ReadyScore['label'];
-  if (score >= 100) {
+  if (score === 100) {
     label = 'fully-operational';
   } else if (score >= 85) {
     label = 'ready';
