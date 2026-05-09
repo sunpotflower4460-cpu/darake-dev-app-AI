@@ -3,6 +3,7 @@ type Env = {
   GITHUB_ALLOWED_REPOS?: string;
   GITHUB_ISSUE_CREATE_ENABLED?: string;
   GITHUB_AGENT_ASSIGN_ENABLED?: string;
+  GITHUB_PR_MERGE_ENABLED?: string;
   DARAKE_RUN_REGISTRY_ENABLED?: string;
   DARAKE_AUTOPILOT_SCHEDULE_ENABLED?: string;
   TELEGRAM_BOT_TOKEN?: string;
@@ -826,6 +827,190 @@ async function handleGetRun(request: Request, env: Env): Promise<Response> {
   }
 }
 
+async function handleGetPrRiskInput(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "POST") {
+    return json({ ok: false, code: "INVALID_INPUT", error: "POSTだけ使えます" }, 405);
+  }
+
+  if (!env.GITHUB_TOKEN) {
+    return json(
+      { ok: false, code: "MISSING_TOKEN", error: "GitHub TokenがWorker Secretに設定されていません" },
+      500,
+    );
+  }
+
+  let bodyJson: { repoUrl?: unknown; prNumber?: unknown };
+  try {
+    bodyJson = await request.json();
+  } catch {
+    return json({ ok: false, code: "INVALID_INPUT", error: "JSONを読み取れません" }, 400);
+  }
+
+  const repoUrl = String(bodyJson.repoUrl ?? "");
+  const prNumber = Number(bodyJson.prNumber ?? 0);
+
+  const parsed = parseGitHubRepoUrl(repoUrl);
+  if (!parsed.ok) {
+    return json({ ok: false, code: "INVALID_REPO_URL", error: parsed.error }, 400);
+  }
+
+  if (!isAllowedRepo(parsed.fullName, env.GITHUB_ALLOWED_REPOS)) {
+    return json(
+      { ok: false, code: "REPO_NOT_ALLOWED", error: "このリポジトリは許可リストに入っていません" },
+      403,
+    );
+  }
+
+  if (!prNumber || prNumber <= 0) {
+    return json({ ok: false, code: "INVALID_INPUT", error: "PR番号を確認してください" }, 400);
+  }
+
+  const prRes = await fetch(
+    `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/pulls/${prNumber}`,
+    {
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "darake-dev-app-ai",
+      },
+    },
+  );
+
+  if (!prRes.ok) {
+    const ghJson = (await prRes.json().catch(() => null)) as { message?: string } | null;
+    return json(
+      { ok: false, code: "GITHUB_ERROR", error: ghJson?.message ?? "PR情報の取得に失敗しました" },
+      prRes.status,
+    );
+  }
+
+  type GhPrFull = {
+    html_url: string;
+    number: number;
+    head: { sha: string };
+    changed_files: number;
+    additions: number;
+    deletions: number;
+  };
+  const pr = (await prRes.json()) as GhPrFull;
+  const prUrl = `https://github.com/${parsed.owner}/${parsed.repo}/pull/${prNumber}`;
+
+  return json({
+    ok: true,
+    prUrl,
+    prNumber: pr.number,
+    headSha: pr.head.sha,
+    changedFiles: pr.changed_files,
+    additions: pr.additions,
+    deletions: pr.deletions,
+  });
+}
+
+async function handleMergePr(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "POST") {
+    return json({ ok: false, code: "INVALID_INPUT", error: "POSTだけ使えます" }, 405);
+  }
+
+  if (env.GITHUB_PR_MERGE_ENABLED !== "true") {
+    return json(
+      { ok: false, code: "DISABLED", error: "GITHUB_PR_MERGE_ENABLED=true が設定されていません" },
+      403,
+    );
+  }
+
+  if (!env.GITHUB_TOKEN) {
+    return json(
+      { ok: false, code: "MISSING_TOKEN", error: "GitHub TokenがWorker Secretに設定されていません" },
+      500,
+    );
+  }
+
+  let bodyJson: {
+    repoUrl?: unknown;
+    prNumber?: unknown;
+    expectedHeadSha?: unknown;
+    mergeMethod?: unknown;
+    safetyDecision?: unknown;
+  };
+  try {
+    bodyJson = await request.json();
+  } catch {
+    return json({ ok: false, code: "INVALID_INPUT", error: "JSONを読み取れません" }, 400);
+  }
+
+  const repoUrl = String(bodyJson.repoUrl ?? "");
+  const prNumber = Number(bodyJson.prNumber ?? 0);
+  const expectedHeadSha = String(bodyJson.expectedHeadSha ?? "").trim();
+  const mergeMethod = String(bodyJson.mergeMethod ?? "squash");
+  const safetyDecision = String(bodyJson.safetyDecision ?? "");
+
+  // Safety checks
+  if (!expectedHeadSha) {
+    return json({ ok: false, code: "INVALID_INPUT", error: "expectedHeadShaは必須です" }, 400);
+  }
+
+  if (mergeMethod !== "squash") {
+    return json({ ok: false, code: "INVALID_INPUT", error: "squash mergeのみ使えます" }, 400);
+  }
+
+  if (safetyDecision !== "auto-merge-allowed") {
+    return json(
+      { ok: false, code: "SAFETY_GATE", error: "safetyDecision が auto-merge-allowed ではありません" },
+      403,
+    );
+  }
+
+  const parsed = parseGitHubRepoUrl(repoUrl);
+  if (!parsed.ok) {
+    return json({ ok: false, code: "INVALID_REPO_URL", error: parsed.error }, 400);
+  }
+
+  if (!isAllowedRepo(parsed.fullName, env.GITHUB_ALLOWED_REPOS)) {
+    return json(
+      { ok: false, code: "REPO_NOT_ALLOWED", error: "このリポジトリは許可リストに入っていません" },
+      403,
+    );
+  }
+
+  if (!prNumber || prNumber <= 0) {
+    return json({ ok: false, code: "INVALID_INPUT", error: "PR番号を確認してください" }, 400);
+  }
+
+  const gh = await fetch(
+    `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/pulls/${prNumber}/merge`,
+    {
+      method: "PUT",
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "darake-dev-app-ai",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sha: expectedHeadSha,
+        merge_method: "squash",
+      }),
+    },
+  );
+
+  const ghJson = (await gh.json().catch(() => null)) as {
+    sha?: string;
+    merged?: boolean;
+    message?: string;
+  } | null;
+
+  if (!gh.ok) {
+    return json(
+      { ok: false, code: "GITHUB_ERROR", error: ghJson?.message ?? "PRのマージに失敗しました" },
+      gh.status,
+    );
+  }
+
+  return json({ ok: true, merged: true, sha: ghJson?.sha ?? "" });
+}
+
 async function handleSettingsHealth(_request: Request, env: Env): Promise<Response> {
   return json({
     ok: true,
@@ -848,6 +1033,23 @@ async function handleSettingsHealth(_request: Request, env: Env): Promise<Respon
     },
   });
 }
+
+async function handleSetupStatus(_request: Request, env: Env): Promise<Response> {
+  return json({
+    ok: true,
+    githubToken: env.GITHUB_TOKEN ? "set" : "missing",
+    githubIssueCreateEnabled: env.GITHUB_ISSUE_CREATE_ENABLED === "true",
+    githubAgentAssignEnabled: env.GITHUB_AGENT_ASSIGN_ENABLED === "true",
+    githubPrMergeEnabled: env.GITHUB_PR_MERGE_ENABLED === "true",
+    allowedReposConfigured: !!(env.GITHUB_ALLOWED_REPOS?.trim()),
+    runRegistryEnabled: env.DARAKE_RUN_REGISTRY_ENABLED === "true",
+    runRegistryKvBound: !!env.RUN_REGISTRY_KV,
+    autopilotScheduleEnabled: env.DARAKE_AUTOPILOT_SCHEDULE_ENABLED === "true",
+    telegramConfigured: !!(env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID),
+    webhookConfigured: !!env.NOTIFICATION_WEBHOOK_URL,
+  });
+}
+
 
 async function handleTestNotification(request: Request, env: Env): Promise<Response> {
   if (request.method !== "POST") {
@@ -919,6 +1121,15 @@ export default {
     }
     if (url.pathname === "/api/darake/runs/get") {
       return handleGetRun(request, env);
+    }
+    if (url.pathname === "/api/github/prs/risk-input") {
+      return handleGetPrRiskInput(request, env);
+    }
+    if (url.pathname === "/api/github/prs/merge") {
+      return handleMergePr(request, env);
+    }
+    if (url.pathname === "/api/darake/setup/status") {
+      return handleSetupStatus(request, env);
     }
     if (url.pathname === "/api/darake/settings/health") {
       return handleSettingsHealth(request, env);

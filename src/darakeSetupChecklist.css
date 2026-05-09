@@ -1,0 +1,75 @@
+.darakeSetupChecklist {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.darakeSetupChecklist__title {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 4px;
+  color: #1a202c;
+}
+.darakeSetupChecklist__subtitle {
+  font-size: 12px;
+  color: #718096;
+  margin-bottom: 12px;
+}
+.darakeSetupChecklist__toggleBtn {
+  background: none;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.darakeSetupChecklist__group {
+  margin-bottom: 12px;
+}
+.darakeSetupChecklist__groupTitle {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #4a5568;
+}
+.darakeSetupChecklist__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+.darakeSetupChecklist__icon {
+  flex-shrink: 0;
+}
+.darakeSetupChecklist__item--missing .darakeSetupChecklist__label {
+  color: #e53e3e;
+}
+.darakeSetupChecklist__hint {
+  font-size: 11px;
+  color: #718096;
+  margin-top: 2px;
+}
+.darakeSetupChecklist__note {
+  font-size: 11px;
+  color: #a0aec0;
+  margin-top: 8px;
+  border-top: 1px solid #edf2f7;
+  padding-top: 8px;
+}
+.darakeSetupChecklist__error {
+  color: #e53e3e;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.darakeSetupChecklist__refreshBtn {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}

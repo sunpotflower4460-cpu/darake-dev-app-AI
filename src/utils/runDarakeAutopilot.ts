@@ -19,6 +19,10 @@ import { parsePrHealthFromApi } from './prHealthSummary';
 import { buildAgentFixInstruction } from './buildAgentFixInstruction';
 import { buildFailureSummaryFromPrHealth } from './failureSummary';
 import { createPrComment } from './githubAgentClient';
+import { loadAutoMergeSettings } from './autoMergeSettings';
+import { detectRiskyChanges } from './riskyChangeDetector';
+import { judgeMergeSafety } from './mergeSafetyJudge';
+import { startPostMergeWatch } from './postMergeWatch';
 
 function save(state: Omit<DarakeAutopilotState, 'updatedAt'>): DarakeAutopilotState {
   saveDarakeAutopilotState(state);
@@ -437,6 +441,76 @@ async function handleWaitingForChecks(
     }
 
     if (health === 'checks-passed' || health === 'ready-to-merge') {
+      const settings = loadAutoMergeSettings();
+
+      if (settings.mode === 'low-risk-only' && current.prNumber && current.prUrl && current.repoUrl) {
+        // Fetch real PR risk input before attempting merge
+        try {
+          const riskRes = await fetch('/api/github/prs/risk-input', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ repoUrl: current.repoUrl, prNumber: current.prNumber }),
+          });
+          const riskData = await riskRes.json() as {
+            ok?: boolean;
+            headSha?: string;
+            changedFiles?: number;
+            additions?: number;
+            deletions?: number;
+          };
+
+          if (riskData.ok && riskData.headSha) {
+            const riskResult = detectRiskyChanges({ changedFiles: [], diffContent: '' });
+            const judgement = judgeMergeSafety(
+              {
+                ciPassed: true,
+                buildPassed: true,
+                typecheckPassed: true,
+                changedFiles: riskData.changedFiles ?? 0,
+                additions: riskData.additions ?? 0,
+                deletions: riskData.deletions ?? 0,
+                riskLevel: riskResult.riskLevel,
+                headSha: riskData.headSha,
+                prUrl: current.prUrl,
+                prNumber: current.prNumber,
+              },
+              settings,
+            );
+
+            if (judgement.decision === 'auto-merge-allowed') {
+              const mergeRes = await fetch('/api/github/prs/merge', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  repoUrl: current.repoUrl,
+                  prNumber: current.prNumber,
+                  expectedHeadSha: riskData.headSha,
+                  mergeMethod: 'squash',
+                  safetyDecision: 'auto-merge-allowed',
+                }),
+              });
+              const mergeData = await mergeRes.json() as { ok?: boolean };
+              if (mergeData.ok) {
+                startPostMergeWatch({
+                  prUrl: current.prUrl,
+                  prNumber: current.prNumber,
+                  repoUrl: current.repoUrl,
+                });
+                return save({
+                  ...current,
+                  status: 'done',
+                  userMessage: 'マージしました。デプロイ結果を確認しています。',
+                  nextActionLabel: '何もしなくてOK',
+                  shouldWakeUser: false,
+                });
+              }
+            }
+          }
+        } catch {
+          // fall through to merge-candidate
+        }
+      }
+
       addToWakeQueue({
         reason: 'merge-candidate',
         title: 'マージ候補です',

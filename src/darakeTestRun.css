@@ -1,0 +1,94 @@
+.darakeTestRunPanel {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.darakeTestRunPanel__title {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.darakeTestRunPanel__subtitle {
+  font-size: 13px;
+  color: #718096;
+  margin-bottom: 12px;
+}
+.darakeTestRunPanel__preset {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: #4a5568;
+}
+.darakeTestRunPanel__preset dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 12px;
+}
+.darakeTestRunPanel__preset dt {
+  font-weight: 600;
+  color: #2d3748;
+}
+.darakeTestRunPanel__preset dd {
+  margin: 0;
+}
+.darakeTestRunPanel__btn {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 8px;
+}
+.darakeTestRunPanel__btnReset {
+  background: none;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.darakeTestRunPanel__status {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.darakeTestRunPanel__status--running {
+  background: #ebf8ff;
+  border: 1px solid #90cdf4;
+}
+.darakeTestRunPanel__status--failed {
+  background: #fff5f5;
+  border: 1px solid #feb2b2;
+}
+.darakeTestRunPanel__status--done {
+  background: #f0fff4;
+  border: 1px solid #9ae6b4;
+}
+.darakeTestRunPanel__statusTitle {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.darakeTestRunPanel__next {
+  font-size: 13px;
+  color: #4a5568;
+  margin-top: 6px;
+}
+.darakeTestRunPanel__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  color: #3b82f6;
+  font-size: 13px;
+  text-decoration: none;
+}
