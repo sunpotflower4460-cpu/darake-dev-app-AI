@@ -3,6 +3,9 @@ import type { SettingsHealthResponse, SettingsHealthSummary, SettingsHealthItem 
 import { buildSettingsHealthSummary } from '../utils/buildSettingsHealthSummary';
 import { calculateReadyScore, READY_SCORE_LABELS } from '../utils/calculateReadyScore';
 import { buildCloudflareSetupGuide } from '../utils/buildCloudflareSetupGuide';
+import { buildSetupGuidanceFromHealth } from '../utils/buildSetupGuidance';
+import { SetupGuidanceCard } from './SetupGuidanceCard';
+import type { SetupGuidance } from '../utils/setupGuidance';
 
 type CheckStatus = 'idle' | 'loading' | 'done' | 'error';
 
@@ -153,9 +156,11 @@ function TestButtonsSection() {
 export function SettingsHealthCenter() {
   const [status, setStatus] = useState<CheckStatus>('idle');
   const [summary, setSummary] = useState<SettingsHealthSummary | null>(null);
+  const [guidance, setGuidance] = useState<SetupGuidance[]>([]);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
+  const [showGuidanceCards, setShowGuidanceCards] = useState(false);
 
   const handleCheck = useCallback(async () => {
     setStatus('loading');
@@ -164,6 +169,7 @@ export function SettingsHealthCenter() {
       const data = await fetchSettingsHealth();
       const built = buildSettingsHealthSummary(data);
       setSummary(built);
+      setGuidance(buildSetupGuidanceFromHealth(data));
       setStatus('done');
     } catch {
       setErrorMsg('設定の確認に失敗しました。Workerへの接続を確認してください。');
@@ -214,13 +220,22 @@ export function SettingsHealthCenter() {
 
           <div className="shc-actions">
             {missingItems.length > 0 && (
-              <button
-                type="button"
-                className="shc-btn-text"
-                onClick={() => setShowDetails((v) => !v)}
-              >
-                {showDetails ? '不足設定を閉じる' : '不足設定を見る'}
-              </button>
+              <>
+                <button
+                  type="button"
+                  className="shc-btn-text"
+                  onClick={() => setShowGuidanceCards((v) => !v)}
+                >
+                  {showGuidanceCards ? '次にやることを閉じる' : '次にやることを見る'}
+                </button>
+                <button
+                  type="button"
+                  className="shc-btn-text"
+                  onClick={() => setShowDetails((v) => !v)}
+                >
+                  {showDetails ? '不足設定を閉じる' : '不足設定を見る'}
+                </button>
+              </>
             )}
             <button
               type="button"
@@ -230,6 +245,17 @@ export function SettingsHealthCenter() {
               再確認
             </button>
           </div>
+
+          {showGuidanceCards && guidance.length > 0 && (
+            <div className="shc-details">
+              <div className="shc-section-label sgc-list-label">次にやること</div>
+              <div className="sgc-list">
+                {guidance.map((g) => (
+                  <SetupGuidanceCard key={g.kind} guidance={g} />
+                ))}
+              </div>
+            </div>
+          )}
 
           {showDetails && (
             <div className="shc-details">
