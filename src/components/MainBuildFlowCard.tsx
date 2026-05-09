@@ -15,6 +15,7 @@ import { APP_PRESETS } from '../utils/appPresets';
 import { fetchSetupStatus } from '../utils/setupStatusClient';
 import { saveFirstStartStep } from '../utils/firstStartStep';
 import { DarakeTestRunPanel } from './DarakeTestRunPanel';
+import { DarakeHealthCheckPanel } from './DarakeHealthCheckPanel';
 
 type SetupOk = boolean | null;
 
@@ -50,6 +51,7 @@ export function MainBuildFlowCard() {
   const [showDetails, setShowDetails] = useState(false);
   const [isStarting, setIsStarting] = useState(false);
   const [startError, setStartError] = useState<string | null>(null);
+  const [showHealthCheck, setShowHealthCheck] = useState(false);
 
   useEffect(() => subscribeDarakeRuntimeEvents(() => setRevision((v) => v + 1)), []);
 
@@ -245,6 +247,19 @@ export function MainBuildFlowCard() {
           >
             設定を確認する
           </button>
+          <button
+            type="button"
+            className="mainBuildFlowCard__btn mainBuildFlowCard__btn--secondary"
+            onClick={() => setShowHealthCheck((v) => !v)}
+          >
+            {showHealthCheck ? '診断を閉じる' : 'だらけ診断する'}
+          </button>
+        </div>
+      )}
+
+      {isSetup && showHealthCheck && (
+        <div className="mainBuildFlowCard__details" style={{ marginTop: 12 }}>
+          <DarakeHealthCheckPanel />
         </div>
       )}
 
