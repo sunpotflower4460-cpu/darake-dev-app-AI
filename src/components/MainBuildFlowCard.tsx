@@ -13,6 +13,7 @@ import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
 import { runOmakaseStart } from '../utils/runOmakaseStart';
 import { APP_PRESETS } from '../utils/appPresets';
 import { fetchSetupStatus } from '../utils/setupStatusClient';
+import { saveFirstStartStep } from '../utils/firstStartStep';
 import { DarakeTestRunPanel } from './DarakeTestRunPanel';
 
 type SetupOk = boolean | null;
@@ -65,8 +66,10 @@ export function MainBuildFlowCard() {
         saveSetupCache(ok);
       })
       .catch(() => {
-        // If the Worker is unreachable, don't block the user
-        setSetupOk(null);
+        // If the Worker is unreachable, treat as setup not confirmed.
+        // Default to false so the user sees the setup card rather than
+        // a permanent indeterminate state.
+        setSetupOk(false);
       });
   }, []);
 
@@ -110,6 +113,10 @@ export function MainBuildFlowCard() {
       mustNotDo: preset.mustNotDo,
       notes: preset.notes,
     });
+  }
+
+  function handleOpenForm() {
+    saveFirstStartStep('form');
   }
 
   async function handleStart() {
@@ -209,9 +216,7 @@ export function MainBuildFlowCard() {
           <button
             type="button"
             className="mainBuildFlowCard__btn mainBuildFlowCard__btn--secondary"
-            onClick={() => {
-              // Just mark revision so the form fills in
-            }}
+            onClick={handleOpenForm}
           >
             自分でフォームに入力する
           </button>
