@@ -70,8 +70,8 @@ export function SetupGuidanceCard({ guidance }: { guidance: SetupGuidance }) {
 
       {open && (
         <div className="sgc-steps">
-          {guidance.steps.map((step, i) => (
-            <StepItem key={i} step={step} />
+          {guidance.steps.map((step) => (
+            <StepItem key={step.title} step={step} />
           ))}
         </div>
       )}

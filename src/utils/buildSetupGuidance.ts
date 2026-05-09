@@ -182,7 +182,7 @@ const PR_MERGE_ENABLED_GUIDANCE: SetupGuidance = {
   kind: 'pr-merge-enabled',
   title: '自動マージがOFFです',
   shortMessage: '自動マージを有効にすると、条件を満たしたPRを自動でマージできます。',
-  nextActionLabel: 'GITHUB_AGENT_ASSIGN_ENABLED=true を設定する',
+  nextActionLabel: 'GITHUB_AGENT_ASSIGN_ENABLED=true を設定してPRマージを有効化する',
   dangerLevel: 'careful',
   steps: [
     {
