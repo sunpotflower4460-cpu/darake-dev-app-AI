@@ -1,5 +1,12 @@
 export type RiskLevel = 'safe' | 'review-needed' | 'manual-gate' | 'blocked';
 
+export type RiskScanResult = {
+  level: RiskLevel;
+  reasons: string[];
+  matchedFiles: string[];
+  matchedKeywords: string[];
+};
+
 const BLOCKED_PATTERNS = [
   /secret[s]?\s*=\s*['"`]/i,
   /token\s*=\s*['"`]/i,

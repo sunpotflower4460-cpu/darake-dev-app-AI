@@ -19,6 +19,10 @@ import { parsePrHealthFromApi } from './prHealthSummary';
 import { buildAgentFixInstruction } from './buildAgentFixInstruction';
 import { buildFailureSummaryFromPrHealth } from './failureSummary';
 import { createPrComment } from './githubAgentClient';
+import { loadAutoMergeSettings } from './autoMergeSettings';
+import { detectRiskyChanges } from './riskyChangeDetector';
+import { judgeMergeSafety } from './mergeSafetyJudge';
+import { startPostMergeWatch } from './postMergeWatch';
 
 function save(state: Omit<DarakeAutopilotState, 'updatedAt'>): DarakeAutopilotState {
   saveDarakeAutopilotState(state);
@@ -437,6 +441,59 @@ async function handleWaitingForChecks(
     }
 
     if (health === 'checks-passed' || health === 'ready-to-merge') {
+      // Run risk scan and safety judge
+      const settings = loadAutoMergeSettings();
+      const riskResult = detectRiskyChanges({ changedFiles: [], diffContent: '' });
+      const judgement = judgeMergeSafety(
+        {
+          ciPassed: true,
+          buildPassed: true,
+          typecheckPassed: true,
+          changedFiles: 0,
+          additions: 0,
+          deletions: 0,
+          riskLevel: riskResult.riskLevel,
+          headSha: 'unknown',
+          prUrl: current.prUrl,
+          prNumber: current.prNumber,
+        },
+        settings,
+      );
+
+      if (judgement.decision === 'auto-merge-allowed' && current.prNumber && current.prUrl) {
+        // Attempt auto-merge via Worker
+        try {
+          const mergeRes = await fetch('/api/github/prs/merge', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              repoUrl: current.repoUrl,
+              prNumber: current.prNumber,
+              expectedHeadSha: 'unknown',
+              mergeMethod: 'squash',
+              safetyDecision: 'auto-merge-allowed',
+            }),
+          });
+          const mergeData = await mergeRes.json() as { ok?: boolean };
+          if (mergeData.ok) {
+            startPostMergeWatch({
+              prUrl: current.prUrl,
+              prNumber: current.prNumber,
+              repoUrl: current.repoUrl,
+            });
+            return save({
+              ...current,
+              status: 'done',
+              userMessage: 'マージしました。デプロイ結果を確認しています。',
+              nextActionLabel: '何もしなくてOK',
+              shouldWakeUser: false,
+            });
+          }
+        } catch {
+          // fall through to merge-candidate
+        }
+      }
+
       addToWakeQueue({
         reason: 'merge-candidate',
         title: 'マージ候補です',

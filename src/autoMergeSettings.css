@@ -1,0 +1,111 @@
+.autoMergeSettingsPanel {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.autoMergeSettingsPanel__title {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 12px;
+  color: #1a202c;
+}
+.autoMergeSettingsPanel__mode {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.autoMergeSettingsPanel__modeBtn {
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  background: #f7fafc;
+  cursor: pointer;
+}
+.autoMergeSettingsPanel__modeBtn--active {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #3b82f6;
+}
+.autoMergeSettingsPanel__note {
+  font-size: 12px;
+  color: #718096;
+  margin-top: 8px;
+}
+.autoMergeSettingsPanel__saved {
+  font-size: 12px;
+  color: #38a169;
+  margin-top: 6px;
+}
+
+/* PostMergeWatchCard */
+.postMergeWatchCard {
+  background: #ebf8ff;
+  border: 1px solid #90cdf4;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.postMergeWatchCard--failed {
+  background: #fff5f5;
+  border-color: #feb2b2;
+}
+.postMergeWatchCard__title {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+.postMergeWatchCard__status {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.postMergeWatchCard__message {
+  font-size: 13px;
+  color: #4a5568;
+  margin-bottom: 6px;
+}
+.postMergeWatchCard__next {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2b6cb0;
+}
+
+/* RollbackSuggestionCard */
+.rollbackSuggestionCard {
+  background: #fffff0;
+  border: 1px solid #f6e05e;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.rollbackSuggestionCard__title {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+.rollbackSuggestionCard__toggle {
+  background: none;
+  border: 1px solid #d69e2e;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+.rollbackSuggestionCard__steps {
+  font-size: 13px;
+  padding-left: 20px;
+  margin-bottom: 8px;
+}
+.rollbackSuggestionCard__steps li {
+  margin-bottom: 4px;
+}
+.rollbackSuggestionCard__warning {
+  font-size: 11px;
+  color: #744210;
+  margin-top: 6px;
+}
