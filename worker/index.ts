@@ -1051,6 +1051,7 @@ async function handleSetupStatus(_request: Request, env: Env): Promise<Response>
 }
 
 
+async function handleTestNotification(request: Request, env: Env): Promise<Response> {
   if (request.method !== "POST") {
     return json({ ok: false, code: "INVALID_INPUT", error: "POSTだけ使えます" }, 405);
   }

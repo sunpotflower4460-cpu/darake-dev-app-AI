@@ -441,53 +441,70 @@ async function handleWaitingForChecks(
     }
 
     if (health === 'checks-passed' || health === 'ready-to-merge') {
-      // Run risk scan and safety judge
       const settings = loadAutoMergeSettings();
-      const riskResult = detectRiskyChanges({ changedFiles: [], diffContent: '' });
-      const judgement = judgeMergeSafety(
-        {
-          ciPassed: true,
-          buildPassed: true,
-          typecheckPassed: true,
-          changedFiles: 0,
-          additions: 0,
-          deletions: 0,
-          riskLevel: riskResult.riskLevel,
-          headSha: 'unknown',
-          prUrl: current.prUrl,
-          prNumber: current.prNumber,
-        },
-        settings,
-      );
 
-      if (judgement.decision === 'auto-merge-allowed' && current.prNumber && current.prUrl) {
-        // Attempt auto-merge via Worker
+      if (settings.mode === 'low-risk-only' && current.prNumber && current.prUrl && current.repoUrl) {
+        // Fetch real PR risk input before attempting merge
         try {
-          const mergeRes = await fetch('/api/github/prs/merge', {
+          const riskRes = await fetch('/api/github/prs/risk-input', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              repoUrl: current.repoUrl,
-              prNumber: current.prNumber,
-              expectedHeadSha: 'unknown',
-              mergeMethod: 'squash',
-              safetyDecision: 'auto-merge-allowed',
-            }),
+            body: JSON.stringify({ repoUrl: current.repoUrl, prNumber: current.prNumber }),
           });
-          const mergeData = await mergeRes.json() as { ok?: boolean };
-          if (mergeData.ok) {
-            startPostMergeWatch({
-              prUrl: current.prUrl,
-              prNumber: current.prNumber,
-              repoUrl: current.repoUrl,
-            });
-            return save({
-              ...current,
-              status: 'done',
-              userMessage: 'マージしました。デプロイ結果を確認しています。',
-              nextActionLabel: '何もしなくてOK',
-              shouldWakeUser: false,
-            });
+          const riskData = await riskRes.json() as {
+            ok?: boolean;
+            headSha?: string;
+            changedFiles?: number;
+            additions?: number;
+            deletions?: number;
+          };
+
+          if (riskData.ok && riskData.headSha) {
+            const riskResult = detectRiskyChanges({ changedFiles: [], diffContent: '' });
+            const judgement = judgeMergeSafety(
+              {
+                ciPassed: true,
+                buildPassed: true,
+                typecheckPassed: true,
+                changedFiles: riskData.changedFiles ?? 0,
+                additions: riskData.additions ?? 0,
+                deletions: riskData.deletions ?? 0,
+                riskLevel: riskResult.riskLevel,
+                headSha: riskData.headSha,
+                prUrl: current.prUrl,
+                prNumber: current.prNumber,
+              },
+              settings,
+            );
+
+            if (judgement.decision === 'auto-merge-allowed') {
+              const mergeRes = await fetch('/api/github/prs/merge', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  repoUrl: current.repoUrl,
+                  prNumber: current.prNumber,
+                  expectedHeadSha: riskData.headSha,
+                  mergeMethod: 'squash',
+                  safetyDecision: 'auto-merge-allowed',
+                }),
+              });
+              const mergeData = await mergeRes.json() as { ok?: boolean };
+              if (mergeData.ok) {
+                startPostMergeWatch({
+                  prUrl: current.prUrl,
+                  prNumber: current.prNumber,
+                  repoUrl: current.repoUrl,
+                });
+                return save({
+                  ...current,
+                  status: 'done',
+                  userMessage: 'マージしました。デプロイ結果を確認しています。',
+                  nextActionLabel: '何もしなくてOK',
+                  shouldWakeUser: false,
+                });
+              }
+            }
           }
         } catch {
           // fall through to merge-candidate
