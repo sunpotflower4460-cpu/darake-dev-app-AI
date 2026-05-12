@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
+import { ExternalLink, ChevronDown, ChevronUp, Copy, Check } from 'lucide-react';
 import { decideMainBuildFlowStep } from '../utils/mainBuildFlowController';
 import { loadGentleAppStartForm, saveGentleAppStartForm, buildEmptyGentleAppStartForm } from '../utils/gentleAppStartForm';
 import { loadOmakaseStartState } from '../utils/omakaseStartState';
@@ -52,6 +52,7 @@ export function MainBuildFlowCard() {
   const [isStarting, setIsStarting] = useState(false);
   const [startError, setStartError] = useState<string | null>(null);
   const [showHealthCheck, setShowHealthCheck] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => subscribeDarakeRuntimeEvents(() => setRevision((v) => v + 1)), []);
 
@@ -135,6 +136,17 @@ export function MainBuildFlowCard() {
     }
   }
 
+  async function handleCopyFallback() {
+    if (!decision.fallbackInstruction) return;
+    try {
+      await navigator.clipboard.writeText(decision.fallbackInstruction);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // ignore
+    }
+  }
+
   // ── Render ────────────────────────────────────────────────────────────────
 
   const { step } = decision;
@@ -192,6 +204,23 @@ export function MainBuildFlowCard() {
 
       {/* Message */}
       <div className="mainBuildFlowCard__message">{decision.message}</div>
+
+      {/* Fallback copy button — shown when Copilot assign failed, so user can paste in Cloud Agent */}
+      {decision.fallbackInstruction && (
+        <div className="mainBuildFlowCard__actions">
+          <button
+            type="button"
+            className="mainBuildFlowCard__btn mainBuildFlowCard__btn--secondary"
+            onClick={handleCopyFallback}
+          >
+            {copied ? (
+              <><Check size={14} style={{ marginRight: 4 }} />コピーしました</>
+            ) : (
+              <><Copy size={14} style={{ marginRight: 4 }} />Cloud Agentに貼る指示をコピー</>
+            )}
+          </button>
+        </div>
+      )}
 
       {/* Wake reason (for blocked/needs-human) */}
       {decision.wakeReason && isAlert && (
@@ -326,6 +355,15 @@ export function MainBuildFlowCard() {
       {/* Collapsed details */}
       {showDetails && (
         <div className="mainBuildFlowCard__details">
+          {/* Cloud Agent fallback instruction (full text, copy-only, shown only in details) */}
+          {decision.fallbackInstruction && (
+            <div className="mainBuildFlowCard__detailsSection">
+              <div className="mainBuildFlowCard__detailsLabel">Cloud Agentに貼る指示（全文）</div>
+              <pre className="mainBuildFlowCard__detailsPre">
+                {decision.fallbackInstruction}
+              </pre>
+            </div>
+          )}
           {/* Test run link */}
           <div className="mainBuildFlowCard__detailsSection">
             <div className="mainBuildFlowCard__detailsLabel">実地テスト</div>

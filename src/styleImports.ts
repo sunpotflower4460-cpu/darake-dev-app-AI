@@ -98,6 +98,7 @@ import './darakeAutopilot.css';
 import './remoteAutopilot.css';
 import './wakeAction.css';
 import './settingsHealth.css';
+import './setupGuidance.css';
 import './autoMergeSettings.css';
 import './mergeSafety.css';
 import './darakeSetupChecklist.css';

@@ -31,6 +31,8 @@ export type MainBuildFlowDecision = {
   prUrl?: string;
   issueUrl?: string;
   wakeReason?: string;
+  /** Long Cloud Agent instruction for copy fallback (only when Copilot assign failed). */
+  fallbackInstruction?: string;
 };
 
 export type MainBuildFlowInput = {
@@ -288,6 +290,16 @@ export function decideMainBuildFlowStep(input: MainBuildFlowInput): MainBuildFlo
         wakeReason: omakase.userMessage,
       };
     }
+    if (omakase.status === 'assigned-to-agent') {
+      return {
+        step: 'agent-working',
+        title: '何もしなくてOK',
+        message: 'AIが作業中です。止まった時だけ知らせます。',
+        primaryLabel: '何もしなくてOK',
+        shouldShowDetails: false,
+        issueUrl: omakase.issueUrl,
+      };
+    }
     if (omakase.status === 'cloud-agent-ready' || omakase.status === 'issue-created') {
       return {
         step: 'agent-working',
@@ -296,6 +308,7 @@ export function decideMainBuildFlowStep(input: MainBuildFlowInput): MainBuildFlo
         primaryLabel: '何もしなくてOK',
         shouldShowDetails: false,
         issueUrl: omakase.issueUrl,
+        fallbackInstruction: omakase.fallbackInstruction,
       };
     }
   }
