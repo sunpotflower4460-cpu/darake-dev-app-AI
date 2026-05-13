@@ -207,7 +207,7 @@ function buildActionState(args: {
   if (!args.hasSeed) {
     return {
       status: 'まずは作りたいものを1つ置きます。',
-      next: '2つの欄を書いて、下の大きいボタンを押すだけです。',
+      next: 'テストなら「サンプルで一気に試す」で、入力から開始までまとめて進められます。',
       stop: 'なし',
       action: { label: 'この内容でAIに任せる', tone: 'primary' },
     };
@@ -319,9 +319,7 @@ export function DarakeHumanOnePageCockpit() {
     setSeedError(null);
   }
 
-  function saveSeedFromOnePage(): boolean {
-    const appNameValue = seedAppName.trim();
-    const ideaValue = seedIdea.trim();
+  function saveSeedValues(appNameValue: string, ideaValue: string): boolean {
     if (!appNameValue || !ideaValue) {
       setSeedError('アプリ名と一行アイデアだけ入れてください。');
       return false;
@@ -341,6 +339,10 @@ export function DarakeHumanOnePageCockpit() {
     return true;
   }
 
+  function saveSeedFromOnePage(): boolean {
+    return saveSeedValues(seedAppName.trim(), seedIdea.trim());
+  }
+
   async function runSafeStartFlow() {
     setIsStarting(true);
     try {
@@ -349,6 +351,15 @@ export function DarakeHumanOnePageCockpit() {
       setIsStarting(false);
       setRevision((v) => v + 1);
     }
+  }
+
+  async function runSampleStartFlow() {
+    if (isStarting) return;
+    setSeedAppName(TEST_SEED_TEMPLATE.appName);
+    setSeedIdea(TEST_SEED_TEMPLATE.oneLineIdea);
+    const saved = saveSeedValues(TEST_SEED_TEMPLATE.appName, TEST_SEED_TEMPLATE.oneLineIdea);
+    if (!saved) return;
+    await runSafeStartFlow();
   }
 
   async function handlePrimaryAction() {
@@ -396,14 +407,23 @@ export function DarakeHumanOnePageCockpit() {
           <div className="darakeHumanOnePage__seedForm" aria-label="アプリの種">
             <div className="darakeHumanOnePage__seedGuide">
               <strong>まずはここだけ</strong>
-              <span>テストならサンプルを入れて、そのまま大きいボタンを押せます。</span>
+              <span>テストなら1ボタンで入力から開始まで進められます。</span>
             </div>
+            <button
+              type="button"
+              className="darakeHumanOnePage__templateButton darakeHumanOnePage__templateButton--primary"
+              onClick={runSampleStartFlow}
+              disabled={primaryDisabled}
+            >
+              サンプルで一気に試す
+            </button>
             <button
               type="button"
               className="darakeHumanOnePage__templateButton"
               onClick={fillTestSeedTemplate}
+              disabled={primaryDisabled}
             >
-              サンプルを入れる（テスト用）
+              サンプルを入力欄に入れるだけ
             </button>
             <label className="darakeHumanOnePage__field">
               <span>アプリ名</span>
