@@ -25,9 +25,9 @@ export async function sendTelegramNotification(
 
   const text = [
     'だらけ管制室',
-    '起きる必要があります。',
+    '後で確認すればOKです。',
     `理由：\n${payload.reason}`,
-    `次にやること：\n${payload.nextActionLabel}`,
+    `後で見ること：\n${payload.nextActionLabel}`,
     payload.actionUrl ? `開く:\n${payload.actionUrl}` : '',
   ]
     .filter(Boolean)
@@ -106,7 +106,11 @@ export async function sendWebhookNotification(
 }
 
 /**
- * Returns whether a wake notification should be sent, considering dedup window.
+ * Returns whether a later-review notification should be sent, considering dedup window.
+ *
+ * Compatibility note:
+ * Internally this is still called "wake" in a few places to avoid a risky rename.
+ * User-facing copy should say "後で確認" / "聞くこと" rather than "起きる".
  */
 const WAKE_DEDUP_WINDOW_MS = 1000 * 60 * 60 * 6; // 6時間
 
@@ -121,7 +125,10 @@ export function shouldSendWake(
 }
 
 /**
- * Reasons that should trigger a wake notification.
+ * Reasons that should be added to the later-review / question list.
+ *
+ * Compatibility note:
+ * The exported constant keeps the old name for now. Treat these as "後で見る理由".
  */
 export const WAKE_NOTIFY_REASONS = new Set([
   'merge-candidate',
@@ -136,7 +143,7 @@ export const WAKE_NOTIFY_REASONS = new Set([
 ]);
 
 /**
- * Reasons that should NOT trigger a wake notification.
+ * Reasons that should stay silent and keep moving.
  */
 export const WAKE_SILENT_REASONS = new Set([
   'issue-created',

@@ -168,7 +168,8 @@ async function sendWakeNotification(
 ): Promise<void> {
   if (!shouldSendWake(run.lastWakeReason, run.wakeSentAt, reason)) return;
 
-  // Create a wake action token so the user can act with one tap
+  // Create an action token so the user can handle the item later with one tap.
+  // Compatibility note: token plumbing still uses "wakeAction" names for now.
   let wakeActionUrl: string | undefined;
   if (env.RUN_REGISTRY_KV && env.APP_URL) {
     const token = createWakeActionToken({
@@ -189,8 +190,8 @@ async function sendWakeNotification(
   }
 
   const payload: DarakeWebhookPayload = {
-    title: 'だらけ管制室 - 起きる必要があります',
-    message: `${run.appName} で確認が必要です`,
+    title: 'だらけ管制室 - 後で確認することがあります',
+    message: `${run.appName} で後で見ればよい項目があります`,
     reason,
     nextActionLabel,
     actionUrl: wakeActionUrl ?? actionUrl,
@@ -260,7 +261,7 @@ async function processRun(run: DarakeRemoteRun, env: RunnerEnv): Promise<DarakeR
         env,
         updated,
         'PRがマージ候補になりました',
-        'PRを開いて確認してください',
+        'PRを後で確認してください',
         'open-pr',
         updated.prUrl,
       );
@@ -284,7 +285,7 @@ async function processRun(run: DarakeRemoteRun, env: RunnerEnv): Promise<DarakeR
         env,
         updated,
         `Build失敗が${maxAttempts}回続きました`,
-        '詳細を確認してください',
+        '後で詳細を確認してください',
         'show-details',
         updated.prUrl,
       );
@@ -299,7 +300,7 @@ async function processRun(run: DarakeRemoteRun, env: RunnerEnv): Promise<DarakeR
       return saved;
     }
 
-    // Send wake notification so user can send fix request with one tap
+    // Add a later-review action so the user can send a fix request with one tap.
     const attemptNum = updated.autoFixAttempts + 1;
     const fixBody = `## だらけ自動修正リクエスト (試行 ${attemptNum}/${maxAttempts})\n\nCIが失敗しました。エラーを確認して修正してください。`;
     await sendWakeNotification(
