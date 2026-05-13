@@ -14,6 +14,10 @@ import { isFirstStartMinimalModeReleased } from './utils/firstStartMinimalMode';
 import { loadFirstStartStep } from './utils/firstStartStep';
 import { subscribeDarakeRuntimeEvents } from './utils/darakeRuntimeEvents';
 import { getWakeActionTokenIdFromUrl, clearWakeActionFromUrl } from './utils/wakeActionRouter';
+import {
+  DARAKE_NAV_GROUP_CHANGE_EVENT,
+  type DarakeNavGroupChangeDetail,
+} from './utils/darakeNavGroupChange';
 import './styleImports';
 
 const VALID_NAV_GROUPS = new Set<string>([
@@ -33,6 +37,7 @@ const VALID_NAV_GROUPS = new Set<string>([
 ]);
 
 const FIRST_START_PON_VISIBLE_PANEL_IDS = [
+  'darake-compact-cockpit',
   'main-build-flow-card',
   'darake-health-check',
   'omakase-start',
@@ -89,7 +94,7 @@ function loadSavedNavGroup(): DarakeNavGroupId | 'all' {
   } catch {
     // ignore
   }
-  return 'all';
+  return 'home';
 }
 
 function useDarakeRuntimeRevision(): number {
@@ -113,6 +118,15 @@ function DarakeControlRoom({ firstStartActive }: { firstStartActive: boolean }) 
   useEffect(() => {
     saveFocusedModeId(focusedMode);
   }, [focusedMode]);
+
+  useEffect(() => {
+    function onNavChange(e: Event) {
+      const detail = (e as CustomEvent<DarakeNavGroupChangeDetail>).detail;
+      setActiveGroup(detail.group);
+    }
+    window.addEventListener(DARAKE_NAV_GROUP_CHANGE_EVENT, onNavChange);
+    return () => window.removeEventListener(DARAKE_NAV_GROUP_CHANGE_EVENT, onNavChange);
+  }, []);
 
   const filteredPanels = useMemo(() => {
     if (firstStartActive) {
@@ -191,7 +205,14 @@ function DarakeRoot() {
 
   return (
     <>
-      {!firstStartActive && <App />}
+      {!firstStartActive && (
+        <details className="darakeAppDetailsCollapse">
+          <summary className="darakeAppDetailsCollapse__summary">
+            詳細な説明を見る（Darake Dev App AI / Gate）
+          </summary>
+          <App />
+        </details>
+      )}
       <section className="appShell boundaryShell">
         <DarakeControlRoom firstStartActive={firstStartActive} />
       </section>
