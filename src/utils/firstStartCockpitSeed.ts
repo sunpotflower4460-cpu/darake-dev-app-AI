@@ -15,6 +15,7 @@ const DEFAULT_HARD_STOPS = [
   'secretを保存しない',
 ];
 const SLEEP_SESSION_TITLE_SUFFIX = '今夜進める候補';
+const MAX_SEED_TASKS = 5;
 
 function splitTextList(value: string): string[] {
   return value
@@ -71,6 +72,6 @@ export function createCockpitSeedFromFirstStartForm(formData: GentleAppStartForm
   const tasks = createTasksFromBlueprint(blueprint);
   if (tasks.length === 0) return;
 
-  const seedTaskIds = tasks.slice(0, 5).map((task) => task.id);
+  const seedTaskIds = tasks.slice(0, MAX_SEED_TASKS).map((task) => task.id);
   createSleepSessionFromQueue(seedTaskIds, `${appName} ${SLEEP_SESSION_TITLE_SUFFIX}`);
 }

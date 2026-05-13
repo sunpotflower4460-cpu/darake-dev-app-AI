@@ -50,7 +50,7 @@ export function PonStartPanel() {
       <div className="ponSub">{summarizePonStartPack(pack)}</div>
 
       <div className="ponCockpitSummary">
-        あなたのアプリ案を、設計図 / タスクキュー / 今夜進める候補 / 朝レポート導線 / Cloud Agent指示（任意）に変換できます。
+        あなたのアプリ案を、設計図 / タスクキュー / 今夜進める候補 / 朝レポートにつながる導線 / Cloud Agent指示（任意）に変換できます。
       </div>
 
       <span className={`ponStatusBadge ${pack.status}`}>
