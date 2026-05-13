@@ -79,12 +79,14 @@
   line-height: 1.55;
 }
 
+.darakeHumanOnePage__beginnerGuide,
 .darakeHumanOnePage__settingGuide {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
+.darakeHumanOnePage__beginnerGuide div,
 .darakeHumanOnePage__settingGuide div {
   display: flex;
   flex-direction: column;
@@ -95,6 +97,12 @@
   background: rgba(255, 255, 255, 0.62);
 }
 
+.darakeHumanOnePage__beginnerGuide div {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(40, 92, 57, 0.14);
+}
+
+.darakeHumanOnePage__beginnerGuide div span,
 .darakeHumanOnePage__settingGuide div span {
   color: rgba(23, 37, 28, 0.52);
   font-size: 0.76rem;
@@ -102,6 +110,7 @@
   letter-spacing: 0.05em;
 }
 
+.darakeHumanOnePage__beginnerGuide div strong,
 .darakeHumanOnePage__settingGuide div strong {
   color: #17251c;
   font-size: 0.92rem;
@@ -116,6 +125,27 @@
   font-size: 0.92rem;
   font-weight: 800;
   line-height: 1.65;
+}
+
+.darakeHumanOnePage__beginnerDetails {
+  border: 1px dashed rgba(44, 78, 54, 0.18);
+  border-radius: 16px;
+  padding: 11px 13px;
+  background: rgba(255, 255, 255, 0.46);
+  color: rgba(23, 37, 28, 0.64);
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1.65;
+}
+
+.darakeHumanOnePage__beginnerDetails > summary {
+  color: #285c39;
+  cursor: pointer;
+  font-weight: 950;
+}
+
+.darakeHumanOnePage__beginnerDetails p {
+  margin: 10px 0 0;
 }
 
 .darakeHumanOnePage__templateButton {
@@ -469,6 +499,7 @@
     border-radius: 24px;
   }
 
+  .darakeHumanOnePage__beginnerGuide div strong,
   .darakeHumanOnePage__settingGuide div strong {
     font-size: 0.86rem;
   }
