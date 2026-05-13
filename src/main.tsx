@@ -226,16 +226,34 @@ function DarakeDetailsShell({ mode }: { mode: Exclude<DarakeHumanViewMode, 'huma
           1ページに戻る
         </button>
       </div>
-      {mode === 'debug' && (
-        <details className="darakeAppDetailsCollapse">
-          <summary className="darakeAppDetailsCollapse__summary">
-            詳細な説明を見る（Darake Dev App AI / Gate）
-          </summary>
-          <App />
+      <section className="darakeHumanDetailsShell__card">
+        <span className="darakeHumanDetailsShell__label">確認ページ</span>
+        <h2>必要な確認は1ページ目に出します</h2>
+        <p>
+          ここは補助ページです。リポジトリURLなど、いま人間が直す必要がある項目は1ページ目に短く表示します。
+          迷ったら上の「1ページに戻る」だけ押してください。
+        </p>
+        <button
+          type="button"
+          className="darakeHumanDetailsShell__wideButton"
+          onClick={() => requestDarakeHumanViewModeChange('human')}
+        >
+          1ページに戻る
+        </button>
+        <details className="darakeHumanDetailsShell__developerDetails">
+          <summary>開発用の長い画面を開く</summary>
+          {mode === 'debug' && (
+            <details className="darakeAppDetailsCollapse">
+              <summary className="darakeAppDetailsCollapse__summary">
+                詳細な説明を見る（Darake Dev App AI / Gate）
+              </summary>
+              <App />
+            </details>
+          )}
+          <section className="appShell boundaryShell">
+            <DarakeControlRoom firstStartActive={false} forceAllPanels={mode === 'debug'} />
+          </section>
         </details>
-      )}
-      <section className="appShell boundaryShell">
-        <DarakeControlRoom firstStartActive={false} forceAllPanels={mode === 'debug'} />
       </section>
     </div>
   );
