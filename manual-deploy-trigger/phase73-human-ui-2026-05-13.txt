@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 73 human UI polish.
+
+Purpose:
+- Deploy latest main after PR #166.
+- Verify the one-page cockpit is easier for humans to understand from first use.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T04:45:00Z
