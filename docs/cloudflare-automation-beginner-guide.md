@@ -33,7 +33,7 @@ https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/clou
 
 ## 何を自動化するの？
 
-今までCloudflare画面で探していたON/OFFスイッチ、Worker用のGitHub鍵、そして分かる場合のCloudflare Account IDを、GitHub Actions側で処理します。
+今までCloudflare画面で探していたON/OFFスイッチ、Worker用のGitHub鍵、分かる場合のCloudflare Account ID、そして実行結果の読み取りを、GitHub Actions側で処理します。
 
 ```text
 GITHUB_ISSUE_CREATE_ENABLED = true
@@ -52,6 +52,32 @@ CLOUDFLARE_ACCOUNT_ID
 ```
 
 これは、Cloudflareアカウントが1つだけなら Actions が自動推定します。
+
+---
+
+## Phase 87: 結果を読まなくていいようにする
+
+Cloudflare Setup の実行結果は、GitHub Actions の Summary に人間向けで表示します。
+
+```text
+成功
+→ 完了。だらけdev appに戻って「設定したので再チェック」
+```
+
+```text
+CLOUDFLARE_API_TOKEN がない
+→ GitHub側に CLOUDFLARE_API_TOKEN を追加
+```
+
+```text
+Cloudflareアカウントが複数ある
+→ CLOUDFLARE_ACCOUNT_ID だけ追加
+```
+
+```text
+WORKER_GITHUB_TOKEN がない
+→ Issue作成まで自動化したい場合だけ追加
+```
 
 ---
 
@@ -164,11 +190,27 @@ worker_name: darakedevapp
 sync_worker_github_token: true
 ```
 
-実行に成功すると、`wrangler.toml` の `[vars]` とWorker SecretがCloudflareに反映されます。
+---
+
+## 5. 結果を見る場所
+
+GitHub Actions の実行画面で、Summary を見ます。
+
+そこに次のように出ます。
+
+```text
+完了
+```
+
+または、
+
+```text
+まだ足りないものがあります
+```
 
 ---
 
-## 5. 終わったら何をする？
+## 6. 終わったら何をする？
 
 だらけdev app に戻って、次のボタンを押します。
 
@@ -190,6 +232,8 @@ GITHUB_ISSUE_CREATE_ENABLED は wrangler.toml から反映される
 WORKER_GITHUB_TOKEN は Cloudflare Worker の GITHUB_TOKEN として同期される
 ↓
 CLOUDFLARE_ACCOUNT_ID は1アカウントなら自動推定される
+↓
+Actions Summary が結果を人間向けに翻訳する
 ↓
 人間はボタンを押すだけになる
 ```
