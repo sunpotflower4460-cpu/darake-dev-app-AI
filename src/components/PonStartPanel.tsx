@@ -27,6 +27,7 @@ export function PonStartPanel() {
   }
 
   function handleOpenControlRoom() {
+    createCockpitSeedFromFirstStartForm(loadGentleAppStartForm());
     releaseFirstStartMinimalMode();
   }
 
