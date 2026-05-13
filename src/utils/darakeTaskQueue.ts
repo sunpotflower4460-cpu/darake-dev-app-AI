@@ -61,7 +61,7 @@ export function addDarakeTask(
   const now = new Date().toISOString();
   const newTask: DarakeTask = {
     ...task,
-    id: `task-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    id: `task-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`,
     createdAt: now,
     updatedAt: now,
   };

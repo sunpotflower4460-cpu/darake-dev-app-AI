@@ -43,7 +43,7 @@ export function createSleepSessionFromQueue(
   const sessions = loadSleepSessions();
   const now = new Date().toISOString();
   const session: DarakeSleepSession = {
-    id: `session-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    id: `session-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`,
     title: title ?? `今夜のセッション ${new Date().toLocaleDateString('ja-JP')}`,
     status: 'draft',
     taskIds,

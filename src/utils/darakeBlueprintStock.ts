@@ -1,6 +1,5 @@
 import {
   type DarakeTask,
-  addDarakeTask,
   loadDarakeTaskQueue,
   saveDarakeTaskQueue,
 } from './darakeTaskQueue';
@@ -53,7 +52,7 @@ export function addBlueprint(
   const now = new Date().toISOString();
   const newBp: DarakeBlueprint = {
     ...bp,
-    id: `bp-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    id: `bp-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`,
     createdAt: now,
     updatedAt: now,
   };
@@ -164,9 +163,6 @@ export function createTasksFromBlueprint(blueprint: DarakeBlueprint): DarakeTask
   const existingTasks = loadDarakeTaskQueue();
   const merged = [...existingTasks, ...tasks];
   saveDarakeTaskQueue(merged);
-
-  // Suppress unused import warning
-  void addDarakeTask;
 
   return tasks;
 }

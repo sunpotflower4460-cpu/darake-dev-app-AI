@@ -29,7 +29,7 @@ export function processSleepSessionTick(
 ): SleepRunnerResult {
   // TODO: load active session if available
   // TODO: pick next runnable task (use getNextRunnableTask)
-  void getNextRunnableTask(tasks);
+  // Scaffold: getNextRunnableTask(tasks) would be called here when wired up
 
   return {
     sessionId: session.id,

@@ -64,7 +64,7 @@ export function buildCockpitMorningReport(
     .map((t) => t.prUrl as string);
 
   return {
-    id: `report-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    id: `report-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`,
     sessionId: session?.id,
     title: session
       ? `朝レポート: ${session.title}`
