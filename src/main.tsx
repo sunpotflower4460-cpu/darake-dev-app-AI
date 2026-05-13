@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { DarakeHumanOnePageCockpit } from './components/DarakeHumanOnePageCockpit';
 import { DarakeNavigationBar } from './components/DarakeNavigationBar';
 import { DarakeTopCommandPanel } from './components/DarakeTopCommandPanel';
 import { FocusedModePanel } from './components/FocusedModePanel';
@@ -18,6 +19,13 @@ import {
   DARAKE_NAV_GROUP_CHANGE_EVENT,
   type DarakeNavGroupChangeDetail,
 } from './utils/darakeNavGroupChange';
+import {
+  DARAKE_HUMAN_VIEW_MODE_CHANGE_EVENT,
+  loadDarakeHumanViewMode,
+  requestDarakeHumanViewModeChange,
+  type DarakeHumanViewMode,
+  type DarakeHumanViewModeChangeDetail,
+} from './utils/darakeHumanViewMode';
 import './styleImports';
 
 const VALID_NAV_GROUPS = new Set<string>([
@@ -103,7 +111,28 @@ function useDarakeRuntimeRevision(): number {
   return revision;
 }
 
-function DarakeControlRoom({ firstStartActive }: { firstStartActive: boolean }) {
+function useDarakeHumanMode(): DarakeHumanViewMode {
+  const [mode, setMode] = useState<DarakeHumanViewMode>(loadDarakeHumanViewMode);
+
+  useEffect(() => {
+    function onModeChange(e: Event) {
+      const detail = (e as CustomEvent<DarakeHumanViewModeChangeDetail>).detail;
+      setMode(detail.mode);
+    }
+    window.addEventListener(DARAKE_HUMAN_VIEW_MODE_CHANGE_EVENT, onModeChange);
+    return () => window.removeEventListener(DARAKE_HUMAN_VIEW_MODE_CHANGE_EVENT, onModeChange);
+  }, []);
+
+  return mode;
+}
+
+function DarakeControlRoom({
+  firstStartActive,
+  forceAllPanels = false,
+}: {
+  firstStartActive: boolean;
+  forceAllPanels?: boolean;
+}) {
   const [activeGroup, setActiveGroup] = useState<DarakeNavGroupId | 'all'>(loadSavedNavGroup);
   const [focusedMode, setFocusedMode] = useState<FocusedModeId>(loadFocusedModeId);
 
@@ -134,13 +163,17 @@ function DarakeControlRoom({ firstStartActive }: { firstStartActive: boolean }) 
       return ALL_PANELS.filter((panel) => visibleIds.has(panel.id));
     }
 
+    if (forceAllPanels) {
+      return ALL_PANELS;
+    }
+
     const mode = getFocusedModeById(focusedMode);
     return ALL_PANELS.filter((panel) => {
       if (activeGroup !== 'all' && panel.group !== activeGroup) return false;
       if (focusedMode !== 'all' && !mode.navGroups.includes(panel.group)) return false;
       return true;
     });
-  }, [activeGroup, focusedMode, firstStartActive]);
+  }, [activeGroup, focusedMode, firstStartActive, forceAllPanels]);
 
   if (firstStartActive) {
     return (
@@ -158,7 +191,7 @@ function DarakeControlRoom({ firstStartActive }: { firstStartActive: boolean }) 
     <>
       <div className="panel statusModePanel">
         <DarakeTopCommandPanel
-          activeGroup={activeGroup}
+          activeGroup={forceAllPanels ? 'all' : activeGroup}
           focusedMode={focusedMode}
           totalPanels={ALL_PANELS.length}
           visiblePanels={filteredPanels.length}
@@ -167,7 +200,7 @@ function DarakeControlRoom({ firstStartActive }: { firstStartActive: boolean }) 
         />
       </div>
       <div className="panel statusModePanel">
-        <DarakeNavigationBar activeGroup={activeGroup} onSelect={setActiveGroup} />
+        <DarakeNavigationBar activeGroup={forceAllPanels ? 'all' : activeGroup} onSelect={setActiveGroup} />
       </div>
       <div className="panel statusModePanel">
         <FocusedModePanel value={focusedMode} onModeChange={setFocusedMode} />
@@ -181,8 +214,50 @@ function DarakeControlRoom({ firstStartActive }: { firstStartActive: boolean }) 
   );
 }
 
+function DarakeDetailsShell({ mode }: { mode: Exclude<DarakeHumanViewMode, 'human'> }) {
+  return (
+    <div className="darakeHumanDetailsShell">
+      <div className="darakeHumanDetailsShell__bar">
+        <button
+          type="button"
+          className="darakeHumanDetailsShell__button darakeHumanDetailsShell__button--primary"
+          onClick={() => requestDarakeHumanViewModeChange('human')}
+        >
+          1ページに戻る
+        </button>
+        <button
+          type="button"
+          className="darakeHumanDetailsShell__button"
+          onClick={() => requestDarakeHumanViewModeChange('details')}
+        >
+          詳細
+        </button>
+        <button
+          type="button"
+          className="darakeHumanDetailsShell__button"
+          onClick={() => requestDarakeHumanViewModeChange('debug')}
+        >
+          AI内部/デバッグ
+        </button>
+      </div>
+      {mode === 'debug' && (
+        <details className="darakeAppDetailsCollapse">
+          <summary className="darakeAppDetailsCollapse__summary">
+            詳細な説明を見る（Darake Dev App AI / Gate）
+          </summary>
+          <App />
+        </details>
+      )}
+      <section className="appShell boundaryShell">
+        <DarakeControlRoom firstStartActive={false} forceAllPanels={mode === 'debug'} />
+      </section>
+    </div>
+  );
+}
+
 function DarakeRoot() {
   const revision = useDarakeRuntimeRevision();
+  const humanMode = useDarakeHumanMode();
   const firstStartActive = useMemo(
     () => !isFirstStartMinimalModeReleased(),
     [revision],
@@ -205,17 +280,15 @@ function DarakeRoot() {
 
   return (
     <>
-      {!firstStartActive && (
-        <details className="darakeAppDetailsCollapse">
-          <summary className="darakeAppDetailsCollapse__summary">
-            詳細な説明を見る（Darake Dev App AI / Gate）
-          </summary>
-          <App />
-        </details>
+      {firstStartActive ? (
+        <section className="appShell boundaryShell">
+          <DarakeControlRoom firstStartActive={firstStartActive} />
+        </section>
+      ) : humanMode === 'human' ? (
+        <DarakeHumanOnePageCockpit />
+      ) : (
+        <DarakeDetailsShell mode={humanMode} />
       )}
-      <section className="appShell boundaryShell">
-        <DarakeControlRoom firstStartActive={firstStartActive} />
-      </section>
       {wakeTokenId && (
         <div className="wakeActionOverlay">
           <div className="wakeActionOverlay__inner">
