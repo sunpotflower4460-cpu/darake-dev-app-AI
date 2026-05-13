@@ -214,8 +214,8 @@ function buildActionState(args: {
 
   if (args.cloudflareSettingKind === 'enable-issue') {
     return {
-      status: 'CloudflareのスイッチがOFFです。',
-      next: 'GITHUB_ISSUE_CREATE_ENABLED を true にすると、自動で作業場所を作れるようになります。',
+      status: 'アプリは正常です。外部設定が1つだけOFFです。',
+      next: 'Cloudflareで GITHUB_ISSUE_CREATE_ENABLED を true にすると、自動で作業場所を作れるようになります。',
       stop: 'Cloudflare設定',
       action: { label: '設定したので再チェック', tone: 'primary' },
       needsHumanReview: true,
@@ -224,7 +224,7 @@ function buildActionState(args: {
 
   if (args.cloudflareSettingKind === 'github-token') {
     return {
-      status: 'GitHub連携のSecretが未設定です。',
+      status: 'アプリは正常です。GitHub連携のSecretが未設定です。',
       next: 'Cloudflareに GITHUB_TOKEN をSecretとして設定すると、自動で作業場所を作れるようになります。',
       stop: 'Cloudflare Secret',
       action: { label: '設定したので再チェック', tone: 'primary' },
@@ -590,24 +590,22 @@ export function DarakeHumanOnePageCockpit() {
         {cloudflareSettingKind && (
           <div className="darakeHumanOnePage__repoFix" aria-label="Cloudflare設定の確認">
             <div className="darakeHumanOnePage__repoFixHeader">
-              <strong>{cloudflareSettingKind === 'enable-issue' ? 'CloudflareのスイッチをONにする' : 'GitHub連携のSecretを入れる'}</strong>
-              <span>これはCloudflare側の設定なので、ここだけ手動確認が必要です。</span>
+              <strong>{cloudflareSettingKind === 'enable-issue' ? 'Cloudflareで1つだけONにする' : 'CloudflareにSecretを1つ入れる'}</strong>
+              <span>アプリの故障ではありません。外部サービス側で、AIがGitHubに書き込む許可をONにする確認です。</span>
             </div>
             {cloudflareSettingKind === 'enable-issue' ? (
-              <div className="darakeHumanOnePage__hint">
-                1. Cloudflareを開く<br />
-                2. Workers &amp; Pages → このアプリ → Settings → Variables<br />
-                3. <strong>GITHUB_ISSUE_CREATE_ENABLED</strong> に <strong>true</strong> を入れる<br />
-                4. 保存して再デプロイ<br />
-                5. 戻って下のボタンを押す
+              <div className="darakeHumanOnePage__settingGuide">
+                <div><span>入れる名前</span><strong>GITHUB_ISSUE_CREATE_ENABLED</strong></div>
+                <div><span>入れる値</span><strong>true</strong></div>
+                <div><span>場所</span><strong>Cloudflare → Workers &amp; Pages → このアプリ → Settings → Variables</strong></div>
+                <p>保存して再デプロイしたあと、下の「設定したので再チェック」を押してください。</p>
               </div>
             ) : (
-              <div className="darakeHumanOnePage__hint">
-                1. GitHubでPersonal Access Tokenを用意する<br />
-                2. Cloudflareのこのアプリ → Settings → Variables<br />
-                3. Secretとして <strong>GITHUB_TOKEN</strong> を入れる<br />
-                4. 保存して再デプロイ<br />
-                5. 戻って下のボタンを押す
+              <div className="darakeHumanOnePage__settingGuide">
+                <div><span>入れる名前</span><strong>GITHUB_TOKEN</strong></div>
+                <div><span>入れる値</span><strong>GitHubのPersonal Access Token</strong></div>
+                <div><span>場所</span><strong>Cloudflare → Workers &amp; Pages → このアプリ → Settings → Variables → Secret</strong></div>
+                <p>保存して再デプロイしたあと、下の「設定したので再チェック」を押してください。</p>
               </div>
             )}
           </div>
