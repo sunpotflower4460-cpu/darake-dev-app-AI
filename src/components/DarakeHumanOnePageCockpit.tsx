@@ -5,6 +5,8 @@ import { loadGentleAppStartForm } from '../utils/gentleAppStartForm';
 import { loadDarakeTaskQueue } from '../utils/darakeTaskQueue';
 import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
 import { requestDarakeHumanViewModeChange } from '../utils/darakeHumanViewMode';
+import { loadOmakaseStartState } from '../utils/omakaseStartState';
+import { runOmakaseStart } from '../utils/runOmakaseStart';
 
 type HumanAction = {
   label: string;
@@ -18,7 +20,46 @@ function buildActionState(args: {
   blockedHard: number;
   done: number;
   hasReport: boolean;
+  isStarting: boolean;
+  omakaseStatus?: string;
+  omakaseMessage?: string;
 }): { status: string; next: string; stop: string; action: HumanAction } {
+  if (args.isStarting || args.omakaseStatus === 'preparing') {
+    return {
+      status: 'AIに渡す準備をしています。',
+      next: 'Issue作成とCloud Agentへの橋渡しを進めています。',
+      stop: 'なし',
+      action: { label: '進めています', tone: 'quiet' },
+    };
+  }
+
+  if (args.omakaseStatus === 'assigned-to-agent') {
+    return {
+      status: 'AIが作業中です。',
+      next: '今は何もしなくて大丈夫です。進捗だけ裏で見ます。',
+      stop: 'なし',
+      action: { label: '何もしなくてOK', tone: 'quiet' },
+    };
+  }
+
+  if (args.omakaseStatus === 'cloud-agent-ready') {
+    return {
+      status: 'Issueは作れました。',
+      next: 'Cloud Agentへの自動割り当てだけ確認が必要です。',
+      stop: 'なし',
+      action: { label: '詳細で確認する', tone: 'primary' },
+    };
+  }
+
+  if (args.omakaseStatus === 'blocked' || args.omakaseStatus === 'failed') {
+    return {
+      status: '進行が止まっています。',
+      next: args.omakaseMessage || '設定か入力内容を確認してください。',
+      stop: '確認あり',
+      action: { label: '詳細で確認する', tone: 'primary' },
+    };
+  }
+
   if (args.blockedHard > 0) {
     return {
       status: '止めるべき判断があります。',
@@ -83,6 +124,7 @@ function buildActionState(args: {
 
 export function DarakeHumanOnePageCockpit() {
   const [revision, setRevision] = useState(0);
+  const [isStarting, setIsStarting] = useState(false);
 
   useEffect(() => subscribeDarakeRuntimeEvents(() => setRevision((v) => v + 1)), []);
 
@@ -90,6 +132,7 @@ export function DarakeHumanOnePageCockpit() {
   const blueprints = useMemo(() => loadBlueprintStock(), [revision]);
   const tasks = useMemo(() => loadDarakeTaskQueue(), [revision]);
   const reports = useMemo(() => loadCockpitMorningReports(), [revision]);
+  const omakase = useMemo(() => loadOmakaseStartState(), [revision, isStarting]);
 
   const latestBlueprint = blueprints[blueprints.length - 1] ?? null;
   const appName = form?.appName?.trim() || latestBlueprint?.appName || 'まだ名前のないアプリ';
@@ -100,26 +143,53 @@ export function DarakeHumanOnePageCockpit() {
   const blockedHard = tasks.filter((task) => task.status === 'blocked-hard').length;
   const done = tasks.filter((task) => task.status === 'done').length;
 
+  const hasSeed = Boolean(latestBlueprint || tasks.length > 0 || form?.oneLineIdea?.trim());
   const state = buildActionState({
-    hasSeed: Boolean(latestBlueprint || tasks.length > 0 || form?.oneLineIdea?.trim()),
+    hasSeed,
     queued,
     askLater,
     blockedHard,
     done,
     hasReport: reports.length > 0,
+    isStarting,
+    omakaseStatus: omakase?.status,
+    omakaseMessage: omakase?.userMessage,
   });
 
-  function handlePrimaryAction() {
-    if (!latestBlueprint && tasks.length === 0) {
+  async function handlePrimaryAction() {
+    if (isStarting) return;
+
+    if (!hasSeed) {
       requestDarakeHumanViewModeChange('details');
       return;
     }
-    if (blockedHard > 0 || askLater > 0 || reports.length > 0) {
+
+    if (
+      blockedHard > 0 ||
+      askLater > 0 ||
+      reports.length > 0 ||
+      omakase?.status === 'blocked' ||
+      omakase?.status === 'failed' ||
+      omakase?.status === 'cloud-agent-ready'
+    ) {
       requestDarakeHumanViewModeChange('details');
       return;
     }
-    requestDarakeHumanViewModeChange('details');
+
+    if (omakase?.status === 'assigned-to-agent' || omakase?.status === 'preparing') {
+      return;
+    }
+
+    setIsStarting(true);
+    try {
+      await runOmakaseStart();
+    } finally {
+      setIsStarting(false);
+      setRevision((v) => v + 1);
+    }
   }
+
+  const primaryDisabled = isStarting || omakase?.status === 'assigned-to-agent' || omakase?.status === 'preparing';
 
   return (
     <main className="darakeHumanOnePage" aria-label="だらけdev app 人間用1ページ">
@@ -138,12 +208,17 @@ export function DarakeHumanOnePageCockpit() {
           <strong>{state.next}</strong>
         </div>
 
-        <div className={`darakeHumanOnePage__stop ${blockedHard > 0 ? 'darakeHumanOnePage__stop--danger' : ''}`}>
+        <div className={`darakeHumanOnePage__stop ${blockedHard > 0 || omakase?.status === 'blocked' || omakase?.status === 'failed' ? 'darakeHumanOnePage__stop--danger' : ''}`}>
           <span className="darakeHumanOnePage__label">止まっていること</span>
           <strong>{state.stop}</strong>
         </div>
 
-        <button type="button" className="darakeHumanOnePage__primary" onClick={handlePrimaryAction}>
+        <button
+          type="button"
+          className="darakeHumanOnePage__primary"
+          onClick={handlePrimaryAction}
+          disabled={primaryDisabled}
+        >
           {state.action.label}
         </button>
 
