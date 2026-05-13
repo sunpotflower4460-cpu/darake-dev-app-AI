@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 64B verification.
+
+Purpose:
+- Deploy latest main after PR #150 and PR #152.
+- Verify first-start cockpit route reflects latest UI/data seeding behavior.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T03:05:00Z
