@@ -24,13 +24,24 @@ jobs:
     name: Deploy Cloudflare Worker config
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Check required GitHub Secrets
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          DARAKE_WORKER_NAME: ${{ inputs.worker_name }}
         run: |
           if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
-            echo "Missing GitHub Secret: CLOUDFLARE_API_TOKEN" >&2
-            echo "Add it in: GitHub repo > Settings > Secrets and variables > Actions" >&2
+            DARAKE_SETUP_STATUS=missing-cloudflare-token \
+            DARAKE_ACCOUNT_MODE=missing \
+            DARAKE_WORKER_SECRET_MODE=unknown \
+            node scripts/write-cloudflare-setup-summary.mjs
             exit 1
           fi
 
@@ -39,49 +50,69 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          DARAKE_WORKER_NAME: ${{ inputs.worker_name }}
         run: |
           set -euo pipefail
           if [ -n "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
             echo "account_id=$CLOUDFLARE_ACCOUNT_ID" >> "$GITHUB_OUTPUT"
+            echo "account_mode=from-secret" >> "$GITHUB_OUTPUT"
             echo "Using CLOUDFLARE_ACCOUNT_ID from GitHub Secrets."
             exit 0
           fi
 
-          curl --fail-with-body \
+          if ! curl --fail-with-body \
             --request GET \
             --url "https://api.cloudflare.com/client/v4/accounts?per_page=50" \
             --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
             --header "Content-Type: application/json" \
-            --output cloudflare-accounts.json
+            --output cloudflare-accounts.json; then
+            DARAKE_SETUP_STATUS=cloudflare-api-error \
+            DARAKE_ACCOUNT_MODE=api-error \
+            DARAKE_WORKER_SECRET_MODE=unknown \
+            node scripts/write-cloudflare-setup-summary.mjs
+            exit 1
+          fi
 
           node <<'NODE'
           const fs = require('fs');
           const response = JSON.parse(fs.readFileSync('cloudflare-accounts.json', 'utf8'));
           if (!response.success) {
             console.error('Could not read Cloudflare accounts.');
-            process.exit(1);
+            process.exit(20);
           }
           const accounts = Array.isArray(response.result) ? response.result : [];
           if (accounts.length === 1 && accounts[0]?.id) {
             fs.appendFileSync(process.env.GITHUB_OUTPUT, `account_id=${accounts[0].id}\n`);
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, 'account_mode=auto-detected\n');
             console.log('Auto-detected one Cloudflare account.');
             process.exit(0);
           }
           if (accounts.length === 0) {
             console.error('No Cloudflare account is available for this token.');
-          } else {
-            console.error(`Multiple Cloudflare accounts found: ${accounts.length}. Add CLOUDFLARE_ACCOUNT_ID to GitHub Secrets.`);
+            process.exit(21);
           }
-          process.exit(1);
+          console.error(`Multiple Cloudflare accounts found: ${accounts.length}. Add CLOUDFLARE_ACCOUNT_ID to GitHub Secrets.`);
+          process.exit(22);
           NODE
 
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+          status=$?
+          if [ "$status" = "21" ]; then
+            DARAKE_SETUP_STATUS=no-cloudflare-account \
+            DARAKE_ACCOUNT_MODE=none \
+            DARAKE_WORKER_SECRET_MODE=unknown \
+            node scripts/write-cloudflare-setup-summary.mjs
+          elif [ "$status" = "22" ]; then
+            DARAKE_SETUP_STATUS=multiple-cloudflare-accounts \
+            DARAKE_ACCOUNT_MODE=multiple \
+            DARAKE_WORKER_SECRET_MODE=unknown \
+            node scripts/write-cloudflare-setup-summary.mjs
+          else
+            DARAKE_SETUP_STATUS=cloudflare-api-error \
+            DARAKE_ACCOUNT_MODE=api-error \
+            DARAKE_WORKER_SECRET_MODE=unknown \
+            node scripts/write-cloudflare-setup-summary.mjs
+          fi
+          exit "$status"
 
       - name: Install dependencies
         run: npm install
@@ -114,11 +145,13 @@ jobs:
           set -euo pipefail
           if [ "$SYNC_WORKER_GITHUB_TOKEN" != "true" ]; then
             echo "has_worker_secrets=false" >> "$GITHUB_OUTPUT"
+            echo "worker_secret_mode=skipped-by-input" >> "$GITHUB_OUTPUT"
             echo "Skipping Worker GitHub token sync by input."
             exit 0
           fi
           if [ -z "$WORKER_GITHUB_TOKEN" ]; then
             echo "has_worker_secrets=false" >> "$GITHUB_OUTPUT"
+            echo "worker_secret_mode=missing-optional" >> "$GITHUB_OUTPUT"
             echo "WORKER_GITHUB_TOKEN is not set. Deploying without updating the Worker GITHUB_TOKEN secret."
             exit 0
           fi
@@ -129,6 +162,7 @@ jobs:
           }, null, 2));
           NODE
           echo "has_worker_secrets=true" >> "$GITHUB_OUTPUT"
+          echo "worker_secret_mode=synced" >> "$GITHUB_OUTPUT"
           echo "Worker GITHUB_TOKEN secret will be synced from GitHub Secret WORKER_GITHUB_TOKEN."
 
       - name: Deploy to Cloudflare
@@ -145,16 +179,27 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ steps.cloudflare_account.outputs.account_id }}
         run: npx wrangler deploy --config wrangler.toml --secrets-file .worker-secrets.json
 
+      - name: Write success summary
+        if: success()
+        env:
+          DARAKE_SETUP_STATUS: success
+          DARAKE_ACCOUNT_MODE: ${{ steps.cloudflare_account.outputs.account_mode }}
+          DARAKE_WORKER_SECRET_MODE: ${{ steps.worker_secrets.outputs.worker_secret_mode }}
+          DARAKE_WORKER_NAME: ${{ inputs.worker_name }}
+        run: node scripts/write-cloudflare-setup-summary.mjs
+
+      - name: Write deploy failure summary
+        if: failure()
+        env:
+          DARAKE_SETUP_STATUS: deploy-failed
+          DARAKE_ACCOUNT_MODE: ${{ steps.cloudflare_account.outputs.account_mode }}
+          DARAKE_WORKER_SECRET_MODE: ${{ steps.worker_secrets.outputs.worker_secret_mode }}
+          DARAKE_WORKER_NAME: ${{ inputs.worker_name }}
+        run: |
+          if [ -n "${DARAKE_ACCOUNT_MODE:-}" ]; then
+            node scripts/write-cloudflare-setup-summary.mjs
+          fi
+
       - name: Remove temporary Worker secrets file
         if: always()
         run: rm -f .worker-secrets.json cloudflare-accounts.json
-
-      - name: Done
-        run: |
-          echo "Cloudflare setup deployed."
-          echo "GITHUB_ISSUE_CREATE_ENABLED is defined in wrangler.toml [vars]."
-          if [ "${{ steps.worker_secrets.outputs.has_worker_secrets }}" = "true" ]; then
-            echo "Worker secret GITHUB_TOKEN was synced from GitHub Secret WORKER_GITHUB_TOKEN."
-          else
-            echo "Worker secret GITHUB_TOKEN was not updated. Add WORKER_GITHUB_TOKEN to GitHub Secrets to sync it automatically."
-          fi
