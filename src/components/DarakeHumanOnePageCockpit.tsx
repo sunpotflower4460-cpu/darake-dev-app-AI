@@ -40,6 +40,8 @@ type ReceiptItem = {
   done: boolean;
 };
 
+type CloudflareSettingKind = 'enable-issue' | 'github-token' | null;
+
 const TEST_SEED_TEMPLATE = {
   appName: '宝地図アプリ',
   oneLineIdea: '自分の夢や目標を宝の地図みたいに置いて、AIが次の一歩にしてくれるアプリ',
@@ -52,6 +54,17 @@ function isRepositoryCheckNeeded(message?: string, nextAction?: string): boolean
   return text.includes('リポジトリ') || text.includes('repo') || text.includes('repository');
 }
 
+function getCloudflareSettingKind(message?: string, nextAction?: string): CloudflareSettingKind {
+  const text = `${message ?? ''} ${nextAction ?? ''}`;
+  if (text.includes('GITHUB_ISSUE_CREATE_ENABLED') || text.includes('Issue直接作成') || text.includes('有効化')) {
+    return 'enable-issue';
+  }
+  if (text.includes('GITHUB_TOKEN') || text.includes('Token') || text.includes('トークン')) {
+    return 'github-token';
+  }
+  return null;
+}
+
 function isValidGitHubRepoUrl(value: string): boolean {
   return /^https:\/\/github\.com\/[^/\s]+\/[^/\s]+\/?$/.test(value.trim());
 }
@@ -62,7 +75,7 @@ function simplifyOmakaseMessage(message?: string): string {
     return 'GitHub連携用の設定が足りません。CloudflareのSecret設定だけ確認してください。';
   }
   if (message.includes('GITHUB_ISSUE_CREATE_ENABLED')) {
-    return 'Issue作成がまだ有効化されていません。Cloudflareの有効化設定だけ確認してください。';
+    return 'CloudflareでIssue作成スイッチをONにしてください。下に手順を短く出しています。';
   }
   if (message.includes('リポジトリ')) {
     return 'AIが作業を書く場所だけ確認してください。下のボタンか入力欄で進めます。';
@@ -168,6 +181,7 @@ function buildActionState(args: {
   omakaseMessage?: string;
   omakaseNextAction?: string;
   repoCheckNeeded?: boolean;
+  cloudflareSettingKind?: CloudflareSettingKind;
 }): HumanState {
   if (args.isStarting || args.omakaseStatus === 'preparing') {
     return {
@@ -194,6 +208,26 @@ function buildActionState(args: {
       stop: 'なし',
       action: { label: '手動用を開く', tone: 'primary' },
       hint: '長いCloud Agent文は「詳しく見る」の中に置いてあります。',
+      needsHumanReview: true,
+    };
+  }
+
+  if (args.cloudflareSettingKind === 'enable-issue') {
+    return {
+      status: 'CloudflareのスイッチがOFFです。',
+      next: 'GITHUB_ISSUE_CREATE_ENABLED を true にすると、自動で作業場所を作れるようになります。',
+      stop: 'Cloudflare設定',
+      action: { label: '設定したので再チェック', tone: 'primary' },
+      needsHumanReview: true,
+    };
+  }
+
+  if (args.cloudflareSettingKind === 'github-token') {
+    return {
+      status: 'GitHub連携のSecretが未設定です。',
+      next: 'Cloudflareに GITHUB_TOKEN をSecretとして設定すると、自動で作業場所を作れるようになります。',
+      stop: 'Cloudflare Secret',
+      action: { label: '設定したので再チェック', tone: 'primary' },
       needsHumanReview: true,
     };
   }
@@ -313,10 +347,11 @@ export function DarakeHumanOnePageCockpit() {
   const done = tasks.filter((task) => task.status === 'done').length;
 
   const hasSeed = Boolean(latestBlueprint || tasks.length > 0 || form?.oneLineIdea?.trim());
-  const repoCheckNeeded = isRepositoryCheckNeeded(omakase?.userMessage, omakase?.nextActionLabel);
+  const cloudflareSettingKind = getCloudflareSettingKind(omakase?.userMessage, omakase?.nextActionLabel);
+  const repoCheckNeeded = !cloudflareSettingKind && isRepositoryCheckNeeded(omakase?.userMessage, omakase?.nextActionLabel);
   const showReceipt = hasSeed || isStarting || Boolean(omakase?.status);
   const showProgressCards = hasSeed || isStarting || Boolean(omakase?.status) || blockedHard > 0 || askLater > 0;
-  const showDetailsButton = hasSeed && !repoCheckNeeded && (blockedHard > 0 || askLater > 0 || reports.length > 0 || Boolean(omakase?.status));
+  const showDetailsButton = hasSeed && !repoCheckNeeded && !cloudflareSettingKind && (blockedHard > 0 || askLater > 0 || reports.length > 0 || Boolean(omakase?.status));
 
   useEffect(() => {
     if (hasSeed) return;
@@ -340,6 +375,7 @@ export function DarakeHumanOnePageCockpit() {
     omakaseMessage: omakase?.userMessage,
     omakaseNextAction: omakase?.nextActionLabel,
     repoCheckNeeded,
+    cloudflareSettingKind,
   });
 
   const receipt = buildReceipt({
@@ -452,7 +488,7 @@ export function DarakeHumanOnePageCockpit() {
     }
 
     if (omakase?.status === 'blocked') {
-      requestDarakeHumanViewModeChange('details');
+      await runSafeStartFlow();
       return;
     }
 
@@ -551,6 +587,32 @@ export function DarakeHumanOnePageCockpit() {
           </>
         )}
 
+        {cloudflareSettingKind && (
+          <div className="darakeHumanOnePage__repoFix" aria-label="Cloudflare設定の確認">
+            <div className="darakeHumanOnePage__repoFixHeader">
+              <strong>{cloudflareSettingKind === 'enable-issue' ? 'CloudflareのスイッチをONにする' : 'GitHub連携のSecretを入れる'}</strong>
+              <span>これはCloudflare側の設定なので、ここだけ手動確認が必要です。</span>
+            </div>
+            {cloudflareSettingKind === 'enable-issue' ? (
+              <div className="darakeHumanOnePage__hint">
+                1. Cloudflareを開く<br />
+                2. Workers &amp; Pages → このアプリ → Settings → Variables<br />
+                3. <strong>GITHUB_ISSUE_CREATE_ENABLED</strong> に <strong>true</strong> を入れる<br />
+                4. 保存して再デプロイ<br />
+                5. 戻って下のボタンを押す
+              </div>
+            ) : (
+              <div className="darakeHumanOnePage__hint">
+                1. GitHubでPersonal Access Tokenを用意する<br />
+                2. Cloudflareのこのアプリ → Settings → Variables<br />
+                3. Secretとして <strong>GITHUB_TOKEN</strong> を入れる<br />
+                4. 保存して再デプロイ<br />
+                5. 戻って下のボタンを押す
+              </div>
+            )}
+          </div>
+        )}
+
         {repoCheckNeeded && (
           <div className="darakeHumanOnePage__repoFix" aria-label="作業場所の確認">
             <div className="darakeHumanOnePage__repoFixHeader">
@@ -578,7 +640,7 @@ export function DarakeHumanOnePageCockpit() {
           </div>
         )}
 
-        {state.hint && !repoCheckNeeded && (
+        {state.hint && !repoCheckNeeded && !cloudflareSettingKind && (
           <div className="darakeHumanOnePage__hint">
             {state.hint}
           </div>
