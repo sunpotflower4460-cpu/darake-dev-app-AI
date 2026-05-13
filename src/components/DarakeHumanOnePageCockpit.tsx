@@ -27,6 +27,14 @@ type HumanState = {
   needsHumanReview?: boolean;
 };
 
+type ReceiptTone = 'done' | 'working' | 'review' | 'idle';
+
+type ReceiptItem = {
+  label: string;
+  value: string;
+  done: boolean;
+};
+
 function simplifyOmakaseMessage(message?: string): string {
   if (!message) return '設定か入力内容の確認が必要です。';
   if (message.includes('GITHUB_TOKEN')) {
@@ -45,6 +53,86 @@ function simplifyOmakaseMessage(message?: string): string {
     return '通信に失敗しました。少し後でもう一度試せます。';
   }
   return message.length > 78 ? `${message.slice(0, 78)}…` : message;
+}
+
+function buildReceipt(args: {
+  hasSeed: boolean;
+  blueprintCount: number;
+  taskCount: number;
+  issueNumber?: number;
+  omakaseStatus?: string;
+  isStarting: boolean;
+}): { title: string; message: string; tone: ReceiptTone; items: ReceiptItem[] } {
+  const hasBlueprint = args.blueprintCount > 0;
+  const hasTasks = args.taskCount > 0;
+  const hasIssue = Boolean(args.issueNumber);
+  const agentWorking = args.omakaseStatus === 'assigned-to-agent';
+  const fallbackReady = args.omakaseStatus === 'cloud-agent-ready';
+  const blocked = args.omakaseStatus === 'blocked' || args.omakaseStatus === 'failed';
+
+  const items: ReceiptItem[] = [
+    { label: '種', value: args.hasSeed ? '置けました' : '未入力', done: args.hasSeed },
+    { label: '設計図', value: hasBlueprint ? '作成済み' : '未作成', done: hasBlueprint },
+    { label: 'タスク', value: hasTasks ? '作成済み' : '未作成', done: hasTasks },
+    { label: 'Issue', value: hasIssue ? `#${args.issueNumber}` : '未作成', done: hasIssue },
+    {
+      label: 'AI',
+      value: agentWorking ? '作業中' : fallbackReady ? '手動確認あり' : blocked ? '確認あり' : '待機中',
+      done: agentWorking,
+    },
+  ];
+
+  if (args.isStarting || args.omakaseStatus === 'preparing') {
+    return {
+      title: '進めています',
+      message: '設計図からIssue作成まで、AIが進められるところを処理しています。',
+      tone: 'working',
+      items,
+    };
+  }
+
+  if (agentWorking) {
+    return {
+      title: 'できました',
+      message: 'AIが作業を始めました。今は何もしなくてOKです。',
+      tone: 'done',
+      items,
+    };
+  }
+
+  if (fallbackReady) {
+    return {
+      title: 'ほぼできました',
+      message: 'Issueは作れました。AIへの自動割り当てだけ確認できます。',
+      tone: 'review',
+      items,
+    };
+  }
+
+  if (blocked) {
+    return {
+      title: 'ここだけ確認',
+      message: '進める前に、短い確認が1つあります。',
+      tone: 'review',
+      items,
+    };
+  }
+
+  if (hasBlueprint && hasTasks) {
+    return {
+      title: '準備できました',
+      message: '設計図とMVPタスクはできています。次にIssue作成へ進めます。',
+      tone: 'done',
+      items,
+    };
+  }
+
+  return {
+    title: args.hasSeed ? '種を受け取りました' : 'まだ始めていません',
+    message: args.hasSeed ? 'AIが設計図に変換する準備をしています。' : 'アプリ名と一行アイデアだけで始められます。',
+    tone: 'idle',
+    items,
+  };
 }
 
 function buildActionState(args: {
@@ -210,6 +298,15 @@ export function DarakeHumanOnePageCockpit() {
     omakaseNextAction: omakase?.nextActionLabel,
   });
 
+  const receipt = buildReceipt({
+    hasSeed,
+    blueprintCount: blueprints.length,
+    taskCount: tasks.length,
+    issueNumber: omakase?.issueNumber,
+    omakaseStatus: omakase?.status,
+    isStarting,
+  });
+
   function saveSeedFromOnePage(): boolean {
     const appNameValue = seedAppName.trim();
     const ideaValue = seedIdea.trim();
@@ -305,6 +402,23 @@ export function DarakeHumanOnePageCockpit() {
             {seedError && <div className="darakeHumanOnePage__seedError">{seedError}</div>}
           </div>
         )}
+
+        <div className={`darakeHumanOnePage__receipt darakeHumanOnePage__receipt--${receipt.tone}`}>
+          <div>
+            <span className="darakeHumanOnePage__label">できた感</span>
+            <strong>{receipt.title}</strong>
+            <p>{receipt.message}</p>
+          </div>
+          <div className="darakeHumanOnePage__receiptList">
+            {receipt.items.map((item) => (
+              <div className="darakeHumanOnePage__receiptItem" key={item.label}>
+                <span>{item.done ? '✓' : '・'}</span>
+                <b>{item.label}</b>
+                <em>{item.value}</em>
+              </div>
+            ))}
+          </div>
+        </div>
 
         <div className="darakeHumanOnePage__statusBlock">
           <span className="darakeHumanOnePage__label">今の状態</span>
