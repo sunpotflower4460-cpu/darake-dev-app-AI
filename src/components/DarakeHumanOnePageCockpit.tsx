@@ -13,6 +13,35 @@ type HumanAction = {
   tone: 'primary' | 'quiet';
 };
 
+type HumanState = {
+  status: string;
+  next: string;
+  stop: string;
+  action: HumanAction;
+  hint?: string;
+  needsHumanReview?: boolean;
+};
+
+function simplifyOmakaseMessage(message?: string): string {
+  if (!message) return '設定か入力内容の確認が必要です。';
+  if (message.includes('GITHUB_TOKEN')) {
+    return 'GitHub連携用の設定が足りません。CloudflareのSecret設定だけ確認してください。';
+  }
+  if (message.includes('GITHUB_ISSUE_CREATE_ENABLED')) {
+    return 'Issue作成がまだ有効化されていません。Cloudflareの有効化設定だけ確認してください。';
+  }
+  if (message.includes('リポジトリ')) {
+    return '使うリポジトリの指定だけ確認してください。';
+  }
+  if (message.includes('フォーム') || message.includes('アプリ情報')) {
+    return 'アプリ名か一行説明が足りません。種の内容だけ確認してください。';
+  }
+  if (message.includes('ネットワーク')) {
+    return '通信に失敗しました。少し後でもう一度試せます。';
+  }
+  return message.length > 78 ? `${message.slice(0, 78)}…` : message;
+}
+
 function buildActionState(args: {
   hasSeed: boolean;
   queued: number;
@@ -23,7 +52,8 @@ function buildActionState(args: {
   isStarting: boolean;
   omakaseStatus?: string;
   omakaseMessage?: string;
-}): { status: string; next: string; stop: string; action: HumanAction } {
+  omakaseNextAction?: string;
+}): HumanState {
   if (args.isStarting || args.omakaseStatus === 'preparing') {
     return {
       status: 'AIに渡す準備をしています。',
@@ -45,18 +75,23 @@ function buildActionState(args: {
   if (args.omakaseStatus === 'cloud-agent-ready') {
     return {
       status: 'Issueは作れました。',
-      next: 'Cloud Agentへの自動割り当てだけ確認が必要です。',
+      next: '自動割り当てだけ未完了です。必要なら手動用の文面を開けます。',
       stop: 'なし',
-      action: { label: '詳細で確認する', tone: 'primary' },
+      action: { label: '手動用を開く', tone: 'primary' },
+      hint: '人間が読む必要があるのはここまでです。長いCloud Agent文は詳細側に置いてあります。',
+      needsHumanReview: true,
     };
   }
 
   if (args.omakaseStatus === 'blocked' || args.omakaseStatus === 'failed') {
+    const simplified = simplifyOmakaseMessage(args.omakaseMessage);
     return {
-      status: '進行が止まっています。',
-      next: args.omakaseMessage || '設定か入力内容を確認してください。',
-      stop: '確認あり',
-      action: { label: '詳細で確認する', tone: 'primary' },
+      status: 'ここだけ確認が必要です。',
+      next: simplified,
+      stop: args.omakaseNextAction || '確認あり',
+      action: { label: args.omakaseStatus === 'failed' ? 'もう一度試す' : '確認する', tone: 'primary' },
+      hint: '詳細パネルを読まなくても大丈夫です。必要な確認だけをここに短く出しています。',
+      needsHumanReview: true,
     };
   }
 
@@ -66,6 +101,8 @@ function buildActionState(args: {
       next: 'AIが勝手に進めない場所だけ、後で確認します。',
       stop: `${args.blockedHard}件`,
       action: { label: '後で確認する', tone: 'primary' },
+      hint: '課金・法律・公開・secretなどの判断だけ、人間に戻します。',
+      needsHumanReview: true,
     };
   }
 
@@ -93,6 +130,7 @@ function buildActionState(args: {
       next: '細かい確認はまとめて後で見られます。今すぐ読む必要はありません。',
       stop: 'なし',
       action: { label: '後で見る', tone: 'primary' },
+      hint: 'AIが進められる部分は止めず、確認だけ後回しにします。',
     };
   }
 
@@ -154,6 +192,7 @@ export function DarakeHumanOnePageCockpit() {
     isStarting,
     omakaseStatus: omakase?.status,
     omakaseMessage: omakase?.userMessage,
+    omakaseNextAction: omakase?.nextActionLabel,
   });
 
   async function handlePrimaryAction() {
@@ -164,15 +203,24 @@ export function DarakeHumanOnePageCockpit() {
       return;
     }
 
-    if (
-      blockedHard > 0 ||
-      askLater > 0 ||
-      reports.length > 0 ||
-      omakase?.status === 'blocked' ||
-      omakase?.status === 'failed' ||
-      omakase?.status === 'cloud-agent-ready'
-    ) {
+    if (blockedHard > 0 || askLater > 0 || reports.length > 0 || omakase?.status === 'cloud-agent-ready') {
       requestDarakeHumanViewModeChange('details');
+      return;
+    }
+
+    if (omakase?.status === 'blocked') {
+      requestDarakeHumanViewModeChange('details');
+      return;
+    }
+
+    if (omakase?.status === 'failed') {
+      setIsStarting(true);
+      try {
+        await runOmakaseStart();
+      } finally {
+        setIsStarting(false);
+        setRevision((v) => v + 1);
+      }
       return;
     }
 
@@ -208,10 +256,16 @@ export function DarakeHumanOnePageCockpit() {
           <strong>{state.next}</strong>
         </div>
 
-        <div className={`darakeHumanOnePage__stop ${blockedHard > 0 || omakase?.status === 'blocked' || omakase?.status === 'failed' ? 'darakeHumanOnePage__stop--danger' : ''}`}>
+        <div className={`darakeHumanOnePage__stop ${blockedHard > 0 || state.needsHumanReview || omakase?.status === 'blocked' || omakase?.status === 'failed' ? 'darakeHumanOnePage__stop--danger' : ''}`}>
           <span className="darakeHumanOnePage__label">止まっていること</span>
           <strong>{state.stop}</strong>
         </div>
+
+        {state.hint && (
+          <div className="darakeHumanOnePage__hint">
+            {state.hint}
+          </div>
+        )}
 
         <button
           type="button"
