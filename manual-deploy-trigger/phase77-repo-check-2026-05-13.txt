@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 77 repository check UI.
+
+Purpose:
+- Deploy latest main after PR #170.
+- Verify repository URL confirmation appears directly on the human one-page cockpit.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T05:25:00Z
