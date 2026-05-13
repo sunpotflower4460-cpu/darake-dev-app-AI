@@ -1,0 +1,13 @@
+Manual deploy trigger for Phase 82 Cloudflare setup automation.
+
+Purpose:
+- Deploy latest main after PR #175.
+- Verify GITHUB_ISSUE_CREATE_ENABLED is supplied from wrangler.toml vars.
+- Verify Cloudflare Setup workflow and beginner automation guide are available.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T07:45:00Z
