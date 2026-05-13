@@ -1,3 +1,4 @@
+import './installInlineSetupLinks';
 import { emitDarakeRuntimeEvent, DARAKE_GENTLE_FORM_UPDATED_EVENT } from './darakeRuntimeEvents';
 
 const STORAGE_KEY = 'darake.omakaseStartState.v1';
