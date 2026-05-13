@@ -315,12 +315,6 @@ export function DarakeHumanOnePageCockpit() {
     isStarting,
   });
 
-  function fillTestSeedTemplate() {
-    setSeedAppName(TEST_SEED_TEMPLATE.appName);
-    setSeedIdea(TEST_SEED_TEMPLATE.oneLineIdea);
-    setSeedError(null);
-  }
-
   function saveSeedValues(appNameValue: string, ideaValue: string): boolean {
     if (!appNameValue || !ideaValue) {
       setSeedError('アプリ名と一行アイデアだけ入れてください。');
