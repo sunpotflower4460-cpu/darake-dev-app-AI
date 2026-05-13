@@ -118,29 +118,29 @@ export function RemoteAutopilotStatusCard() {
 
   // Active run exists — determine display by status
   const runStatus = remoteRun?.status ?? 'active';
-  const needsWake = runStatus === 'needs-human' || runStatus === 'merge-candidate' || runStatus === 'blocked';
+  const needsLaterReview = runStatus === 'needs-human' || runStatus === 'merge-candidate' || runStatus === 'blocked';
 
-  if (needsWake) {
-    const reason = remoteRun?.lastWakeReason ?? 'Worker側で確認が必要です';
+  if (needsLaterReview) {
+    const reason = remoteRun?.lastWakeReason ?? 'Worker側で後で確認したい項目があります';
     const prUrl = remoteRun?.prUrl;
 
     return (
       <div className="remoteAutopilotCard remoteAutopilotCard--wake">
         <div className="remoteAutopilotHeader">
-          <span className="remoteAutopilotBadge remoteAutopilotBadge--orange">通知が必要</span>
+          <span className="remoteAutopilotBadge remoteAutopilotBadge--orange">後で確認</span>
         </div>
         <div className="remoteAutopilotBody">
-          <div className="remoteAutopilotTitle">起きる必要があります</div>
+          <div className="remoteAutopilotTitle">聞くことリストに入りました</div>
           <div className="remoteAutopilotReason">
             理由：
             <br />
             {reason}
           </div>
           <div className="remoteAutopilotNext">
-            次にやること：
+            後で見ること：
             <br />
             <span className="remoteAutopilotAction">
-              {runStatus === 'merge-candidate' ? 'PRを開く' : '詳細を確認してください'}
+              {runStatus === 'merge-candidate' ? 'PRを確認する' : '詳細を確認する'}
             </span>
           </div>
         </div>
@@ -187,7 +187,7 @@ export function RemoteAutopilotStatusCard() {
             <br />
             <span className="remoteAutopilotAction">何もしなくてOK</span>
           </div>
-          <div className="remoteAutopilotNote">止まった時だけ知らせます。</div>
+          <div className="remoteAutopilotNote">必要なものは後で確認リストに入れます。</div>
         </div>
         <div className="remoteAutopilotTestRow">
           <button
@@ -252,7 +252,7 @@ export function RemoteAutopilotStatusCard() {
             )}
           </div>
         )}
-        <div className="remoteAutopilotNote">止まった時だけ知らせます。</div>
+        <div className="remoteAutopilotNote">必要なものは後で確認リストに入れます。</div>
       </div>
       <div className="remoteAutopilotTestRow">
         <button
@@ -289,7 +289,7 @@ function NotificationTestSection({
   return (
     <div className="remoteAutopilotTestSection">
       <div className="remoteAutopilotTestDesc">
-        止まった時だけ知らせるための通知設定を確認します。
+        後で確認リストに入った時の通知設定を確認します。
       </div>
       <div className="remoteAutopilotTestBtns">
         <button
