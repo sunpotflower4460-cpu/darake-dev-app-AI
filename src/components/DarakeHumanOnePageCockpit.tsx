@@ -1,12 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import { loadBlueprintStock } from '../utils/darakeBlueprintStock';
 import { loadCockpitMorningReports } from '../utils/darakeCockpitMorningReport';
-import { loadGentleAppStartForm } from '../utils/gentleAppStartForm';
+import {
+  buildEmptyGentleAppStartForm,
+  loadGentleAppStartForm,
+  saveGentleAppStartForm,
+} from '../utils/gentleAppStartForm';
 import { loadDarakeTaskQueue } from '../utils/darakeTaskQueue';
 import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
 import { requestDarakeHumanViewModeChange } from '../utils/darakeHumanViewMode';
 import { loadOmakaseStartState } from '../utils/omakaseStartState';
 import { runOmakaseStart } from '../utils/runOmakaseStart';
+import { createCockpitSeedFromFirstStartForm } from '../utils/firstStartCockpitSeed';
 
 type HumanAction = {
   label: string;
@@ -109,7 +114,7 @@ function buildActionState(args: {
   if (!args.hasSeed) {
     return {
       status: 'まだ種が置かれていません。',
-      next: '作りたいアプリを1つ置くと、AIが設計図とMVPタスクに変換します。',
+      next: '下の2つだけ書けば、AIが設計図とMVPタスクに変換します。',
       stop: 'なし',
       action: { label: '種を置く', tone: 'primary' },
     };
@@ -163,6 +168,9 @@ function buildActionState(args: {
 export function DarakeHumanOnePageCockpit() {
   const [revision, setRevision] = useState(0);
   const [isStarting, setIsStarting] = useState(false);
+  const [seedAppName, setSeedAppName] = useState('');
+  const [seedIdea, setSeedIdea] = useState('');
+  const [seedError, setSeedError] = useState<string | null>(null);
 
   useEffect(() => subscribeDarakeRuntimeEvents(() => setRevision((v) => v + 1)), []);
 
@@ -182,6 +190,13 @@ export function DarakeHumanOnePageCockpit() {
   const done = tasks.filter((task) => task.status === 'done').length;
 
   const hasSeed = Boolean(latestBlueprint || tasks.length > 0 || form?.oneLineIdea?.trim());
+
+  useEffect(() => {
+    if (hasSeed) return;
+    setSeedAppName((current) => current || form?.appName || '');
+    setSeedIdea((current) => current || form?.oneLineIdea || '');
+  }, [form?.appName, form?.oneLineIdea, hasSeed]);
+
   const state = buildActionState({
     hasSeed,
     queued,
@@ -195,11 +210,33 @@ export function DarakeHumanOnePageCockpit() {
     omakaseNextAction: omakase?.nextActionLabel,
   });
 
+  function saveSeedFromOnePage(): boolean {
+    const appNameValue = seedAppName.trim();
+    const ideaValue = seedIdea.trim();
+    if (!appNameValue || !ideaValue) {
+      setSeedError('アプリ名と一行アイデアだけ入れてください。');
+      return false;
+    }
+
+    const nextForm = {
+      ...(form ?? buildEmptyGentleAppStartForm()),
+      appName: appNameValue,
+      oneLineIdea: ideaValue,
+      autoPreference: form?.autoPreference ?? 'maximum-darake',
+    };
+
+    saveGentleAppStartForm(nextForm);
+    createCockpitSeedFromFirstStartForm(nextForm);
+    setSeedError(null);
+    setRevision((v) => v + 1);
+    return true;
+  }
+
   async function handlePrimaryAction() {
     if (isStarting) return;
 
     if (!hasSeed) {
-      requestDarakeHumanViewModeChange('details');
+      saveSeedFromOnePage();
       return;
     }
 
@@ -245,6 +282,29 @@ export function DarakeHumanOnePageCockpit() {
         <div className="darakeHumanOnePage__eyebrow">だらけdev app</div>
         <h1 className="darakeHumanOnePage__title">{appName}</h1>
         <p className="darakeHumanOnePage__idea">{idea}</p>
+
+        {!hasSeed && (
+          <div className="darakeHumanOnePage__seedForm" aria-label="アプリの種">
+            <label className="darakeHumanOnePage__field">
+              <span>アプリ名</span>
+              <input
+                value={seedAppName}
+                onChange={(e) => setSeedAppName(e.target.value)}
+                placeholder="例: 宝地図アプリ"
+              />
+            </label>
+            <label className="darakeHumanOnePage__field">
+              <span>どんなアプリ？</span>
+              <textarea
+                value={seedIdea}
+                onChange={(e) => setSeedIdea(e.target.value)}
+                placeholder="例: 自分の夢や目標を宝の地図みたいに置いて、AIが次の一歩にしてくれるアプリ"
+                rows={3}
+              />
+            </label>
+            {seedError && <div className="darakeHumanOnePage__seedError">{seedError}</div>}
+          </div>
+        )}
 
         <div className="darakeHumanOnePage__statusBlock">
           <span className="darakeHumanOnePage__label">今の状態</span>
