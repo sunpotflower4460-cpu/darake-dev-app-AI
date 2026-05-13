@@ -33,7 +33,7 @@ https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/clou
 
 ## 何を自動化するの？
 
-今までCloudflare画面で探していたON/OFFスイッチとWorker用のGitHub鍵を、GitHub ActionsからCloudflareへ反映します。
+今までCloudflare画面で探していたON/OFFスイッチ、Worker用のGitHub鍵、そして分かる場合のCloudflare Account IDを、GitHub Actions側で処理します。
 
 ```text
 GITHUB_ISSUE_CREATE_ENABLED = true
@@ -47,35 +47,24 @@ GITHUB_TOKEN
 
 これはCloudflare Worker側のSecretとして、GitHub側に登録した `WORKER_GITHUB_TOKEN` から同期します。
 
+```text
+CLOUDFLARE_ACCOUNT_ID
+```
+
+これは、Cloudflareアカウントが1つだけなら Actions が自動推定します。
+
 ---
 
 ## 人間が最初に1回だけやること
 
-GitHub のこのリポジトリに、次の3つを登録します。
+まずは GitHub のこのリポジトリに、次の2つを登録します。
 
 ```text
 CLOUDFLARE_API_TOKEN
-CLOUDFLARE_ACCOUNT_ID
 WORKER_GITHUB_TOKEN
 ```
 
-この3つを入れた後は、GitHub Actions の `Cloudflare Setup` を押すだけで、Cloudflareへ設定が反映されます。
-
----
-
-## 1. CLOUDFLARE_ACCOUNT_ID の場所
-
-Cloudflare で確認します。
-
-一番近いURL:
-
-```text
-https://dash.cloudflare.com/?to=/:account/workers-and-pages
-```
-
-見つけたらコピーして、GitHub側の登録ページに入れます。
-
-Secret name:
+Cloudflareアカウントが複数ある場合だけ、あとからこれも登録します。
 
 ```text
 CLOUDFLARE_ACCOUNT_ID
@@ -83,7 +72,7 @@ CLOUDFLARE_ACCOUNT_ID
 
 ---
 
-## 2. CLOUDFLARE_API_TOKEN の作り方
+## 1. CLOUDFLARE_API_TOKEN の作り方
 
 一番近いURL:
 
@@ -111,7 +100,7 @@ CLOUDFLARE_API_TOKEN
 
 ---
 
-## 3. WORKER_GITHUB_TOKEN の作り方
+## 2. WORKER_GITHUB_TOKEN の作り方
 
 一番近いURL:
 
@@ -135,7 +124,7 @@ WORKER_GITHUB_TOKEN
 
 ---
 
-## 4. 3つを入れる場所
+## 3. 入れる場所
 
 一番近いURL:
 
@@ -147,15 +136,20 @@ https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/settings/secrets/actio
 
 ```text
 CLOUDFLARE_API_TOKEN
-CLOUDFLARE_ACCOUNT_ID
 WORKER_GITHUB_TOKEN
+```
+
+複数アカウントで止まった場合だけ、あとから追加します。
+
+```text
+CLOUDFLARE_ACCOUNT_ID
 ```
 
 ---
 
-## 5. 自動デプロイを実行する場所
+## 4. 自動デプロイを実行する場所
 
-3つの登録が終わったら、GitHub Actions で実行します。
+登録が終わったら、GitHub Actions で実行します。
 
 一番近いURL:
 
@@ -174,7 +168,7 @@ sync_worker_github_token: true
 
 ---
 
-## 6. 終わったら何をする？
+## 5. 終わったら何をする？
 
 だらけdev app に戻って、次のボタンを押します。
 
@@ -194,6 +188,8 @@ sync_worker_github_token: true
 GITHUB_ISSUE_CREATE_ENABLED は wrangler.toml から反映される
 ↓
 WORKER_GITHUB_TOKEN は Cloudflare Worker の GITHUB_TOKEN として同期される
+↓
+CLOUDFLARE_ACCOUNT_ID は1アカウントなら自動推定される
 ↓
 人間はボタンを押すだけになる
 ```
