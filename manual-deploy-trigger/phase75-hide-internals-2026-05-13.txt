@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 75 human-path cleanup.
+
+Purpose:
+- Deploy latest main after PR #168.
+- Verify internal/debug views are not shown in the normal human path.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T05:00:00Z
