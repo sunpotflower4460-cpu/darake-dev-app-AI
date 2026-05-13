@@ -62,7 +62,7 @@ function buildActionState(args: {
   if (args.isStarting || args.omakaseStatus === 'preparing') {
     return {
       status: 'AIに渡す準備をしています。',
-      next: 'Issue作成とCloud Agentへの橋渡しを進めています。',
+      next: '設計図、MVPタスク、Issue作成、Cloud Agentへの橋渡しまで進めています。',
       stop: 'なし',
       action: { label: '進めています', tone: 'quiet' },
     };
@@ -114,9 +114,9 @@ function buildActionState(args: {
   if (!args.hasSeed) {
     return {
       status: 'まだ種が置かれていません。',
-      next: '下の2つだけ書けば、AIが設計図とMVPタスクに変換します。',
+      next: '下の2つだけ書けば、AIが設計図とMVPタスクに変換して、そのまま進めます。',
       stop: 'なし',
-      action: { label: '種を置く', tone: 'primary' },
+      action: { label: '種を置いて進める', tone: 'primary' },
     };
   }
 
@@ -232,11 +232,23 @@ export function DarakeHumanOnePageCockpit() {
     return true;
   }
 
+  async function runSafeStartFlow() {
+    setIsStarting(true);
+    try {
+      await runOmakaseStart();
+    } finally {
+      setIsStarting(false);
+      setRevision((v) => v + 1);
+    }
+  }
+
   async function handlePrimaryAction() {
     if (isStarting) return;
 
     if (!hasSeed) {
-      saveSeedFromOnePage();
+      const saved = saveSeedFromOnePage();
+      if (!saved) return;
+      await runSafeStartFlow();
       return;
     }
 
@@ -251,13 +263,7 @@ export function DarakeHumanOnePageCockpit() {
     }
 
     if (omakase?.status === 'failed') {
-      setIsStarting(true);
-      try {
-        await runOmakaseStart();
-      } finally {
-        setIsStarting(false);
-        setRevision((v) => v + 1);
-      }
+      await runSafeStartFlow();
       return;
     }
 
@@ -265,13 +271,7 @@ export function DarakeHumanOnePageCockpit() {
       return;
     }
 
-    setIsStarting(true);
-    try {
-      await runOmakaseStart();
-    } finally {
-      setIsStarting(false);
-      setRevision((v) => v + 1);
-    }
+    await runSafeStartFlow();
   }
 
   const primaryDisabled = isStarting || omakase?.status === 'assigned-to-agent' || omakase?.status === 'preparing';
