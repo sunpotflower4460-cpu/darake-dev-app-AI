@@ -22,8 +22,16 @@ export function PonStartPanel() {
 
   useEffect(() => subscribeDarakeRuntimeEvents(() => setRevision((v) => v + 1)), []);
 
+  function shouldSeedCockpitData(kind: 'all' | 'agent' | 'issue'): boolean {
+    return kind === 'all' || kind === 'agent';
+  }
+
+  function handleOpenControlRoom() {
+    releaseFirstStartMinimalMode();
+  }
+
   async function copyText(kind: 'all' | 'agent' | 'issue', text: string) {
-    if (kind === 'all' || kind === 'agent') {
+    if (shouldSeedCockpitData(kind)) {
       createCockpitSeedFromFirstStartForm(loadGentleAppStartForm());
     }
     try {
@@ -53,12 +61,21 @@ export function PonStartPanel() {
 
       <div className="ponModeSelect">
         <div className="ponModeSelectTitle">進め方を選ぶ</div>
-        <button type="button" className="ponModeCard ponModeCard--primary" onClick={releaseFirstStartMinimalMode}>
+        <button type="button" className="ponModeCard ponModeCard--primary" onClick={handleOpenControlRoom}>
           だらけ管制室で進める
         </button>
-        <div className="ponModeCard">Cloud Agentへ貼る指示だけコピー</div>
-        <div className="ponModeCard">実地リハーサルで確認する</div>
-        <button type="button" className="ponModeCard ponModeCard--button" onClick={releaseFirstStartMinimalMode}>
+        <button
+          type="button"
+          className="ponModeCard ponModeCard--button"
+          onClick={() => copyText('agent', pack.cloudAgentInstructionMarkdown)}
+          disabled={pack.status === 'not-ready'}
+        >
+          Cloud Agentへ貼る指示だけコピー
+        </button>
+        <button type="button" className="ponModeCard ponModeCard--button" onClick={handleOpenControlRoom}>
+          実地リハーサルで確認する
+        </button>
+        <button type="button" className="ponModeCard ponModeCard--button" onClick={handleOpenControlRoom}>
           詳細な管制室を開く
         </button>
       </div>

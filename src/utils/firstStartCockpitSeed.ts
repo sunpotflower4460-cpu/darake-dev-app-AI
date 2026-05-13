@@ -9,6 +9,12 @@ import {
 import { createSleepSessionFromQueue } from './darakeSleepSession';
 
 const FIRST_START_SEED_NOTE = 'first-start-cockpit-seed.v1';
+const DEFAULT_HARD_STOPS = [
+  'GitHub APIは実行しない',
+  'App Store APIは実行しない',
+  'secretを保存しない',
+];
+const SLEEP_SESSION_TITLE_SUFFIX = '今夜進める候補';
 
 function splitTextList(value: string): string[] {
   return value
@@ -58,7 +64,7 @@ export function createCockpitSeedFromFirstStartForm(formData: GentleAppStartForm
     mustHave,
     mustNotDo,
     phases,
-    hardStops: ['GitHub APIは実行しない', 'App Store APIは実行しない', 'secretを保存しない'],
+    hardStops: DEFAULT_HARD_STOPS,
     notes: [formData.notes.trim(), FIRST_START_SEED_NOTE].filter(Boolean).join('\n'),
   });
 
@@ -66,5 +72,5 @@ export function createCockpitSeedFromFirstStartForm(formData: GentleAppStartForm
   if (tasks.length === 0) return;
 
   const seedTaskIds = tasks.slice(0, 5).map((task) => task.id);
-  createSleepSessionFromQueue(seedTaskIds, `${appName} 今夜進める候補`);
+  createSleepSessionFromQueue(seedTaskIds, `${appName} ${SLEEP_SESSION_TITLE_SUFFIX}`);
 }

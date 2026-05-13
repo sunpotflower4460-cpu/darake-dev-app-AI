@@ -135,6 +135,7 @@
   color: #444;
   font-size: 0.88rem;
   margin-bottom: 8px;
+  display: block;
 }
 
 .ponModeCard:last-child {
@@ -151,6 +152,11 @@
 
 .ponModeCard--button {
   cursor: pointer;
+}
+
+.ponModeCard:disabled {
+  opacity: 0.62;
+  cursor: not-allowed;
 }
 
 .ponBtnRow {
