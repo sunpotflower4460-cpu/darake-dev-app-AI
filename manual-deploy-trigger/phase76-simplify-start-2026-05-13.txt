@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 76 simplified human start screen.
+
+Purpose:
+- Deploy latest main after PR #169.
+- Verify the first human screen shows only the simple sample/custom start choices.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T05:10:00Z
