@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 71 done receipt.
+
+Purpose:
+- Deploy latest main after PR #164.
+- Verify the one-page cockpit shows the done/working/review receipt.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T04:35:00Z
