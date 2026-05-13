@@ -73,6 +73,7 @@ jobs:
             exit 1
           fi
 
+          set +e
           node <<'NODE'
           const fs = require('fs');
           const response = JSON.parse(fs.readFileSync('cloudflare-accounts.json', 'utf8'));
@@ -94,8 +95,13 @@ jobs:
           console.error(`Multiple Cloudflare accounts found: ${accounts.length}. Add CLOUDFLARE_ACCOUNT_ID to GitHub Secrets.`);
           process.exit(22);
           NODE
-
           status=$?
+          set -e
+
+          if [ "$status" = "0" ]; then
+            exit 0
+          fi
+
           if [ "$status" = "21" ]; then
             DARAKE_SETUP_STATUS=no-cloudflare-account \
             DARAKE_ACCOUNT_MODE=none \
