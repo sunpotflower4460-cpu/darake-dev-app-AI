@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 84 setup shortcut links.
+
+Purpose:
+- Deploy latest main after PR #177.
+- Verify setup panels show direct shortcut links to GitHub and Cloudflare setup pages.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T08:20:00Z
