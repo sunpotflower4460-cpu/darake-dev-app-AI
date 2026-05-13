@@ -65,7 +65,7 @@ function simplifyOmakaseMessage(message?: string): string {
     return 'Issue作成がまだ有効化されていません。Cloudflareの有効化設定だけ確認してください。';
   }
   if (message.includes('リポジトリ')) {
-    return 'Issueを作る場所だけ確認してください。下にGitHubリポジトリURLを入れれば進めます。';
+    return 'AIが作業を書く場所だけ確認してください。下のボタンか入力欄で進めます。';
   }
   if (message.includes('フォーム') || message.includes('アプリ情報')) {
     return 'アプリ名か一行説明が足りません。種の内容だけ確認してください。';
@@ -95,9 +95,9 @@ function buildReceipt(args: {
     { label: '入力', value: args.hasSeed ? 'OK' : '未入力', done: args.hasSeed },
     { label: '設計図', value: hasBlueprint ? '作成済み' : 'まだ', done: hasBlueprint },
     { label: 'やること', value: hasTasks ? '作成済み' : 'まだ', done: hasTasks },
-    { label: 'Issue', value: hasIssue ? `#${args.issueNumber}` : 'まだ', done: hasIssue },
+    { label: '作業場所', value: hasIssue ? `#${args.issueNumber}` : 'まだ', done: hasIssue },
     {
-      label: 'AI作業',
+      label: 'AI',
       value: agentWorking ? '作業中' : fallbackReady ? '確認あり' : blocked ? '確認あり' : '待機中',
       done: agentWorking,
     },
@@ -106,7 +106,7 @@ function buildReceipt(args: {
   if (args.isStarting || args.omakaseStatus === 'preparing') {
     return {
       title: '進めています',
-      message: '設計図からIssue作成まで、できるところを処理しています。',
+      message: '設計図から作業場所の作成まで、できるところを処理しています。',
       tone: 'working',
       items,
     };
@@ -124,7 +124,7 @@ function buildReceipt(args: {
   if (fallbackReady) {
     return {
       title: 'ほぼできました',
-      message: 'Issueは作れました。AIへの自動割り当てだけ確認できます。',
+      message: '作業場所は作れました。AIへの自動割り当てだけ確認できます。',
       tone: 'review',
       items,
     };
@@ -132,7 +132,7 @@ function buildReceipt(args: {
 
   if (blocked) {
     return {
-      title: 'ここだけ確認',
+      title: 'あと1つだけ確認',
       message: '進める前に、短い確認が1つあります。',
       tone: 'review',
       items,
@@ -142,7 +142,7 @@ function buildReceipt(args: {
   if (hasBlueprint && hasTasks) {
     return {
       title: '準備できました',
-      message: '設計図とやることはできています。次にIssue作成へ進めます。',
+      message: '設計図とやることはできています。次に作業場所を作ります。',
       tone: 'done',
       items,
     };
@@ -172,7 +172,7 @@ function buildActionState(args: {
   if (args.isStarting || args.omakaseStatus === 'preparing') {
     return {
       status: 'AIに渡す準備をしています。',
-      next: '設計図、やること、Issue作成まで進めています。',
+      next: '設計図、やること、作業場所の作成まで進めています。',
       stop: 'なし',
       action: { label: '進めています', tone: 'quiet' },
     };
@@ -189,7 +189,7 @@ function buildActionState(args: {
 
   if (args.omakaseStatus === 'cloud-agent-ready') {
     return {
-      status: 'Issueは作れました。',
+      status: '作業場所は作れました。',
       next: '自動割り当てだけ未完了です。必要なら手動用の文面を開けます。',
       stop: 'なし',
       action: { label: '手動用を開く', tone: 'primary' },
@@ -200,10 +200,10 @@ function buildActionState(args: {
 
   if (args.repoCheckNeeded) {
     return {
-      status: 'Issueを作る場所だけ確認します。',
-      next: '下の欄にGitHubリポジトリURLを入れて保存すると、もう一度Issue作成へ進めます。',
-      stop: 'リポジトリURL',
-      action: { label: '保存してもう一度進める', tone: 'primary' },
+      status: 'あと1つだけ確認します。',
+      next: 'AIが作業を書くGitHubの場所を選ぶだけです。テストなら「このリポジトリで進める」でOKです。',
+      stop: '作業場所',
+      action: { label: '入力したURLで進める', tone: 'primary' },
       needsHumanReview: true,
     };
   }
@@ -243,7 +243,7 @@ function buildActionState(args: {
   if (args.queued > 0) {
     return {
       status: '設計図とやることを作りました。',
-      next: 'AIが進められる範囲で、Issue作成と実装準備へ進めます。',
+      next: 'AIが進められる範囲で、作業場所の作成と実装準備へ進めます。',
       stop: 'なし',
       action: { label: 'このまま進める', tone: 'primary' },
     };
@@ -375,10 +375,10 @@ export function DarakeHumanOnePageCockpit() {
     return saveSeedValues(seedAppName.trim(), seedIdea.trim());
   }
 
-  function saveRepositoryUrl(): boolean {
-    const trimmed = repoUrl.trim();
+  function saveRepositoryValue(value: string): boolean {
+    const trimmed = value.trim();
     if (!isValidGitHubRepoUrl(trimmed)) {
-      setRepoError('GitHubのリポジトリURLを入れてください。例: https://github.com/user/repo');
+      setRepoError('GitHubのURLを入れてください。例: https://github.com/user/repo');
       return false;
     }
 
@@ -393,9 +393,21 @@ export function DarakeHumanOnePageCockpit() {
     return true;
   }
 
+  function saveRepositoryUrl(): boolean {
+    return saveRepositoryValue(repoUrl);
+  }
+
   async function saveRepositoryAndRetry() {
     if (isStarting) return;
     const saved = saveRepositoryUrl();
+    if (!saved) return;
+    await runSafeStartFlow();
+  }
+
+  async function useDefaultRepositoryAndRetry() {
+    if (isStarting) return;
+    setRepoUrl(DEFAULT_TEST_REPO_URL);
+    const saved = saveRepositoryValue(DEFAULT_TEST_REPO_URL);
     if (!saved) return;
     await runSafeStartFlow();
   }
@@ -540,24 +552,22 @@ export function DarakeHumanOnePageCockpit() {
         )}
 
         {repoCheckNeeded && (
-          <div className="darakeHumanOnePage__repoFix" aria-label="リポジトリURL確認">
+          <div className="darakeHumanOnePage__repoFix" aria-label="作業場所の確認">
             <div className="darakeHumanOnePage__repoFixHeader">
-              <strong>Issueを作るリポジトリ</strong>
-              <span>GitHubでIssueを作る場所です。テストなら下のボタンでOKです。</span>
+              <strong>AIが作業を書く場所</strong>
+              <span>テストなら、このまま下のボタンを押すだけで進められます。</span>
             </div>
             <button
               type="button"
-              className="darakeHumanOnePage__templateButton"
-              onClick={() => {
-                setRepoUrl(DEFAULT_TEST_REPO_URL);
-                setRepoError(null);
-              }}
+              className="darakeHumanOnePage__templateButton darakeHumanOnePage__templateButton--primary"
+              onClick={useDefaultRepositoryAndRetry}
               disabled={primaryDisabled}
             >
-              テスト用リポジトリを入れる
+              このリポジトリで進める
             </button>
+            <div className="darakeHumanOnePage__seedDivider">別のGitHubリポジトリを使う場合</div>
             <label className="darakeHumanOnePage__field">
-              <span>リポジトリURL</span>
+              <span>GitHubのURL</span>
               <input
                 value={repoUrl}
                 onChange={(e) => setRepoUrl(e.target.value)}

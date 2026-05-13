@@ -227,11 +227,11 @@ function DarakeDetailsShell({ mode }: { mode: Exclude<DarakeHumanViewMode, 'huma
         </button>
       </div>
       <section className="darakeHumanDetailsShell__card">
-        <span className="darakeHumanDetailsShell__label">確認ページ</span>
-        <h2>必要な確認は1ページ目に出します</h2>
+        <span className="darakeHumanDetailsShell__label">補助ページ</span>
+        <h2>ここでやることはありません</h2>
         <p>
-          ここは補助ページです。リポジトリURLなど、いま人間が直す必要がある項目は1ページ目に短く表示します。
-          迷ったら上の「1ページに戻る」だけ押してください。
+          必要な確認は1ページ目に短く出します。ここに来たら、まず「1ページに戻る」を押してください。
+          長い画面は開発確認用なので、普段は開かなくて大丈夫です。
         </p>
         <button
           type="button"
