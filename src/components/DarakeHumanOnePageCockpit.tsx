@@ -203,7 +203,7 @@ function buildActionState(args: {
       status: 'あと1つだけ確認します。',
       next: 'AIが作業を書くGitHubの場所を選ぶだけです。テストなら「このリポジトリで進める」でOKです。',
       stop: '作業場所',
-      action: { label: '保存してもう一度進める', tone: 'primary' },
+      action: { label: '入力したURLで進める', tone: 'primary' },
       needsHumanReview: true,
     };
   }
