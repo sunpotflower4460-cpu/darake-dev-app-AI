@@ -52,7 +52,7 @@ export function addBlueprint(
   const now = new Date().toISOString();
   const newBp: DarakeBlueprint = {
     ...bp,
-    id: `bp-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`,
+    id: `bp-${crypto.randomUUID()}`,
     createdAt: now,
     updatedAt: now,
   };
