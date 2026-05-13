@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 72 one-click seed template.
+
+Purpose:
+- Deploy latest main after PR #165.
+- Verify the one-page cockpit has a test template fill button.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T04:40:00Z
