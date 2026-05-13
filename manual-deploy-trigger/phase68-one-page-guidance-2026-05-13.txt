@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 68 one-page guidance.
+
+Purpose:
+- Deploy latest main after PR #158.
+- Verify blocked / failed / fallback guidance stays on the one-page human cockpit.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T04:10:00Z
