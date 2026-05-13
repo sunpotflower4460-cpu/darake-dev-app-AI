@@ -1,0 +1,13 @@
+Manual deploy trigger for Phase 89 inline setup links.
+
+Purpose:
+- Deploy latest main after PR #182.
+- Verify Cloudflare blocker card itself shows direct setup links.
+- Verify WORKER_GITHUB_TOKEN copy button appears directly in the blocker card.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T10:25:00Z
