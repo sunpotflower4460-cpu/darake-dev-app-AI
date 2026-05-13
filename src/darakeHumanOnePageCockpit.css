@@ -96,6 +96,25 @@
   cursor: not-allowed;
 }
 
+.darakeHumanOnePage__seedDivider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(23, 37, 28, 0.52);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+}
+
+.darakeHumanOnePage__seedDivider::before,
+.darakeHumanOnePage__seedDivider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(44, 78, 54, 0.14);
+}
+
 .darakeHumanOnePage__field {
   display: flex;
   flex-direction: column;
