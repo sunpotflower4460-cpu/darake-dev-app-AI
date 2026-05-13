@@ -83,6 +83,19 @@
   box-shadow: 0 8px 18px rgba(40, 92, 57, 0.08);
 }
 
+.darakeHumanOnePage__templateButton--primary {
+  min-height: 52px;
+  background: #285c39;
+  color: #fff;
+  border-color: #285c39;
+  box-shadow: 0 14px 28px rgba(40, 92, 57, 0.2);
+}
+
+.darakeHumanOnePage__templateButton:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
 .darakeHumanOnePage__field {
   display: flex;
   flex-direction: column;
