@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 66 one-page human UI.
+
+Purpose:
+- Deploy latest main after PR #156.
+- Verify human-facing UI is one page by default.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T04:00:00Z
