@@ -10,7 +10,9 @@ export type DarakeHumanViewModeChangeDetail = {
 export function loadDarakeHumanViewMode(): DarakeHumanViewMode {
   try {
     const raw = localStorage.getItem(HUMAN_VIEW_MODE_KEY);
-    if (raw === 'details' || raw === 'debug' || raw === 'human') return raw;
+    if (raw !== 'human') {
+      localStorage.setItem(HUMAN_VIEW_MODE_KEY, 'human');
+    }
   } catch {
     // ignore
   }
@@ -19,7 +21,7 @@ export function loadDarakeHumanViewMode(): DarakeHumanViewMode {
 
 export function saveDarakeHumanViewMode(mode: DarakeHumanViewMode): void {
   try {
-    localStorage.setItem(HUMAN_VIEW_MODE_KEY, mode);
+    localStorage.setItem(HUMAN_VIEW_MODE_KEY, mode === 'human' ? 'human' : 'human');
   } catch {
     // ignore
   }
