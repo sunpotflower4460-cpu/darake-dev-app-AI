@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 83 darake setup checklist.
+
+Purpose:
+- Deploy latest main after PR #176.
+- Verify the beginner setup checklist panel and documentation are available.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T08:05:00Z
