@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 69 minimal seed input.
+
+Purpose:
+- Deploy latest main after PR #159.
+- Verify app name / one-line idea can be entered directly on the one-page cockpit.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T04:15:00Z
