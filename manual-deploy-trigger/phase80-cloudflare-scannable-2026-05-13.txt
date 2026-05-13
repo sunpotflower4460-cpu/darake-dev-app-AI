@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 80 scannable Cloudflare setup guide.
+
+Purpose:
+- Deploy latest main after PR #173.
+- Verify Cloudflare setup failures show a scannable beginner-friendly guide.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T06:10:00Z
