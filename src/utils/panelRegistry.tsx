@@ -33,6 +33,7 @@ import { PANEL_REGISTRY_PHASE55 } from './panelRegistry.phase55';
 import { PANEL_REGISTRY_PHASE56 } from './panelRegistry.phase56';
 import { PANEL_REGISTRY_PHASE57 } from './panelRegistry.phase57';
 import { PANEL_REGISTRY_PHASE59TO63 } from './panelRegistry.phase59to63';
+import { PANEL_REGISTRY_PHASE65 } from './panelRegistry.phase65';
 
 export type PanelRegistryItem = {
   id: string;
@@ -79,4 +80,5 @@ export const ALL_PANELS: PanelRegistryItem[] = [
   ...PANEL_REGISTRY_PHASE56,
   ...PANEL_REGISTRY_PHASE57,
   ...PANEL_REGISTRY_PHASE59TO63,
+  ...PANEL_REGISTRY_PHASE65,
 ].sort((a, b) => a.priority - b.priority);

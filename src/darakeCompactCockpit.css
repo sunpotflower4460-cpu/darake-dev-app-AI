@@ -1,0 +1,172 @@
+.darakeCompactCockpit {
+  background: var(--card-bg, #1a1a2e);
+  border: 1px solid var(--border, #2a2a4a);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.darakeCompactCockpit__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.darakeCompactCockpit__badge {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--accent, #7c6af7);
+  text-transform: uppercase;
+}
+
+.darakeCompactCockpit__appName {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary, #e8e8f0);
+  line-height: 1.3;
+}
+
+.darakeCompactCockpit__idea {
+  font-size: 13px;
+  color: var(--text-secondary, #8888aa);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.darakeCompactCockpit__next {
+  background: var(--surface, #12122a);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.darakeCompactCockpit__nextLabel {
+  font-size: 11px;
+  color: var(--text-secondary, #8888aa);
+  font-weight: 500;
+}
+
+.darakeCompactCockpit__nextAction {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, #e8e8f0);
+}
+
+.darakeCompactCockpit__counts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.darakeCompactCockpit__count {
+  background: var(--surface, #12122a);
+  border-radius: 8px;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid transparent;
+}
+
+.darakeCompactCockpit__count--active {
+  border-color: var(--accent, #7c6af7);
+}
+
+.darakeCompactCockpit__count--warn {
+  border-color: #d4a017;
+}
+
+.darakeCompactCockpit__count--danger {
+  border-color: #e05252;
+  background: rgba(224, 82, 82, 0.08);
+}
+
+.darakeCompactCockpit__countNum {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary, #e8e8f0);
+  line-height: 1;
+}
+
+.darakeCompactCockpit__count--warn .darakeCompactCockpit__countNum {
+  color: #d4a017;
+}
+
+.darakeCompactCockpit__count--danger .darakeCompactCockpit__countNum {
+  color: #e05252;
+}
+
+.darakeCompactCockpit__countLabel {
+  font-size: 10px;
+  color: var(--text-secondary, #8888aa);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.darakeCompactCockpit__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.darakeCompactCockpit__btn {
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s;
+  background: var(--accent, #7c6af7);
+  color: #fff;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.darakeCompactCockpit__btn:hover {
+  opacity: 0.85;
+}
+
+.darakeCompactCockpit__btn--secondary {
+  background: var(--surface, #12122a);
+  color: var(--text-primary, #e8e8f0);
+  border: 1px solid var(--border, #2a2a4a);
+}
+
+/* App details collapse */
+.darakeAppDetailsCollapse {
+  margin-bottom: 0;
+}
+
+.darakeAppDetailsCollapse__summary {
+  cursor: pointer;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text-secondary, #8888aa);
+  background: var(--surface, #12122a);
+  border-radius: 8px;
+  border: 1px solid var(--border, #2a2a4a);
+  list-style: none;
+  user-select: none;
+}
+
+.darakeAppDetailsCollapse__summary::-webkit-details-marker {
+  display: none;
+}
+
+.darakeAppDetailsCollapse__summary::before {
+  content: '▶ ';
+  font-size: 10px;
+  margin-right: 4px;
+}
+
+details[open] .darakeAppDetailsCollapse__summary::before {
+  content: '▼ ';
+}
