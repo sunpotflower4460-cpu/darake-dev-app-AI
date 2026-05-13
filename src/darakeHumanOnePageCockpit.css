@@ -41,7 +41,8 @@
   margin: 0;
 }
 
-.darakeHumanOnePage__seedForm {
+.darakeHumanOnePage__seedForm,
+.darakeHumanOnePage__repoFix {
   background: rgba(248, 250, 241, 0.92);
   border: 1px solid rgba(44, 78, 54, 0.1);
   border-radius: 22px;
@@ -51,20 +52,28 @@
   gap: 12px;
 }
 
-.darakeHumanOnePage__seedGuide {
+.darakeHumanOnePage__repoFix {
+  border-color: rgba(150, 102, 35, 0.22);
+  background: linear-gradient(180deg, rgba(255, 248, 231, 0.98), rgba(255, 255, 248, 0.94));
+}
+
+.darakeHumanOnePage__seedGuide,
+.darakeHumanOnePage__repoFixHeader {
   display: flex;
   flex-direction: column;
   gap: 4px;
   padding: 2px 2px 4px;
 }
 
-.darakeHumanOnePage__seedGuide strong {
+.darakeHumanOnePage__seedGuide strong,
+.darakeHumanOnePage__repoFixHeader strong {
   color: #17251c;
   font-size: 1.05rem;
   line-height: 1.35;
 }
 
-.darakeHumanOnePage__seedGuide span {
+.darakeHumanOnePage__seedGuide span,
+.darakeHumanOnePage__repoFixHeader span {
   color: rgba(23, 37, 28, 0.62);
   font-size: 0.9rem;
   line-height: 1.55;
