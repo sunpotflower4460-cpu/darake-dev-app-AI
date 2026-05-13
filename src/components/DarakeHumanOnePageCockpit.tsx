@@ -76,13 +76,13 @@ function buildReceipt(args: {
   const blocked = args.omakaseStatus === 'blocked' || args.omakaseStatus === 'failed';
 
   const items: ReceiptItem[] = [
-    { label: '種', value: args.hasSeed ? '置けました' : '未入力', done: args.hasSeed },
-    { label: '設計図', value: hasBlueprint ? '作成済み' : '未作成', done: hasBlueprint },
-    { label: 'タスク', value: hasTasks ? '作成済み' : '未作成', done: hasTasks },
-    { label: 'Issue', value: hasIssue ? `#${args.issueNumber}` : '未作成', done: hasIssue },
+    { label: '入力', value: args.hasSeed ? 'OK' : '未入力', done: args.hasSeed },
+    { label: '設計図', value: hasBlueprint ? '作成済み' : 'まだ', done: hasBlueprint },
+    { label: 'やること', value: hasTasks ? '作成済み' : 'まだ', done: hasTasks },
+    { label: 'Issue', value: hasIssue ? `#${args.issueNumber}` : 'まだ', done: hasIssue },
     {
-      label: 'AI',
-      value: agentWorking ? '作業中' : fallbackReady ? '手動確認あり' : blocked ? '確認あり' : '待機中',
+      label: 'AI作業',
+      value: agentWorking ? '作業中' : fallbackReady ? '確認あり' : blocked ? '確認あり' : '待機中',
       done: agentWorking,
     },
   ];
@@ -90,7 +90,7 @@ function buildReceipt(args: {
   if (args.isStarting || args.omakaseStatus === 'preparing') {
     return {
       title: '進めています',
-      message: '設計図からIssue作成まで、AIが進められるところを処理しています。',
+      message: '設計図からIssue作成まで、できるところを処理しています。',
       tone: 'working',
       items,
     };
@@ -126,14 +126,14 @@ function buildReceipt(args: {
   if (hasBlueprint && hasTasks) {
     return {
       title: '準備できました',
-      message: '設計図とMVPタスクはできています。次にIssue作成へ進めます。',
+      message: '設計図とやることはできています。次にIssue作成へ進めます。',
       tone: 'done',
       items,
     };
   }
 
   return {
-    title: args.hasSeed ? '種を受け取りました' : 'まだ始めていません',
+    title: args.hasSeed ? '入力できました' : 'まだ始めていません',
     message: args.hasSeed ? 'AIが設計図に変換する準備をしています。' : 'アプリ名と一行アイデアだけで始められます。',
     tone: 'idle',
     items,
@@ -155,7 +155,7 @@ function buildActionState(args: {
   if (args.isStarting || args.omakaseStatus === 'preparing') {
     return {
       status: 'AIに渡す準備をしています。',
-      next: '設計図、MVPタスク、Issue作成、Cloud Agentへの橋渡しまで進めています。',
+      next: '設計図、やること、Issue作成まで進めています。',
       stop: 'なし',
       action: { label: '進めています', tone: 'quiet' },
     };
@@ -176,7 +176,7 @@ function buildActionState(args: {
       next: '自動割り当てだけ未完了です。必要なら手動用の文面を開けます。',
       stop: 'なし',
       action: { label: '手動用を開く', tone: 'primary' },
-      hint: '人間が読む必要があるのはここまでです。長いCloud Agent文は詳細側に置いてあります。',
+      hint: '長いCloud Agent文は「詳しく見る」の中に置いてあります。',
       needsHumanReview: true,
     };
   }
@@ -188,7 +188,7 @@ function buildActionState(args: {
       next: simplified,
       stop: args.omakaseNextAction || '確認あり',
       action: { label: args.omakaseStatus === 'failed' ? 'もう一度試す' : '確認する', tone: 'primary' },
-      hint: '詳細パネルを読まなくても大丈夫です。必要な確認だけをここに短く出しています。',
+      hint: '細かい内部ログは読まなくて大丈夫です。必要な確認だけをここに短く出しています。',
       needsHumanReview: true,
     };
   }
@@ -196,27 +196,27 @@ function buildActionState(args: {
   if (args.blockedHard > 0) {
     return {
       status: '止めるべき判断があります。',
-      next: 'AIが勝手に進めない場所だけ、後で確認します。',
+      next: '課金・法律・公開・secretなど、AIが勝手に進めない場所だけ後で確認します。',
       stop: `${args.blockedHard}件`,
       action: { label: '後で確認する', tone: 'primary' },
-      hint: '課金・法律・公開・secretなどの判断だけ、人間に戻します。',
+      hint: '安全に関わる判断だけ、人間に戻します。',
       needsHumanReview: true,
     };
   }
 
   if (!args.hasSeed) {
     return {
-      status: 'まだ種が置かれていません。',
-      next: '下の2つだけ書けば、AIが設計図とMVPタスクに変換して、そのまま進めます。',
+      status: 'まずは作りたいものを1つ置きます。',
+      next: '2つの欄を書いて、下の大きいボタンを押すだけです。',
       stop: 'なし',
-      action: { label: '種を置いて進める', tone: 'primary' },
+      action: { label: 'この内容でAIに任せる', tone: 'primary' },
     };
   }
 
   if (args.queued > 0) {
     return {
-      status: '設計図とMVPタスクを作りました。',
-      next: 'AIが進められる範囲で、MVP Issueと実装準備へ進めます。',
+      status: '設計図とやることを作りました。',
+      next: 'AIが進められる範囲で、Issue作成と実装準備へ進めます。',
       stop: 'なし',
       action: { label: 'このまま進める', tone: 'primary' },
     };
@@ -234,10 +234,10 @@ function buildActionState(args: {
 
   if (args.hasReport) {
     return {
-      status: '朝レポートがあります。',
+      status: '進捗メモがあります。',
       next: '進んだことだけ短く確認できます。',
       stop: 'なし',
-      action: { label: '朝レポートを見る', tone: 'primary' },
+      action: { label: '進捗を見る', tone: 'primary' },
     };
   }
 
@@ -274,8 +274,8 @@ export function DarakeHumanOnePageCockpit() {
   const omakase = useMemo(() => loadOmakaseStartState(), [revision, isStarting]);
 
   const latestBlueprint = blueprints[blueprints.length - 1] ?? null;
-  const appName = form?.appName?.trim() || latestBlueprint?.appName || 'まだ名前のないアプリ';
-  const idea = form?.oneLineIdea?.trim() || latestBlueprint?.oneLineIdea || '作りたいものを置くと、AIがMVPまでの流れに変換します。';
+  const appName = form?.appName?.trim() || latestBlueprint?.appName || '何を作りますか？';
+  const idea = form?.oneLineIdea?.trim() || latestBlueprint?.oneLineIdea || 'アプリ名と一行アイデアだけ書けば、AIがMVPまでの流れに変換します。';
 
   const queued = tasks.filter((task) => task.status === 'queued' || task.status === 'running' || task.status === 'retrying').length;
   const askLater = tasks.filter((task) => task.status === 'ask-later' || task.status === 'failed-soft').length;
@@ -283,6 +283,7 @@ export function DarakeHumanOnePageCockpit() {
   const done = tasks.filter((task) => task.status === 'done').length;
 
   const hasSeed = Boolean(latestBlueprint || tasks.length > 0 || form?.oneLineIdea?.trim());
+  const showReceipt = hasSeed || isStarting || Boolean(omakase?.status);
 
   useEffect(() => {
     if (hasSeed) return;
@@ -393,12 +394,16 @@ export function DarakeHumanOnePageCockpit() {
 
         {!hasSeed && (
           <div className="darakeHumanOnePage__seedForm" aria-label="アプリの種">
+            <div className="darakeHumanOnePage__seedGuide">
+              <strong>まずはここだけ</strong>
+              <span>テストならサンプルを入れて、そのまま大きいボタンを押せます。</span>
+            </div>
             <button
               type="button"
               className="darakeHumanOnePage__templateButton"
               onClick={fillTestSeedTemplate}
             >
-              試しテンプレを入れる
+              サンプルを入れる（テスト用）
             </button>
             <label className="darakeHumanOnePage__field">
               <span>アプリ名</span>
@@ -421,22 +426,24 @@ export function DarakeHumanOnePageCockpit() {
           </div>
         )}
 
-        <div className={`darakeHumanOnePage__receipt darakeHumanOnePage__receipt--${receipt.tone}`}>
-          <div>
-            <span className="darakeHumanOnePage__label">できた感</span>
-            <strong>{receipt.title}</strong>
-            <p>{receipt.message}</p>
+        {showReceipt && (
+          <div className={`darakeHumanOnePage__receipt darakeHumanOnePage__receipt--${receipt.tone}`}>
+            <div>
+              <span className="darakeHumanOnePage__label">進み具合</span>
+              <strong>{receipt.title}</strong>
+              <p>{receipt.message}</p>
+            </div>
+            <div className="darakeHumanOnePage__receiptList">
+              {receipt.items.map((item) => (
+                <div className="darakeHumanOnePage__receiptItem" key={item.label}>
+                  <span>{item.done ? '✓' : '・'}</span>
+                  <b>{item.label}</b>
+                  <em>{item.value}</em>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="darakeHumanOnePage__receiptList">
-            {receipt.items.map((item) => (
-              <div className="darakeHumanOnePage__receiptItem" key={item.label}>
-                <span>{item.done ? '✓' : '・'}</span>
-                <b>{item.label}</b>
-                <em>{item.value}</em>
-              </div>
-            ))}
-          </div>
-        </div>
+        )}
 
         <div className="darakeHumanOnePage__statusBlock">
           <span className="darakeHumanOnePage__label">今の状態</span>
@@ -444,12 +451,12 @@ export function DarakeHumanOnePageCockpit() {
         </div>
 
         <div className="darakeHumanOnePage__statusBlock">
-          <span className="darakeHumanOnePage__label">AIが次に進めること</span>
+          <span className="darakeHumanOnePage__label">次に起きること</span>
           <strong>{state.next}</strong>
         </div>
 
         <div className={`darakeHumanOnePage__stop ${blockedHard > 0 || state.needsHumanReview || omakase?.status === 'blocked' || omakase?.status === 'failed' ? 'darakeHumanOnePage__stop--danger' : ''}`}>
-          <span className="darakeHumanOnePage__label">止まっていること</span>
+          <span className="darakeHumanOnePage__label">確認が必要なこと</span>
           <strong>{state.stop}</strong>
         </div>
 
@@ -469,7 +476,7 @@ export function DarakeHumanOnePageCockpit() {
         </button>
 
         <button type="button" className="darakeHumanOnePage__detail" onClick={() => requestDarakeHumanViewModeChange('details')}>
-          詳細
+          詳しく見る
         </button>
       </section>
     </main>
