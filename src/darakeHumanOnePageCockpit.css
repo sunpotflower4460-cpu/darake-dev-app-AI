@@ -97,6 +97,82 @@
   font-weight: 800;
 }
 
+.darakeHumanOnePage__receipt {
+  border-radius: 22px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border: 1px solid rgba(44, 78, 54, 0.12);
+  background: rgba(248, 250, 241, 0.94);
+}
+
+.darakeHumanOnePage__receipt strong {
+  display: block;
+  color: #17251c;
+  font-size: 1.28rem;
+  line-height: 1.2;
+  margin-top: 4px;
+}
+
+.darakeHumanOnePage__receipt p {
+  color: rgba(23, 37, 28, 0.66);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 7px 0 0;
+}
+
+.darakeHumanOnePage__receipt--done {
+  border-color: rgba(40, 92, 57, 0.18);
+  background: linear-gradient(180deg, rgba(241, 250, 236, 0.98), rgba(255, 255, 248, 0.92));
+}
+
+.darakeHumanOnePage__receipt--working {
+  border-color: rgba(70, 103, 150, 0.18);
+  background: linear-gradient(180deg, rgba(239, 245, 255, 0.98), rgba(255, 255, 248, 0.92));
+}
+
+.darakeHumanOnePage__receipt--review {
+  border-color: rgba(150, 102, 35, 0.22);
+  background: linear-gradient(180deg, rgba(255, 248, 231, 0.98), rgba(255, 255, 248, 0.92));
+}
+
+.darakeHumanOnePage__receiptList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.darakeHumanOnePage__receiptItem {
+  display: grid;
+  grid-template-columns: 24px 72px 1fr;
+  align-items: center;
+  gap: 8px;
+  color: rgba(23, 37, 28, 0.72);
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(44, 78, 54, 0.08);
+  border-radius: 14px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+}
+
+.darakeHumanOnePage__receiptItem span {
+  color: #285c39;
+  font-weight: 900;
+}
+
+.darakeHumanOnePage__receiptItem b {
+  color: rgba(23, 37, 28, 0.62);
+  font-weight: 900;
+}
+
+.darakeHumanOnePage__receiptItem em {
+  color: #203426;
+  font-style: normal;
+  font-weight: 800;
+  text-align: right;
+}
+
 .darakeHumanOnePage__statusBlock,
 .darakeHumanOnePage__stop {
   background: rgba(248, 250, 241, 0.92);
