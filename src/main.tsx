@@ -225,20 +225,6 @@ function DarakeDetailsShell({ mode }: { mode: Exclude<DarakeHumanViewMode, 'huma
         >
           1ページに戻る
         </button>
-        <button
-          type="button"
-          className="darakeHumanDetailsShell__button"
-          onClick={() => requestDarakeHumanViewModeChange('details')}
-        >
-          詳細
-        </button>
-        <button
-          type="button"
-          className="darakeHumanDetailsShell__button"
-          onClick={() => requestDarakeHumanViewModeChange('debug')}
-        >
-          AI内部/デバッグ
-        </button>
       </div>
       {mode === 'debug' && (
         <details className="darakeAppDetailsCollapse">
