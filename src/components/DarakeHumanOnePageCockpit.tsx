@@ -207,7 +207,7 @@ function buildActionState(args: {
   if (!args.hasSeed) {
     return {
       status: 'まずは作りたいものを1つ置きます。',
-      next: 'テストなら「サンプルで一気に試す」で、入力から開始までまとめて進められます。',
+      next: 'テストなら「すぐ試す」、自分のアプリなら2つの欄を書いて開始します。',
       stop: 'なし',
       action: { label: 'この内容でAIに任せる', tone: 'primary' },
     };
@@ -275,7 +275,7 @@ export function DarakeHumanOnePageCockpit() {
 
   const latestBlueprint = blueprints[blueprints.length - 1] ?? null;
   const appName = form?.appName?.trim() || latestBlueprint?.appName || '何を作りますか？';
-  const idea = form?.oneLineIdea?.trim() || latestBlueprint?.oneLineIdea || 'アプリ名と一行アイデアだけ書けば、AIがMVPまでの流れに変換します。';
+  const idea = form?.oneLineIdea?.trim() || latestBlueprint?.oneLineIdea || 'すぐ試すか、アプリ名と一行アイデアを書くだけで始められます。';
 
   const queued = tasks.filter((task) => task.status === 'queued' || task.status === 'running' || task.status === 'retrying').length;
   const askLater = tasks.filter((task) => task.status === 'ask-later' || task.status === 'failed-soft').length;
@@ -284,6 +284,8 @@ export function DarakeHumanOnePageCockpit() {
 
   const hasSeed = Boolean(latestBlueprint || tasks.length > 0 || form?.oneLineIdea?.trim());
   const showReceipt = hasSeed || isStarting || Boolean(omakase?.status);
+  const showProgressCards = hasSeed || isStarting || Boolean(omakase?.status) || blockedHard > 0 || askLater > 0;
+  const showDetailsButton = hasSeed && (blockedHard > 0 || askLater > 0 || reports.length > 0 || Boolean(omakase?.status));
 
   useEffect(() => {
     if (hasSeed) return;
@@ -406,8 +408,8 @@ export function DarakeHumanOnePageCockpit() {
         {!hasSeed && (
           <div className="darakeHumanOnePage__seedForm" aria-label="アプリの種">
             <div className="darakeHumanOnePage__seedGuide">
-              <strong>まずはここだけ</strong>
-              <span>テストなら1ボタンで入力から開始まで進められます。</span>
+              <strong>すぐ試す</strong>
+              <span>まず動くか見るだけなら、このボタンで最後まで流せます。</span>
             </div>
             <button
               type="button"
@@ -417,14 +419,7 @@ export function DarakeHumanOnePageCockpit() {
             >
               サンプルで一気に試す
             </button>
-            <button
-              type="button"
-              className="darakeHumanOnePage__templateButton"
-              onClick={fillTestSeedTemplate}
-              disabled={primaryDisabled}
-            >
-              サンプルを入力欄に入れるだけ
-            </button>
+            <div className="darakeHumanOnePage__seedDivider">自分のアプリで始める場合</div>
             <label className="darakeHumanOnePage__field">
               <span>アプリ名</span>
               <input
@@ -465,20 +460,24 @@ export function DarakeHumanOnePageCockpit() {
           </div>
         )}
 
-        <div className="darakeHumanOnePage__statusBlock">
-          <span className="darakeHumanOnePage__label">今の状態</span>
-          <strong>{state.status}</strong>
-        </div>
+        {showProgressCards && (
+          <>
+            <div className="darakeHumanOnePage__statusBlock">
+              <span className="darakeHumanOnePage__label">今の状態</span>
+              <strong>{state.status}</strong>
+            </div>
 
-        <div className="darakeHumanOnePage__statusBlock">
-          <span className="darakeHumanOnePage__label">次に起きること</span>
-          <strong>{state.next}</strong>
-        </div>
+            <div className="darakeHumanOnePage__statusBlock">
+              <span className="darakeHumanOnePage__label">次に起きること</span>
+              <strong>{state.next}</strong>
+            </div>
 
-        <div className={`darakeHumanOnePage__stop ${blockedHard > 0 || state.needsHumanReview || omakase?.status === 'blocked' || omakase?.status === 'failed' ? 'darakeHumanOnePage__stop--danger' : ''}`}>
-          <span className="darakeHumanOnePage__label">確認が必要なこと</span>
-          <strong>{state.stop}</strong>
-        </div>
+            <div className={`darakeHumanOnePage__stop ${blockedHard > 0 || state.needsHumanReview || omakase?.status === 'blocked' || omakase?.status === 'failed' ? 'darakeHumanOnePage__stop--danger' : ''}`}>
+              <span className="darakeHumanOnePage__label">確認が必要なこと</span>
+              <strong>{state.stop}</strong>
+            </div>
+          </>
+        )}
 
         {state.hint && (
           <div className="darakeHumanOnePage__hint">
@@ -495,9 +494,11 @@ export function DarakeHumanOnePageCockpit() {
           {state.action.label}
         </button>
 
-        <button type="button" className="darakeHumanOnePage__detail" onClick={() => requestDarakeHumanViewModeChange('details')}>
-          詳しく見る
-        </button>
+        {showDetailsButton && (
+          <button type="button" className="darakeHumanOnePage__detail" onClick={() => requestDarakeHumanViewModeChange('details')}>
+            詳しく見る
+          </button>
+        )}
       </section>
     </main>
   );
