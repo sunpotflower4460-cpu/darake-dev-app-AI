@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 70 auto-run safe start.
+
+Purpose:
+- Deploy latest main after PR #161.
+- Verify the one-page cockpit saves the seed and continues into the safe start flow.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T04:20:00Z
