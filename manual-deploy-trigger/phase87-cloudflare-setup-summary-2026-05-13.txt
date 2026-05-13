@@ -1,0 +1,13 @@
+Manual deploy trigger for Phase 87 Cloudflare setup summary.
+
+Purpose:
+- Deploy latest main after PR #180.
+- Verify Cloudflare Setup writes human-readable GitHub Actions Summary results.
+- Verify setup docs mention where to read the translated result.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T08:55:00Z
