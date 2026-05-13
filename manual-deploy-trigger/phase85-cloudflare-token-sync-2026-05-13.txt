@@ -1,0 +1,13 @@
+Manual deploy trigger for Phase 85 Cloudflare setup automation improvements.
+
+Purpose:
+- Deploy latest main after PR #178.
+- Verify Cloudflare Setup workflow supports optional Worker GitHub access sync.
+- Verify setup docs and panels mention the updated setup flow.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T08:35:00Z
