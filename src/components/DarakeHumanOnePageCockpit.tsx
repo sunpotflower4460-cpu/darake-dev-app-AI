@@ -35,6 +35,11 @@ type ReceiptItem = {
   done: boolean;
 };
 
+const TEST_SEED_TEMPLATE = {
+  appName: '宝地図アプリ',
+  oneLineIdea: '自分の夢や目標を宝の地図みたいに置いて、AIが次の一歩にしてくれるアプリ',
+};
+
 function simplifyOmakaseMessage(message?: string): string {
   if (!message) return '設定か入力内容の確認が必要です。';
   if (message.includes('GITHUB_TOKEN')) {
@@ -307,6 +312,12 @@ export function DarakeHumanOnePageCockpit() {
     isStarting,
   });
 
+  function fillTestSeedTemplate() {
+    setSeedAppName(TEST_SEED_TEMPLATE.appName);
+    setSeedIdea(TEST_SEED_TEMPLATE.oneLineIdea);
+    setSeedError(null);
+  }
+
   function saveSeedFromOnePage(): boolean {
     const appNameValue = seedAppName.trim();
     const ideaValue = seedIdea.trim();
@@ -382,6 +393,13 @@ export function DarakeHumanOnePageCockpit() {
 
         {!hasSeed && (
           <div className="darakeHumanOnePage__seedForm" aria-label="アプリの種">
+            <button
+              type="button"
+              className="darakeHumanOnePage__templateButton"
+              onClick={fillTestSeedTemplate}
+            >
+              試しテンプレを入れる
+            </button>
             <label className="darakeHumanOnePage__field">
               <span>アプリ名</span>
               <input
