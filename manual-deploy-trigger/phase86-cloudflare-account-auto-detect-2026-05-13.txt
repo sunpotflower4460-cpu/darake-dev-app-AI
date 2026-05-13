@@ -1,0 +1,13 @@
+Manual deploy trigger for Phase 86 Cloudflare account auto-detection.
+
+Purpose:
+- Deploy latest main after PR #179.
+- Verify Cloudflare Setup workflow auto-detects account ID when possible.
+- Verify setup docs mention the new reduced setup path.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T08:45:00Z
