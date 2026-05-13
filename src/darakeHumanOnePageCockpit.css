@@ -79,6 +79,34 @@
   line-height: 1.55;
 }
 
+.darakeHumanOnePage__linkGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.darakeHumanOnePage__linkGrid a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(40, 92, 57, 0.18);
+  background: rgba(255, 255, 255, 0.76);
+  color: #285c39;
+  font-size: 0.9rem;
+  font-weight: 950;
+  text-decoration: none;
+  box-shadow: 0 8px 18px rgba(40, 92, 57, 0.07);
+}
+
+.darakeHumanOnePage__linkGrid a:first-child {
+  background: #285c39;
+  color: #fff;
+  border-color: #285c39;
+  box-shadow: 0 14px 28px rgba(40, 92, 57, 0.18);
+}
+
 .darakeHumanOnePage__beginnerGuide,
 .darakeHumanOnePage__settingGuide {
   display: flex;

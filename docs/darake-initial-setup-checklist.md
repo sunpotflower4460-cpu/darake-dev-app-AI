@@ -7,6 +7,35 @@ Secret の中身はチャットにもコードにも貼りません。
 
 ---
 
+## すぐ開くリンク
+
+```text
+GitHubの登録ページ
+https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/settings/secrets/actions/new
+```
+
+```text
+CloudflareのAPI Tokenページ
+https://dash.cloudflare.com/profile/api-tokens
+```
+
+```text
+Cloudflare Setup実行ページ
+https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/cloudflare-setup.yml
+```
+
+```text
+Cloudflare Workers & Pages
+https://dash.cloudflare.com/?to=/:account/workers-and-pages
+```
+
+```text
+GitHubのToken作成ページ
+https://github.com/settings/personal-access-tokens
+```
+
+---
+
 ## まず今できていること
 
 Phase 82 で、次のON/OFFスイッチはリポジトリ側に入りました。
@@ -22,13 +51,19 @@ GITHUB_ISSUE_CREATE_ENABLED = true
 
 ## これから必要になるもの
 
-### 1. Cloudflareを自動で再デプロイするためのGitHub Secrets
+### 1. Cloudflareを自動で再デプロイするためのGitHub側登録
 
 GitHub のこのリポジトリに入れます。
 
 ```text
 CLOUDFLARE_API_TOKEN
 CLOUDFLARE_ACCOUNT_ID
+```
+
+一番近いURL:
+
+```text
+https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/settings/secrets/actions/new
 ```
 
 入れる場所:
@@ -55,6 +90,12 @@ GITHUB_TOKEN
 ```
 
 これは GitHub に Issue を作るための鍵です。
+
+一番近いURL:
+
+```text
+https://dash.cloudflare.com/?to=/:account/workers-and-pages
+```
 
 入れる場所:
 
@@ -88,19 +129,19 @@ GitHubで作ったPersonal Access Token
 ```text
 CLOUDFLARE_API_TOKEN
 CloudflareをGitHub Actionsから再デプロイするための鍵
-→ GitHub Secrets に入れる
+→ GitHub側に入れる
 ```
 
 ```text
 CLOUDFLARE_ACCOUNT_ID
 Cloudflareのアカウントを特定するID
-→ GitHub Secrets に入れる
+→ GitHub側に入れる
 ```
 
 ```text
 GITHUB_TOKEN
 だらけdev app がGitHubにIssueを作るための鍵
-→ Cloudflare Worker Secret に入れる
+→ Cloudflare Worker側に入れる
 ```
 
 ---
@@ -108,11 +149,14 @@ GITHUB_TOKEN
 ## いちばん楽な順番
 
 ```text
-1. CLOUDFLARE_API_TOKEN と CLOUDFLARE_ACCOUNT_ID を GitHub Secrets に入れる
-2. GitHub Actions → Cloudflare Setup を実行する
-3. だらけdev app に戻って「設定したので再チェック」
-4. GITHUB_TOKEN が必要と出たら Cloudflare Worker Secret に入れる
-5. もう一度「設定したので再チェック」
+1. CloudflareのAPI Tokenページを開く
+2. GitHubの登録ページを開く
+3. CLOUDFLARE_API_TOKEN と CLOUDFLARE_ACCOUNT_ID を入れる
+4. Cloudflare Setup実行ページを開く
+5. Run workflow を押す
+6. だらけdev app に戻って「設定したので再チェック」
+7. GITHUB_TOKEN が必要と出たら Cloudflare Worker Secret に入れる
+8. もう一度「設定したので再チェック」
 ```
 
 ---
@@ -150,7 +194,7 @@ GitHub Tokenがないと言われる
 
 ```text
 普通のON/OFF設定は wrangler.toml に置く
-強い鍵だけ Secrets に置く
+強い鍵だけ安全な登録場所に置く
 人間は最初の鍵登録だけやる
 その後は Actions とアプリ画面が案内する
 ```
