@@ -15,7 +15,7 @@
   padding: 28px 24px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
 .darakeHumanOnePage__eyebrow {
@@ -45,10 +45,29 @@
   background: rgba(248, 250, 241, 0.92);
   border: 1px solid rgba(44, 78, 54, 0.1);
   border-radius: 22px;
-  padding: 14px;
+  padding: 15px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.darakeHumanOnePage__seedGuide {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 2px 2px 4px;
+}
+
+.darakeHumanOnePage__seedGuide strong {
+  color: #17251c;
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.darakeHumanOnePage__seedGuide span {
+  color: rgba(23, 37, 28, 0.62);
+  font-size: 0.9rem;
+  line-height: 1.55;
 }
 
 .darakeHumanOnePage__templateButton {
@@ -158,7 +177,7 @@
 
 .darakeHumanOnePage__receiptItem {
   display: grid;
-  grid-template-columns: 24px 72px 1fr;
+  grid-template-columns: 24px 76px 1fr;
   align-items: center;
   gap: 8px;
   color: rgba(23, 37, 28, 0.72);
