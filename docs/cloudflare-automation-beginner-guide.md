@@ -1,9 +1,33 @@
 # Cloudflare設定を自動化するための最初の1回ガイド
 
-だらけdev app が Cloudflare へ自動デプロイできるようにするには、最初に1回だけ GitHub Secrets に鍵を入れます。
+だらけdev app が Cloudflare へ自動デプロイできるようにするには、最初に1回だけ GitHub側に鍵を入れます。
 
 この鍵はチャットやコードには貼りません。
-GitHub の Secrets にだけ入れます。
+GitHub の安全な登録場所にだけ入れます。
+
+---
+
+## すぐ開くリンク
+
+```text
+CloudflareのAPI Tokenページ
+https://dash.cloudflare.com/profile/api-tokens
+```
+
+```text
+GitHubの登録ページ
+https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/settings/secrets/actions/new
+```
+
+```text
+Cloudflare Setup実行ページ
+https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/cloudflare-setup.yml
+```
+
+```text
+Cloudflare Workers & Pages
+https://dash.cloudflare.com/?to=/:account/workers-and-pages
+```
 
 ---
 
@@ -24,7 +48,7 @@ Phase 82 以降、この値は `wrangler.toml` に入っています。
 
 ## 人間が最初に1回だけやること
 
-GitHub のこのリポジトリに、次の2つを Secrets として入れます。
+GitHub のこのリポジトリに、次の2つを登録します。
 
 ```text
 CLOUDFLARE_API_TOKEN
@@ -39,13 +63,19 @@ CLOUDFLARE_ACCOUNT_ID
 
 Cloudflare で確認します。
 
+一番近いURL:
+
 ```text
-Cloudflare
-→ Workers & Pages
-→ 右側や下の方にある Account ID を探す
+https://dash.cloudflare.com/?to=/:account/workers-and-pages
 ```
 
-見つけたらコピーして、GitHub Secrets に入れます。
+見つけたらコピーして、GitHub側の登録ページに入れます。
+
+一番近いURL:
+
+```text
+https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/settings/secrets/actions/new
+```
 
 Secret name:
 
@@ -63,15 +93,13 @@ Cloudflare の Account ID
 
 ## 2. CLOUDFLARE_API_TOKEN の作り方
 
-Cloudflare で API Token を作ります。
+一番近いURL:
 
 ```text
-Cloudflare
-→ 右上の人型アイコン
-→ My Profile
-→ API Tokens
-→ Create Token
+https://dash.cloudflare.com/profile/api-tokens
 ```
+
+ここで API Token を作ります。
 
 テンプレートが選べる場合は、できるだけ Worker を編集できる最小権限にします。
 
@@ -82,7 +110,13 @@ Account / Workers Scripts / Edit
 ```
 
 作った Token は一度しか見えないことがあります。
-コピーしたら、GitHub Secrets に入れます。
+コピーしたら、GitHub側の登録ページに入れます。
+
+一番近いURL:
+
+```text
+https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/settings/secrets/actions/new
+```
 
 Secret name:
 
@@ -100,38 +134,14 @@ Cloudflareで作ったAPI Token
 
 ---
 
-## 3. GitHub Secrets に入れる場所
+## 3. 自動デプロイを実行する場所
 
-GitHub でこのリポジトリを開きます。
+2つの登録が終わったら、GitHub Actions で実行します。
 
-```text
-GitHub
-→ darake-dev-app-AI
-→ Settings
-→ Secrets and variables
-→ Actions
-→ New repository secret
-```
-
-ここで、次の2つを追加します。
+一番近いURL:
 
 ```text
-CLOUDFLARE_API_TOKEN
-CLOUDFLARE_ACCOUNT_ID
-```
-
----
-
-## 4. 自動デプロイを実行する場所
-
-2つのSecretを入れたら、GitHub Actions で実行します。
-
-```text
-GitHub
-→ darake-dev-app-AI
-→ Actions
-→ Cloudflare Setup
-→ Run workflow
+https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/cloudflare-setup.yml
 ```
 
 入力は基本このままでOKです。
@@ -148,7 +158,7 @@ GITHUB_ISSUE_CREATE_ENABLED = true
 
 ---
 
-## 5. 終わったら何をする？
+## 4. 終わったら何をする？
 
 だらけdev app に戻って、次のボタンを押します。
 
@@ -170,7 +180,7 @@ GITHUB_ISSUE_CREATE_ENABLED = true
 ## この自動化の考え方
 
 ```text
-最初に1回だけ、人間がCloudflareを操作できる鍵をGitHub Secretsに入れる
+最初に1回だけ、人間がCloudflareを操作できる鍵をGitHub側に入れる
 ↓
 次からは GitHub Actions が Cloudflare にデプロイする
 ↓
