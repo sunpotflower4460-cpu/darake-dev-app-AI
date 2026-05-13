@@ -6,6 +6,11 @@ import {
   loadGentleAppStartForm,
   saveGentleAppStartForm,
 } from '../utils/gentleAppStartForm';
+import {
+  buildEmptyGitHubStartSettings,
+  loadGitHubStartSettings,
+  saveGitHubStartSettings,
+} from '../utils/githubStartSettings';
 import { loadDarakeTaskQueue } from '../utils/darakeTaskQueue';
 import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
 import { requestDarakeHumanViewModeChange } from '../utils/darakeHumanViewMode';
@@ -40,6 +45,17 @@ const TEST_SEED_TEMPLATE = {
   oneLineIdea: '自分の夢や目標を宝の地図みたいに置いて、AIが次の一歩にしてくれるアプリ',
 };
 
+const DEFAULT_TEST_REPO_URL = 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI';
+
+function isRepositoryCheckNeeded(message?: string, nextAction?: string): boolean {
+  const text = `${message ?? ''} ${nextAction ?? ''}`;
+  return text.includes('リポジトリ') || text.includes('repo') || text.includes('repository');
+}
+
+function isValidGitHubRepoUrl(value: string): boolean {
+  return /^https:\/\/github\.com\/[^/\s]+\/[^/\s]+\/?$/.test(value.trim());
+}
+
 function simplifyOmakaseMessage(message?: string): string {
   if (!message) return '設定か入力内容の確認が必要です。';
   if (message.includes('GITHUB_TOKEN')) {
@@ -49,7 +65,7 @@ function simplifyOmakaseMessage(message?: string): string {
     return 'Issue作成がまだ有効化されていません。Cloudflareの有効化設定だけ確認してください。';
   }
   if (message.includes('リポジトリ')) {
-    return '使うリポジトリの指定だけ確認してください。';
+    return 'Issueを作る場所だけ確認してください。下にGitHubリポジトリURLを入れれば進めます。';
   }
   if (message.includes('フォーム') || message.includes('アプリ情報')) {
     return 'アプリ名か一行説明が足りません。種の内容だけ確認してください。';
@@ -151,6 +167,7 @@ function buildActionState(args: {
   omakaseStatus?: string;
   omakaseMessage?: string;
   omakaseNextAction?: string;
+  repoCheckNeeded?: boolean;
 }): HumanState {
   if (args.isStarting || args.omakaseStatus === 'preparing') {
     return {
@@ -177,6 +194,16 @@ function buildActionState(args: {
       stop: 'なし',
       action: { label: '手動用を開く', tone: 'primary' },
       hint: '長いCloud Agent文は「詳しく見る」の中に置いてあります。',
+      needsHumanReview: true,
+    };
+  }
+
+  if (args.repoCheckNeeded) {
+    return {
+      status: 'Issueを作る場所だけ確認します。',
+      next: '下の欄にGitHubリポジトリURLを入れて保存すると、もう一度Issue作成へ進めます。',
+      stop: 'リポジトリURL',
+      action: { label: '保存してもう一度進める', tone: 'primary' },
       needsHumanReview: true,
     };
   }
@@ -264,10 +291,13 @@ export function DarakeHumanOnePageCockpit() {
   const [seedAppName, setSeedAppName] = useState('');
   const [seedIdea, setSeedIdea] = useState('');
   const [seedError, setSeedError] = useState<string | null>(null);
+  const [repoUrl, setRepoUrl] = useState('');
+  const [repoError, setRepoError] = useState<string | null>(null);
 
   useEffect(() => subscribeDarakeRuntimeEvents(() => setRevision((v) => v + 1)), []);
 
   const form = useMemo(() => loadGentleAppStartForm(), [revision]);
+  const githubSettings = useMemo(() => loadGitHubStartSettings(), [revision]);
   const blueprints = useMemo(() => loadBlueprintStock(), [revision]);
   const tasks = useMemo(() => loadDarakeTaskQueue(), [revision]);
   const reports = useMemo(() => loadCockpitMorningReports(), [revision]);
@@ -283,15 +313,20 @@ export function DarakeHumanOnePageCockpit() {
   const done = tasks.filter((task) => task.status === 'done').length;
 
   const hasSeed = Boolean(latestBlueprint || tasks.length > 0 || form?.oneLineIdea?.trim());
+  const repoCheckNeeded = isRepositoryCheckNeeded(omakase?.userMessage, omakase?.nextActionLabel);
   const showReceipt = hasSeed || isStarting || Boolean(omakase?.status);
   const showProgressCards = hasSeed || isStarting || Boolean(omakase?.status) || blockedHard > 0 || askLater > 0;
-  const showDetailsButton = hasSeed && (blockedHard > 0 || askLater > 0 || reports.length > 0 || Boolean(omakase?.status));
+  const showDetailsButton = hasSeed && !repoCheckNeeded && (blockedHard > 0 || askLater > 0 || reports.length > 0 || Boolean(omakase?.status));
 
   useEffect(() => {
     if (hasSeed) return;
     setSeedAppName((current) => current || form?.appName || '');
     setSeedIdea((current) => current || form?.oneLineIdea || '');
   }, [form?.appName, form?.oneLineIdea, hasSeed]);
+
+  useEffect(() => {
+    setRepoUrl((current) => current || githubSettings?.repoUrl || '');
+  }, [githubSettings?.repoUrl]);
 
   const state = buildActionState({
     hasSeed,
@@ -304,6 +339,7 @@ export function DarakeHumanOnePageCockpit() {
     omakaseStatus: omakase?.status,
     omakaseMessage: omakase?.userMessage,
     omakaseNextAction: omakase?.nextActionLabel,
+    repoCheckNeeded,
   });
 
   const receipt = buildReceipt({
@@ -339,6 +375,31 @@ export function DarakeHumanOnePageCockpit() {
     return saveSeedValues(seedAppName.trim(), seedIdea.trim());
   }
 
+  function saveRepositoryUrl(): boolean {
+    const trimmed = repoUrl.trim();
+    if (!isValidGitHubRepoUrl(trimmed)) {
+      setRepoError('GitHubのリポジトリURLを入れてください。例: https://github.com/user/repo');
+      return false;
+    }
+
+    saveGitHubStartSettings({
+      ...(githubSettings ?? buildEmptyGitHubStartSettings()),
+      repoUrl: trimmed.replace(/\/$/, ''),
+      mode: githubSettings?.mode ?? 'open-issue-page',
+      updatedAt: new Date().toISOString(),
+    });
+    setRepoError(null);
+    setRevision((v) => v + 1);
+    return true;
+  }
+
+  async function saveRepositoryAndRetry() {
+    if (isStarting) return;
+    const saved = saveRepositoryUrl();
+    if (!saved) return;
+    await runSafeStartFlow();
+  }
+
   async function runSafeStartFlow() {
     setIsStarting(true);
     try {
@@ -360,6 +421,11 @@ export function DarakeHumanOnePageCockpit() {
 
   async function handlePrimaryAction() {
     if (isStarting) return;
+
+    if (repoCheckNeeded) {
+      await saveRepositoryAndRetry();
+      return;
+    }
 
     if (!hasSeed) {
       const saved = saveSeedFromOnePage();
@@ -473,7 +539,36 @@ export function DarakeHumanOnePageCockpit() {
           </>
         )}
 
-        {state.hint && (
+        {repoCheckNeeded && (
+          <div className="darakeHumanOnePage__repoFix" aria-label="リポジトリURL確認">
+            <div className="darakeHumanOnePage__repoFixHeader">
+              <strong>Issueを作るリポジトリ</strong>
+              <span>GitHubでIssueを作る場所です。テストなら下のボタンでOKです。</span>
+            </div>
+            <button
+              type="button"
+              className="darakeHumanOnePage__templateButton"
+              onClick={() => {
+                setRepoUrl(DEFAULT_TEST_REPO_URL);
+                setRepoError(null);
+              }}
+              disabled={primaryDisabled}
+            >
+              テスト用リポジトリを入れる
+            </button>
+            <label className="darakeHumanOnePage__field">
+              <span>リポジトリURL</span>
+              <input
+                value={repoUrl}
+                onChange={(e) => setRepoUrl(e.target.value)}
+                placeholder="https://github.com/user/repo"
+              />
+            </label>
+            {repoError && <div className="darakeHumanOnePage__seedError">{repoError}</div>}
+          </div>
+        )}
+
+        {state.hint && !repoCheckNeeded && (
           <div className="darakeHumanOnePage__hint">
             {state.hint}
           </div>
