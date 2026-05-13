@@ -1,0 +1,12 @@
+Manual deploy trigger for Phase 81 beginner setup help.
+
+Purpose:
+- Deploy latest main after PR #174.
+- Verify beginner-level setup explanations appear in the one-page cockpit.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T07:15:00Z
