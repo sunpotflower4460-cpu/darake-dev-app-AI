@@ -1,0 +1,13 @@
+Manual deploy trigger for Phase 88 setup hub.
+
+Purpose:
+- Deploy latest main after PR #181.
+- Verify the Setup Hub panel is available.
+- Verify ordered setup links and copy buttons work.
+
+Safe change:
+- No source code change.
+- No token/secret.
+- No production logic change.
+
+Triggered at: 2026-05-13T09:20:00Z
