@@ -41,6 +41,62 @@
   margin: 0;
 }
 
+.darakeHumanOnePage__seedForm {
+  background: rgba(248, 250, 241, 0.92);
+  border: 1px solid rgba(44, 78, 54, 0.1);
+  border-radius: 22px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.darakeHumanOnePage__field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: rgba(23, 37, 28, 0.62);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.darakeHumanOnePage__field input,
+.darakeHumanOnePage__field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(44, 78, 54, 0.16);
+  background: rgba(255, 255, 255, 0.88);
+  color: #17251c;
+  border-radius: 16px;
+  padding: 12px 13px;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.5;
+  outline: none;
+}
+
+.darakeHumanOnePage__field textarea {
+  resize: vertical;
+  min-height: 88px;
+}
+
+.darakeHumanOnePage__field input:focus,
+.darakeHumanOnePage__field textarea:focus {
+  border-color: rgba(40, 92, 57, 0.5);
+  box-shadow: 0 0 0 4px rgba(40, 92, 57, 0.08);
+}
+
+.darakeHumanOnePage__seedError {
+  color: #8d2d24;
+  background: rgba(255, 243, 238, 0.95);
+  border: 1px solid rgba(150, 43, 35, 0.2);
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
 .darakeHumanOnePage__statusBlock,
 .darakeHumanOnePage__stop {
   background: rgba(248, 250, 241, 0.92);
