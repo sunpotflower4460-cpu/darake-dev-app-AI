@@ -4,9 +4,10 @@ const RELEASE_KEY = 'darake.firstStartMinimalModeReleased.v1';
 
 export function isFirstStartMinimalModeReleased(): boolean {
   try {
-    return localStorage.getItem(RELEASE_KEY) === 'true';
+    const raw = localStorage.getItem(RELEASE_KEY);
+    return raw !== 'false';
   } catch {
-    return false;
+    return true;
   }
 }
 
@@ -21,7 +22,7 @@ export function releaseFirstStartMinimalMode(): void {
 
 export function resetFirstStartMinimalModeRelease(): void {
   try {
-    localStorage.removeItem(RELEASE_KEY);
+    localStorage.setItem(RELEASE_KEY, 'false');
     emitDarakeRuntimeEvent(DARAKE_FIRST_APP_START_UPDATED_EVENT);
   } catch {
     // ignore
