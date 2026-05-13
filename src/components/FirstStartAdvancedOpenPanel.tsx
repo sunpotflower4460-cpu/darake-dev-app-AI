@@ -3,9 +3,9 @@ import { releaseFirstStartMinimalMode } from '../utils/firstStartMinimalMode';
 export function FirstStartAdvancedOpenPanel() {
   return (
     <div className="phase48AdvancedOpen">
-      <div className="phase48AdvancedTitle">ここから先は、見なくても大丈夫です</div>
+      <div className="phase48AdvancedTitle">必要なら、すぐ詳細な管制室へ</div>
       <p className="phase48AdvancedLead">
-        まずはCloud Agentに指示を貼ればOKです。細かい管制パネルは必要になった時だけ開けます。
+        管制室を開いて、タスク・今夜進めるもの・朝レポートを見ることもできます。
       </p>
       <button type="button" className="phase48AdvancedButton" onClick={releaseFirstStartMinimalMode}>
         詳細な管制室を開く
