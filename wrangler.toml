@@ -8,6 +8,11 @@ not_found_handling = "single-page-application"
 binding = "ASSETS"
 run_worker_first = ["/api/*"]
 
+[vars]
+# Non-secret runtime switch. Safe to keep in repository.
+# This lets the Worker create GitHub Issues when GITHUB_TOKEN is also configured as a Secret.
+GITHUB_ISSUE_CREATE_ENABLED = "true"
+
 # Cron Trigger for background autopilot patrol.
 # Uncomment and configure to activate scheduled checks.
 # Requires DARAKE_AUTOPILOT_SCHEDULE_ENABLED=true in Worker Secrets.
