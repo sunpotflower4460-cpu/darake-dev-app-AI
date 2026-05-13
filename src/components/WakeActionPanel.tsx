@@ -122,7 +122,7 @@ export function WakeActionPanel({ tokenId, onDismiss }: WakeActionPanelProps) {
     return (
       <div className="wakeActionPanel wakeActionPanel--expired">
         <OneActionCard
-          title="この通知は古くなっています"
+          title="この確認項目は古くなっています"
           message="最新の状態を確認します。"
           primaryLabel="最新状態を見る"
           onPrimary={handleViewLatest}
@@ -137,7 +137,7 @@ export function WakeActionPanel({ tokenId, onDismiss }: WakeActionPanelProps) {
       <div className="wakeActionPanel wakeActionPanel--used">
         <OneActionCard
           title="すでに完了しています"
-          message="このアクションはすでに実行されました。"
+          message="この確認項目はすでに処理されました。"
           primaryLabel="最新状態を見る"
           onPrimary={handleViewLatest}
         />
@@ -151,7 +151,7 @@ export function WakeActionPanel({ tokenId, onDismiss }: WakeActionPanelProps) {
       <div className="wakeActionPanel wakeActionPanel--error">
         <OneActionCard
           title="取得できませんでした"
-          message="通知を読み込めませんでした。"
+          message="確認項目を読み込めませんでした。"
           primaryLabel="最新状態を見る"
           onPrimary={handleViewLatest}
         />
@@ -200,7 +200,7 @@ export function WakeActionPanel({ tokenId, onDismiss }: WakeActionPanelProps) {
       <div className="wakeActionPanel wakeActionPanel--failed">
         <OneActionCard
           title="送れませんでした"
-          message="次にやること："
+          message="後でやること："
           primaryLabel={copyDone ? 'コピー済み ✓' : 'この文章をコピーしてPRに貼ってください'}
           onPrimary={() => state.fallbackText && handleCopyFallback(state.fallbackText)}
           secondaryLabel="最新状態を見る"
@@ -224,11 +224,11 @@ export function WakeActionPanel({ tokenId, onDismiss }: WakeActionPanelProps) {
     return (
       <div className="wakeActionPanel wakeActionPanel--ready">
         <OneActionCard
-          title="マージ候補です"
+          title="PR確認候補です"
           message={
             isWakeMeOnly
-              ? `次にやること：\nPRを開いて確認してください`
-              : `${action.reason}\n\n次にやること：\nPRを開いて確認してください`
+              ? `後で見ること：\nPRを確認してください`
+              : `${action.reason}\n\n後で見ること：\nPRを確認してください`
           }
           primaryLabel={
             <span className="wakeActionPanel__btnInner">
@@ -246,11 +246,11 @@ export function WakeActionPanel({ tokenId, onDismiss }: WakeActionPanelProps) {
     return (
       <div className="wakeActionPanel wakeActionPanel--ready">
         <OneActionCard
-          title="止まりました"
+          title="聞くことリストに入りました"
           message={
             isWakeMeOnly
-              ? `次にやること：\nAIに修正をお願いする`
-              : `理由：\n${action.reason}\n\n次にやること：\nAIに修正をお願いする`
+              ? `後でやること：\nAIに修正をお願いする`
+              : `理由：\n${action.reason}\n\n後でやること：\nAIに修正をお願いする`
           }
           primaryLabel="AIに修正をお願いする"
           onPrimary={handlePrimary}
@@ -264,7 +264,7 @@ export function WakeActionPanel({ tokenId, onDismiss }: WakeActionPanelProps) {
     return (
       <div className="wakeActionPanel wakeActionPanel--ready">
         <OneActionCard
-          title="設定が必要です"
+          title="後で設定確認が必要です"
           message={action.message}
           primaryLabel="確認する"
           onPrimary={handlePrimary}
@@ -280,8 +280,8 @@ export function WakeActionPanel({ tokenId, onDismiss }: WakeActionPanelProps) {
           title={action.nextActionLabel}
           message={
             isWakeMeOnly
-              ? `次にやること：\n${action.nextActionLabel}`
-              : `理由：\n${action.reason}\n\n次にやること：\n${action.nextActionLabel}`
+              ? `後で見ること：\n${action.nextActionLabel}`
+              : `理由：\n${action.reason}\n\n後で見ること：\n${action.nextActionLabel}`
           }
           primaryLabel="最新状態を見る"
           onPrimary={handleViewLatest}
