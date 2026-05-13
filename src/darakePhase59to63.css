@@ -1,0 +1,792 @@
+/* ============================================================
+   Phase 59-63: Task Queue, Blueprint Stock, Sleep Session,
+   Morning Report, Rehearsal Panel
+   ============================================================ */
+
+/* --- Shared tokens --- */
+:root {
+  --dq-amber-bg: #fffbeb;
+  --dq-amber-border: #f59e0b;
+  --dq-amber-text: #92400e;
+  --dq-red-bg: #fee2e2;
+  --dq-red-border: #ef4444;
+  --dq-red-text: #991b1b;
+  --dq-green-bg: #d1fae5;
+  --dq-green-border: #10b981;
+  --dq-green-text: #065f46;
+  --dq-blue-bg: #dbeafe;
+  --dq-blue-border: #3b82f6;
+  --dq-blue-text: #1e40af;
+  --dq-gray-bg: #f3f4f6;
+  --dq-gray-border: #d1d5db;
+  --dq-gray-text: #374151;
+  --dq-soft-bg: #fef3c7;
+  --dq-soft-text: #78350f;
+  --dq-radius: 12px;
+  --dq-padding: 16px;
+  --dq-gap: 12px;
+}
+
+/* ============================================================
+   DarakeTaskQueuePanel
+   ============================================================ */
+.darakeTaskQueue {
+  max-width: 100%;
+  padding: var(--dq-padding);
+}
+
+.darakeTaskQueue__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.darakeTaskQueue__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.darakeTaskQueue__badge {
+  background: #6366f1;
+  color: #fff;
+  border-radius: 9999px;
+  padding: 2px 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.darakeTaskQueue__empty {
+  color: var(--dq-gray-text);
+  padding: 24px;
+  text-align: center;
+  background: var(--dq-gray-bg);
+  border-radius: var(--dq-radius);
+}
+
+.darakeTaskQueue__section {
+  border-radius: var(--dq-radius);
+  padding: var(--dq-padding);
+  margin-bottom: var(--dq-gap);
+  border-left: 4px solid transparent;
+}
+
+.darakeTaskQueue__section--green { border-left-color: var(--dq-green-border); background: var(--dq-green-bg); }
+.darakeTaskQueue__section--blue  { border-left-color: var(--dq-blue-border);  background: var(--dq-blue-bg);  }
+.darakeTaskQueue__section--amber { border-left-color: var(--dq-amber-border); background: var(--dq-amber-bg); }
+.darakeTaskQueue__section--red   { border-left-color: var(--dq-red-border);   background: var(--dq-red-bg);   }
+.darakeTaskQueue__section--gray  { border-left-color: var(--dq-gray-border);  background: var(--dq-gray-bg);  }
+
+.darakeTaskQueue__sectionTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.darakeTaskQueue__sectionToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.darakeTaskQueue__toggleBtn {
+  background: none;
+  border: 1px solid var(--dq-gray-border);
+  border-radius: 6px;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.darakeTaskQueue__card {
+  background: #fff;
+  border-radius: var(--dq-radius);
+  padding: 12px var(--dq-padding);
+  margin-bottom: 8px;
+  border: 1px solid var(--dq-gray-border);
+}
+
+.darakeTaskQueue__card--amber { border-color: var(--dq-amber-border); }
+.darakeTaskQueue__card--red   { border-color: var(--dq-red-border); }
+.darakeTaskQueue__card--green { border-color: var(--dq-green-border); }
+.darakeTaskQueue__card--blue  { border-color: var(--dq-blue-border); }
+.darakeTaskQueue__card--gray  { border-color: var(--dq-gray-border); }
+.darakeTaskQueue__card--soft  { border-color: var(--dq-amber-border); }
+
+.darakeTaskQueue__cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.darakeTaskQueue__taskTitle {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.darakeTaskQueue__kindBadge {
+  font-size: 0.75rem;
+  background: var(--dq-blue-bg);
+  color: var(--dq-blue-text);
+  border-radius: 6px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.darakeTaskQueue__cardMeta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.darakeTaskQueue__statusLabel {
+  font-size: 0.8rem;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-weight: 500;
+}
+
+.darakeTaskQueue__statusLabel--amber { background: var(--dq-amber-bg); color: var(--dq-amber-text); }
+.darakeTaskQueue__statusLabel--red   { background: var(--dq-red-bg);   color: var(--dq-red-text);   }
+.darakeTaskQueue__statusLabel--green { background: var(--dq-green-bg); color: var(--dq-green-text); }
+.darakeTaskQueue__statusLabel--blue  { background: var(--dq-blue-bg);  color: var(--dq-blue-text);  }
+.darakeTaskQueue__statusLabel--gray  { background: var(--dq-gray-bg);  color: var(--dq-gray-text);  }
+.darakeTaskQueue__statusLabel--soft  { background: var(--dq-soft-bg);  color: var(--dq-soft-text);  }
+
+.darakeTaskQueue__appName {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.darakeTaskQueue__cardActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.darakeTaskQueue__reason {
+  font-size: 0.8rem;
+  margin-top: 6px;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.darakeTaskQueue__reason--amber { background: var(--dq-amber-bg); color: var(--dq-amber-text); }
+.darakeTaskQueue__reason--red   { background: var(--dq-red-bg);   color: var(--dq-red-text);   }
+
+.darakeTaskQueue__addForm {
+  margin-top: 16px;
+  background: var(--dq-gray-bg);
+  border-radius: var(--dq-radius);
+  padding: var(--dq-padding);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.darakeTaskQueue__input,
+.darakeTaskQueue__select {
+  padding: 8px 12px;
+  border: 1px solid var(--dq-gray-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Buttons */
+.darakeTaskQueue__btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.darakeTaskQueue__btn--primary  { background: #6366f1; color: #fff; }
+.darakeTaskQueue__btn--amber    { background: var(--dq-amber-bg); color: var(--dq-amber-text); border: 1px solid var(--dq-amber-border); }
+.darakeTaskQueue__btn--red      { background: var(--dq-red-bg);   color: var(--dq-red-text);   border: 1px solid var(--dq-red-border);   }
+.darakeTaskQueue__btn--green    { background: var(--dq-green-bg); color: var(--dq-green-text); border: 1px solid var(--dq-green-border); }
+
+/* ============================================================
+   DarakeNextTaskCard
+   ============================================================ */
+.darakeNextTask {
+  max-width: 100%;
+  padding: var(--dq-padding);
+}
+
+.darakeNextTask__title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+}
+
+.darakeNextTask__card {
+  border-radius: var(--dq-radius);
+  padding: var(--dq-padding);
+}
+
+.darakeNextTask__card--active  { background: var(--dq-blue-bg);  border: 1px solid var(--dq-blue-border); }
+.darakeNextTask__card--pending { background: var(--dq-amber-bg); border: 1px solid var(--dq-amber-border); }
+.darakeNextTask__card--empty   { background: var(--dq-gray-bg);  border: 1px solid var(--dq-gray-border); }
+
+.darakeNextTask__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--dq-blue-text);
+  margin-bottom: 6px;
+}
+
+.darakeNextTask__taskTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.darakeNextTask__kindBadge {
+  font-size: 0.75rem;
+  background: #e0e7ff;
+  color: #3730a3;
+  border-radius: 6px;
+  padding: 2px 8px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.darakeNextTask__btn {
+  padding: 6px 14px;
+  background: var(--dq-blue-text);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* ============================================================
+   BlueprintStockPanel
+   ============================================================ */
+.blueprintStock {
+  max-width: 100%;
+  padding: var(--dq-padding);
+}
+
+.blueprintStock__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.blueprintStock__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.blueprintStock__count {
+  background: #6366f1;
+  color: #fff;
+  border-radius: 9999px;
+  padding: 2px 10px;
+  font-size: 0.85rem;
+}
+
+.blueprintStock__empty {
+  color: var(--dq-gray-text);
+  padding: 24px;
+  text-align: center;
+  background: var(--dq-gray-bg);
+  border-radius: var(--dq-radius);
+  margin-bottom: var(--dq-gap);
+}
+
+.blueprintStock__message {
+  background: var(--dq-green-bg);
+  color: var(--dq-green-text);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: var(--dq-gap);
+  font-size: 0.9rem;
+}
+
+.blueprintStock__card {
+  background: #fff;
+  border: 1px solid var(--dq-gray-border);
+  border-radius: var(--dq-radius);
+  padding: var(--dq-padding);
+  margin-bottom: var(--dq-gap);
+}
+
+.blueprintStock__cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.blueprintStock__appName {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.blueprintStock__phaseCount {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.blueprintStock__oneLineIdea {
+  font-size: 0.9rem;
+  color: #374151;
+  margin-bottom: 10px;
+}
+
+.blueprintStock__cardActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.blueprintStock__addForm {
+  background: var(--dq-gray-bg);
+  border-radius: var(--dq-radius);
+  padding: var(--dq-padding);
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.blueprintStock__formTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.blueprintStock__input,
+.blueprintStock__textarea {
+  padding: 8px 12px;
+  border: 1px solid var(--dq-gray-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.blueprintStock__btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.blueprintStock__btn--primary   { background: #6366f1; color: #fff; }
+.blueprintStock__btn--secondary { background: var(--dq-blue-bg); color: var(--dq-blue-text); border: 1px solid var(--dq-blue-border); }
+.blueprintStock__btn--danger    { background: var(--dq-red-bg);  color: var(--dq-red-text);  border: 1px solid var(--dq-red-border); }
+.blueprintStock__btn--demo      { background: var(--dq-amber-bg); color: var(--dq-amber-text); border: 1px solid var(--dq-amber-border); }
+
+/* ============================================================
+   SleepSessionPanel
+   ============================================================ */
+.sleepSession {
+  max-width: 100%;
+  padding: var(--dq-padding);
+}
+
+.sleepSession__header {
+  margin-bottom: 12px;
+}
+
+.sleepSession__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.sleepSession__note {
+  background: var(--dq-blue-bg);
+  color: var(--dq-blue-text);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+
+.sleepSession__message {
+  background: var(--dq-green-bg);
+  color: var(--dq-green-text);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: var(--dq-gap);
+  font-size: 0.9rem;
+}
+
+.sleepSession__empty {
+  color: var(--dq-gray-text);
+  padding: 24px;
+  text-align: center;
+  background: var(--dq-gray-bg);
+  border-radius: var(--dq-radius);
+  margin-bottom: var(--dq-gap);
+}
+
+.sleepSession__card {
+  background: #fff;
+  border-radius: var(--dq-radius);
+  padding: var(--dq-padding);
+  margin-bottom: var(--dq-gap);
+  border: 1px solid var(--dq-gray-border);
+}
+
+.sleepSession__card--green { border-color: var(--dq-green-border); }
+.sleepSession__card--blue  { border-color: var(--dq-blue-border); }
+.sleepSession__card--amber { border-color: var(--dq-amber-border); }
+.sleepSession__card--gray  { border-color: var(--dq-gray-border); }
+
+.sleepSession__cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.sleepSession__sessionTitle {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.sleepSession__statusBadge {
+  font-size: 0.75rem;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-weight: 500;
+}
+
+.sleepSession__statusBadge--green { background: var(--dq-green-bg); color: var(--dq-green-text); }
+.sleepSession__statusBadge--blue  { background: var(--dq-blue-bg);  color: var(--dq-blue-text);  }
+.sleepSession__statusBadge--amber { background: var(--dq-amber-bg); color: var(--dq-amber-text); }
+.sleepSession__statusBadge--gray  { background: var(--dq-gray-bg);  color: var(--dq-gray-text);  }
+
+.sleepSession__cardMeta {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.sleepSession__cardActions {
+  display: flex;
+  gap: 8px;
+}
+
+.sleepSession__createForm {
+  background: var(--dq-gray-bg);
+  border-radius: var(--dq-radius);
+  padding: var(--dq-padding);
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sleepSession__formTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.sleepSession__input {
+  padding: 8px 12px;
+  border: 1px solid var(--dq-gray-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sleepSession__numberRow {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.sleepSession__label {
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sleepSession__numberInput {
+  padding: 6px 10px;
+  border: 1px solid var(--dq-gray-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 80px;
+}
+
+.sleepSession__taskPicker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid var(--dq-gray-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.sleepSession__taskPickerLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.sleepSession__taskCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.sleepSession__btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.sleepSession__btn--primary { background: #6366f1; color: #fff; }
+.sleepSession__btn--create  { background: var(--dq-green-text); color: #fff; }
+
+/* ============================================================
+   DarakeCockpitMorningReportPanel
+   ============================================================ */
+.cockpitMorningReport {
+  max-width: 100%;
+  padding: var(--dq-padding);
+}
+
+.cockpitMorningReport__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.cockpitMorningReport__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.cockpitMorningReport__generateBtn {
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.cockpitMorningReport__message {
+  background: var(--dq-green-bg);
+  color: var(--dq-green-text);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: var(--dq-gap);
+  font-size: 0.9rem;
+}
+
+.cockpitMorningReport__empty {
+  color: var(--dq-gray-text);
+  padding: 24px;
+  text-align: center;
+  background: var(--dq-gray-bg);
+  border-radius: var(--dq-radius);
+}
+
+.cockpitMorningReport__card {
+  background: #fff;
+  border: 1px solid var(--dq-gray-border);
+  border-radius: var(--dq-radius);
+  padding: var(--dq-padding);
+  margin-bottom: var(--dq-gap);
+}
+
+.cockpitMorningReport__cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.cockpitMorningReport__reportTitle {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.cockpitMorningReport__reportDate {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.cockpitMorningReport__expandBtn {
+  background: none;
+  border: 1px solid var(--dq-gray-border);
+  border-radius: 6px;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.cockpitMorningReport__summary {
+  font-size: 0.9rem;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.cockpitMorningReport__details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.cockpitMorningReport__section {
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.cockpitMorningReport__section--green { background: var(--dq-green-bg); color: var(--dq-green-text); }
+.cockpitMorningReport__section--amber { background: var(--dq-amber-bg); color: var(--dq-amber-text); }
+.cockpitMorningReport__section--red   { background: var(--dq-red-bg);   color: var(--dq-red-text);   }
+.cockpitMorningReport__section--blue  { background: var(--dq-blue-bg);  color: var(--dq-blue-text);  }
+
+.cockpitMorningReport__sectionTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.cockpitMorningReport__count {
+  font-size: 0.85rem;
+}
+
+.cockpitMorningReport__nextAction {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ============================================================
+   DarakeRehearsalPanel
+   ============================================================ */
+.darakeRehearsal {
+  max-width: 100%;
+  padding: var(--dq-padding);
+}
+
+.darakeRehearsal__header {
+  margin-bottom: 12px;
+}
+
+.darakeRehearsal__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.darakeRehearsal__description {
+  font-size: 0.9rem;
+  color: #374151;
+  margin-bottom: 16px;
+  background: var(--dq-blue-bg);
+  color: var(--dq-blue-text);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.darakeRehearsal__steps {
+  background: var(--dq-gray-bg);
+  border-radius: var(--dq-radius);
+  padding: var(--dq-padding);
+  margin-bottom: 16px;
+}
+
+.darakeRehearsal__stepsTitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.darakeRehearsal__stepList {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.darakeRehearsal__stepItem {
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.darakeRehearsal__btn {
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.darakeRehearsal__btn:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+
+.darakeRehearsal__result {
+  background: var(--dq-green-bg);
+  color: var(--dq-green-text);
+  border-radius: var(--dq-radius);
+  padding: var(--dq-padding);
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .darakeTaskQueue__cardHeader,
+  .blueprintStock__cardHeader,
+  .sleepSession__cardHeader,
+  .cockpitMorningReport__cardHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .darakeTaskQueue__cardActions,
+  .blueprintStock__cardActions,
+  .sleepSession__cardActions {
+    flex-direction: column;
+  }
+}
