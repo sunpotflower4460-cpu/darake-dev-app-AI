@@ -32,13 +32,42 @@ const VALID_NAV_GROUPS = new Set<string>([
   'first-start',
 ]);
 
+const FIRST_START_PON_VISIBLE_PANEL_IDS = [
+  'main-build-flow-card',
+  'darake-health-check',
+  'omakase-start',
+  'darake-now-card',
+  'pon-start',
+  'darake-task-queue',
+  'darake-next-task',
+  'blueprint-stock',
+  'sleep-session',
+  'morning-report',
+  'darake-rehearsal',
+  'github-direct-issue-create',
+  'github-start',
+  'github-issue-record',
+  'cloud-agent-start',
+  'github-start-progress',
+  'beginner-next-step-card',
+  'first-start-advanced-open',
+  'agent-start',
+  'agent-run-watch',
+  'agent-fix-request',
+  'auto-fix-loop-panel',
+  'merge-candidate-card',
+  'darake-autopilot-panel',
+  'nothing-to-do-card',
+  'remote-autopilot-status-card',
+];
+
 function getFirstStartVisiblePanelIds() {
   const explicitStep = loadFirstStartStep();
   if (explicitStep === 'form') {
     return new Set(['gentle-app-start-form']);
   }
   if (explicitStep === 'pon') {
-    return new Set(['main-build-flow-card', 'darake-health-check', 'omakase-start', 'darake-now-card', 'pon-start', 'github-direct-issue-create', 'github-start', 'github-issue-record', 'cloud-agent-start', 'github-start-progress', 'beginner-next-step-card', 'first-start-advanced-open', 'agent-start', 'agent-run-watch', 'agent-fix-request', 'auto-fix-loop-panel', 'merge-candidate-card', 'darake-autopilot-panel', 'nothing-to-do-card', 'remote-autopilot-status-card']);
+    return new Set(FIRST_START_PON_VISIBLE_PANEL_IDS);
   }
 
   const report = buildFirstAppStartCompletionReport();
@@ -48,7 +77,7 @@ function getFirstStartVisiblePanelIds() {
   if (!report.formCanStart) {
     return new Set(['gentle-app-start-form']);
   }
-  return new Set(['main-build-flow-card', 'darake-health-check', 'omakase-start', 'darake-now-card', 'pon-start', 'github-direct-issue-create', 'github-start', 'github-issue-record', 'cloud-agent-start', 'github-start-progress', 'beginner-next-step-card', 'first-start-advanced-open', 'agent-start', 'agent-run-watch', 'agent-fix-request', 'auto-fix-loop-panel', 'merge-candidate-card', 'darake-autopilot-panel', 'nothing-to-do-card', 'remote-autopilot-status-card']);
+  return new Set(FIRST_START_PON_VISIBLE_PANEL_IDS);
 }
 
 function loadSavedNavGroup(): DarakeNavGroupId | 'all' {
