@@ -593,6 +593,11 @@ export function DarakeHumanOnePageCockpit() {
               <strong>{cloudflareSettingKind === 'enable-issue' ? 'Cloudflareで1つだけONにする' : 'CloudflareにSecretを1つ入れる'}</strong>
               <span>アプリの故障ではありません。外部サービス側で、AIがGitHubに書き込む許可をONにする確認です。</span>
             </div>
+            <div className="darakeHumanOnePage__beginnerGuide">
+              <div><span>これは何？</span><strong>AIがGitHubに「作業メモ」を作れるようにするための許可です。</strong></div>
+              <div><span>毎回やる？</span><strong>いいえ。基本は最初に1回だけです。</strong></div>
+              <div><span>今やること</span><strong>下の「入れる名前」と「入れる値」をCloudflareにコピペします。</strong></div>
+            </div>
             {cloudflareSettingKind === 'enable-issue' ? (
               <div className="darakeHumanOnePage__settingGuide">
                 <div><span>入れる名前</span><strong>GITHUB_ISSUE_CREATE_ENABLED</strong></div>
@@ -608,6 +613,16 @@ export function DarakeHumanOnePageCockpit() {
                 <p>保存して再デプロイしたあと、下の「設定したので再チェック」を押してください。</p>
               </div>
             )}
+            <details className="darakeHumanOnePage__beginnerDetails">
+              <summary>もっとやさしい説明を見る</summary>
+              <p>
+                Cloudflareは、このアプリを動かしている場所です。GitHubは、作業メモや修正依頼を置く場所です。
+                ここでは「このアプリからGitHubに作業メモを作っていいよ」というスイッチを入れます。
+              </p>
+              <p>
+                設定が終わったら、Cloudflare側で保存して再デプロイしてから、この画面に戻って下の緑のボタンを押します。
+              </p>
+            </details>
           </div>
         )}
 
