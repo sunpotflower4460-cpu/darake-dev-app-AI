@@ -20,18 +20,13 @@ https://dash.cloudflare.com/profile/api-tokens
 ```
 
 ```text
-Cloudflare Setup実行ページ
-https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/cloudflare-setup.yml
-```
-
-```text
-Cloudflare Workers & Pages
-https://dash.cloudflare.com/?to=/:account/workers-and-pages
-```
-
-```text
 GitHubのToken作成ページ
 https://github.com/settings/personal-access-tokens
+```
+
+```text
+Cloudflare Setup実行ページ
+https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/cloudflare-setup.yml
 ```
 
 ---
@@ -49,15 +44,20 @@ GITHUB_ISSUE_CREATE_ENABLED = true
 
 ---
 
-## これから必要になるもの
+## Phase 85でさらに楽になったこと
 
-### 1. Cloudflareを自動で再デプロイするためのGitHub側登録
+以前は `GITHUB_TOKEN` をCloudflare画面で手入力する想定でした。
 
-GitHub のこのリポジトリに入れます。
+Phase 85では、GitHub側に `WORKER_GITHUB_TOKEN` として登録しておけば、`Cloudflare Setup` がCloudflare Worker側の `GITHUB_TOKEN` として同期できるようにします。
+
+---
+
+## 最初にGitHub側へ登録する3つ
 
 ```text
 CLOUDFLARE_API_TOKEN
 CLOUDFLARE_ACCOUNT_ID
+WORKER_GITHUB_TOKEN
 ```
 
 一番近いURL:
@@ -77,51 +77,6 @@ GitHub
 → New repository secret
 ```
 
-これが入ると、GitHub Actions の `Cloudflare Setup` で Cloudflare へ再デプロイできます。
-
----
-
-### 2. GitHubにIssueを作るためのCloudflare Worker Secret
-
-次にアプリが止まるとしたら、おそらくこれです。
-
-```text
-GITHUB_TOKEN
-```
-
-これは GitHub に Issue を作るための鍵です。
-
-一番近いURL:
-
-```text
-https://dash.cloudflare.com/?to=/:account/workers-and-pages
-```
-
-入れる場所:
-
-```text
-Cloudflare
-→ Workers & Pages
-→ darakedevapp
-→ Settings
-→ Variables and secrets
-→ Add secret
-```
-
-Secret name:
-
-```text
-GITHUB_TOKEN
-```
-
-Secret value:
-
-```text
-GitHubで作ったPersonal Access Token
-```
-
-この値はチャットに貼らないでください。
-
 ---
 
 ## 役割の違い
@@ -139,9 +94,10 @@ Cloudflareのアカウントを特定するID
 ```
 
 ```text
-GITHUB_TOKEN
+WORKER_GITHUB_TOKEN
 だらけdev app がGitHubにIssueを作るための鍵
-→ Cloudflare Worker側に入れる
+→ GitHub側に入れる
+→ ActionsがCloudflare Workerの GITHUB_TOKEN として同期する
 ```
 
 ---
@@ -150,13 +106,12 @@ GITHUB_TOKEN
 
 ```text
 1. CloudflareのAPI Tokenページを開く
-2. GitHubの登録ページを開く
-3. CLOUDFLARE_API_TOKEN と CLOUDFLARE_ACCOUNT_ID を入れる
-4. Cloudflare Setup実行ページを開く
-5. Run workflow を押す
-6. だらけdev app に戻って「設定したので再チェック」
-7. GITHUB_TOKEN が必要と出たら Cloudflare Worker Secret に入れる
-8. もう一度「設定したので再チェック」
+2. GitHubのToken作成ページを開く
+3. GitHubの登録ページを開く
+4. 3つの名前で保存する
+5. Cloudflare Setup実行ページを開く
+6. Run workflow を押す
+7. だらけdev app に戻って「設定したので再チェック」
 ```
 
 ---
@@ -169,6 +124,12 @@ GITHUB_ISSUE_CREATE_ENABLED をCloudflare画面で毎回探して入れる
 
 これは Phase 82 以降、`wrangler.toml` に入っているので、GitHub Actions から反映できます。
 
+```text
+GITHUB_TOKEN をCloudflare画面で探して入れる
+```
+
+これは Phase 85 以降、`WORKER_GITHUB_TOKEN` をGitHub側に入れて `Cloudflare Setup` を実行すれば、自動同期できます。
+
 ---
 
 ## 迷った時の見方
@@ -180,7 +141,7 @@ Issue作成がOFFと言われる
 
 ```text
 GitHub Tokenがないと言われる
-→ GITHUB_TOKEN を Cloudflare Worker Secret に入れる
+→ WORKER_GITHUB_TOKEN がGitHub側にない、またはCloudflare Setupが未実行の可能性
 ```
 
 ```text
@@ -194,7 +155,7 @@ GitHub Tokenがないと言われる
 
 ```text
 普通のON/OFF設定は wrangler.toml に置く
-強い鍵だけ安全な登録場所に置く
-人間は最初の鍵登録だけやる
-その後は Actions とアプリ画面が案内する
+強い鍵はGitHub側の安全な登録場所にまとめる
+Cloudflareへの反映は Actions に任せる
+人間は最初の登録とRun workflowだけやる
 ```

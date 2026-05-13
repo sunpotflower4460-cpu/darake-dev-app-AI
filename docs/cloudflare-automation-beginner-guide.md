@@ -15,6 +15,11 @@ https://dash.cloudflare.com/profile/api-tokens
 ```
 
 ```text
+GitHubのToken作成ページ
+https://github.com/settings/personal-access-tokens
+```
+
+```text
 GitHubの登録ページ
 https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/settings/secrets/actions/new
 ```
@@ -24,38 +29,37 @@ Cloudflare Setup実行ページ
 https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/cloudflare-setup.yml
 ```
 
-```text
-Cloudflare Workers & Pages
-https://dash.cloudflare.com/?to=/:account/workers-and-pages
-```
-
 ---
 
 ## 何を自動化するの？
 
-今までCloudflare画面で探していた次のON/OFFスイッチを、リポジトリ側の `wrangler.toml` で管理します。
+今までCloudflare画面で探していたON/OFFスイッチとWorker用のGitHub鍵を、GitHub ActionsからCloudflareへ反映します。
 
 ```text
 GITHUB_ISSUE_CREATE_ENABLED = true
 ```
 
-これは、だらけdev app が GitHub に Issue、つまり作業メモを作れるようにするための ON/OFF スイッチです。
+これは `wrangler.toml` の `[vars]` で管理します。
 
-Phase 82 以降、この値は `wrangler.toml` に入っています。
-そのため、Cloudflare画面でこの名前を手入力し続ける必要はありません。
+```text
+GITHUB_TOKEN
+```
+
+これはCloudflare Worker側のSecretとして、GitHub側に登録した `WORKER_GITHUB_TOKEN` から同期します。
 
 ---
 
 ## 人間が最初に1回だけやること
 
-GitHub のこのリポジトリに、次の2つを登録します。
+GitHub のこのリポジトリに、次の3つを登録します。
 
 ```text
 CLOUDFLARE_API_TOKEN
 CLOUDFLARE_ACCOUNT_ID
+WORKER_GITHUB_TOKEN
 ```
 
-この2つを入れた後は、GitHub Actions の `Cloudflare Setup` を押すだけで、`wrangler.toml` の内容が Cloudflare に反映されます。
+この3つを入れた後は、GitHub Actions の `Cloudflare Setup` を押すだけで、Cloudflareへ設定が反映されます。
 
 ---
 
@@ -71,22 +75,10 @@ https://dash.cloudflare.com/?to=/:account/workers-and-pages
 
 見つけたらコピーして、GitHub側の登録ページに入れます。
 
-一番近いURL:
-
-```text
-https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/settings/secrets/actions/new
-```
-
 Secret name:
 
 ```text
 CLOUDFLARE_ACCOUNT_ID
-```
-
-Secret value:
-
-```text
-Cloudflare の Account ID
 ```
 
 ---
@@ -101,22 +93,13 @@ https://dash.cloudflare.com/profile/api-tokens
 
 ここで API Token を作ります。
 
-テンプレートが選べる場合は、できるだけ Worker を編集できる最小権限にします。
-
 必要な目安:
 
 ```text
 Account / Workers Scripts / Edit
 ```
 
-作った Token は一度しか見えないことがあります。
 コピーしたら、GitHub側の登録ページに入れます。
-
-一番近いURL:
-
-```text
-https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/settings/secrets/actions/new
-```
 
 Secret name:
 
@@ -124,19 +107,55 @@ Secret name:
 CLOUDFLARE_API_TOKEN
 ```
 
-Secret value:
-
-```text
-Cloudflareで作ったAPI Token
-```
-
 ⚠️ この値はチャットに貼らないでください。
 
 ---
 
-## 3. 自動デプロイを実行する場所
+## 3. WORKER_GITHUB_TOKEN の作り方
 
-2つの登録が終わったら、GitHub Actions で実行します。
+一番近いURL:
+
+```text
+https://github.com/settings/personal-access-tokens
+```
+
+ここでGitHubのTokenを作ります。
+
+このTokenは、だらけdev app がGitHubにIssueを作るために使います。
+
+作ったら、GitHub側の登録ページに入れます。
+
+Secret name:
+
+```text
+WORKER_GITHUB_TOKEN
+```
+
+⚠️ この値もチャットに貼らないでください。
+
+---
+
+## 4. 3つを入れる場所
+
+一番近いURL:
+
+```text
+https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/settings/secrets/actions/new
+```
+
+ここで以下を1つずつ追加します。
+
+```text
+CLOUDFLARE_API_TOKEN
+CLOUDFLARE_ACCOUNT_ID
+WORKER_GITHUB_TOKEN
+```
+
+---
+
+## 5. 自動デプロイを実行する場所
+
+3つの登録が終わったら、GitHub Actions で実行します。
 
 一番近いURL:
 
@@ -148,17 +167,14 @@ https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/clou
 
 ```text
 worker_name: darakedevapp
+sync_worker_github_token: true
 ```
 
-実行に成功すると、`wrangler.toml` の `[vars]` が Cloudflare に反映されます。
-
-```text
-GITHUB_ISSUE_CREATE_ENABLED = true
-```
+実行に成功すると、`wrangler.toml` の `[vars]` とWorker SecretがCloudflareに反映されます。
 
 ---
 
-## 4. 終わったら何をする？
+## 6. 終わったら何をする？
 
 だらけdev app に戻って、次のボタンを押します。
 
@@ -168,23 +184,16 @@ GITHUB_ISSUE_CREATE_ENABLED = true
 
 ---
 
-## もしまた止まったら
-
-次に出る可能性があるのは `GITHUB_TOKEN` です。
-
-これは GitHub に Issue を作るための GitHub 側の鍵です。
-これもチャットには貼らず、Cloudflare Worker Secret として入れます。
-
----
-
 ## この自動化の考え方
 
 ```text
-最初に1回だけ、人間がCloudflareを操作できる鍵をGitHub側に入れる
+最初に1回だけ、必要な鍵をGitHub側に入れる
 ↓
 次からは GitHub Actions が Cloudflare にデプロイする
 ↓
-GITHUB_ISSUE_CREATE_ENABLED は wrangler.toml から自動反映される
+GITHUB_ISSUE_CREATE_ENABLED は wrangler.toml から反映される
+↓
+WORKER_GITHUB_TOKEN は Cloudflare Worker の GITHUB_TOKEN として同期される
 ↓
 人間はボタンを押すだけになる
 ```

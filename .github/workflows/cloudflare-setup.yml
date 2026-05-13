@@ -7,6 +7,14 @@ on:
         description: 'Cloudflare Worker name. Usually keep this as darakedevapp.'
         required: true
         default: 'darakedevapp'
+      sync_worker_github_token:
+        description: 'Sync WORKER_GITHUB_TOKEN to the Worker secret named GITHUB_TOKEN when available.'
+        required: true
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
 
 permissions:
   contents: read
@@ -62,14 +70,56 @@ jobs:
           }
           NODE
 
+      - name: Prepare optional Worker secrets file
+        id: worker_secrets
+        env:
+          SYNC_WORKER_GITHUB_TOKEN: ${{ inputs.sync_worker_github_token }}
+          WORKER_GITHUB_TOKEN: ${{ secrets.WORKER_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ "$SYNC_WORKER_GITHUB_TOKEN" != "true" ]; then
+            echo "has_worker_secrets=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping Worker GitHub token sync by input."
+            exit 0
+          fi
+          if [ -z "$WORKER_GITHUB_TOKEN" ]; then
+            echo "has_worker_secrets=false" >> "$GITHUB_OUTPUT"
+            echo "WORKER_GITHUB_TOKEN is not set. Deploying without updating the Worker GITHUB_TOKEN secret."
+            exit 0
+          fi
+          node <<'NODE'
+          const fs = require('fs');
+          fs.writeFileSync('.worker-secrets.json', JSON.stringify({
+            GITHUB_TOKEN: process.env.WORKER_GITHUB_TOKEN,
+          }, null, 2));
+          NODE
+          echo "has_worker_secrets=true" >> "$GITHUB_OUTPUT"
+          echo "Worker GITHUB_TOKEN secret will be synced from GitHub Secret WORKER_GITHUB_TOKEN."
+
       - name: Deploy to Cloudflare
+        if: steps.worker_secrets.outputs.has_worker_secrets != 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx wrangler deploy --config wrangler.toml
 
+      - name: Deploy to Cloudflare with Worker secrets
+        if: steps.worker_secrets.outputs.has_worker_secrets == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy --config wrangler.toml --secrets-file .worker-secrets.json
+
+      - name: Remove temporary Worker secrets file
+        if: always()
+        run: rm -f .worker-secrets.json
+
       - name: Done
         run: |
           echo "Cloudflare setup deployed."
           echo "GITHUB_ISSUE_CREATE_ENABLED is defined in wrangler.toml [vars]."
-          echo "If the app asks for GITHUB_TOKEN next, add it as a Cloudflare Worker Secret."
+          if [ "${{ steps.worker_secrets.outputs.has_worker_secrets }}" = "true" ]; then
+            echo "Worker secret GITHUB_TOKEN was synced from GitHub Secret WORKER_GITHUB_TOKEN."
+          else
+            echo "Worker secret GITHUB_TOKEN was not updated. Add WORKER_GITHUB_TOKEN to GitHub Secrets to sync it automatically."
+          fi

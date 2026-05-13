@@ -10,37 +10,33 @@ export function DarakeInitialSetupChecklistPanel() {
 
       <div className="darakeHumanOnePage__linkGrid" aria-label="設定ショートカット">
         <a href={DARAKE_SETUP_LINKS.githubNewSecret} target="_blank" rel="noreferrer">GitHubの登録ページを開く</a>
-        <a href={DARAKE_SETUP_LINKS.cloudflareSetupWorkflow} target="_blank" rel="noreferrer">自動設定を実行する</a>
-        <a href={DARAKE_SETUP_LINKS.cloudflareWorkersPages} target="_blank" rel="noreferrer">Cloudflareを開く</a>
         <a href={DARAKE_SETUP_LINKS.githubFineGrainedTokens} target="_blank" rel="noreferrer">GitHubの鍵ページを開く</a>
+        <a href={DARAKE_SETUP_LINKS.cloudflareSetupWorkflow} target="_blank" rel="noreferrer">自動設定を実行する</a>
+        <a href={DARAKE_SETUP_LINKS.cloudflareApiTokens} target="_blank" rel="noreferrer">Cloudflareの鍵ページを開く</a>
       </div>
 
       <div className="darakeHumanOnePage__beginnerGuide">
         <div>
-          <span>もうコード側に入ったもの</span>
-          <strong>GITHUB_ISSUE_CREATE_ENABLED=true は wrangler.toml で管理します。</strong>
+          <span>コード側に入ったもの</span>
+          <strong>Issue作成ONは wrangler.toml で管理します。</strong>
         </div>
         <div>
-          <span>Cloudflare自動デプロイに必要</span>
-          <strong>CLOUDFLARE_API_TOKEN と CLOUDFLARE_ACCOUNT_ID を GitHub側に入れます。</strong>
+          <span>GitHub側に登録するもの</span>
+          <strong>CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID / WORKER_GITHUB_TOKEN</strong>
         </div>
         <div>
-          <span>Issue作成に必要</span>
-          <strong>GITHUB_TOKEN を Cloudflare Worker側に入れます。</strong>
+          <span>自動で起きること</span>
+          <strong>ActionsがCloudflareへ設定とWorker用のGitHub鍵を反映します。</strong>
         </div>
       </div>
 
       <div className="darakeHumanOnePage__settingGuide">
         <div>
-          <span>GitHub側に入れるもの</span>
-          <strong>CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID</strong>
+          <span>入れる場所</span>
+          <strong>GitHub → Settings → Secrets and variables → Actions</strong>
         </div>
         <div>
-          <span>Cloudflare Worker側に入れるもの</span>
-          <strong>GITHUB_TOKEN</strong>
-        </div>
-        <div>
-          <span>次に押す場所</span>
+          <span>実行する場所</span>
           <strong>GitHub → Actions → Cloudflare Setup → Run workflow</strong>
         </div>
       </div>
@@ -48,14 +44,12 @@ export function DarakeInitialSetupChecklistPanel() {
       <details className="darakeHumanOnePage__beginnerDetails">
         <summary>だらける順番を見る</summary>
         <p>
-          1. 「GitHubの登録ページを開く」から CLOUDFLARE_API_TOKEN と CLOUDFLARE_ACCOUNT_ID を入れます。
-          2. 「自動設定を実行する」を開いて Run workflow を押します。
-          3. だらけdev app に戻って「設定したので再チェック」を押します。
+          1. Cloudflare用の鍵を作ります。
+          2. GitHub用の鍵を作ります。
+          3. GitHubの登録ページに3つの名前で保存します。
+          4. Cloudflare Setup を実行します。
         </p>
-        <p>
-          その後 GITHUB_TOKEN が必要と出たら「Cloudflareを開く」から Worker Secret にだけ入れます。
-          トークンの中身はチャットにもアプリにも貼りません。
-        </p>
+        <p>鍵の中身はチャットにもアプリにも貼りません。</p>
       </details>
     </div>
   );
