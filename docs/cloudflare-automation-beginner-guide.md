@@ -1,6 +1,6 @@
 # Cloudflare設定を自動化するための最初の1回ガイド
 
-だらけdev app が Cloudflare の設定を自動で直せるようにするには、最初に1回だけ GitHub Secrets に鍵を入れます。
+だらけdev app が Cloudflare へ自動デプロイできるようにするには、最初に1回だけ GitHub Secrets に鍵を入れます。
 
 この鍵はチャットやコードには貼りません。
 GitHub の Secrets にだけ入れます。
@@ -9,13 +9,16 @@ GitHub の Secrets にだけ入れます。
 
 ## 何を自動化するの？
 
-今まで手動でやっていた次の作業を、GitHub Actions から自動でできるようにします。
+今までCloudflare画面で探していた次のON/OFFスイッチを、リポジトリ側の `wrangler.toml` で管理します。
 
 ```text
 GITHUB_ISSUE_CREATE_ENABLED = true
 ```
 
 これは、だらけdev app が GitHub に Issue、つまり作業メモを作れるようにするための ON/OFF スイッチです。
+
+Phase 82 以降、この値は `wrangler.toml` に入っています。
+そのため、Cloudflare画面でこの名前を手入力し続ける必要はありません。
 
 ---
 
@@ -28,7 +31,7 @@ CLOUDFLARE_API_TOKEN
 CLOUDFLARE_ACCOUNT_ID
 ```
 
-この2つを入れた後は、GitHub Actions の `Cloudflare Setup` を押すだけで Cloudflare 側の設定を反映できます。
+この2つを入れた後は、GitHub Actions の `Cloudflare Setup` を押すだけで、`wrangler.toml` の内容が Cloudflare に反映されます。
 
 ---
 
@@ -38,8 +41,8 @@ Cloudflare で確認します。
 
 ```text
 Cloudflare
-→ 右上のアカウント / または Workers & Pages の画面
-→ Account ID を探す
+→ Workers & Pages
+→ 右側や下の方にある Account ID を探す
 ```
 
 見つけたらコピーして、GitHub Secrets に入れます。
@@ -119,7 +122,7 @@ CLOUDFLARE_ACCOUNT_ID
 
 ---
 
-## 4. 自動設定を実行する場所
+## 4. 自動デプロイを実行する場所
 
 2つのSecretを入れたら、GitHub Actions で実行します。
 
@@ -135,10 +138,9 @@ GitHub
 
 ```text
 worker_name: darakedevapp
-issue_create_enabled: true
 ```
 
-実行に成功すると、Cloudflare 側に次が反映されます。
+実行に成功すると、`wrangler.toml` の `[vars]` が Cloudflare に反映されます。
 
 ```text
 GITHUB_ISSUE_CREATE_ENABLED = true
@@ -161,16 +163,18 @@ GITHUB_ISSUE_CREATE_ENABLED = true
 次に出る可能性があるのは `GITHUB_TOKEN` です。
 
 これは GitHub に Issue を作るための GitHub 側の鍵です。
-これもチャットには貼らず、Cloudflare や GitHub Secrets に入れます。
+これもチャットには貼らず、Cloudflare Worker Secret として入れます。
 
 ---
 
 ## この自動化の考え方
 
 ```text
-最初に1回だけ、人間が強い鍵を安全な場所に入れる
+最初に1回だけ、人間がCloudflareを操作できる鍵をGitHub Secretsに入れる
 ↓
-次からは GitHub Actions が Cloudflare 設定を直す
+次からは GitHub Actions が Cloudflare にデプロイする
+↓
+GITHUB_ISSUE_CREATE_ENABLED は wrangler.toml から自動反映される
 ↓
 人間はボタンを押すだけになる
 ```
