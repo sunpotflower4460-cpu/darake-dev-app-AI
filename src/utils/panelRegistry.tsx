@@ -36,6 +36,7 @@ import { PANEL_REGISTRY_PHASE59TO63 } from './panelRegistry.phase59to63';
 import { PANEL_REGISTRY_PHASE65 } from './panelRegistry.phase65';
 import { PANEL_REGISTRY_PHASE82 } from './panelRegistry.phase82';
 import { PANEL_REGISTRY_PHASE83 } from './panelRegistry.phase83';
+import { PANEL_REGISTRY_PHASE88 } from './panelRegistry.phase88';
 
 export type PanelRegistryItem = {
   id: string;
@@ -49,6 +50,7 @@ export type PanelRegistryItem = {
 };
 
 export const ALL_PANELS: PanelRegistryItem[] = [
+  ...PANEL_REGISTRY_PHASE88,
   ...PANEL_REGISTRY_PHASE1TO9,
   ...PANEL_REGISTRY_PHASE10,
   ...PANEL_REGISTRY_PHASE11TO14,
