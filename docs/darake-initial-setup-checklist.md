@@ -31,32 +31,30 @@ https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/actions/workflows/clou
 
 ---
 
-## まず今できていること
+## Phase 86でさらに楽になったこと
 
-Phase 82 で、次のON/OFFスイッチはリポジトリ側に入りました。
+`CLOUDFLARE_ACCOUNT_ID` は、基本は手入力しなくてもよい形に近づけました。
+
+Cloudflare Setup は、GitHub側に `CLOUDFLARE_ACCOUNT_ID` がなければ、Cloudflare APIからアカウント一覧を見に行きます。
 
 ```text
-GITHUB_ISSUE_CREATE_ENABLED = true
+Cloudflareアカウントが1つだけ
+→ 自動採用
 ```
 
-これは Secret ではありません。
-そのため `wrangler.toml` の `[vars]` で管理します。
+```text
+Cloudflareアカウントが複数ある
+→ CLOUDFLARE_ACCOUNT_ID もGitHub側に登録する
+```
 
 ---
 
-## Phase 85でさらに楽になったこと
+## 基本的にGitHub側へ登録する2つ
 
-以前は `GITHUB_TOKEN` をCloudflare画面で手入力する想定でした。
-
-Phase 85では、GitHub側に `WORKER_GITHUB_TOKEN` として登録しておけば、`Cloudflare Setup` がCloudflare Worker側の `GITHUB_TOKEN` として同期できるようにします。
-
----
-
-## 最初にGitHub側へ登録する3つ
+まずはこの2つで進められる可能性があります。
 
 ```text
 CLOUDFLARE_API_TOKEN
-CLOUDFLARE_ACCOUNT_ID
 WORKER_GITHUB_TOKEN
 ```
 
@@ -66,16 +64,26 @@ WORKER_GITHUB_TOKEN
 https://github.com/sunpotflower4460-cpu/darake-dev-app-AI/settings/secrets/actions/new
 ```
 
-入れる場所:
+---
+
+## 複数アカウントの場合だけ追加するもの
+
+Cloudflareアカウントが複数ある場合だけ、これも追加します。
 
 ```text
-GitHub
-→ darake-dev-app-AI
-→ Settings
-→ Secrets and variables
-→ Actions
-→ New repository secret
+CLOUDFLARE_ACCOUNT_ID
 ```
+
+---
+
+## すでにコード側に入ったもの
+
+```text
+GITHUB_ISSUE_CREATE_ENABLED = true
+```
+
+これは Secret ではありません。
+そのため `wrangler.toml` の `[vars]` で管理します。
 
 ---
 
@@ -88,16 +96,17 @@ CloudflareをGitHub Actionsから再デプロイするための鍵
 ```
 
 ```text
-CLOUDFLARE_ACCOUNT_ID
-Cloudflareのアカウントを特定するID
-→ GitHub側に入れる
-```
-
-```text
 WORKER_GITHUB_TOKEN
 だらけdev app がGitHubにIssueを作るための鍵
 → GitHub側に入れる
 → ActionsがCloudflare Workerの GITHUB_TOKEN として同期する
+```
+
+```text
+CLOUDFLARE_ACCOUNT_ID
+Cloudflareのアカウントを特定するID
+→ 1アカウントなら自動推定
+→ 複数アカウントならGitHub側に入れる
 ```
 
 ---
@@ -108,10 +117,11 @@ WORKER_GITHUB_TOKEN
 1. CloudflareのAPI Tokenページを開く
 2. GitHubのToken作成ページを開く
 3. GitHubの登録ページを開く
-4. 3つの名前で保存する
+4. まず2つの名前で保存する
 5. Cloudflare Setup実行ページを開く
 6. Run workflow を押す
-7. だらけdev app に戻って「設定したので再チェック」
+7. 複数アカウントで止まった時だけ CLOUDFLARE_ACCOUNT_ID を追加する
+8. だらけdev app に戻って「設定したので再チェック」
 ```
 
 ---
@@ -135,8 +145,8 @@ GITHUB_TOKEN をCloudflare画面で探して入れる
 ## 迷った時の見方
 
 ```text
-Issue作成がOFFと言われる
-→ Cloudflare Setup がまだ反映されていない可能性
+Cloudflareアカウントが複数と出た
+→ CLOUDFLARE_ACCOUNT_ID をGitHub側に追加する
 ```
 
 ```text
@@ -157,5 +167,6 @@ GitHub Tokenがないと言われる
 普通のON/OFF設定は wrangler.toml に置く
 強い鍵はGitHub側の安全な登録場所にまとめる
 Cloudflareへの反映は Actions に任せる
+分かるものはActionsが自動推定する
 人間は最初の登録とRun workflowだけやる
 ```

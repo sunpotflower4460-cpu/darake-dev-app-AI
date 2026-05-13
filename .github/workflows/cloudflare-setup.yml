@@ -27,18 +27,53 @@ jobs:
       - name: Check required GitHub Secrets
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
             echo "Missing GitHub Secret: CLOUDFLARE_API_TOKEN" >&2
             echo "Add it in: GitHub repo > Settings > Secrets and variables > Actions" >&2
             exit 1
           fi
-          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
-            echo "Missing GitHub Secret: CLOUDFLARE_ACCOUNT_ID" >&2
-            echo "Add it in: GitHub repo > Settings > Secrets and variables > Actions" >&2
-            exit 1
+
+      - name: Resolve Cloudflare account ID
+        id: cloudflare_account
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          if [ -n "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
+            echo "account_id=$CLOUDFLARE_ACCOUNT_ID" >> "$GITHUB_OUTPUT"
+            echo "Using CLOUDFLARE_ACCOUNT_ID from GitHub Secrets."
+            exit 0
           fi
+
+          curl --fail-with-body \
+            --request GET \
+            --url "https://api.cloudflare.com/client/v4/accounts?per_page=50" \
+            --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+            --header "Content-Type: application/json" \
+            --output cloudflare-accounts.json
+
+          node <<'NODE'
+          const fs = require('fs');
+          const response = JSON.parse(fs.readFileSync('cloudflare-accounts.json', 'utf8'));
+          if (!response.success) {
+            console.error('Could not read Cloudflare accounts.');
+            process.exit(1);
+          }
+          const accounts = Array.isArray(response.result) ? response.result : [];
+          if (accounts.length === 1 && accounts[0]?.id) {
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `account_id=${accounts[0].id}\n`);
+            console.log('Auto-detected one Cloudflare account.');
+            process.exit(0);
+          }
+          if (accounts.length === 0) {
+            console.error('No Cloudflare account is available for this token.');
+          } else {
+            console.error(`Multiple Cloudflare accounts found: ${accounts.length}. Add CLOUDFLARE_ACCOUNT_ID to GitHub Secrets.`);
+          }
+          process.exit(1);
+          NODE
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -100,19 +135,19 @@ jobs:
         if: steps.worker_secrets.outputs.has_worker_secrets != 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ steps.cloudflare_account.outputs.account_id }}
         run: npx wrangler deploy --config wrangler.toml
 
       - name: Deploy to Cloudflare with Worker secrets
         if: steps.worker_secrets.outputs.has_worker_secrets == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ steps.cloudflare_account.outputs.account_id }}
         run: npx wrangler deploy --config wrangler.toml --secrets-file .worker-secrets.json
 
       - name: Remove temporary Worker secrets file
         if: always()
-        run: rm -f .worker-secrets.json
+        run: rm -f .worker-secrets.json cloudflare-accounts.json
 
       - name: Done
         run: |
