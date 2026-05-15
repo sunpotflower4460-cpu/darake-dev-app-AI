@@ -1,4 +1,5 @@
 import { DARAKE_SETUP_LINKS } from '../utils/darakeSetupLinks';
+import { DarakeSetupChecklistPanel } from './DarakeSetupChecklistPanel';
 
 const REQUIRED_SETUP_NAMES = [
   'CLOUDFLARE_API_TOKEN',
@@ -133,6 +134,8 @@ export function DarakeSetupHubPanel() {
           <strong>Cloudflare Setupが成功したら、だらけdev appに戻って「設定したので再チェック」を押します。</strong>
         </div>
       </div>
+
+      <DarakeSetupChecklistPanel />
     </div>
   );
 }

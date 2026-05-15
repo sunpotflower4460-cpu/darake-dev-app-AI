@@ -14,6 +14,54 @@ type CheckGroup = {
   items: CheckItem[];
 };
 
+type SetupSummaryItem = {
+  key: string;
+  label: string;
+  ok: boolean;
+  hint?: string;
+};
+
+function buildSummaryItems(data: SetupStatusResponse): SetupSummaryItem[] {
+  const githubReady = data.githubToken === 'set';
+  const issueReady = githubReady && data.githubIssueCreateEnabled;
+  const cloudflareReady = githubReady && data.githubIssueCreateEnabled;
+
+  return [
+    {
+      key: 'github',
+      label: 'GitHub連携',
+      ok: githubReady,
+      hint: githubReady
+        ? undefined
+        : 'WORKER_GITHUB_TOKENをGitHub Secretsに登録して、Cloudflare Setupを実行してください。',
+    },
+    {
+      key: 'issue-create',
+      label: 'Issue作成',
+      ok: issueReady,
+      hint: issueReady
+        ? undefined
+        : 'GitHub連携とGITHUB_ISSUE_CREATE_ENABLED=trueの反映が必要です。',
+    },
+    {
+      key: 'cloudflare',
+      label: 'Cloudflare設定',
+      ok: cloudflareReady,
+      hint: cloudflareReady
+        ? undefined
+        : 'Cloudflare Setupを実行して、Workerの設定を反映してください。',
+    },
+    {
+      key: 'workplace',
+      label: '作業場所',
+      ok: data.allowedReposConfigured,
+      hint: data.allowedReposConfigured
+        ? undefined
+        : 'GITHUB_ALLOWED_REPOSに対象リポジトリを入れると安全です。',
+    },
+  ];
+}
+
 function buildGroups(data: SetupStatusResponse): CheckGroup[] {
   return [
     {
@@ -112,18 +160,21 @@ export function DarakeSetupChecklistPanel() {
   }, []);
 
   const groups = data ? buildGroups(data) : [];
-  const hasMissing = groups.some((g) => g.items.some((i) => !i.ok));
+  const summaryItems = data ? buildSummaryItems(data) : [];
+  const missingSummaryItems = summaryItems.filter((item) => !item.ok);
+  const okSummaryItems = summaryItems.filter((item) => item.ok);
+  const hasMissing = missingSummaryItems.length > 0;
 
   return (
     <div className="darakeSetupChecklist">
-      <div className="darakeSetupChecklist__title">最初だけ必要な設定</div>
+      <div className="darakeSetupChecklist__title">設定したので再チェック</div>
       <div className="darakeSetupChecklist__subtitle">
-        Cloudflare / GitHub の設定状態を確認します
+        Secretの中身は表示せず、OKか足りないものだけ確認します
       </div>
 
       {!data && !loading && (
         <button type="button" className="darakeSetupChecklist__refreshBtn" onClick={handleFetch}>
-          設定状態を確認する
+          設定したので再チェック
         </button>
       )}
 
@@ -140,14 +191,33 @@ export function DarakeSetupChecklistPanel() {
 
       {data && !loading && (
         <>
-          {hasMissing && (
-            <div style={{ fontSize: 13, color: '#d69e2e', marginBottom: 8 }}>
-              最初だけ設定が必要です
-            </div>
-          )}
-          {!hasMissing && (
-            <div style={{ fontSize: 13, color: '#38a169', marginBottom: 8 }}>
-              ✅ すべての設定が揃っています
+          <div className={`darakeSetupChecklist__summary ${hasMissing ? 'darakeSetupChecklist__summary--missing' : 'darakeSetupChecklist__summary--ok'}`}>
+            {hasMissing ? (
+              <>
+                <strong>足りないのはこれだけです</strong>
+                <div>{missingSummaryItems.map((item) => item.label).join(' / ')}</div>
+              </>
+            ) : (
+              <>
+                <strong>すべての設定が揃っています</strong>
+                <div>作りたいアプリを置けます</div>
+              </>
+            )}
+          </div>
+
+          <div className="darakeSetupChecklist__summaryGrid" aria-label="設定状態">
+            {summaryItems.map((item) => (
+              <div key={item.key} className={`darakeSetupChecklist__summaryItem${item.ok ? '' : ' darakeSetupChecklist__summaryItem--missing'}`}>
+                <span>{item.ok ? 'OK' : '不足'}</span>
+                <strong>{item.label}</strong>
+                {item.hint && <small>{item.hint}</small>}
+              </div>
+            ))}
+          </div>
+
+          {okSummaryItems.length > 0 && (
+            <div className="darakeSetupChecklist__okLine">
+              OK: {okSummaryItems.map((item) => item.label).join(' / ')}
             </div>
           )}
 
