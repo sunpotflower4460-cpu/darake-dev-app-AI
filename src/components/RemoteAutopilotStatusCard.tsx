@@ -5,6 +5,7 @@ import { loadRemoteRunLink } from '../utils/remoteRunLink';
 import { loadDarakeAutopilotState } from '../utils/darakeAutopilotState';
 import { loadDarakeLevelSettings } from '../utils/darakeLevelSettings';
 import { syncRemoteRunState, testNotification } from '../utils/remoteRunClient';
+import { DARAKE_SETUP_LINKS } from '../utils/darakeSetupLinks';
 import type { DarakeRemoteRun } from '../utils/darakeRemoteRun';
 
 type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error';
@@ -319,20 +320,24 @@ function SetupGuideDetails() {
     <div className="remoteAutopilotSetupGuide">
       <div className="remoteAutopilotSetupTitle">最初だけ設定が必要です</div>
       <div className="remoteAutopilotSetupDesc">
-        画面を閉じても自動確認したい場合は、Cloudflare側で以下を設定してください。
+        画面を閉じても自動確認したい場合は、GitHub Secretsに鍵を登録してCloudflare Setupを実行します。
       </div>
       <ul className="remoteAutopilotSetupList">
         <li>RUN_REGISTRY_KV</li>
-        <li>GITHUB_TOKEN</li>
+        <li>WORKER_GITHUB_TOKEN（GitHub Secrets）</li>
         <li>DARAKE_RUN_REGISTRY_ENABLED=true</li>
         <li>DARAKE_AUTOPILOT_SCHEDULE_ENABLED=true</li>
         <li>TELEGRAM_BOT_TOKEN</li>
         <li>TELEGRAM_CHAT_ID</li>
       </ul>
+      <div className="darakeHumanOnePage__linkGrid" aria-label="裏巡回設定リンク">
+        <a href={DARAKE_SETUP_LINKS.githubNewSecret} target="_blank" rel="noreferrer">GitHubの登録ページを開く</a>
+        <a href={DARAKE_SETUP_LINKS.cloudflareSetupWorkflow} target="_blank" rel="noreferrer">自動設定を実行する</a>
+      </div>
       <div className="remoteAutopilotSetupNote">
         Tokenはこの画面には入力しません。
         <br />
-        CloudflareのSecretとして設定します。
+        GitHub側のWORKER_GITHUB_TOKENからWorkerのGITHUB_TOKENへ同期します。
       </div>
     </div>
   );

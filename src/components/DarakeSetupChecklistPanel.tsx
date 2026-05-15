@@ -21,17 +21,17 @@ function buildGroups(data: SetupStatusResponse): CheckGroup[] {
       items: [
         {
           key: 'github-token',
-          label: 'GITHUB_TOKEN',
+          label: 'Worker GITHUB_TOKEN同期',
           ok: data.githubToken === 'set',
           hint: data.githubToken === 'missing'
-            ? 'Cloudflare側で GITHUB_TOKEN をSecretとして設定してください。この画面にはTokenを入力しません。'
+            ? 'GitHub SecretsにWORKER_GITHUB_TOKENを登録して、Cloudflare Setupを実行してください。この画面にはTokenを入力しません。'
             : undefined,
         },
         {
           key: 'issue-create-enabled',
           label: 'GITHUB_ISSUE_CREATE_ENABLED',
           ok: data.githubIssueCreateEnabled,
-          hint: !data.githubIssueCreateEnabled ? 'GITHUB_ISSUE_CREATE_ENABLED=true を設定してください' : undefined,
+          hint: !data.githubIssueCreateEnabled ? 'Cloudflare Setupを実行して、wrangler.tomlのGITHUB_ISSUE_CREATE_ENABLED=trueを反映してください' : undefined,
         },
         {
           key: 'allowed-repos',

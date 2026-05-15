@@ -17,6 +17,7 @@ import { requestDarakeHumanViewModeChange } from '../utils/darakeHumanViewMode';
 import { loadOmakaseStartState } from '../utils/omakaseStartState';
 import { runOmakaseStart } from '../utils/runOmakaseStart';
 import { createCockpitSeedFromFirstStartForm } from '../utils/firstStartCockpitSeed';
+import { DARAKE_SETUP_LINKS } from '../utils/darakeSetupLinks';
 
 type HumanAction = {
   label: string;
@@ -72,10 +73,10 @@ function isValidGitHubRepoUrl(value: string): boolean {
 function simplifyOmakaseMessage(message?: string): string {
   if (!message) return '設定か入力内容の確認が必要です。';
   if (message.includes('GITHUB_TOKEN')) {
-    return 'GitHub連携用の設定が足りません。CloudflareのSecret設定だけ確認してください。';
+    return 'GitHub連携用の設定が足りません。GitHub側のWORKER_GITHUB_TOKEN登録と自動設定だけ確認してください。';
   }
   if (message.includes('GITHUB_ISSUE_CREATE_ENABLED')) {
-    return 'CloudflareでIssue作成スイッチをONにしてください。下に手順を短く出しています。';
+    return 'Cloudflare Setupを実行して、Issue作成スイッチを反映してください。下に手順を短く出しています。';
   }
   if (message.includes('リポジトリ')) {
     return 'AIが作業を書く場所だけ確認してください。下のボタンか入力欄で進めます。';
@@ -215,7 +216,7 @@ function buildActionState(args: {
   if (args.cloudflareSettingKind === 'enable-issue') {
     return {
       status: 'アプリは正常です。外部設定が1つだけOFFです。',
-      next: 'Cloudflareで GITHUB_ISSUE_CREATE_ENABLED を true にすると、自動で作業場所を作れるようになります。',
+      next: 'Cloudflare Setupで GITHUB_ISSUE_CREATE_ENABLED=true を反映すると、自動で作業場所を作れるようになります。',
       stop: 'Cloudflare設定',
       action: { label: '設定したので再チェック', tone: 'primary' },
       needsHumanReview: true,
@@ -225,8 +226,8 @@ function buildActionState(args: {
   if (args.cloudflareSettingKind === 'github-token') {
     return {
       status: 'アプリは正常です。GitHub連携のSecretが未設定です。',
-      next: 'Cloudflareに GITHUB_TOKEN をSecretとして設定すると、自動で作業場所を作れるようになります。',
-      stop: 'Cloudflare Secret',
+      next: 'GitHub Secretsに WORKER_GITHUB_TOKEN を登録して自動設定を実行すると、作業場所を作れるようになります。',
+      stop: 'GitHub Secret',
       action: { label: '設定したので再チェック', tone: 'primary' },
       needsHumanReview: true,
     };
@@ -590,27 +591,31 @@ export function DarakeHumanOnePageCockpit() {
         {cloudflareSettingKind && (
           <div className="darakeHumanOnePage__repoFix" aria-label="Cloudflare設定の確認">
             <div className="darakeHumanOnePage__repoFixHeader">
-              <strong>{cloudflareSettingKind === 'enable-issue' ? 'Cloudflareで1つだけONにする' : 'CloudflareにSecretを1つ入れる'}</strong>
-              <span>アプリの故障ではありません。外部サービス側で、AIがGitHubに書き込む許可をONにする確認です。</span>
+              <strong>{cloudflareSettingKind === 'enable-issue' ? 'Cloudflare Setupを実行する' : 'GitHubにSecretを1つ入れる'}</strong>
+              <span>アプリの故障ではありません。GitHub側に鍵を置き、Cloudflare SetupでWorkerへ反映します。</span>
+            </div>
+            <div className="darakeHumanOnePage__linkGrid" aria-label="Cloudflare設定リンク">
+              <a href={DARAKE_SETUP_LINKS.githubNewSecret} target="_blank" rel="noreferrer">GitHubの登録ページを開く</a>
+              <a href={DARAKE_SETUP_LINKS.githubFineGrainedTokens} target="_blank" rel="noreferrer">GitHubの鍵ページを開く</a>
+              <a href={DARAKE_SETUP_LINKS.cloudflareSetupWorkflow} target="_blank" rel="noreferrer">自動設定を実行する</a>
             </div>
             <div className="darakeHumanOnePage__beginnerGuide">
               <div><span>これは何？</span><strong>AIがGitHubに「作業メモ」を作れるようにするための許可です。</strong></div>
               <div><span>毎回やる？</span><strong>いいえ。基本は最初に1回だけです。</strong></div>
-              <div><span>今やること</span><strong>下の「入れる名前」と「入れる値」をCloudflareにコピペします。</strong></div>
+              <div><span>今やること</span><strong>GitHubに登録してから、自動設定を実行します。</strong></div>
             </div>
             {cloudflareSettingKind === 'enable-issue' ? (
               <div className="darakeHumanOnePage__settingGuide">
-                <div><span>入れる名前</span><strong>GITHUB_ISSUE_CREATE_ENABLED</strong></div>
-                <div><span>入れる値</span><strong>true</strong></div>
-                <div><span>場所</span><strong>Cloudflare → Workers &amp; Pages → このアプリ → Settings → Variables</strong></div>
-                <p>保存して再デプロイしたあと、下の「設定したので再チェック」を押してください。</p>
+                <div><span>反映する設定</span><strong>GITHUB_ISSUE_CREATE_ENABLED=true</strong></div>
+                <div><span>場所</span><strong>GitHub → Actions → Cloudflare Setup</strong></div>
+                <p>wrangler.tomlには設定済みです。自動設定を実行したあと、下の「設定したので再チェック」を押してください。</p>
               </div>
             ) : (
               <div className="darakeHumanOnePage__settingGuide">
-                <div><span>入れる名前</span><strong>GITHUB_TOKEN</strong></div>
+                <div><span>GitHubに登録する名前</span><strong>WORKER_GITHUB_TOKEN</strong></div>
                 <div><span>入れる値</span><strong>GitHubのPersonal Access Token</strong></div>
-                <div><span>場所</span><strong>Cloudflare → Workers &amp; Pages → このアプリ → Settings → Variables → Secret</strong></div>
-                <p>保存して再デプロイしたあと、下の「設定したので再チェック」を押してください。</p>
+                <div><span>場所</span><strong>GitHub → Settings → Secrets and variables → Actions</strong></div>
+                <p>登録後にCloudflare Setupを実行すると、Worker側のGITHUB_TOKENへ自動同期されます。</p>
               </div>
             )}
             <details className="darakeHumanOnePage__beginnerDetails">
