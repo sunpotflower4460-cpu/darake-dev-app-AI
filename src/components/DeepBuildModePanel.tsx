@@ -21,14 +21,18 @@ function advanceOneLocalPhase(plan: DeepBuildPlan): DeepBuildPlan {
   const targetIndex = nextPhases.findIndex((phase) => phase.status !== 'done');
 
   if (targetIndex === -1) {
+    const { currentPhaseId: _currentPhaseId, ...rest } = plan;
     return {
-      ...plan,
+      ...rest,
       overallStatus: 'reviewing',
     };
   }
 
+  const targetPhase = nextPhases[targetIndex];
+  if (!targetPhase) return plan;
+
   nextPhases[targetIndex] = {
-    ...nextPhases[targetIndex],
+    ...targetPhase,
     status: 'done',
   };
 
@@ -38,12 +42,20 @@ function advanceOneLocalPhase(plan: DeepBuildPlan): DeepBuildPlan {
   }
 
   const allDone = nextPhases.every((phase) => phase.status === 'done');
-
-  return {
+  const basePlan: DeepBuildPlan = {
     ...plan,
     phases: nextPhases,
-    currentPhaseId: nextTarget?.id,
     overallStatus: allDone ? 'reviewing' : 'building',
+  };
+
+  if (!nextTarget) {
+    const { currentPhaseId: _currentPhaseId, ...rest } = basePlan;
+    return rest;
+  }
+
+  return {
+    ...basePlan,
+    currentPhaseId: nextTarget.id,
   };
 }
 
@@ -93,6 +105,8 @@ export function DeepBuildModePanel() {
     );
   }
 
+  const hasReviewItems = Boolean(judgement && (judgement.missing.length > 0 || judgement.blocking.length > 0));
+
   return (
     <section className="deepBuildModePanel" aria-label="Deep Build Mode">
       <div className="deepBuildModePanel__header">
@@ -126,7 +140,7 @@ export function DeepBuildModePanel() {
         </button>
       </div>
 
-      {(judgement?.missing.length || judgement?.blocking.length) ? (
+      {hasReviewItems ? (
         <div className="deepBuildModePanel__check">
           <span>確認が必要なこと</span>
           {[...(judgement?.blocking ?? []), ...(judgement?.missing ?? [])].map((item) => (
