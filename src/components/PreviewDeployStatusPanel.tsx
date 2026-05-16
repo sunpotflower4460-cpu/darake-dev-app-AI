@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import '../previewDeployStatus.css';
+import { DarakePanelBadge } from './DarakePanelBadge';
 import {
   buildDefaultPreviewDeployRecord,
   deployStatusLabel,
@@ -69,6 +70,7 @@ export function PreviewDeployStatusPanel() {
 
   return (
     <section className="previewDeploy" aria-label="Preview/Deploy 手動確認メモ">
+      <DarakePanelBadge kinds={['manual-note']} />
       <span className="previewDeploy__eyebrow">Phase 97 · 手動メモ（実データ未連携）</span>
       <h2 className="previewDeploy__title">Preview/Deploy 手動確認メモ</h2>
 

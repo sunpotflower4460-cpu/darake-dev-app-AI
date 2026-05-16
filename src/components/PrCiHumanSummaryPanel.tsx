@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import '../prCiHumanSummary.css';
+import { DarakePanelBadge } from './DarakePanelBadge';
 import {
   buildMockPrCiSnapshot,
   translatePrCiToHuman,
@@ -105,6 +106,7 @@ export function PrCiHumanSummaryPanel() {
 
   return (
     <section className="prCiHuman" aria-label="PR/CI人間向け要約">
+      <DarakePanelBadge kinds={['demo']} />
       <span className="prCiHuman__eyebrow">Phase 95 · PR/CI状態</span>
       <h2 className="prCiHuman__title">PR/CI 要約</h2>
 

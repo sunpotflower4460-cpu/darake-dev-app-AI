@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../setupHubV2.css';
+import { DarakePanelBadge } from './DarakePanelBadge';
 import { DARAKE_SETUP_LINKS } from '../utils/darakeSetupLinks';
 import { fetchSetupStatus } from '../utils/setupStatusClient';
 import {
@@ -86,6 +87,21 @@ function copyToClipboard(text: string, onCopied: () => void) {
   }
 }
 
+function getRecommendedSteps(diagnostic: SettingsDiagnosticReport): Set<StepId> {
+  const recommended = new Set<StepId>();
+  const missing = new Set(
+    diagnostic.items.filter((i) => i.level !== 'ok').map((i) => i.id),
+  );
+  if (missing.has('github-token')) {
+    recommended.add('github-key');
+    recommended.add('github-register');
+  }
+  if (missing.has('run-registry') || missing.has('issue-create')) {
+    recommended.add('auto-setup');
+  }
+  return recommended;
+}
+
 export function SetupHubV2Panel() {
   const [done, setDone] = useState<Set<StepId>>(() => loadDoneSteps());
   const [copiedId, setCopiedId] = useState<StepId | null>(null);
@@ -133,8 +149,15 @@ export function SetupHubV2Panel() {
   const kvOk = diagItemMap?.get('run-registry')?.level === 'ok';
   const optionalMissing = diagnostic ? diagnostic.optionalMissingCount > 0 : false;
 
+  const recommendedSteps = diagnostic ? getRecommendedSteps(diagnostic) : new Set<StepId>();
+
+  const requiredMissingItems = diagnostic
+    ? diagnostic.items.filter((i) => i.required && i.level !== 'ok')
+    : [];
+
   return (
     <section className="setupHubV2" aria-label="初期設定ここだけ v2">
+      <DarakePanelBadge kinds={['real-data']} />
       <div className="setupHubV2__header">
         <span className="setupHubV2__eyebrow">Phase 92 · 初期設定ここだけ</span>
         <h2 className="setupHubV2__title">上から押すだけで完了します</h2>
@@ -165,7 +188,18 @@ export function SetupHubV2Panel() {
             {diagnostic.overall !== 'not-ready' ? (
               <div className="setupHubV2__diagReady">✅ 始められます</div>
             ) : (
-              <div className="setupHubV2__diagNotReady">⚠️ {diagnostic.footerMessage}</div>
+              <>
+                <div className="setupHubV2__diagNotReady">⚠️ 足りないのはこれだけです</div>
+                {requiredMissingItems.length > 0 && (
+                  <ul className="setupHubV2__diagMissingList">
+                    {requiredMissingItems.map((item) => (
+                      <li key={item.id} className="setupHubV2__diagMissingItem">
+                        — {item.label}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
             )}
           </>
         ) : null}
@@ -174,11 +208,24 @@ export function SetupHubV2Panel() {
       <ul className="setupHubV2__steps">
         {STEPS.map((step) => {
           const isDone = done.has(step.id);
+          const isRecommended = !isDone && recommendedSteps.has(step.id);
           return (
-            <li key={step.id} className={`setupHubV2__step${isDone ? ' setupHubV2__step--done' : ''}`}>
+            <li
+              key={step.id}
+              className={[
+                'setupHubV2__step',
+                isDone ? 'setupHubV2__step--done' : '',
+                isRecommended ? 'setupHubV2__step--recommended' : '',
+              ].filter(Boolean).join(' ')}
+            >
               <span className="setupHubV2__stepNum">{isDone ? '✓' : step.num}</span>
               <div className="setupHubV2__stepBody">
-                <div className="setupHubV2__stepLabel">{step.label}</div>
+                <div className="setupHubV2__stepLabel">
+                  {step.label}
+                  {isRecommended && (
+                    <span className="setupHubV2__stepRecommended">おすすめ</span>
+                  )}
+                </div>
                 <div className="setupHubV2__stepNote">{step.note}</div>
               </div>
               <div className="setupHubV2__stepActions">

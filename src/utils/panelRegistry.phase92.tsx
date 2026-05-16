@@ -11,5 +11,6 @@ export const PANEL_REGISTRY_PHASE92: PanelRegistryItem[] = [
     defaultVisible: true,
     priority: 92,
     tags: ['setup', 'hub', 'steps', 'copy', 'darake', 'onboarding'],
+    kind: 'real-data',
   },
 ];
