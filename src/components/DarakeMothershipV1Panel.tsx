@@ -4,6 +4,15 @@ import {
   MOTHERSHIP_V1_FEATURES,
 } from '../utils/darakeMothershipV1';
 
+function navigateToGroup(group: string) {
+  try {
+    localStorage.setItem('darake.navGroup.v1', group);
+    window.dispatchEvent(new StorageEvent('storage', { key: 'darake.navGroup.v1', newValue: group }));
+  } catch {
+    // ignore
+  }
+}
+
 export function DarakeMothershipV1Panel() {
   const readiness = buildMothershipReadiness();
 
@@ -13,6 +22,30 @@ export function DarakeMothershipV1Panel() {
         <span className="mothership__eyebrow">Phase 100 · v1 Complete</span>
         <h2 className="mothership__title">だらけ開発母艦</h2>
         <p className="mothership__subtitle">自分用GitHub管制母艦 — 作りたいものを置いたら、危ない判断だけ確認する</p>
+      </div>
+
+      <div className="mothership__quickActions">
+        <button
+          type="button"
+          className="mothership__quickBtn mothership__quickBtn--settings"
+          onClick={() => navigateToGroup('settings')}
+        >
+          🔧 初期設定する
+        </button>
+        <button
+          type="button"
+          className="mothership__quickBtn mothership__quickBtn--create"
+          onClick={() => navigateToGroup('create')}
+        >
+          ✏️ 作りたいアプリを置く
+        </button>
+        <button
+          type="button"
+          className="mothership__quickBtn mothership__quickBtn--watch"
+          onClick={() => navigateToGroup('watch')}
+        >
+          👀 進行中のPR/作業を見る
+        </button>
       </div>
 
       {readiness.v1Complete ? (

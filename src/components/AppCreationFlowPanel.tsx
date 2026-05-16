@@ -8,12 +8,16 @@ import {
   saveAppCreationRecord,
   type AppCreationRecord,
 } from '../utils/appCreationFlowV1';
+import { SafetyConfirmButton } from './SafetyConfirmButton';
 
 export function AppCreationFlowPanel() {
   const stored = loadAppCreationRecord();
   const [record, setRecord] = useState<AppCreationRecord | null>(stored);
   const [appName, setAppName] = useState(stored?.appName ?? '');
   const [oneLineIdea, setOneLineIdea] = useState(stored?.oneLineIdea ?? '');
+  const [issueUrl, setIssueUrl] = useState(stored?.issueUrl ?? '');
+  const [prUrl, setPrUrl] = useState(stored?.prUrl ?? '');
+  const [previewUrl, setPreviewUrl] = useState(stored?.previewUrl ?? '');
 
   function startFlow() {
     if (!appName.trim()) return;
@@ -41,6 +45,30 @@ export function AppCreationFlowPanel() {
     setRecord(null);
     setAppName('');
     setOneLineIdea('');
+    setIssueUrl('');
+    setPrUrl('');
+    setPreviewUrl('');
+  }
+
+  function saveIssueUrl() {
+    if (!record) return;
+    const next = { ...record, issueUrl: issueUrl.trim() };
+    saveAppCreationRecord(next);
+    setRecord(next);
+  }
+
+  function savePrUrl() {
+    if (!record) return;
+    const next = { ...record, prUrl: prUrl.trim() };
+    saveAppCreationRecord(next);
+    setRecord(next);
+  }
+
+  function savePreviewUrl() {
+    if (!record) return;
+    const next = { ...record, previewUrl: previewUrl.trim() };
+    saveAppCreationRecord(next);
+    setRecord(next);
   }
 
   const currentStepMeta = record
@@ -102,6 +130,69 @@ export function AppCreationFlowPanel() {
         </div>
       ) : null}
 
+      {record.currentStep === 'issue-created' && (
+        <div className="appFlow__urlSection">
+          <label className="appFlow__label" htmlFor="af-issue-url">Issue URL</label>
+          <div className="appFlow__urlRow">
+            <input
+              id="af-issue-url"
+              className="appFlow__input"
+              value={issueUrl}
+              onChange={(e) => setIssueUrl(e.target.value)}
+              placeholder="https://github.com/owner/repo/issues/1"
+            />
+            <button type="button" className="appFlow__urlSave" onClick={saveIssueUrl}>保存</button>
+          </div>
+          {record.issueUrl ? (
+            <a href={record.issueUrl} target="_blank" rel="noreferrer" className="appFlow__urlLink">
+              🔗 Issue を開く
+            </a>
+          ) : null}
+        </div>
+      )}
+
+      {record.currentStep === 'pr-review' && (
+        <div className="appFlow__urlSection">
+          <label className="appFlow__label" htmlFor="af-pr-url">PR URL</label>
+          <div className="appFlow__urlRow">
+            <input
+              id="af-pr-url"
+              className="appFlow__input"
+              value={prUrl}
+              onChange={(e) => setPrUrl(e.target.value)}
+              placeholder="https://github.com/owner/repo/pull/1"
+            />
+            <button type="button" className="appFlow__urlSave" onClick={savePrUrl}>保存</button>
+          </div>
+          {record.prUrl ? (
+            <a href={record.prUrl} target="_blank" rel="noreferrer" className="appFlow__urlLink">
+              🔗 PR を開く
+            </a>
+          ) : null}
+        </div>
+      )}
+
+      {record.currentStep === 'preview-check' && (
+        <div className="appFlow__urlSection">
+          <label className="appFlow__label" htmlFor="af-preview-url">Preview URL</label>
+          <div className="appFlow__urlRow">
+            <input
+              id="af-preview-url"
+              className="appFlow__input"
+              value={previewUrl}
+              onChange={(e) => setPreviewUrl(e.target.value)}
+              placeholder="https://your-app.workers.dev"
+            />
+            <button type="button" className="appFlow__urlSave" onClick={savePreviewUrl}>保存</button>
+          </div>
+          {record.previewUrl ? (
+            <a href={record.previewUrl} target="_blank" rel="noreferrer" className="appFlow__urlLink">
+              🔗 Preview を開く
+            </a>
+          ) : null}
+        </div>
+      )}
+
       <ol className="appFlow__flow">
         {FLOW_STEPS.map((step) => {
           const isDone = record.completedSteps.includes(step.id);
@@ -128,9 +219,25 @@ export function AppCreationFlowPanel() {
 
       <div className="appFlow__actions">
         {!isCompleted && !isLast ? (
-          <button type="button" className="appFlow__advance" onClick={advance}>
-            次のステップへ
-          </button>
+          record.currentStep === 'agent-handed' ? (
+            <SafetyConfirmButton
+              actionKey="agentに渡す"
+              label="次のステップへ"
+              onAction={advance}
+              className="appFlow__advance"
+            />
+          ) : record.currentStep === 'pr-review' ? (
+            <SafetyConfirmButton
+              actionKey="prを確認する"
+              label="次のステップへ"
+              onAction={advance}
+              className="appFlow__advance"
+            />
+          ) : (
+            <button type="button" className="appFlow__advance" onClick={advance}>
+              次のステップへ
+            </button>
+          )
         ) : !isCompleted ? (
           <button type="button" className="appFlow__advance appFlow__advance--complete" onClick={advance}>
             フロー完了

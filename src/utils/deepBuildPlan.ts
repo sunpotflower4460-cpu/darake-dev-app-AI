@@ -57,6 +57,10 @@ export type DeepBuildPhase = {
   autoFixAttempts?: number;
   maxAutoFixAttempts?: number;
   riskLevel?: DeepBuildRiskLevel;
+  ciStatus?: 'unknown' | 'running' | 'passed' | 'failed';
+  previewUrl?: string;
+  humanCheckDone?: boolean;
+  completionCandidate?: boolean;
 };
 
 export type DeepBuildCompletionContract = {

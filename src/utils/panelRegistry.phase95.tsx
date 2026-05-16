@@ -11,5 +11,6 @@ export const PANEL_REGISTRY_PHASE95: PanelRegistryItem[] = [
     defaultVisible: false,
     priority: 95,
     tags: ['pr', 'ci', 'summary', 'human', 'translate', 'watch'],
+    kind: 'demo',
   },
 ];

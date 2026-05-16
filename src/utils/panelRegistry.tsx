@@ -57,6 +57,7 @@ export type PanelRegistryItem = {
   defaultVisible: boolean;
   priority: number;
   tags: string[];
+  kind?: 'real-data' | 'demo' | 'manual-note' | 'developer';
 };
 
 export const ALL_PANELS: PanelRegistryItem[] = [

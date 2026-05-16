@@ -459,6 +459,14 @@ export const LOCAL_STORAGE_KEY_REGISTRY: LocalStorageKeyRegistryItem[] = [
     containsSensitiveData: false,
     notes: '完了済みStep IDのみ。',
   },
+  {
+    key: 'darake.prCiHuman.lastQuery.v1',
+    owner: 'PrCiHumanSummaryPanel',
+    phase: '103',
+    purpose: 'PR/CI実データ確認の最後のrepoUrl・PR番号を保存',
+    containsSensitiveData: false,
+    notes: 'repoUrl文字列とprNumber文字列のみ。tokenなし。',
+  },
 ];
 
 export function formatLocalStorageKeyRegistryMarkdown(

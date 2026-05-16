@@ -1,0 +1,63 @@
+.safetyBtn--blocked {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #991b1b;
+}
+
+.safetyBtn__dismiss {
+  padding: 2px 8px;
+  background: transparent;
+  border: 1px solid #fca5a5;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #991b1b;
+  cursor: pointer;
+}
+
+.safetyBtn__confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: 8px;
+}
+
+.safetyBtn__confirmMsg {
+  font-size: 13px;
+  color: #92400e;
+  font-weight: 600;
+}
+
+.safetyBtn__confirmRow {
+  display: flex;
+  gap: 8px;
+}
+
+.safetyBtn__confirmOk {
+  padding: 6px 14px;
+  background: #d97706;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.safetyBtn__confirmCancel {
+  padding: 6px 14px;
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
