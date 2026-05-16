@@ -6,16 +6,16 @@ const PREVIEW_URL_PATTERNS = [
 ];
 
 export function extractPreviewUrls(text: string): string[] {
-  const found: string[] = [];
+  const seen = new Set<string>();
   for (const pattern of PREVIEW_URL_PATTERNS) {
     const matches = text.match(pattern);
     if (matches) {
       for (const m of matches) {
-        if (!found.includes(m)) found.push(m);
+        seen.add(m);
       }
     }
   }
-  return found;
+  return Array.from(seen);
 }
 
 export function extractFirstPreviewUrl(text: string): string | null {

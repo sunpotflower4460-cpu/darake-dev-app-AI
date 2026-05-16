@@ -219,9 +219,16 @@ export function AppCreationFlowPanel() {
 
       <div className="appFlow__actions">
         {!isCompleted && !isLast ? (
-          record.currentStep === 'agent-handed' || record.currentStep === 'pr-review' ? (
+          record.currentStep === 'agent-handed' ? (
             <SafetyConfirmButton
-              actionKey="issue下書き"
+              actionKey="agentに渡す"
+              label="次のステップへ"
+              onAction={advance}
+              className="appFlow__advance"
+            />
+          ) : record.currentStep === 'pr-review' ? (
+            <SafetyConfirmButton
+              actionKey="prを確認する"
               label="次のステップへ"
               onAction={advance}
               className="appFlow__advance"

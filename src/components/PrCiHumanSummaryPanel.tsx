@@ -89,6 +89,10 @@ export function PrCiHumanSummaryPanel() {
     : null;
   const realSummary = realSnapshot ? translatePrCiToHuman(realSnapshot) : null;
 
+  function handleFetchClick() {
+    void handleFetch();
+  }
+
   async function handleFetch() {
     const prNum = parseInt(prNumberInput, 10);
     if (!repoUrl.trim() || isNaN(prNum)) return;
@@ -124,7 +128,7 @@ export function PrCiHumanSummaryPanel() {
           <button
             type="button"
             className="prCiHuman__realBtn"
-            onClick={() => { void handleFetch(); }}
+            onClick={handleFetchClick}
             disabled={realLoading}
           >
             {realLoading ? '確認中…' : '確認する'}

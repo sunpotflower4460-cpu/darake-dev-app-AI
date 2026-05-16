@@ -125,9 +125,12 @@ export function SetupHubV2Panel() {
 
   const allDone = done.size >= STEPS.length;
 
-  const githubOk = diagnostic?.items.find((i) => i.id === 'github-token')?.level === 'ok';
-  const issueOk = diagnostic?.items.find((i) => i.id === 'issue-create')?.level === 'ok';
-  const kvOk = diagnostic?.items.find((i) => i.id === 'run-registry')?.level === 'ok';
+  const diagItemMap = diagnostic
+    ? new Map(diagnostic.items.map((i) => [i.id, i]))
+    : null;
+  const githubOk = diagItemMap?.get('github-token')?.level === 'ok';
+  const issueOk = diagItemMap?.get('issue-create')?.level === 'ok';
+  const kvOk = diagItemMap?.get('run-registry')?.level === 'ok';
   const optionalMissing = diagnostic ? diagnostic.optionalMissingCount > 0 : false;
 
   return (

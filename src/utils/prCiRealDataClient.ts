@@ -37,7 +37,8 @@ export async function fetchPrCiRealData(
       details: data.details,
       prNumber,
     };
-  } catch {
-    return { ok: false, error: '通信エラーが発生しました' };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    return { ok: false, error: `ネットワークエラー: ${msg}` };
   }
 }
