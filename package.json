@@ -8,6 +8,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
+    "safetygate:test": "node scripts/safetyGateV2Smoke.mjs",
     "state:build": "node scripts/buildState.mjs",
     "review:build": "node scripts/buildReviewWatch.mjs",
     "pr:build": "node scripts/buildPrWatch.mjs",

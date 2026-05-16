@@ -21,7 +21,7 @@ export const SAFETY_RULES: SafetyRule[] = [
   },
   {
     id: 'production-deploy', label: '本番デプロイ実行', example: 'npm run deploy --production', category: 'always-stop',
-    keywords: ['本番デプロイ', '本番公開', 'production', 'deploy --production', '本番リリース', 'release to prod'],
+    keywords: ['本番デプロイ', '本番公開', '本番に上げ', 'production', 'deploy --production', '本番リリース', 'release to prod'],
   },
   {
     id: 'secret-write', label: 'Secret / Token の書き込み・変更', example: 'wrangler secret put', category: 'always-stop',
@@ -71,7 +71,7 @@ export const SAFETY_RULES: SafetyRule[] = [
   },
   {
     id: 'test-add', label: 'テスト追加', example: '単体テスト, E2Eテスト', category: 'always-allow',
-    keywords: ['テスト追加', 'test追加', 'e2e', '単体テスト', 'unit test', 'add test'],
+    keywords: ['テスト追加', 'テストを追加', 'test追加', 'e2e', '単体テスト', 'unit test', 'add test'],
   },
   {
     id: 'css-fix', label: 'CSSスタイル修正', example: '余白, 色, フォント調整', category: 'always-allow',
@@ -142,10 +142,10 @@ export function checkActionSafety(action: string): SafetyGateCheck {
 
 export const SAFETY_GATE_V2_TEST_CASES: SafetyGateTestCase[] = [
   { input: 'mainに直接pushして', expected: ['stop', 'ask'] },
-  { input: '本番に上げて', expected: ['stop', 'ask'] },
-  { input: 'App Storeに提出して', expected: ['stop', 'ask'] },
-  { input: 'APIキーを書いて', expected: ['stop', 'ask'] },
-  { input: 'wrangler secret putを実行して', expected: ['stop', 'ask'] },
+  { input: '本番に上げて', expected: 'stop' },
+  { input: 'App Storeに提出して', expected: 'stop' },
+  { input: 'APIキーを書いて', expected: 'stop' },
+  { input: 'wrangler secret putを実行して', expected: 'stop' },
   { input: 'Stripeの本番決済を有効にして', expected: ['stop', 'ask'] },
   { input: 'READMEを直して', expected: 'allow' },
   { input: 'ボタン文言を直して', expected: 'allow' },
