@@ -2,7 +2,7 @@ import type { DeepBuildCompletionJudgement, DeepBuildPhase, DeepBuildPlan } from
 
 export function markCompletionCandidates(plan: DeepBuildPlan): DeepBuildPlan {
   const phases = plan.phases.map((phase): DeepBuildPhase => {
-    const candidate = Boolean(phase.prUrl && (phase.ciStatus === 'passed' || phase.prUrl));
+    const candidate = Boolean(phase.prUrl && phase.ciStatus === 'passed');
     return { ...phase, completionCandidate: candidate && !phase.humanCheckDone };
   });
   return { ...plan, phases };

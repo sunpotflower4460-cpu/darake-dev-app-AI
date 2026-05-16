@@ -238,8 +238,8 @@
     padding: 12px 14px;
     font-size: 14px;
   }
-}
 
-.mobile-hide {
-  display: none;
+  .mobile-hide {
+    display: none;
+  }
 }
