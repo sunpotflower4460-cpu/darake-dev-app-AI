@@ -107,11 +107,11 @@ export async function runOmakaseStart(): Promise<OmakaseStartState> {
 
       if (res.code === 'MISSING_TOKEN') {
         userMessage =
-          'CloudflareにGITHUB_TOKENを設定してください。Token入力欄はありません。Cloudflare WorkerのSecretとして設定してください。';
+          'GitHub SecretsにWORKER_GITHUB_TOKENを登録して、Cloudflare Setupを実行してください。Token入力欄はありません。';
         nextActionLabel = '設定方法を見る';
       } else if (res.code === 'DISABLED') {
         userMessage =
-          'Issue直接作成はまだ有効化されていません。CloudflareにGITHUB_ISSUE_CREATE_ENABLED=trueを設定してください。';
+          'Issue作成設定がまだWorkerに反映されていません。Cloudflare Setupを実行してください。';
         nextActionLabel = '設定方法を見る';
       } else if (res.code === 'REPO_NOT_ALLOWED') {
         userMessage =

@@ -1,11 +1,12 @@
 import type { SettingsHealthResponse } from './settingsHealth';
 import type { SetupGuidance } from './setupGuidance';
+import { DARAKE_SETUP_LINKS } from './darakeSetupLinks';
 
 const GITHUB_TOKEN_GUIDANCE: SetupGuidance = {
   kind: 'github-token',
-  title: 'GitHub Tokenが必要です',
-  shortMessage: 'GitHub Issue作成やPR確認に使います。',
-  nextActionLabel: 'Cloudflare SecretにGITHUB_TOKENを設定する',
+  title: 'WORKER_GITHUB_TOKENが必要です',
+  shortMessage: 'GitHub側に登録すると、Cloudflare SetupがWorkerのGITHUB_TOKENへ同期します。',
+  nextActionLabel: 'GitHub SecretsにWORKER_GITHUB_TOKENを登録してCloudflare Setupを実行する',
   dangerLevel: 'secret',
   steps: [
     {
@@ -25,10 +26,15 @@ const GITHUB_TOKEN_GUIDANCE: SetupGuidance = {
       description: '最小権限の原則で、必要なものだけ許可してください。',
     },
     {
-      title: '5. Cloudflare SecretにGITHUB_TOKENとして保存する',
-      description: 'Tokenをこの画面やlocalStorageには貼らないでください。wranglerコマンドで保存します。',
-      copyText: 'npx wrangler secret put GITHUB_TOKEN',
-      warning: 'TokenをこのアプリのUI画面やlocalStorageに貼らないでください。',
+      title: '5. GitHub SecretsにWORKER_GITHUB_TOKENとして保存する',
+      description: 'Tokenをこの画面やlocalStorageには貼らず、GitHubのActions Secret登録ページに保存します。',
+      copyText: 'WORKER_GITHUB_TOKEN',
+      warning: 'Cloudflareへ直接GITHUB_TOKENを入れず、GitHub側のWORKER_GITHUB_TOKENから同期してください。',
+    },
+    {
+      title: '6. Cloudflare Setupを実行する',
+      description: 'GitHub ActionsのCloudflare Setupを実行すると、Worker側のGITHUB_TOKENへ自動同期されます。',
+      copyText: DARAKE_SETUP_LINKS.cloudflareSetupWorkflow,
     },
   ],
 };
@@ -36,14 +42,14 @@ const GITHUB_TOKEN_GUIDANCE: SetupGuidance = {
 const ISSUE_CREATE_ENABLED_GUIDANCE: SetupGuidance = {
   kind: 'issue-create-enabled',
   title: 'Issue作成が無効です',
-  shortMessage: 'Worker環境変数に以下を設定してください。',
-  nextActionLabel: 'GITHUB_ISSUE_CREATE_ENABLED=true を設定する',
+  shortMessage: 'wrangler.tomlには設定済みです。Cloudflare Setupで反映します。',
+  nextActionLabel: 'Cloudflare Setupを実行する',
   dangerLevel: 'safe',
   steps: [
     {
-      title: '環境変数を設定する',
-      description: 'Cloudflare Workerの環境変数（vars）に以下を追加します。',
-      copyText: 'GITHUB_ISSUE_CREATE_ENABLED=true',
+      title: 'Cloudflare Setupを実行する',
+      description: 'GitHub ActionsのCloudflare Setupを実行すると、wrangler.tomlのGITHUB_ISSUE_CREATE_ENABLED=trueがWorkerへ反映されます。',
+      copyText: DARAKE_SETUP_LINKS.cloudflareSetupWorkflow,
     },
   ],
 };

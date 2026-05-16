@@ -17,7 +17,7 @@ export function buildSettingsHealthSummary(input: SettingsHealthResponse): Setti
       title: 'GitHub連携',
       level: 'blocked',
       description: 'GitHub連携の設定が必要です',
-      nextActionLabel: 'GITHUB_TOKENをCloudflare Secretに設定してください',
+      nextActionLabel: 'GitHub SecretsにWORKER_GITHUB_TOKENを登録してCloudflare Setupを実行してください',
     });
   }
 
@@ -53,7 +53,7 @@ export function buildSettingsHealthSummary(input: SettingsHealthResponse): Setti
       title: 'Issue自動作成',
       level: 'missing',
       description: 'Issue自動作成はまだOFFです',
-      nextActionLabel: 'GITHUB_ISSUE_CREATE_ENABLED=true を設定してください',
+      nextActionLabel: 'Cloudflare Setupを実行してwrangler.tomlの設定を反映してください',
     });
   }
 

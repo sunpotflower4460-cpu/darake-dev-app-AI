@@ -7,6 +7,7 @@ import { saveGitHubIssueRecord, loadGitHubIssueRecord } from '../utils/githubIss
 import { parseGitHubRepoUrl } from '../utils/githubRepoUrl';
 import { buildPonStartPack } from '../utils/ponStartPack';
 import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
+import { DARAKE_SETUP_LINKS } from '../utils/darakeSetupLinks';
 
 export function GitHubDirectIssueCreatePanel() {
   const [revision, setRevision] = useState(0);
@@ -118,9 +119,14 @@ export function GitHubDirectIssueCreatePanel() {
           <div className="gdicSetupTitle">最初だけ設定が必要です</div>
           <div className="gdicSetupDetail">
             {isMissingTokenError
-              ? <>Cloudflareに <span className="gdicSetupCode">GITHUB_TOKEN</span> をSecretとして設定してください。設定後、このボタンでIssueを作れるようになります。</>
-              : <>Cloudflareに <span className="gdicSetupCode">GITHUB_ISSUE_CREATE_ENABLED=true</span> を設定してください。</>
+              ? <>GitHub Secretsに <span className="gdicSetupCode">WORKER_GITHUB_TOKEN</span> を登録して、Cloudflare Setupを実行してください。</>
+              : <>Cloudflare Setupを実行して、<span className="gdicSetupCode">GITHUB_ISSUE_CREATE_ENABLED=true</span> をWorkerへ反映してください。</>
             }
+          </div>
+          <div className="darakeHumanOnePage__linkGrid" aria-label="Issue作成に必要な設定リンク">
+            <a href={DARAKE_SETUP_LINKS.githubNewSecret} target="_blank" rel="noreferrer">GitHubの登録ページを開く</a>
+            <a href={DARAKE_SETUP_LINKS.githubFineGrainedTokens} target="_blank" rel="noreferrer">GitHubの鍵ページを開く</a>
+            <a href={DARAKE_SETUP_LINKS.cloudflareSetupWorkflow} target="_blank" rel="noreferrer">自動設定を実行する</a>
           </div>
         </div>
       )}
@@ -131,7 +137,7 @@ export function GitHubDirectIssueCreatePanel() {
           <div className="gdicErrorDetail">
             {result.error}
             {result.code === 'REPO_NOT_ALLOWED' && (
-              <> — GitHub Tokenか許可リポジトリを確認してください。</>
+              <> — WORKER_GITHUB_TOKENの権限か許可リポジトリを確認してください。</>
             )}
           </div>
         </div>
