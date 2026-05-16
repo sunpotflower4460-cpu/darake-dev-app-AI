@@ -31,9 +31,9 @@ export function SettingsDiagnosticPanel() {
   useEffect(() => { void runDiagnostic(); }, []);
 
   const overallLabel = report?.overall === 'all-ok'
-    ? 'すべてOK'
+    ? '基本設定OK（任意設定もOK）'
     : report?.overall === 'partial'
-      ? `${report.readyCount}/${report.totalCount} OK`
+      ? '基本設定OK（任意はあとでOK）'
       : '設定が必要です';
 
   return (
@@ -56,12 +56,18 @@ export function SettingsDiagnosticPanel() {
                 <div className="settingsDiagnostic__itemBody">
                   <span className="settingsDiagnostic__itemLabel">
                     {LEVEL_ICON[item.level]} {item.label}
+                    <span className="settingsDiagnostic__itemType">
+                      {item.required ? '必須' : '任意'}
+                    </span>
                   </span>
                   <span className="settingsDiagnostic__itemNote">{item.note}</span>
                 </div>
               </li>
             ))}
           </ul>
+          <p className="settingsDiagnostic__itemNote">
+            必須: {report.requiredReadyCount}/{report.requiredTotalCount} · 任意未設定: {report.optionalMissingCount}
+          </p>
 
           <p className="settingsDiagnostic__footer">{report.footerMessage}</p>
         </>

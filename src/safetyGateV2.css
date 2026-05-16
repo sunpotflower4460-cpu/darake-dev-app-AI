@@ -133,3 +133,43 @@
 
 .safetyGateV2__ruleLabel { font-weight: 600; }
 .safetyGateV2__ruleExample { color: #9ca3af; font-size: 11px; }
+
+.safetyGateV2__test {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.safetyGateV2__testTitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.safetyGateV2__testList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.safetyGateV2__testItem {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.safetyGateV2__testItem--pass {
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.safetyGateV2__testItem--fail {
+  background: #fef2f2;
+  color: #991b1b;
+}

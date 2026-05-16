@@ -51,6 +51,29 @@ const STEPS: Step[] = [
   },
 ];
 
+const DONE_STEPS_STORAGE_KEY = 'darake.setupHubV2.doneSteps.v1';
+
+function loadDoneSteps(): Set<StepId> {
+  try {
+    const raw = localStorage.getItem(DONE_STEPS_STORAGE_KEY);
+    if (!raw) return new Set();
+    const parsed = JSON.parse(raw) as unknown;
+    if (!Array.isArray(parsed)) return new Set();
+    const validIds = new Set<StepId>(STEPS.map((step) => step.id));
+    return new Set(parsed.filter((value): value is StepId => typeof value === 'string' && validIds.has(value as StepId)));
+  } catch {
+    return new Set();
+  }
+}
+
+function persistDoneSteps(done: Set<StepId>): void {
+  try {
+    localStorage.setItem(DONE_STEPS_STORAGE_KEY, JSON.stringify([...done]));
+  } catch {
+    // ignore
+  }
+}
+
 function copyToClipboard(text: string, onCopied: () => void) {
   if (navigator.clipboard) {
     void navigator.clipboard.writeText(text).then(onCopied);
@@ -58,7 +81,7 @@ function copyToClipboard(text: string, onCopied: () => void) {
 }
 
 export function SetupHubV2Panel() {
-  const [done, setDone] = useState<Set<StepId>>(new Set());
+  const [done, setDone] = useState<Set<StepId>>(() => loadDoneSteps());
   const [copiedId, setCopiedId] = useState<StepId | null>(null);
 
   function toggleDone(id: StepId) {
@@ -66,8 +89,15 @@ export function SetupHubV2Panel() {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
+      persistDoneSteps(next);
       return next;
     });
+  }
+
+  function resetDone() {
+    const next = new Set<StepId>();
+    persistDoneSteps(next);
+    setDone(next);
   }
 
   function handleCopy(id: StepId, name: string) {
@@ -163,6 +193,9 @@ export function SetupHubV2Panel() {
           CloudflareにGITHUB_TOKENを直接入れなくてOKです。GitHubに <strong>WORKER_GITHUB_TOKEN</strong> として登録してから自動設定を実行します。
         </p>
       )}
+      <button type="button" className="setupHubV2__done setupHubV2__done--undo" onClick={resetDone}>
+        完了状態をリセット
+      </button>
     </section>
   );
 }

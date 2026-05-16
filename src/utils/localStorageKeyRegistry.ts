@@ -426,7 +426,7 @@ export const LOCAL_STORAGE_KEY_REGISTRY: LocalStorageKeyRegistryItem[] = [
     containsSensitiveData: false,
     notes: 'ロードマップテキスト。',
   },
-  // Phase 97-99 新規キー
+  // Phase 92 / 97-99 新規キー
   {
     key: 'darake.previewDeployStatus.v1',
     owner: 'PreviewDeployStatusPanel',
@@ -450,6 +450,14 @@ export const LOCAL_STORAGE_KEY_REGISTRY: LocalStorageKeyRegistryItem[] = [
     purpose: '9ステップ制作フローの進行状態を保存',
     containsSensitiveData: false,
     notes: 'アプリ名・アイデア・現在ステップのみ。',
+  },
+  {
+    key: 'darake.setupHubV2.doneSteps.v1',
+    owner: 'SetupHubV2Panel',
+    phase: '92',
+    purpose: 'Setup Hubの完了済みステップを保存',
+    containsSensitiveData: false,
+    notes: '完了済みStep IDのみ。',
   },
 ];
 

@@ -1,4 +1,5 @@
 export type SafetyCategory = 'always-stop' | 'always-allow' | 'ask-human';
+export type SafetyDecision = 'stop' | 'ask' | 'allow' | 'unknown';
 
 export type SafetyRule = {
   id: string;
@@ -24,11 +25,11 @@ export const SAFETY_RULES: SafetyRule[] = [
   },
   {
     id: 'secret-write', label: 'Secret / Token の書き込み・変更', example: 'wrangler secret put', category: 'always-stop',
-    keywords: ['secret', 'token', 'wrangler secret', 'api key', 'apikey', '秘密鍵', 'credential'],
+    keywords: ['secret', 'token', 'wrangler secret', 'api key', 'apikey', 'apiキー', '秘密鍵', 'credential'],
   },
   {
     id: 'main-force-push', label: 'mainブランチへの強制プッシュ', example: 'git push --force origin main', category: 'always-stop',
-    keywords: ['force push', '--force', 'mainに強制', 'mainへの強制', 'force origin main'],
+    keywords: ['force push', '--force', 'mainに強制', 'mainへの強制', 'force origin main', 'mainに直接push', 'mainに直接プッシュ', 'direct push to main', 'push origin main'],
   },
   {
     id: 'large-refactor', label: '大規模リファクタ（100ファイル超）', example: '全コンポーネントのリネーム', category: 'always-stop',
@@ -62,7 +63,7 @@ export const SAFETY_RULES: SafetyRule[] = [
   },
   {
     id: 'ui-text', label: 'UI文言の改善', example: 'ボタンラベル, エラーメッセージ', category: 'always-allow',
-    keywords: ['ui文言', 'ボタンラベル', 'エラーメッセージ', 'テキスト変更', 'label', 'ui text'],
+    keywords: ['ui文言', 'ボタンラベル', 'ボタン文言', 'エラーメッセージ', 'テキスト変更', 'label', 'ui text'],
   },
   {
     id: 'component-add', label: '小さなコンポーネント追加', example: '新しいパネル, カード', category: 'always-allow',
@@ -93,8 +94,18 @@ export const SAFETY_RULES: SafetyRule[] = [
 export type SafetyGateCheck = {
   action: string;
   matchedRule: SafetyRule | null;
-  decision: 'stop' | 'ask' | 'allow' | 'unknown';
+  decision: SafetyDecision;
   message: string;
+};
+
+export type SafetyGateTestCase = {
+  input: string;
+  expected: SafetyDecision | SafetyDecision[];
+};
+
+export type SafetyGateTestResult = SafetyGateTestCase & {
+  actual: SafetyDecision;
+  passed: boolean;
 };
 
 export function checkActionSafety(action: string): SafetyGateCheck {
@@ -127,4 +138,28 @@ export function checkActionSafety(action: string): SafetyGateCheck {
   };
 
   return { action, matchedRule: matched, decision, message: messages[decision] };
+}
+
+export const SAFETY_GATE_V2_TEST_CASES: SafetyGateTestCase[] = [
+  { input: 'mainに直接pushして', expected: ['stop', 'ask'] },
+  { input: '本番に上げて', expected: ['stop', 'ask'] },
+  { input: 'App Storeに提出して', expected: ['stop', 'ask'] },
+  { input: 'APIキーを書いて', expected: ['stop', 'ask'] },
+  { input: 'wrangler secret putを実行して', expected: ['stop', 'ask'] },
+  { input: 'Stripeの本番決済を有効にして', expected: ['stop', 'ask'] },
+  { input: 'READMEを直して', expected: 'allow' },
+  { input: 'ボタン文言を直して', expected: 'allow' },
+  { input: 'テストを追加して', expected: 'allow' },
+];
+
+export function runSafetyGateV2TestCases(): SafetyGateTestResult[] {
+  return SAFETY_GATE_V2_TEST_CASES.map((testCase) => {
+    const actual = checkActionSafety(testCase.input).decision;
+    const expected = Array.isArray(testCase.expected) ? testCase.expected : [testCase.expected];
+    return {
+      ...testCase,
+      actual,
+      passed: expected.includes(actual),
+    };
+  });
 }

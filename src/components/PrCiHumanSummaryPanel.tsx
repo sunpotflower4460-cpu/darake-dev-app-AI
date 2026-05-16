@@ -38,8 +38,8 @@ export function PrCiHumanSummaryPanel() {
 
   return (
     <section className="prCiHuman" aria-label="PR/CI人間向け要約">
-      <span className="prCiHuman__eyebrow">Phase 95 · PR/CI状態を人間の言葉に翻訳</span>
-      <h2 className="prCiHuman__title">今どうなってるか</h2>
+      <span className="prCiHuman__eyebrow">Phase 95 · デモ（実データ未連携）</span>
+      <h2 className="prCiHuman__title">PR/CI 要約デモ</h2>
 
       <div className={`prCiHuman__card prCiHuman__card--${summary.level}`}>
         <div className="prCiHuman__headline">{summary.headline}</div>

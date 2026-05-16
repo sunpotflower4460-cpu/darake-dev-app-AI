@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import '../safetyGateV2.css';
 import {
   checkActionSafety,
   SAFETY_RULES,
+  runSafetyGateV2TestCases,
   type SafetyCategory,
 } from '../utils/safetyGateV2';
 
@@ -22,6 +23,8 @@ const GROUP_TITLES: Record<SafetyCategory, string> = {
 export function SafetyGateV2Panel() {
   const [action, setAction] = useState('');
   const [result, setResult] = useState<ReturnType<typeof checkActionSafety> | null>(null);
+  const testResults = useMemo(() => runSafetyGateV2TestCases(), []);
+  const passedCount = testResults.filter((item) => item.passed).length;
 
   function check() {
     if (!action.trim()) return;
@@ -81,6 +84,17 @@ export function SafetyGateV2Panel() {
             </div>
           );
         })}
+      </div>
+      <div className="safetyGateV2__test">
+        <span className="safetyGateV2__testTitle">最低限テスト: {passedCount}/{testResults.length} pass</span>
+        <ul className="safetyGateV2__testList">
+          {testResults.map((item) => (
+            <li key={item.input} className={`safetyGateV2__testItem${item.passed ? ' safetyGateV2__testItem--pass' : ' safetyGateV2__testItem--fail'}`}>
+              <span>{item.passed ? '✓' : '✕'} {item.input}</span>
+              <span>→ {item.actual}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

@@ -6,6 +6,7 @@ import {
   deployStatusLevel,
   loadPreviewDeployRecord,
   savePreviewDeployRecord,
+  sanitizePreviewUrl,
   type DeployStatus,
 } from '../utils/previewDeployStatus';
 
@@ -24,12 +25,13 @@ export function PreviewDeployStatusPanel() {
   const [deployStatus, setDeployStatus] = useState<DeployStatus>(stored.deployStatus);
 
   const level = deployStatusLevel(record.deployStatus);
+  const safePreviewUrl = sanitizePreviewUrl(record.previewUrl);
 
   function save() {
     const next = {
       ...record,
       phaseName,
-      previewUrl: previewUrl.trim() || null,
+      previewUrl: sanitizePreviewUrl(previewUrl),
       deployStatus,
       deployedAt: deployStatus === 'deployed' ? new Date().toISOString() : record.deployedAt,
     };
@@ -51,9 +53,9 @@ export function PreviewDeployStatusPanel() {
     : null;
 
   return (
-    <section className="previewDeploy" aria-label="Preview/Deploy確認">
-      <span className="previewDeploy__eyebrow">Phase 97 · Preview / Deploy確認</span>
-      <h2 className="previewDeploy__title">最新の反映状態</h2>
+    <section className="previewDeploy" aria-label="Preview/Deploy 手動確認メモ">
+      <span className="previewDeploy__eyebrow">Phase 97 · 手動メモ（実データ未連携）</span>
+      <h2 className="previewDeploy__title">Preview/Deploy 手動確認メモ</h2>
 
       <div className={`previewDeploy__status previewDeploy__status--${level}`}>
         <span className="previewDeploy__dot" aria-hidden="true" />
@@ -73,9 +75,9 @@ export function PreviewDeployStatusPanel() {
         </div>
       </div>
 
-      {record.previewUrl ? (
+      {safePreviewUrl ? (
         <a
-          href={record.previewUrl}
+          href={safePreviewUrl}
           target="_blank"
           rel="noreferrer"
           className="previewDeploy__openBtn"

@@ -22,6 +22,7 @@ export function AppCreationFlowPanel() {
       oneLineIdea: oneLineIdea.trim() || 'アイデアを整理する',
       currentStep: 'idea',
       completedSteps: [],
+      status: 'active',
       updatedAt: new Date().toISOString(),
     };
     saveAppCreationRecord(newRecord);
@@ -48,6 +49,7 @@ export function AppCreationFlowPanel() {
 
   const isLast =
     record?.currentStep === FLOW_STEPS[FLOW_STEPS.length - 1]?.id;
+  const isCompleted = record?.status === 'completed';
 
   if (!record) {
     return (
@@ -87,7 +89,11 @@ export function AppCreationFlowPanel() {
     <section className="appFlow" aria-label="アプリ制作フロー">
       <span className="appFlow__eyebrow">Phase 98 · アプリ制作フロー</span>
       <h2 className="appFlow__title">{record.appName}</h2>
-      {currentStepMeta ? (
+      {isCompleted ? (
+        <div className="appFlow__completedMessage">
+          フロー完了（9/9）。次の改善を提案するか、新しいフローを始めてください。
+        </div>
+      ) : currentStepMeta ? (
         <div className="appFlow__headline">
           今: {currentStepMeta.label}
           {currentStepMeta.humanAction ? (
@@ -121,18 +127,24 @@ export function AppCreationFlowPanel() {
       </ol>
 
       <div className="appFlow__actions">
-        {!isLast ? (
+        {!isCompleted && !isLast ? (
           <button type="button" className="appFlow__advance" onClick={advance}>
             次のステップへ
           </button>
-        ) : (
-          <button type="button" className="appFlow__advance" style={{ background: '#7c3aed' }} onClick={advance}>
+        ) : !isCompleted ? (
+          <button type="button" className="appFlow__advance appFlow__advance--complete" onClick={advance}>
             フロー完了
           </button>
+        ) : null}
+        {isCompleted ? (
+          <button type="button" className="appFlow__advance appFlow__advance--complete" onClick={reset}>
+            新しいフローを始める
+          </button>
+        ) : (
+          <button type="button" className="appFlow__reset" onClick={reset}>
+            最初からやり直す
+          </button>
         )}
-        <button type="button" className="appFlow__reset" onClick={reset}>
-          最初からやり直す
-        </button>
       </div>
     </section>
   );

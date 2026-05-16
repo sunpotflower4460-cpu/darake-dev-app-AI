@@ -14,6 +14,7 @@ export type AppCreationRecord = {
   oneLineIdea: string;
   currentStep: AppCreationStep;
   completedSteps: AppCreationStep[];
+  status: 'active' | 'completed';
   updatedAt: string;
 };
 
@@ -39,11 +40,28 @@ export const FLOW_STEPS: FlowStepMeta[] = [
 
 const STORAGE_KEY = 'darake.appCreationFlow.v1';
 
+function isFlowStep(value: unknown): value is AppCreationStep {
+  return typeof value === 'string' && FLOW_STEPS.some((step) => step.id === value);
+}
+
 export function loadAppCreationRecord(): AppCreationRecord | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    return JSON.parse(raw) as AppCreationRecord;
+    const parsed = JSON.parse(raw) as Partial<AppCreationRecord>;
+    if (!parsed || typeof parsed !== 'object') return null;
+    if (typeof parsed.appName !== 'string' || typeof parsed.oneLineIdea !== 'string') return null;
+    if (!isFlowStep(parsed.currentStep)) return null;
+    if (!Array.isArray(parsed.completedSteps)) return null;
+    const completedSteps = parsed.completedSteps.filter(isFlowStep);
+    return {
+      appName: parsed.appName,
+      oneLineIdea: parsed.oneLineIdea,
+      currentStep: parsed.currentStep,
+      completedSteps,
+      status: parsed.status === 'completed' ? 'completed' : 'active',
+      updatedAt: typeof parsed.updatedAt === 'string' ? parsed.updatedAt : new Date().toISOString(),
+    };
   } catch {
     return null;
   }
@@ -68,12 +86,21 @@ export function clearAppCreationRecord(): void {
 export function advanceAppCreationFlow(record: AppCreationRecord): AppCreationRecord {
   const steps = FLOW_STEPS.map((s) => s.id);
   const currentIndex = steps.indexOf(record.currentStep);
+  if (currentIndex === -1) return record;
   const nextIndex = currentIndex + 1;
-  if (nextIndex >= steps.length) return record;
+  if (nextIndex >= steps.length) {
+    return {
+      ...record,
+      status: 'completed',
+      completedSteps: [...new Set([...record.completedSteps, record.currentStep])],
+      updatedAt: new Date().toISOString(),
+    };
+  }
 
   const nextStep = steps[nextIndex]!;
   return {
     ...record,
+    status: 'active',
     currentStep: nextStep,
     completedSteps: [...new Set([...record.completedSteps, record.currentStep])],
     updatedAt: new Date().toISOString(),

@@ -144,6 +144,10 @@
   cursor: pointer;
 }
 
+.appFlow__advance--complete {
+  background: #7c3aed;
+}
+
 .appFlow__actions {
   display: flex;
   gap: 8px;
@@ -168,4 +172,14 @@
   background: #eff6ff;
   border-radius: 8px;
   border: 1px solid #bfdbfe;
+}
+
+.appFlow__completedMessage {
+  font-size: 14px;
+  font-weight: 700;
+  color: #5b21b6;
+  padding: 10px 14px;
+  background: #f5f3ff;
+  border-radius: 8px;
+  border: 1px solid #ddd6fe;
 }
