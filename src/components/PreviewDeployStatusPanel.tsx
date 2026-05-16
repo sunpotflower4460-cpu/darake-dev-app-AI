@@ -1,0 +1,142 @@
+import { useState } from 'react';
+import '../previewDeployStatus.css';
+import {
+  buildDefaultPreviewDeployRecord,
+  deployStatusLabel,
+  deployStatusLevel,
+  loadPreviewDeployRecord,
+  savePreviewDeployRecord,
+  type DeployStatus,
+} from '../utils/previewDeployStatus';
+
+const DEPLOY_OPTIONS: { value: DeployStatus; label: string }[] = [
+  { value: 'deployed', label: '完了' },
+  { value: 'deploying', label: 'デプロイ中' },
+  { value: 'failed', label: '失敗' },
+  { value: 'unknown', label: '未確認' },
+];
+
+export function PreviewDeployStatusPanel() {
+  const stored = loadPreviewDeployRecord() ?? buildDefaultPreviewDeployRecord();
+  const [record, setRecord] = useState(stored);
+  const [phaseName, setPhaseName] = useState(stored.phaseName);
+  const [previewUrl, setPreviewUrl] = useState(stored.previewUrl ?? '');
+  const [deployStatus, setDeployStatus] = useState<DeployStatus>(stored.deployStatus);
+
+  const level = deployStatusLevel(record.deployStatus);
+
+  function save() {
+    const next = {
+      ...record,
+      phaseName,
+      previewUrl: previewUrl.trim() || null,
+      deployStatus,
+      deployedAt: deployStatus === 'deployed' ? new Date().toISOString() : record.deployedAt,
+    };
+    savePreviewDeployRecord(next);
+    setRecord(next);
+  }
+
+  function reset() {
+    const def = buildDefaultPreviewDeployRecord();
+    savePreviewDeployRecord(def);
+    setRecord(def);
+    setPhaseName(def.phaseName);
+    setPreviewUrl('');
+    setDeployStatus('unknown');
+  }
+
+  const deployedAtFormatted = record.deployedAt
+    ? new Date(record.deployedAt).toLocaleString('ja-JP')
+    : null;
+
+  return (
+    <section className="previewDeploy" aria-label="Preview/Deploy確認">
+      <span className="previewDeploy__eyebrow">Phase 97 · Preview / Deploy確認</span>
+      <h2 className="previewDeploy__title">最新の反映状態</h2>
+
+      <div className={`previewDeploy__status previewDeploy__status--${level}`}>
+        <span className="previewDeploy__dot" aria-hidden="true" />
+        <div className="previewDeploy__statusBody">
+          <div className="previewDeploy__statusLabel">
+            {record.phaseName} — デプロイ: {deployStatusLabel(record.deployStatus)}
+          </div>
+          <div className="previewDeploy__statusSub">
+            {deployedAtFormatted
+              ? `反映完了: ${deployedAtFormatted}`
+              : record.deployStatus === 'deploying'
+                ? 'デプロイ中です。少し待ってください。'
+                : record.deployStatus === 'failed'
+                  ? 'デプロイが失敗しました。CIログを確認してください。'
+                  : '表示中バージョンが確認できていません。'}
+          </div>
+        </div>
+      </div>
+
+      {record.previewUrl ? (
+        <a
+          href={record.previewUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="previewDeploy__openBtn"
+        >
+          Previewを開く
+        </a>
+      ) : null}
+
+      <div className="previewDeploy__form">
+        <div className="previewDeploy__field">
+          <label className="previewDeploy__label" htmlFor="pd-phase">Phaseの名前</label>
+          <input
+            id="pd-phase"
+            className="previewDeploy__input"
+            value={phaseName}
+            onChange={(e) => setPhaseName(e.target.value)}
+            placeholder="Phase 97"
+          />
+        </div>
+
+        <div className="previewDeploy__field">
+          <label className="previewDeploy__label" htmlFor="pd-url">Preview URL</label>
+          <input
+            id="pd-url"
+            className="previewDeploy__input"
+            value={previewUrl}
+            onChange={(e) => setPreviewUrl(e.target.value)}
+            placeholder="https://your-worker.your-subdomain.workers.dev"
+          />
+        </div>
+
+        <div className="previewDeploy__field">
+          <span className="previewDeploy__label">デプロイ状態</span>
+          <div className="previewDeploy__row">
+            {DEPLOY_OPTIONS.map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                className={`previewDeploy__setBtn${deployStatus === opt.value ? '' : ''}`}
+                style={deployStatus === opt.value ? { background: '#16a34a' } : { background: '#6b7280' }}
+                onClick={() => setDeployStatus(opt.value)}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="previewDeploy__row">
+          <button type="button" className="previewDeploy__setBtn" onClick={save}>
+            保存する
+          </button>
+          <button type="button" className="previewDeploy__resetBtn" onClick={reset}>
+            リセット
+          </button>
+        </div>
+      </div>
+
+      <p className="previewDeploy__hint">
+        「古い画面を見ているかも」と思ったら、ブラウザを再読み込みしてください。
+      </p>
+    </section>
+  );
+}

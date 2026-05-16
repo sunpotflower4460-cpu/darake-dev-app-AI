@@ -1,0 +1,122 @@
+.issueStable {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.issueStable__eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.issueStable__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px;
+}
+
+.issueStable__issueTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1d4ed8;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 10px 14px;
+  word-break: break-all;
+}
+
+.issueStable__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.issueStable__bodyLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.issueStable__bodyPreview {
+  font-size: 12px;
+  color: #4b5563;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 14px;
+  white-space: pre-wrap;
+  max-height: 180px;
+  overflow-y: auto;
+  font-family: monospace;
+  line-height: 1.5;
+}
+
+.issueStable__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.issueStable__primary {
+  padding: 9px 18px;
+  background: #16a34a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.issueStable__fallback {
+  padding: 9px 18px;
+  background: #fff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.issueStable__copy {
+  padding: 9px 18px;
+  background: #fff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.issueStable__note {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.issueStable__success {
+  font-size: 13px;
+  color: #15803d;
+  font-weight: 600;
+}
+
+.issueStable__empty {
+  color: #6b7280;
+  font-size: 13px;
+}
