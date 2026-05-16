@@ -1,0 +1,152 @@
+.agentInstFmt {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.agentInstFmt__eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.agentInstFmt__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px;
+}
+
+.agentInstFmt__form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.agentInstFmt__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.agentInstFmt__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.agentInstFmt__input,
+.agentInstFmt__textarea {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #111827;
+  background: #f9fafb;
+  outline: none;
+  font-family: inherit;
+}
+
+.agentInstFmt__input:focus,
+.agentInstFmt__textarea:focus {
+  border-color: #2563eb;
+  background: #fff;
+}
+
+.agentInstFmt__textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.agentInstFmt__targetRow {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.agentInstFmt__targetBtn {
+  padding: 6px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f9fafb;
+  color: #374151;
+  cursor: pointer;
+}
+
+.agentInstFmt__targetBtn--active {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.agentInstFmt__generate {
+  padding: 9px 18px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.agentInstFmt__result {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.agentInstFmt__prTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1d4ed8;
+  padding: 8px 14px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+}
+
+.agentInstFmt__bodyLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.agentInstFmt__body {
+  font-size: 12px;
+  color: #374151;
+  background: #1e1e2e;
+  color: #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+  white-space: pre-wrap;
+  max-height: 260px;
+  overflow-y: auto;
+  font-family: monospace;
+  line-height: 1.5;
+}
+
+.agentInstFmt__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.agentInstFmt__copy {
+  padding: 8px 16px;
+  background: #fff;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}

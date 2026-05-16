@@ -24,7 +24,7 @@ type SetupSummaryItem = {
 function buildSummaryItems(data: SetupStatusResponse): SetupSummaryItem[] {
   const githubReady = data.githubToken === 'set';
   const issueReady = githubReady && data.githubIssueCreateEnabled;
-  const cloudflareReady = githubReady && data.githubIssueCreateEnabled;
+  const cloudflareReady = data.runRegistryEnabled && data.runRegistryKvBound;
 
   return [
     {

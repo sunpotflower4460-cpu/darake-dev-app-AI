@@ -37,6 +37,16 @@ import { PANEL_REGISTRY_PHASE65 } from './panelRegistry.phase65';
 import { PANEL_REGISTRY_PHASE82 } from './panelRegistry.phase82';
 import { PANEL_REGISTRY_PHASE83 } from './panelRegistry.phase83';
 import { PANEL_REGISTRY_PHASE88 } from './panelRegistry.phase88';
+import { PANEL_REGISTRY_PHASE91 } from './panelRegistry.phase91';
+import { PANEL_REGISTRY_PHASE92 } from './panelRegistry.phase92';
+import { PANEL_REGISTRY_PHASE93 } from './panelRegistry.phase93';
+import { PANEL_REGISTRY_PHASE94 } from './panelRegistry.phase94';
+import { PANEL_REGISTRY_PHASE95 } from './panelRegistry.phase95';
+import { PANEL_REGISTRY_PHASE96 } from './panelRegistry.phase96';
+import { PANEL_REGISTRY_PHASE97 } from './panelRegistry.phase97';
+import { PANEL_REGISTRY_PHASE98 } from './panelRegistry.phase98';
+import { PANEL_REGISTRY_PHASE99 } from './panelRegistry.phase99';
+import { PANEL_REGISTRY_PHASE100 } from './panelRegistry.phase100';
 
 export type PanelRegistryItem = {
   id: string;
@@ -87,4 +97,14 @@ export const ALL_PANELS: PanelRegistryItem[] = [
   ...PANEL_REGISTRY_PHASE65,
   ...PANEL_REGISTRY_PHASE82,
   ...PANEL_REGISTRY_PHASE83,
+  ...PANEL_REGISTRY_PHASE91,
+  ...PANEL_REGISTRY_PHASE92,
+  ...PANEL_REGISTRY_PHASE93,
+  ...PANEL_REGISTRY_PHASE94,
+  ...PANEL_REGISTRY_PHASE95,
+  ...PANEL_REGISTRY_PHASE96,
+  ...PANEL_REGISTRY_PHASE97,
+  ...PANEL_REGISTRY_PHASE98,
+  ...PANEL_REGISTRY_PHASE99,
+  ...PANEL_REGISTRY_PHASE100,
 ].sort((a, b) => a.priority - b.priority);
