@@ -59,8 +59,8 @@ function loadDoneSteps(): Set<StepId> {
     if (!raw) return new Set();
     const parsed = JSON.parse(raw) as unknown;
     if (!Array.isArray(parsed)) return new Set();
-    const validIds = new Set<StepId>(STEPS.map((step) => step.id));
-    return new Set(parsed.filter((value): value is StepId => typeof value === 'string' && validIds.has(value as StepId)));
+    const validIds = new Set<string>(STEPS.map((step) => step.id));
+    return new Set(parsed.filter((value): value is StepId => typeof value === 'string' && validIds.has(value)));
   } catch {
     return new Set();
   }

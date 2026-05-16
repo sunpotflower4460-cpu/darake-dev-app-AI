@@ -89,7 +89,10 @@ export function SafetyGateV2Panel() {
         <span className="safetyGateV2__testTitle">最低限テスト: {passedCount}/{testResults.length} pass</span>
         <ul className="safetyGateV2__testList">
           {testResults.map((item) => (
-            <li key={item.input} className={`safetyGateV2__testItem${item.passed ? ' safetyGateV2__testItem--pass' : ' safetyGateV2__testItem--fail'}`}>
+            <li
+              key={item.input}
+              className={`safetyGateV2__testItem ${item.passed ? 'safetyGateV2__testItem--pass' : 'safetyGateV2__testItem--fail'}`}
+            >
               <span>{item.passed ? '✓' : '✕'} {item.input}</span>
               <span>→ {item.actual}</span>
             </li>

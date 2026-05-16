@@ -40,7 +40,7 @@ export const FLOW_STEPS: FlowStepMeta[] = [
 
 const STORAGE_KEY = 'darake.appCreationFlow.v1';
 
-function isFlowStep(value: unknown): value is AppCreationStep {
+function isValidAppCreationStep(value: unknown): value is AppCreationStep {
   return typeof value === 'string' && FLOW_STEPS.some((step) => step.id === value);
 }
 
@@ -51,9 +51,9 @@ export function loadAppCreationRecord(): AppCreationRecord | null {
     const parsed = JSON.parse(raw) as Partial<AppCreationRecord>;
     if (!parsed || typeof parsed !== 'object') return null;
     if (typeof parsed.appName !== 'string' || typeof parsed.oneLineIdea !== 'string') return null;
-    if (!isFlowStep(parsed.currentStep)) return null;
+    if (!isValidAppCreationStep(parsed.currentStep)) return null;
     if (!Array.isArray(parsed.completedSteps)) return null;
-    const completedSteps = parsed.completedSteps.filter(isFlowStep);
+    const completedSteps = parsed.completedSteps.filter(isValidAppCreationStep);
     return {
       appName: parsed.appName,
       oneLineIdea: parsed.oneLineIdea,
@@ -86,7 +86,15 @@ export function clearAppCreationRecord(): void {
 export function advanceAppCreationFlow(record: AppCreationRecord): AppCreationRecord {
   const steps = FLOW_STEPS.map((s) => s.id);
   const currentIndex = steps.indexOf(record.currentStep);
-  if (currentIndex === -1) return record;
+  if (currentIndex === -1) {
+    return {
+      ...record,
+      status: 'active',
+      currentStep: steps[0]!,
+      completedSteps: [],
+      updatedAt: new Date().toISOString(),
+    };
+  }
   const nextIndex = currentIndex + 1;
   if (nextIndex >= steps.length) {
     return {

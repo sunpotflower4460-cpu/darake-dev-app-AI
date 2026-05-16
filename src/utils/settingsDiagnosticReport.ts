@@ -94,9 +94,9 @@ export function buildSettingsDiagnosticReport(
   const readyCount = items.filter((i) => i.level === 'ok').length;
   const requiredItems = items.filter((i) => i.required);
   const requiredReadyCount = requiredItems.filter((i) => i.level === 'ok').length;
-  const hasRequiredBlocked = requiredItems.some((i) => i.level === 'blocked' || i.level === 'missing');
+  const hasRequiredItemsIncomplete = requiredItems.some((i) => i.level === 'blocked' || i.level === 'missing');
   const optionalMissingCount = items.filter((i) => !i.required && i.level !== 'ok').length;
-  const overall: SettingsDiagnosticReport['overall'] = hasRequiredBlocked
+  const overall: SettingsDiagnosticReport['overall'] = hasRequiredItemsIncomplete
     ? 'not-ready'
     : optionalMissingCount === 0
       ? 'all-ok'
