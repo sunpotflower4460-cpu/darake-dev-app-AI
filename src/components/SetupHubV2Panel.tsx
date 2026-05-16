@@ -223,7 +223,9 @@ export function SetupHubV2Panel() {
                 <div className="setupHubV2__stepLabel">
                   {step.label}
                   {isRecommended && (
-                    <span className="setupHubV2__stepRecommended">おすすめ</span>
+                    <span className="setupHubV2__stepRecommended" aria-label="おすすめ（診断で不足と判定されたステップです）">
+                    おすすめ
+                  </span>
                   )}
                 </div>
                 <div className="setupHubV2__stepNote">{step.note}</div>

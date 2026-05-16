@@ -7,6 +7,7 @@ import {
 import { loadAppCreationRecord } from '../utils/appCreationFlowV1';
 
 const SETUP_DONE_KEY = 'darake.setupHubV2.doneSteps.v1';
+// Must stay in sync with the STEPS array length in SetupHubV2Panel.tsx
 const SETUP_TOTAL_STEPS = 5;
 
 function loadSetupDoneCount(): number {
