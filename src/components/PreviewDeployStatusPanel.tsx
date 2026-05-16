@@ -155,25 +155,29 @@ export function PreviewDeployStatusPanel() {
           {extractedUrls.length > 0 ? (
             <div className="previewDeploy__extractedList">
               <span className="previewDeploy__extractedListLabel">PRコメントから見つけたPreview URL</span>
-              {extractedUrls.map((url) => (
-                <div key={url} className="previewDeploy__extractedItem">
-                  <a
-                    href={url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="previewDeploy__extractedLink"
-                  >
-                    {url}
-                  </a>
-                  <button
-                    type="button"
-                    className="previewDeploy__extractedSaveBtn"
-                    onClick={() => { setPreviewUrl(url); setUrlSource('extracted'); }}
-                  >
-                    このURLを保存
-                  </button>
-                </div>
-              ))}
+              {extractedUrls.map((url) => {
+                const safeUrl = sanitizePreviewUrl(url);
+                if (!safeUrl) return null;
+                return (
+                  <div key={url} className="previewDeploy__extractedItem">
+                    <a
+                      href={safeUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="previewDeploy__extractedLink"
+                    >
+                      {safeUrl}
+                    </a>
+                    <button
+                      type="button"
+                      className="previewDeploy__extractedSaveBtn"
+                      onClick={() => { setPreviewUrl(safeUrl); setUrlSource('extracted'); }}
+                    >
+                      このURLを保存
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           ) : null}
         </div>

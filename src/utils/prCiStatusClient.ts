@@ -40,8 +40,14 @@ export async function fetchRealPrCiStatus(
           ? 'running'
           : 'unknown';
 
-  const mergeReadiness: RealPrCiStatus['mergeReadiness'] =
-    health.includes('merged') ? 'merged' : ciStatus === 'passed' ? 'ready' : 'not-ready';
+  let mergeReadiness: RealPrCiStatus['mergeReadiness'];
+  if (health.includes('merged')) {
+    mergeReadiness = 'merged';
+  } else if (ciStatus === 'passed') {
+    mergeReadiness = 'ready';
+  } else {
+    mergeReadiness = 'not-ready';
+  }
 
   return {
     mode: 'real',
