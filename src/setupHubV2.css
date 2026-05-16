@@ -278,6 +278,38 @@
   color: #dc2626;
 }
 
+/* Phase 102: Missing items list */
+.setupHubV2__diagMissingList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.setupHubV2__diagMissingItem {
+  font-size: 13px;
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* Phase 102: Recommended step */
+.setupHubV2__step--recommended {
+  border-color: #7c3aed;
+  background: #faf5ff;
+}
+
+.setupHubV2__stepRecommended {
+  margin-left: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #6d28d9;
+  background: #ede9fe;
+  border-radius: 999px;
+  padding: 2px 7px;
+}
+
 /* Phase 108: Mobile */
 @media (max-width: 640px) {
   .setupHubV2__stepNote {

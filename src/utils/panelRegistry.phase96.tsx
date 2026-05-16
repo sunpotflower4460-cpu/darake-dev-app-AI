@@ -11,5 +11,6 @@ export const PANEL_REGISTRY_PHASE96: PanelRegistryItem[] = [
     defaultVisible: true,
     priority: 96,
     tags: ['safety', 'gate', 'stop', 'allow', 'darake', 'rules'],
+    kind: 'developer',
   },
 ];

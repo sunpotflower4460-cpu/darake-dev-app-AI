@@ -11,5 +11,6 @@ export const PANEL_REGISTRY_PHASE91: PanelRegistryItem[] = [
     defaultVisible: true,
     priority: 91,
     tags: ['settings', 'diagnostic', 'health', 'check', 'setup'],
+    kind: 'real-data',
   },
 ];

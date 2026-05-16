@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import '../safetyGateV2.css';
+import { DarakePanelBadge } from './DarakePanelBadge';
 import {
   checkActionSafety,
   SAFETY_RULES,
@@ -35,6 +36,7 @@ export function SafetyGateV2Panel() {
 
   return (
     <section className="safetyGateV2" aria-label="安全ゲート v2">
+      <DarakePanelBadge kinds={['developer']} />
       <span className="safetyGateV2__eyebrow">Phase 96 · 安全ゲート</span>
       <h2 className="safetyGateV2__title">だらけても危なくならないルール</h2>
 

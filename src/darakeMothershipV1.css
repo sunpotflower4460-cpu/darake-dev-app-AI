@@ -191,13 +191,11 @@
 
 .mothership__quickBtn {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  gap: 4px;
   padding: 14px 18px;
   border-radius: 10px;
   border: none;
-  font-size: 15px;
-  font-weight: 700;
   cursor: pointer;
   text-align: left;
   transition: opacity 0.15s;
@@ -208,8 +206,24 @@
   opacity: 0.85;
 }
 
+.mothership__quickBtnMain {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.mothership__quickBtnSub {
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
 .mothership__quickBtn--settings {
   background: #4f46e5;
+}
+
+.mothership__quickBtn--settings.mothership__quickBtn--attention {
+  background: #7c3aed;
+  box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.5);
 }
 
 .mothership__quickBtn--create {
@@ -218,6 +232,10 @@
 
 .mothership__quickBtn--watch {
   background: #0284c7;
+}
+
+.mothership__quickBtn--dim {
+  opacity: 0.55;
 }
 
 /* Phase 108: Mobile */
@@ -236,6 +254,9 @@
 
   .mothership__quickBtn {
     padding: 12px 14px;
+  }
+
+  .mothership__quickBtnMain {
     font-size: 14px;
   }
 

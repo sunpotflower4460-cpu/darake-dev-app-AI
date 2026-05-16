@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../settingsDiagnostic.css';
+import { DarakePanelBadge } from './DarakePanelBadge';
 import {
   buildFallbackDiagnosticReport,
   buildSettingsDiagnosticReport,
@@ -38,6 +39,7 @@ export function SettingsDiagnosticPanel() {
 
   return (
     <section className="settingsDiagnostic" aria-label="設定状態診断">
+      <DarakePanelBadge kinds={['real-data']} />
       <div className="settingsDiagnostic__header">
         <span className="settingsDiagnostic__eyebrow">Phase 91</span>
         <h2 className="settingsDiagnostic__title">設定状態を確認する</h2>

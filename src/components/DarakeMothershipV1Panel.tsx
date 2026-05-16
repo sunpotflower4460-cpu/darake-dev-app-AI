@@ -1,8 +1,26 @@
+import { useEffect, useState } from 'react';
 import '../darakeMothershipV1.css';
 import {
   buildMothershipReadiness,
   MOTHERSHIP_V1_FEATURES,
 } from '../utils/darakeMothershipV1';
+import { loadAppCreationRecord } from '../utils/appCreationFlowV1';
+
+const SETUP_DONE_KEY = 'darake.setupHubV2.doneSteps.v1';
+// Must stay in sync with the STEPS array length in SetupHubV2Panel.tsx
+const SETUP_TOTAL_STEPS = 5;
+
+function loadSetupDoneCount(): number {
+  try {
+    const raw = localStorage.getItem(SETUP_DONE_KEY);
+    if (!raw) return 0;
+    const parsed = JSON.parse(raw) as unknown;
+    if (!Array.isArray(parsed)) return 0;
+    return parsed.length;
+  } catch {
+    return 0;
+  }
+}
 
 function navigateToGroup(group: string) {
   try {
@@ -15,6 +33,17 @@ function navigateToGroup(group: string) {
 
 export function DarakeMothershipV1Panel() {
   const readiness = buildMothershipReadiness();
+  const [setupDone, setSetupDone] = useState(false);
+  const [hasInProgress, setHasInProgress] = useState(false);
+
+  useEffect(() => {
+    const count = loadSetupDoneCount();
+    setSetupDone(count >= SETUP_TOTAL_STEPS);
+    const record = loadAppCreationRecord();
+    setHasInProgress(record !== null && record.status === 'active');
+  }, []);
+
+  const settingsNeedsAttention = !setupDone;
 
   return (
     <section className="mothership" aria-label="だらけ開発母艦 v1">
@@ -27,24 +56,27 @@ export function DarakeMothershipV1Panel() {
       <div className="mothership__quickActions">
         <button
           type="button"
-          className="mothership__quickBtn mothership__quickBtn--settings"
+          className={`mothership__quickBtn mothership__quickBtn--settings${settingsNeedsAttention ? ' mothership__quickBtn--attention' : ''}`}
           onClick={() => navigateToGroup('settings')}
         >
-          🔧 初期設定する
+          <span className="mothership__quickBtnMain">🔧 初期設定する</span>
+          <span className="mothership__quickBtnSub">GitHub / Cloudflare の設定をここだけで進めます</span>
         </button>
         <button
           type="button"
           className="mothership__quickBtn mothership__quickBtn--create"
           onClick={() => navigateToGroup('create')}
         >
-          ✏️ 作りたいアプリを置く
+          <span className="mothership__quickBtnMain">✏️ 作りたいものを置く</span>
+          <span className="mothership__quickBtnSub">アプリ名と一行アイデアから始めます</span>
         </button>
         <button
           type="button"
-          className="mothership__quickBtn mothership__quickBtn--watch"
+          className={`mothership__quickBtn mothership__quickBtn--watch${!hasInProgress ? ' mothership__quickBtn--dim' : ''}`}
           onClick={() => navigateToGroup('watch')}
         >
-          👀 進行中のPR/作業を見る
+          <span className="mothership__quickBtnMain">👀 進行中を見る</span>
+          <span className="mothership__quickBtnSub">途中の作業や次の一手を確認します</span>
         </button>
       </div>
 
