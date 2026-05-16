@@ -1,6 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../setupHubV2.css';
 import { DARAKE_SETUP_LINKS } from '../utils/darakeSetupLinks';
+import { fetchSetupStatus } from '../utils/setupStatusClient';
+import {
+  buildSettingsDiagnosticReport,
+  buildFallbackDiagnosticReport,
+  type SettingsDiagnosticReport,
+} from '../utils/settingsDiagnosticReport';
 
 type StepId = 'cloudflare-key' | 'github-key' | 'github-register' | 'auto-setup' | 'recheck';
 
@@ -83,6 +89,16 @@ function copyToClipboard(text: string, onCopied: () => void) {
 export function SetupHubV2Panel() {
   const [done, setDone] = useState<Set<StepId>>(() => loadDoneSteps());
   const [copiedId, setCopiedId] = useState<StepId | null>(null);
+  const [diagnostic, setDiagnostic] = useState<SettingsDiagnosticReport | null>(null);
+  const [diagLoading, setDiagLoading] = useState(false);
+
+  useEffect(() => {
+    setDiagLoading(true);
+    fetchSetupStatus()
+      .then((status) => setDiagnostic(buildSettingsDiagnosticReport(status)))
+      .catch(() => setDiagnostic(buildFallbackDiagnosticReport()))
+      .finally(() => setDiagLoading(false));
+  }, []);
 
   function toggleDone(id: StepId) {
     setDone((prev) => {
@@ -109,12 +125,47 @@ export function SetupHubV2Panel() {
 
   const allDone = done.size >= STEPS.length;
 
+  const githubOk = diagnostic?.items.find((i) => i.id === 'github-token')?.level === 'ok';
+  const issueOk = diagnostic?.items.find((i) => i.id === 'issue-create')?.level === 'ok';
+  const kvOk = diagnostic?.items.find((i) => i.id === 'run-registry')?.level === 'ok';
+  const optionalMissing = diagnostic ? diagnostic.optionalMissingCount > 0 : false;
+
   return (
     <section className="setupHubV2" aria-label="初期設定ここだけ v2">
       <div className="setupHubV2__header">
         <span className="setupHubV2__eyebrow">Phase 92 · 初期設定ここだけ</span>
         <h2 className="setupHubV2__title">上から押すだけで完了します</h2>
         <p className="setupHubV2__lead">読まずに押してコピーして進める画面です。</p>
+      </div>
+
+      <div className={`setupHubV2__diag setupHubV2__diag--${diagnostic?.overall ?? 'loading'}`}>
+        {diagLoading ? (
+          <span className="setupHubV2__diagLoading">設定を確認中…</span>
+        ) : diagnostic ? (
+          <>
+            <div className="setupHubV2__diagRow">
+              <span className={`setupHubV2__diagItem setupHubV2__diagItem--${githubOk ? 'ok' : 'ng'}`}>
+                基本設定: {githubOk ? 'OK' : 'NG'}
+              </span>
+              <span className={`setupHubV2__diagItem setupHubV2__diagItem--${!optionalMissing ? 'ok' : 'optional'}`}>
+                任意設定: {!optionalMissing ? 'OK' : 'あとでOK'}
+              </span>
+            </div>
+            <div className="setupHubV2__diagRow">
+              <span className={`setupHubV2__diagItem setupHubV2__diagItem--${issueOk ? 'ok' : 'ng'}`}>
+                Issue作成: {issueOk ? 'OK' : 'NG'}
+              </span>
+              <span className={`setupHubV2__diagItem setupHubV2__diagItem--${kvOk ? 'ok' : 'ng'}`}>
+                Cloudflare KV: {kvOk ? 'OK' : 'NG'}
+              </span>
+            </div>
+            {diagnostic.overall !== 'not-ready' ? (
+              <div className="setupHubV2__diagReady">✅ 始められます</div>
+            ) : (
+              <div className="setupHubV2__diagNotReady">⚠️ {diagnostic.footerMessage}</div>
+            )}
+          </>
+        ) : null}
       </div>
 
       <ul className="setupHubV2__steps">

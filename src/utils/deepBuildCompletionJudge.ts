@@ -1,4 +1,12 @@
-import type { DeepBuildCompletionJudgement, DeepBuildPlan } from './deepBuildPlan';
+import type { DeepBuildCompletionJudgement, DeepBuildPhase, DeepBuildPlan } from './deepBuildPlan';
+
+export function markCompletionCandidates(plan: DeepBuildPlan): DeepBuildPlan {
+  const phases = plan.phases.map((phase): DeepBuildPhase => {
+    const candidate = Boolean(phase.prUrl && (phase.ciStatus === 'passed' || phase.prUrl));
+    return { ...phase, completionCandidate: candidate && !phase.humanCheckDone };
+  });
+  return { ...plan, phases };
+}
 
 export function judgeDeepBuildCompletion(plan: DeepBuildPlan): DeepBuildCompletionJudgement {
   const blocking: string[] = [];

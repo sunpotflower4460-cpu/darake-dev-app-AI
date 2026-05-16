@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { buildDeepBuildPlan } from '../utils/buildDeepBuildPlan';
-import { judgeDeepBuildCompletion, getDeepBuildProgress } from '../utils/deepBuildCompletionJudge';
+import { judgeDeepBuildCompletion, getDeepBuildProgress, markCompletionCandidates } from '../utils/deepBuildCompletionJudge';
 import { clearDeepBuildPlan, loadDeepBuildPlan, saveDeepBuildPlan } from '../utils/deepBuildPlanStorage';
 import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
 import { loadGentleAppStartForm } from '../utils/gentleAppStartForm';
@@ -64,7 +64,10 @@ export function DeepBuildModePanel() {
 
   useEffect(() => subscribeDarakeRuntimeEvents(() => setRevision((v) => v + 1)), []);
 
-  const plan = useMemo(() => loadDeepBuildPlan(), [revision]);
+  const plan = useMemo(() => {
+    const loaded = loadDeepBuildPlan();
+    return loaded ? markCompletionCandidates(loaded) : null;
+  }, [revision]);
   const judgement = useMemo(() => (plan ? judgeDeepBuildCompletion(plan) : null), [plan]);
   const progress = useMemo(() => (plan ? getDeepBuildProgress(plan) : null), [plan]);
 
@@ -77,6 +80,18 @@ export function DeepBuildModePanel() {
   function advanceLocal() {
     if (!plan) return;
     saveDeepBuildPlan(advanceOneLocalPhase(plan));
+    setRevision((v) => v + 1);
+  }
+
+  function confirmHumanCheck(phaseId: string) {
+    if (!plan) return;
+    const updatedPlan: DeepBuildPlan = {
+      ...plan,
+      phases: plan.phases.map((p) =>
+        p.id === phaseId ? { ...p, humanCheckDone: true, completionCandidate: false } : p,
+      ),
+    };
+    saveDeepBuildPlan(updatedPlan);
     setRevision((v) => v + 1);
   }
 
@@ -106,6 +121,16 @@ export function DeepBuildModePanel() {
   }
 
   const hasReviewItems = Boolean(judgement && (judgement.missing.length > 0 || judgement.blocking.length > 0));
+  const currentPhase = plan.currentPhaseId
+    ? plan.phases.find((p) => p.id === plan.currentPhaseId)
+    : plan.phases.find((p) => p.status !== 'done');
+
+  const CI_STATUS_LABEL: Record<string, string> = {
+    passed: '✅ CI成功',
+    failed: '❌ CI失敗',
+    running: '⏳ CI実行中',
+    unknown: '❓ CI不明',
+  };
 
   return (
     <section className="deepBuildModePanel" aria-label="Deep Build Mode">
@@ -120,6 +145,40 @@ export function DeepBuildModePanel() {
         <strong>{judgement?.title ?? '育成中です'}</strong>
         <p>{judgement?.message ?? 'AIが進められる範囲を整えています。'}</p>
       </div>
+
+      {currentPhase ? (
+        <div className="deepBuildModePanel__currentPhase">
+          <span className="deepBuildModePanel__currentPhaseLabel">現在のPhase: {currentPhase.title}</span>
+          {currentPhase.ciStatus ? (
+            <span className="deepBuildModePanel__ciStatus">
+              {CI_STATUS_LABEL[currentPhase.ciStatus] ?? currentPhase.ciStatus}
+            </span>
+          ) : null}
+          {currentPhase.completionCandidate ? (
+            <div className="deepBuildModePanel__candidate">
+              <span>🏁 完了候補</span>
+              <p>このPhaseは完了候補です。確認しますか？</p>
+              <button
+                type="button"
+                className="deepBuildModePanel__confirmBtn"
+                onClick={() => confirmHumanCheck(currentPhase.id)}
+              >
+                完了を確認する
+              </button>
+            </div>
+          ) : null}
+          {currentPhase.prUrl ? (
+            <a href={currentPhase.prUrl} target="_blank" rel="noreferrer" className="deepBuildModePanel__link">
+              🔗 PRを見る
+            </a>
+          ) : null}
+          {currentPhase.previewUrl ? (
+            <a href={currentPhase.previewUrl} target="_blank" rel="noreferrer" className="deepBuildModePanel__link">
+              🌐 Previewを開く
+            </a>
+          ) : null}
+        </div>
+      ) : null}
 
       <div className="deepBuildModePanel__progress" aria-label="熟成進捗">
         <div>
@@ -156,6 +215,7 @@ export function DeepBuildModePanel() {
             <li key={phase.id}>
               <strong>{phase.title}</strong>
               <span>{phase.status}</span>
+              {phase.completionCandidate ? <span className="deepBuildModePanel__candidateBadge">完了候補</span> : null}
               <p>{phase.purpose}</p>
               <details>
                 <summary>Agent指示と完了条件</summary>

@@ -183,3 +183,52 @@
   border-radius: 8px;
   border: 1px solid #ddd6fe;
 }
+
+/* Phase 105: URL input fields */
+.appFlow__urlSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background: #f0f9ff;
+  border-radius: 8px;
+  border: 1px solid #bae6fd;
+}
+
+.appFlow__urlRow {
+  display: flex;
+  gap: 8px;
+}
+
+.appFlow__urlRow .appFlow__input {
+  flex: 1;
+}
+
+.appFlow__urlSave {
+  padding: 6px 14px;
+  background: #0284c7;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.appFlow__urlLink {
+  font-size: 13px;
+  color: #0284c7;
+  text-decoration: none;
+}
+
+.appFlow__urlLink:hover {
+  text-decoration: underline;
+}
+
+/* Phase 108: Mobile */
+@media (max-width: 640px) {
+  .appFlow__step:not(.appFlow__step--current):not(.appFlow__step--done) .appFlow__stepDesc {
+    display: none;
+  }
+}

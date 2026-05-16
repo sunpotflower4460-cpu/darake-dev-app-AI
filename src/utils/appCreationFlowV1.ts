@@ -16,6 +16,12 @@ export type AppCreationRecord = {
   completedSteps: AppCreationStep[];
   status: 'active' | 'completed';
   updatedAt: string;
+  issueNumber?: number;
+  issueUrl?: string;
+  prNumber?: number;
+  prUrl?: string;
+  previewUrl?: string;
+  repoUrl?: string;
 };
 
 export type FlowStepMeta = {
@@ -61,6 +67,12 @@ export function loadAppCreationRecord(): AppCreationRecord | null {
       completedSteps,
       status: parsed.status === 'completed' ? 'completed' : 'active',
       updatedAt: typeof parsed.updatedAt === 'string' ? parsed.updatedAt : new Date().toISOString(),
+      issueNumber: typeof parsed.issueNumber === 'number' ? parsed.issueNumber : undefined,
+      issueUrl: typeof parsed.issueUrl === 'string' ? parsed.issueUrl : undefined,
+      prNumber: typeof parsed.prNumber === 'number' ? parsed.prNumber : undefined,
+      prUrl: typeof parsed.prUrl === 'string' ? parsed.prUrl : undefined,
+      previewUrl: typeof parsed.previewUrl === 'string' ? parsed.previewUrl : undefined,
+      repoUrl: typeof parsed.repoUrl === 'string' ? parsed.repoUrl : undefined,
     };
   } catch {
     return null;

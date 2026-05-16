@@ -88,3 +88,78 @@
   color: #285c39;
   font-weight: 900;
 }
+
+/* Phase 106: Current phase status */
+.deepBuildModePanel__currentPhase {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(44, 78, 54, 0.06);
+  border-radius: 10px;
+  border: 1px solid rgba(44, 78, 54, 0.15);
+}
+
+.deepBuildModePanel__currentPhaseLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: #17251c;
+}
+
+.deepBuildModePanel__ciStatus {
+  font-size: 13px;
+  color: rgba(23, 37, 28, 0.8);
+}
+
+.deepBuildModePanel__candidate {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  background: #fef3c7;
+  border-radius: 8px;
+  border: 1px solid #d97706;
+}
+
+.deepBuildModePanel__candidate span {
+  font-size: 13px;
+  font-weight: 700;
+  color: #92400e;
+}
+
+.deepBuildModePanel__candidate p {
+  font-size: 13px;
+  color: #78350f;
+  margin: 0;
+}
+
+.deepBuildModePanel__confirmBtn {
+  padding: 8px 14px;
+  background: #d97706;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.deepBuildModePanel__link {
+  font-size: 13px;
+  color: #0284c7;
+  text-decoration: none;
+}
+
+.deepBuildModePanel__link:hover {
+  text-decoration: underline;
+}
+
+.deepBuildModePanel__candidateBadge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 6px;
+}

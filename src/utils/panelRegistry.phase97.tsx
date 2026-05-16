@@ -11,5 +11,6 @@ export const PANEL_REGISTRY_PHASE97: PanelRegistryItem[] = [
     defaultVisible: false,
     priority: 97,
     tags: ['preview', 'deploy', 'status', 'version', 'watch'],
+    kind: 'manual-note',
   },
 ];

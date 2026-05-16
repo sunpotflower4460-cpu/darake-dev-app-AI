@@ -9,6 +9,7 @@ import {
   sanitizePreviewUrl,
   type DeployStatus,
 } from '../utils/previewDeployStatus';
+import { extractFirstPreviewUrl } from '../utils/extractPreviewUrls';
 
 const DEPLOY_OPTIONS: { value: DeployStatus; label: string }[] = [
   { value: 'deployed', label: '完了' },
@@ -23,6 +24,8 @@ export function PreviewDeployStatusPanel() {
   const [phaseName, setPhaseName] = useState(stored.phaseName);
   const [previewUrl, setPreviewUrl] = useState(stored.previewUrl ?? '');
   const [deployStatus, setDeployStatus] = useState<DeployStatus>(stored.deployStatus);
+  const [pasteText, setPasteText] = useState('');
+  const [urlSource, setUrlSource] = useState<'manual' | 'extracted'>('manual');
 
   const level = deployStatusLevel(record.deployStatus);
   const safePreviewUrl = sanitizePreviewUrl(record.previewUrl);
@@ -46,6 +49,18 @@ export function PreviewDeployStatusPanel() {
     setPhaseName(def.phaseName);
     setPreviewUrl('');
     setDeployStatus('unknown');
+    setPasteText('');
+    setUrlSource('manual');
+  }
+
+  function extractUrl() {
+    const found = extractFirstPreviewUrl(pasteText);
+    if (found) {
+      setPreviewUrl(found);
+      setUrlSource('extracted');
+    } else {
+      setUrlSource('manual');
+    }
   }
 
   const deployedAtFormatted = record.deployedAt
@@ -100,13 +115,38 @@ export function PreviewDeployStatusPanel() {
 
         <div className="previewDeploy__field">
           <label className="previewDeploy__label" htmlFor="pd-url">Preview URL</label>
-          <input
-            id="pd-url"
-            className="previewDeploy__input"
-            value={previewUrl}
-            onChange={(e) => setPreviewUrl(e.target.value)}
-            placeholder="https://your-worker.your-subdomain.workers.dev"
+          <div className="previewDeploy__urlRow">
+            <input
+              id="pd-url"
+              className="previewDeploy__input"
+              value={previewUrl}
+              onChange={(e) => { setPreviewUrl(e.target.value); setUrlSource('manual'); }}
+              placeholder="https://your-worker.your-subdomain.workers.dev"
+            />
+            {urlSource === 'extracted' ? (
+              <span className="previewDeploy__urlBadge previewDeploy__urlBadge--real">実データ</span>
+            ) : previewUrl ? (
+              <span className="previewDeploy__urlBadge previewDeploy__urlBadge--manual">手動メモ</span>
+            ) : null}
+          </div>
+        </div>
+
+        <div className="previewDeploy__field">
+          <label className="previewDeploy__label" htmlFor="pd-paste">PR/IssueコメントのURLを貼り付け</label>
+          <textarea
+            id="pd-paste"
+            className="previewDeploy__textarea"
+            value={pasteText}
+            onChange={(e) => setPasteText(e.target.value)}
+            placeholder="PR/Issueのコメントや本文をここに貼り付けてください"
+            rows={3}
           />
+          <button type="button" className="previewDeploy__extractBtn" onClick={extractUrl}>
+            URLを自動抽出
+          </button>
+          {pasteText && extractFirstPreviewUrl(pasteText) === null ? (
+            <span className="previewDeploy__extractHint">URLが見つかりませんでした。手動で入力してください。</span>
+          ) : null}
         </div>
 
         <div className="previewDeploy__field">
