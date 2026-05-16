@@ -426,6 +426,31 @@ export const LOCAL_STORAGE_KEY_REGISTRY: LocalStorageKeyRegistryItem[] = [
     containsSensitiveData: false,
     notes: 'ロードマップテキスト。',
   },
+  // Phase 97-99 新規キー
+  {
+    key: 'darake.previewDeployStatus.v1',
+    owner: 'PreviewDeployStatusPanel',
+    phase: '97',
+    purpose: 'Preview URL とデプロイ状態を保存',
+    containsSensitiveData: false,
+    notes: 'フェーズ名・URL・デプロイ状態のみ。tokenなし。',
+  },
+  {
+    key: 'darake.appStorePrepMode.v1',
+    owner: 'AppStorePrepModePanel',
+    phase: '99',
+    purpose: 'App Store提出準備チェックリストの状態を保存',
+    containsSensitiveData: false,
+    notes: 'チェック済みID一覧とアプリ名のみ。',
+  },
+  {
+    key: 'darake.appCreationFlow.v1',
+    owner: 'AppCreationFlowPanel',
+    phase: '98',
+    purpose: '9ステップ制作フローの進行状態を保存',
+    containsSensitiveData: false,
+    notes: 'アプリ名・アイデア・現在ステップのみ。',
+  },
 ];
 
 export function formatLocalStorageKeyRegistryMarkdown(

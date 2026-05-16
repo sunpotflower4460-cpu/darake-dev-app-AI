@@ -73,11 +73,14 @@ export function translatePrCiToHuman(snapshot: PrCiSnapshot): PrCiHumanSummary {
   }
 
   if (mergeReadiness === 'ready' && ciStatus === 'passed') {
+    const reviewOk = reviewStatus === 'approved' || reviewStatus === 'none' || reviewStatus === 'dismissed';
     return {
       headline: 'マージできる状態です',
-      subline: 'CIが通り、レビューも問題ありません。',
+      subline: reviewStatus === 'approved'
+        ? 'CIが通り、レビューも承認されています。'
+        : 'CIが通っています。レビュー状態を確認してください。',
       nextAction: 'PRを開いてマージを確認してください',
-      level: 'ok',
+      level: reviewOk ? 'ok' : 'warn',
       canMerge: true,
     };
   }
@@ -106,7 +109,7 @@ export function buildMockPrCiSnapshot(override?: Partial<PrCiSnapshot>): PrCiSna
     prTitle: 'Phase 95: PR/CI状態の人間向け要約',
     prNumber: 195,
     ciStatus: 'passed',
-    reviewStatus: 'none',
+    reviewStatus: 'approved',
     mergeReadiness: 'ready',
     updatedAt: new Date().toISOString(),
     ...override,

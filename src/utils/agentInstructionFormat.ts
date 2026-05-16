@@ -65,9 +65,7 @@ export function buildAgentInstructionFormat(input: {
     '',
     `## 安全方針`,
     ...ALWAYS_SAFETY_POLICY.map((p) => `- ${p}`),
-  ]
-    .filter((line) => line !== null)
-    .join('\n');
+  ].join('\n');
 
   return {
     target: input.target,

@@ -15,11 +15,17 @@ export function buildIssueStabilizerState(): IssueStabilizerState {
     return { mode: 'no-repo' };
   }
 
-  const appName = form?.appName?.trim() || '新しいアプリ';
-  const oneLineIdea = form?.oneLineIdea?.trim() || 'アイデアを整理する';
+  const appName = form?.appName?.trim() ?? '';
+  const oneLineIdea = form?.oneLineIdea?.trim() ?? '';
 
-  const title = `[作業] ${appName} — ${oneLineIdea.slice(0, 50)}`;
-  const body = buildIssueBody(appName, oneLineIdea, form);
+  if (!appName && !oneLineIdea) {
+    return { mode: 'no-idea' };
+  }
+
+  const displayAppName = appName || '新しいアプリ';
+  const displayIdea = oneLineIdea || 'アイデアを整理する';
+  const title = `[作業] ${displayAppName} — ${displayIdea.slice(0, 50)}`;
+  const body = buildIssueBody(displayAppName, displayIdea, form);
   const urlResult = buildGitHubIssueCreateUrl({ repoUrl: issueState.repoUrl, title, body });
   const fallbackUrl = urlResult.ok ? urlResult.url : issueState.repoUrl + '/issues/new';
 

@@ -55,7 +55,12 @@ export function AppStorePrepModePanel() {
               role="checkbox"
               aria-checked={checked}
               tabIndex={0}
-              onKeyDown={(e) => (e.key === ' ' || e.key === 'Enter') && toggle(item.id)}
+              onKeyDown={(e) => {
+                if (e.key === ' ' || e.key === 'Enter') {
+                  e.preventDefault();
+                  toggle(item.id);
+                }
+              }}
             >
               <div className="appStorePrep__checkbox">{checked ? '✓' : ''}</div>
               <div className="appStorePrep__itemBody">
