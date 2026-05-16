@@ -6,7 +6,7 @@ import type { SettingsHealthSummary } from './settingsHealth';
  */
 export function buildCloudflareSetupGuide(summary: SettingsHealthSummary): string {
   const lines: string[] = [
-    '# Cloudflare側で必要な設定',
+    '# 初期設定で必要なもの',
     '不足している設定だけを表示しています。',
     '',
   ];
@@ -37,13 +37,13 @@ export function buildCloudflareSetupGuide(summary: SettingsHealthSummary): strin
     lines.push('## GitHub連携');
     lines.push('設定してください：');
     if (githubItems.some((i) => i.id === 'github-token')) {
-      lines.push('- GITHUB_TOKEN');
+      lines.push('- WORKER_GITHUB_TOKEN（GitHub Secretsに登録 → Cloudflare SetupでWorkerへ同期）');
     }
     if (githubItems.some((i) => i.id === 'github-allowlist')) {
       lines.push('- GITHUB_ALLOWED_REPOS');
     }
     if (githubItems.some((i) => i.id === 'github-issue-create')) {
-      lines.push('- GITHUB_ISSUE_CREATE_ENABLED=true');
+      lines.push('- Cloudflare Setupを実行してGITHUB_ISSUE_CREATE_ENABLED=trueを反映');
     }
     if (githubItems.some((i) => i.id === 'github-merge')) {
       lines.push('- GITHUB_AGENT_ASSIGN_ENABLED=true');

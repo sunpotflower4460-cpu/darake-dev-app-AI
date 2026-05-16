@@ -33,10 +33,10 @@ function buildItems(res: DarakeHealthApiResponse): DarakeHealthItem[] {
       status: hasToken ? 'ok' : 'missing',
       userMessage: hasToken
         ? 'GitHub Tokenが設定されています。'
-        : 'GitHub Issueを作るには、Cloudflare Worker SecretにGITHUB_TOKENが必要です。この画面にはTokenを入力しません。',
+        : 'GitHub Issueを作るには、GitHub SecretsのWORKER_GITHUB_TOKENをCloudflare SetupでWorkerへ同期します。この画面にはTokenを入力しません。',
       nextAction: hasToken
         ? undefined
-        : 'CloudflareダッシュボードでGITHUB_TOKENをSecretとして設定してください。',
+        : 'GitHub SecretsにWORKER_GITHUB_TOKENを登録して、Cloudflare Setupを実行してください。',
     },
     {
       id: 'issue-create',
@@ -48,10 +48,10 @@ function buildItems(res: DarakeHealthApiResponse): DarakeHealthItem[] {
           : 'disabled',
       userMessage: res.issueCreateEnabled
         ? 'Issue作成が有効です。'
-        : 'Issue作成を有効にするには、GITHUB_ISSUE_CREATE_ENABLED=trueを設定してください。',
+        : 'Issue作成を有効にするには、Cloudflare Setupでwrangler.tomlの設定を反映してください。',
       nextAction: res.issueCreateEnabled
         ? undefined
-        : 'GITHUB_ISSUE_CREATE_ENABLED=trueをCloudflareのEnvironment Variablesに設定してください。',
+        : 'Cloudflare Setupを実行してください。',
     },
     {
       id: 'allowed-repos',
@@ -176,7 +176,7 @@ function buildResult(res: DarakeHealthApiResponse): DarakeHealthCheckResult {
     partial:
       '一部だけ動きます。まずIssue作成設定を確認してください。',
     blocked:
-      'GitHub TokenがWorker Secretに設定されていません。Cloudflare SecretにGITHUB_TOKENを追加してください。',
+      'WORKER_GITHUB_TOKENをGitHub Secretsに登録し、Cloudflare SetupでWorkerへ同期してください。',
     unknown: '設定状態を確認できませんでした。',
   };
 
