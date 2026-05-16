@@ -10,7 +10,7 @@ import {
   sanitizePreviewUrl,
   type DeployStatus,
 } from '../utils/previewDeployStatus';
-import { extractFirstPreviewUrl } from '../utils/extractPreviewUrls';
+import { extractPreviewUrls } from '../utils/previewUrlExtractor';
 
 const DEPLOY_OPTIONS: { value: DeployStatus; label: string }[] = [
   { value: 'deployed', label: '完了' },
@@ -26,6 +26,7 @@ export function PreviewDeployStatusPanel() {
   const [previewUrl, setPreviewUrl] = useState(stored.previewUrl ?? '');
   const [deployStatus, setDeployStatus] = useState<DeployStatus>(stored.deployStatus);
   const [pasteText, setPasteText] = useState('');
+  const [extractedUrls, setExtractedUrls] = useState<string[]>([]);
   const [urlSource, setUrlSource] = useState<'manual' | 'extracted'>('manual');
 
   const level = deployStatusLevel(record.deployStatus);
@@ -51,13 +52,15 @@ export function PreviewDeployStatusPanel() {
     setPreviewUrl('');
     setDeployStatus('unknown');
     setPasteText('');
+    setExtractedUrls([]);
     setUrlSource('manual');
   }
 
   function extractUrl() {
-    const found = extractFirstPreviewUrl(pasteText);
-    if (found) {
-      setPreviewUrl(found);
+    const found = extractPreviewUrls(pasteText);
+    setExtractedUrls(found);
+    if (found.length > 0) {
+      setPreviewUrl(found[0]);
       setUrlSource('extracted');
     } else {
       setUrlSource('manual');
@@ -146,8 +149,32 @@ export function PreviewDeployStatusPanel() {
           <button type="button" className="previewDeploy__extractBtn" onClick={extractUrl}>
             URLを自動抽出
           </button>
-          {pasteText && extractFirstPreviewUrl(pasteText) === null ? (
+          {pasteText && extractedUrls.length === 0 && urlSource === 'manual' ? (
             <span className="previewDeploy__extractHint">URLが見つかりませんでした。手動で入力してください。</span>
+          ) : null}
+          {extractedUrls.length > 0 ? (
+            <div className="previewDeploy__extractedList">
+              <span className="previewDeploy__extractedListLabel">PRコメントから見つけたPreview URL</span>
+              {extractedUrls.map((url) => (
+                <div key={url} className="previewDeploy__extractedItem">
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="previewDeploy__extractedLink"
+                  >
+                    {url}
+                  </a>
+                  <button
+                    type="button"
+                    className="previewDeploy__extractedSaveBtn"
+                    onClick={() => { setPreviewUrl(url); setUrlSource('extracted'); }}
+                  >
+                    このURLを保存
+                  </button>
+                </div>
+              ))}
+            </div>
           ) : null}
         </div>
 
