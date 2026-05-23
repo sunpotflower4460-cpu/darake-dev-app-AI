@@ -112,7 +112,13 @@ export function PreviewDeployStatusPanel() {
           <div className="previewDeploy__linkedCard">
             <div className="previewDeploy__linkedText">
               PR/CI連携: 保存済みPR URL
-              <a href={linkedPrUrl} target="_blank" rel="noreferrer" className="previewDeploy__inlineLink">
+              <a
+                href={linkedPrUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="previewDeploy__inlineLink"
+                aria-label="保存済みPR URLを新しいタブで開く"
+              >
                 {linkedPrUrl}
               </a>
             </div>
@@ -145,7 +151,13 @@ export function PreviewDeployStatusPanel() {
           <div className="previewDeploy__detectedCard">
             <div className="previewDeploy__detectedBadge">実データ</div>
             <div className="previewDeploy__detectedTitle">Preview URLを見つけました</div>
-            <a href={detectedPreviewUrl} target="_blank" rel="noreferrer" className="previewDeploy__inlineLink">
+            <a
+              href={detectedPreviewUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="previewDeploy__inlineLink"
+              aria-label="検出したPreview URLを新しいタブで開く"
+            >
               {detectedPreviewUrl}
             </a>
             <div className="previewDeploy__row">

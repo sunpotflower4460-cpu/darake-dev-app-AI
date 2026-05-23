@@ -79,6 +79,10 @@ function formatHeadSha(headSha: string | null): string {
   return headSha ? headSha.slice(0, 7) : '---';
 }
 
+function normalizeRepoUrl(value: string): string {
+  return value.trim() || DEFAULT_REPO_URL;
+}
+
 function realStatusToSnapshot(status: RealPrCiStatus): PrCiSnapshot {
   return buildMockPrCiSnapshot({
     prNumber: status.prNumber ?? 0,
@@ -90,7 +94,7 @@ function realStatusToSnapshot(status: RealPrCiStatus): PrCiSnapshot {
 
 export function PrCiHumanSummaryPanel() {
   const lastQuery = loadPrCiLastQuery();
-  const [repoUrl, setRepoUrl] = useState(lastQuery.repoUrl || DEFAULT_REPO_URL);
+  const [repoUrl, setRepoUrl] = useState(normalizeRepoUrl(lastQuery.repoUrl));
   const [prNumberInput, setPrNumberInput] = useState(lastQuery.prNumber);
   const [realStatus, setRealStatus] = useState<RealPrCiStatus | null>(null);
   const [realLoading, setRealLoading] = useState(false);
@@ -110,7 +114,7 @@ export function PrCiHumanSummaryPanel() {
 
   async function handleFetch() {
     const prNum = Number.parseInt(prNumberInput, 10);
-    const nextRepoUrl = repoUrl.trim() || DEFAULT_REPO_URL;
+    const nextRepoUrl = normalizeRepoUrl(repoUrl);
 
     savePrCiLastQuery({ repoUrl: nextRepoUrl, prNumber: prNumberInput.trim() });
     setRealLoading(true);
