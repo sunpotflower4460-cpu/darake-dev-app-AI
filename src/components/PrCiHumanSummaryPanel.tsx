@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import '../prCiHumanSummary.css';
 import { DarakePanelBadge } from './DarakePanelBadge';
 import {
@@ -6,55 +6,26 @@ import {
   translatePrCiToHuman,
   type CiStatus,
   type PrCiSnapshot,
+  type ReviewStatus,
 } from '../utils/prCiHumanTranslator';
-import { fetchPrCiRealData, type PrCiRealResult } from '../utils/prCiRealDataClient';
+import {
+  buildGitHubPrUrl,
+  fetchRealPrCiStatus,
+  loadPrCiLastQuery,
+  savePrCiLastQuery,
+  type RealPrCiStatus,
+} from '../utils/prCiStatusClient';
 
-const LAST_QUERY_KEY = 'darake.prCiHuman.lastQuery.v1';
-
-type LastQuery = { repoUrl: string; prNumber: string };
-
-function loadLastQuery(): LastQuery {
-  try {
-    const raw = localStorage.getItem(LAST_QUERY_KEY);
-    if (!raw) return { repoUrl: '', prNumber: '' };
-    const parsed = JSON.parse(raw) as Partial<LastQuery>;
-    return {
-      repoUrl: typeof parsed.repoUrl === 'string' ? parsed.repoUrl : '',
-      prNumber: typeof parsed.prNumber === 'string' ? parsed.prNumber : '',
-    };
-  } catch {
-    return { repoUrl: '', prNumber: '' };
-  }
-}
-
-function saveLastQuery(q: LastQuery) {
-  try {
-    localStorage.setItem(LAST_QUERY_KEY, JSON.stringify(q));
-  } catch {
-    // ignore
-  }
-}
-
-function healthToSnapshot(health: string, prNumber: number): PrCiSnapshot {
-  const lower = health.toLowerCase();
-  const ciStatus: CiStatus =
-    lower.includes('pass') || lower.includes('success') || lower.includes('green')
-      ? 'passed'
-      : lower.includes('fail') || lower.includes('red')
-        ? 'failed'
-        : lower.includes('run') || lower.includes('pending')
-          ? 'running'
-          : 'unknown';
-  const mergeReadiness: PrCiSnapshot['mergeReadiness'] =
-    lower.includes('merged') ? 'merged' : ciStatus === 'passed' ? 'ready' : 'not-ready';
-  return buildMockPrCiSnapshot({ ciStatus, mergeReadiness, prNumber });
-}
+const DEFAULT_REPO_URL = 'https://github.com/sunpotflower4460-cpu/darake-dev-app-AI';
 
 const DEMO_SCENARIOS: { label: string; snapshot: Partial<PrCiSnapshot> }[] = [
   { label: 'CI成功', snapshot: { ciStatus: 'passed', mergeReadiness: 'ready' } },
   { label: 'CI失敗', snapshot: { ciStatus: 'failed', mergeReadiness: 'not-ready' } },
   { label: 'CI実行中', snapshot: { ciStatus: 'running', mergeReadiness: 'not-ready' } },
-  { label: '修正依頼', snapshot: { ciStatus: 'passed', reviewStatus: 'changes-requested', mergeReadiness: 'not-ready' } },
+  {
+    label: '修正依頼',
+    snapshot: { ciStatus: 'passed', reviewStatus: 'changes-requested', mergeReadiness: 'not-ready' },
+  },
   { label: 'マージ済', snapshot: { ciStatus: 'passed', mergeReadiness: 'merged' } },
 ];
 
@@ -74,129 +45,204 @@ const CI_LABEL: Record<CiStatus, string> = {
   skipped: 'CI: スキップ',
 };
 
+const REVIEW_CLASS: Record<ReviewStatus, string> = {
+  approved: 'prCiHuman__chip--review-approved',
+  'changes-requested': 'prCiHuman__chip--review-requested',
+  pending: 'prCiHuman__chip--review-none',
+  none: 'prCiHuman__chip--review-none',
+  dismissed: 'prCiHuman__chip--review-none',
+};
+
+const REVIEW_LABEL: Record<ReviewStatus, string> = {
+  approved: 'レビュー: 承認',
+  'changes-requested': 'レビュー: 修正依頼',
+  pending: 'レビュー: 待機中',
+  none: 'レビュー: なし',
+  dismissed: 'レビュー: 解消済み',
+};
+
+const MERGE_CLASS: Record<RealPrCiStatus['mergeReadiness'], string> = {
+  ready: 'prCiHuman__chip--merge-ready',
+  'not-ready': 'prCiHuman__chip--merge-not-ready',
+  merged: 'prCiHuman__chip--merge-merged',
+  unknown: 'prCiHuman__chip--merge-unknown',
+};
+
+const MERGE_LABEL: Record<RealPrCiStatus['mergeReadiness'], string> = {
+  ready: 'マージ: 可能',
+  'not-ready': 'マージ: 未準備',
+  merged: 'マージ: 済み',
+  unknown: 'マージ: 不明',
+};
+
+function formatHeadSha(headSha: string | null): string {
+  return headSha ? headSha.slice(0, 7) : '---';
+}
+
+function realStatusToSnapshot(status: RealPrCiStatus): PrCiSnapshot {
+  return buildMockPrCiSnapshot({
+    prNumber: status.prNumber ?? 0,
+    ciStatus: status.ciStatus,
+    reviewStatus: status.reviewStatus,
+    mergeReadiness: status.mergeReadiness === 'unknown' ? 'unknown' : status.mergeReadiness,
+  });
+}
+
 export function PrCiHumanSummaryPanel() {
-  const lastQuery = loadLastQuery();
-  const [repoUrl, setRepoUrl] = useState(lastQuery.repoUrl);
+  const lastQuery = loadPrCiLastQuery();
+  const [repoUrl, setRepoUrl] = useState(lastQuery.repoUrl || DEFAULT_REPO_URL);
   const [prNumberInput, setPrNumberInput] = useState(lastQuery.prNumber);
-  const [realResult, setRealResult] = useState<PrCiRealResult | null>(null);
+  const [realStatus, setRealStatus] = useState<RealPrCiStatus | null>(null);
   const [realLoading, setRealLoading] = useState(false);
   const [activeScenario, setActiveScenario] = useState(0);
 
   const demoSnapshot = buildMockPrCiSnapshot(DEMO_SCENARIOS[activeScenario]?.snapshot);
   const demoSummary = translatePrCiToHuman(demoSnapshot);
-
-  const realSnapshot = realResult?.ok
-    ? healthToSnapshot(realResult.health, realResult.prNumber)
-    : null;
-  const realSummary = realSnapshot ? translatePrCiToHuman(realSnapshot) : null;
+  const realSummary = useMemo(
+    () => (realStatus?.mode === 'real' ? translatePrCiToHuman(realStatusToSnapshot(realStatus)) : null),
+    [realStatus],
+  );
+  const savedPrUrl = buildGitHubPrUrl(repoUrl, Number.parseInt(prNumberInput, 10));
 
   function handleFetchClick() {
     void handleFetch();
   }
 
   async function handleFetch() {
-    const prNum = parseInt(prNumberInput, 10);
-    if (!repoUrl.trim() || isNaN(prNum)) return;
-    saveLastQuery({ repoUrl: repoUrl.trim(), prNumber: prNumberInput });
+    const prNum = Number.parseInt(prNumberInput, 10);
+    const nextRepoUrl = repoUrl.trim() || DEFAULT_REPO_URL;
+
+    savePrCiLastQuery({ repoUrl: nextRepoUrl, prNumber: prNumberInput.trim() });
     setRealLoading(true);
-    const result = await fetchPrCiRealData(repoUrl.trim(), prNum);
-    setRealResult(result);
+    const result = await fetchRealPrCiStatus(nextRepoUrl, prNum);
+    setRealStatus(result);
     setRealLoading(false);
   }
 
   return (
     <section className="prCiHuman" aria-label="PR/CI人間向け要約">
-      <DarakePanelBadge kinds={['demo']} />
-      <span className="prCiHuman__eyebrow">Phase 95 · PR/CI状態</span>
+      <DarakePanelBadge kinds={['real-data', 'demo']} />
+      <span className="prCiHuman__eyebrow">Phase 103 · 実データ / デモ安全フォールバック</span>
       <h2 className="prCiHuman__title">PR/CI 要約</h2>
 
       <div className="prCiHuman__realSection">
-        <div className="prCiHuman__realTitle">PR番号を入力して実データを確認</div>
+        <div className="prCiHuman__sectionLabel">実データ</div>
+        <div className="prCiHuman__repoHint">対象Repo: {repoUrl || DEFAULT_REPO_URL}</div>
         <div className="prCiHuman__realForm">
-          <input
-            className="prCiHuman__realInput"
-            value={repoUrl}
-            onChange={(e) => setRepoUrl(e.target.value)}
-            placeholder="https://github.com/owner/repo"
-          />
-          <input
-            className="prCiHuman__realInput prCiHuman__realInput--small"
-            value={prNumberInput}
-            onChange={(e) => setPrNumberInput(e.target.value)}
-            placeholder="PR番号"
-            type="number"
-            min="1"
-          />
+          <label className="prCiHuman__fieldLabel" htmlFor="pr-ci-number">
+            PR番号
+            <input
+              id="pr-ci-number"
+              className="prCiHuman__realInput prCiHuman__realInput--small"
+              value={prNumberInput}
+              onChange={(event) => setPrNumberInput(event.target.value)}
+              placeholder="185"
+              type="number"
+              min="1"
+            />
+          </label>
           <button
             type="button"
             className="prCiHuman__realBtn"
             onClick={handleFetchClick}
             disabled={realLoading}
           >
-            {realLoading ? '確認中…' : '確認する'}
+            {realLoading ? '取得中…' : '状態を取得する'}
           </button>
         </div>
 
-        {realResult !== null && (
-          realResult.ok ? (
-            <div className={`prCiHuman__card prCiHuman__card--${realSummary?.level ?? 'neutral'} prCiHuman__card--real`}>
+        <details className="prCiHuman__repoDetails">
+          <summary>リポジトリURLを変更</summary>
+          <input
+            className="prCiHuman__realInput"
+            value={repoUrl}
+            onChange={(event) => setRepoUrl(event.target.value)}
+            placeholder={DEFAULT_REPO_URL}
+          />
+        </details>
+
+        {realStatus ? (
+          realStatus.mode === 'real' && realSummary ? (
+            <div className={`prCiHuman__card prCiHuman__card--${realSummary.level} prCiHuman__card--real`}>
               <div className="prCiHuman__realBadge">実データ</div>
-              <div className="prCiHuman__headline">{realSummary?.headline}</div>
-              <div className="prCiHuman__subline">{realSummary?.subline}</div>
-              <div className="prCiHuman__next">次にやること: {realSummary?.nextAction}</div>
-              {realResult.summary ? (
-                <div className="prCiHuman__realSummary">{realResult.summary}</div>
-              ) : null}
+              <div className="prCiHuman__headline">{realStatus.message ?? realSummary.headline}</div>
+              <div className="prCiHuman__subline">{realSummary.subline}</div>
+              <div className="prCiHuman__next">次にやること: {realSummary.nextAction}</div>
+              <div className="prCiHuman__details">
+                <span className={`prCiHuman__chip ${CI_CHIP_CLASS[realStatus.ciStatus]}`}>
+                  {CI_LABEL[realStatus.ciStatus]}
+                </span>
+                <span className={`prCiHuman__chip ${REVIEW_CLASS[realStatus.reviewStatus]}`}>
+                  {REVIEW_LABEL[realStatus.reviewStatus]}
+                </span>
+                <span className={`prCiHuman__chip ${MERGE_CLASS[realStatus.mergeReadiness]}`}>
+                  {MERGE_LABEL[realStatus.mergeReadiness]}
+                </span>
+                <span className="prCiHuman__chip prCiHuman__chip--sha">HEAD: {formatHeadSha(realStatus.headSha)}</span>
+              </div>
+              <div className="prCiHuman__meta">
+                {realStatus.prUrl ? (
+                  <a href={realStatus.prUrl} target="_blank" rel="noreferrer" className="prCiHuman__link">
+                    PRを開く
+                  </a>
+                ) : savedPrUrl ? (
+                  <a href={savedPrUrl} target="_blank" rel="noreferrer" className="prCiHuman__link">
+                    PRを開く
+                  </a>
+                ) : null}
+              </div>
             </div>
           ) : (
-            <div className="prCiHuman__realError">読めませんでした: {realResult.error}</div>
+            <div className="prCiHuman__card prCiHuman__card--neutral prCiHuman__card--real">
+              <div className="prCiHuman__realBadge">実データ</div>
+              <div className="prCiHuman__headline">
+                PR状態を取得できませんでした。PR番号やGitHub連携を確認してください。
+              </div>
+              <div className="prCiHuman__subline">デモ表示で確認できます。</div>
+              {realStatus.message ? <div className="prCiHuman__realSummary">{realStatus.message}</div> : null}
+            </div>
           )
+        ) : (
+          <div className="prCiHuman__realSummary">
+            PR番号を入れると、CI状態 / レビュー状態 / マージ可否 / 最新commitを確認できます。
+          </div>
         )}
       </div>
 
       <details className="prCiHuman__demoSection">
-        <summary className="prCiHuman__demoSummary">デモ（実データ未連携の場合）</summary>
+        <summary className="prCiHuman__demoSummary">デモ</summary>
 
-        <div className={`prCiHuman__card prCiHuman__card--${demoSummary.level}`}>
-          <div className="prCiHuman__headline">{demoSummary.headline}</div>
-          <div className="prCiHuman__subline">{demoSummary.subline}</div>
-          <div className="prCiHuman__next">次にやること: {demoSummary.nextAction}</div>
-        </div>
+        <div className="prCiHuman__demoInner">
+          <div className={`prCiHuman__card prCiHuman__card--${demoSummary.level}`}>
+            <div className="prCiHuman__demoBadge">デモ</div>
+            <div className="prCiHuman__headline">{demoSummary.headline}</div>
+            <div className="prCiHuman__subline">{demoSummary.subline}</div>
+            <div className="prCiHuman__next">次にやること: {demoSummary.nextAction}</div>
+          </div>
 
-        <div className="prCiHuman__details">
-          <span className={`prCiHuman__chip ${CI_CHIP_CLASS[demoSnapshot.ciStatus]}`}>
-            {CI_LABEL[demoSnapshot.ciStatus]}
-          </span>
-          <span
-            className={`prCiHuman__chip ${
-              demoSnapshot.reviewStatus === 'approved'
-                ? 'prCiHuman__chip--review-approved'
-                : demoSnapshot.reviewStatus === 'changes-requested'
-                  ? 'prCiHuman__chip--review-requested'
-                  : 'prCiHuman__chip--review-none'
-            }`}
-          >
-            {demoSnapshot.reviewStatus === 'approved'
-              ? 'レビュー: 承認'
-              : demoSnapshot.reviewStatus === 'changes-requested'
-                ? 'レビュー: 修正依頼'
-                : 'レビュー: 待機中'}
-          </span>
-        </div>
+          <div className="prCiHuman__details">
+            <span className={`prCiHuman__chip ${CI_CHIP_CLASS[demoSnapshot.ciStatus]}`}>
+              {CI_LABEL[demoSnapshot.ciStatus]}
+            </span>
+            <span className={`prCiHuman__chip ${REVIEW_CLASS[demoSnapshot.reviewStatus]}`}>
+              {REVIEW_LABEL[demoSnapshot.reviewStatus]}
+            </span>
+          </div>
 
-        <div className="prCiHuman__demo">
-          <span className="prCiHuman__demoLabel">シナリオを切り替えて確認</span>
-          <div className="prCiHuman__demoRow">
-            {DEMO_SCENARIOS.map((s, i) => (
-              <button
-                key={s.label}
-                type="button"
-                className={`prCiHuman__demoBtn${i === activeScenario ? ' prCiHuman__demoBtn--active' : ''}`}
-                onClick={() => setActiveScenario(i)}
-              >
-                {s.label}
-              </button>
-            ))}
+          <div className="prCiHuman__demo">
+            <span className="prCiHuman__demoLabel">シナリオを切り替えて確認</span>
+            <div className="prCiHuman__demoRow">
+              {DEMO_SCENARIOS.map((scenario, index) => (
+                <button
+                  key={scenario.label}
+                  type="button"
+                  className={`prCiHuman__demoBtn${index === activeScenario ? ' prCiHuman__demoBtn--active' : ''}`}
+                  onClick={() => setActiveScenario(index)}
+                >
+                  {scenario.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </details>

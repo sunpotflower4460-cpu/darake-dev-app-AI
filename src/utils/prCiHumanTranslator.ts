@@ -1,6 +1,6 @@
 export type CiStatus = 'unknown' | 'running' | 'passed' | 'failed' | 'skipped';
 export type ReviewStatus = 'none' | 'pending' | 'approved' | 'changes-requested' | 'dismissed';
-export type MergeReadiness = 'not-ready' | 'ready' | 'merged' | 'blocked';
+export type MergeReadiness = 'not-ready' | 'ready' | 'merged' | 'blocked' | 'unknown';
 
 export type PrCiSnapshot = {
   prTitle: string;
@@ -24,9 +24,9 @@ export function translatePrCiToHuman(snapshot: PrCiSnapshot): PrCiHumanSummary {
 
   if (mergeReadiness === 'merged') {
     return {
-      headline: 'マージ完了です',
-      subline: 'このPRは取り込まれました。',
-      nextAction: '次のPhaseへ進みましょう',
+      headline: 'このPRはマージ済みです。',
+      subline: '最新の反映状態だけ確認してください。',
+      nextAction: '次のPhaseへ進めます',
       level: 'ok',
       canMerge: false,
     };
@@ -34,9 +34,9 @@ export function translatePrCiToHuman(snapshot: PrCiSnapshot): PrCiHumanSummary {
 
   if (mergeReadiness === 'blocked') {
     return {
-      headline: '手動での対応が必要です',
-      subline: 'コンフリクトや権限の問題がある可能性があります。',
-      nextAction: 'PRを開いて確認してください',
+      headline: 'マージ条件を満たしていません。',
+      subline: 'コンフリクトやブランチ保護の可能性があります。',
+      nextAction: 'PR画面でブロック理由を確認してください',
       level: 'error',
       canMerge: false,
     };
@@ -44,8 +44,8 @@ export function translatePrCiToHuman(snapshot: PrCiSnapshot): PrCiHumanSummary {
 
   if (ciStatus === 'failed') {
     return {
-      headline: 'CIが失敗しました',
-      subline: '型エラーまたはビルドエラーが出ている可能性があります。',
+      headline: 'CI失敗。AIに修正依頼できます。',
+      subline: '失敗したjobや型エラーを確認してください。',
       nextAction: 'AIに修正依頼できます',
       level: 'error',
       canMerge: false,
@@ -54,9 +54,9 @@ export function translatePrCiToHuman(snapshot: PrCiSnapshot): PrCiHumanSummary {
 
   if (ciStatus === 'running') {
     return {
-      headline: 'CIが実行中です',
-      subline: '少し待つと結果が出ます。',
-      nextAction: '何もしなくてOK',
+      headline: 'CI実行中です。少し待ってから再確認してください。',
+      subline: '完了後にもう一度状態を取得してください。',
+      nextAction: '少し待ってから再確認してください',
       level: 'neutral',
       canMerge: false,
     };
@@ -64,41 +64,51 @@ export function translatePrCiToHuman(snapshot: PrCiSnapshot): PrCiHumanSummary {
 
   if (reviewStatus === 'changes-requested') {
     return {
-      headline: 'レビューで修正依頼があります',
-      subline: '修正してから再度プッシュしてください。',
-      nextAction: 'レビューコメントを確認してください',
+      headline: 'レビューで修正依頼があります。内容を確認してください。',
+      subline: 'レビューコメントを確認してから更新してください。',
+      nextAction: 'レビュー内容を確認してください',
       level: 'warn',
       canMerge: false,
     };
   }
 
   if (mergeReadiness === 'ready' && ciStatus === 'passed') {
-    const reviewOk = reviewStatus === 'approved' || reviewStatus === 'none' || reviewStatus === 'dismissed';
     return {
-      headline: 'マージできる状態です',
-      subline: reviewStatus === 'approved'
-        ? 'CIが通り、レビューも承認されています。'
-        : 'CIが通っています。レビュー状態を確認してください。',
-      nextAction: 'PRを開いてマージを確認してください',
-      level: reviewOk ? 'ok' : 'warn',
+      headline: 'CI成功。マージできそうです。',
+      subline:
+        reviewStatus === 'approved'
+          ? 'レビューも承認済みです。'
+          : '最終確認後にマージへ進めます。',
+      nextAction: 'PRを開いて最終確認してください',
+      level: 'ok',
       canMerge: true,
     };
   }
 
-  if (ciStatus === 'passed' && reviewStatus === 'none') {
+  if (ciStatus === 'passed' && reviewStatus === 'pending') {
     return {
-      headline: 'CIが通りました',
-      subline: 'レビュー待ちか、または自動マージの準備ができています。',
-      nextAction: 'まだ何もしなくてOK',
+      headline: 'CI成功。レビュー待ちです。',
+      subline: 'レビュアーの確認が終わるまで待ってください。',
+      nextAction: 'レビュー完了後に再確認してください',
+      level: 'warn',
+      canMerge: false,
+    };
+  }
+
+  if (ciStatus === 'passed') {
+    return {
+      headline: 'CI成功。レビュー状態を確認してください。',
+      subline: 'マージ条件を満たしているか確認しましょう。',
+      nextAction: 'PR画面でレビュー状態を確認してください',
       level: 'ok',
       canMerge: false,
     };
   }
 
   return {
-    headline: '確認中です',
-    subline: 'PRの状態を読み込んでいます。',
-    nextAction: '少し待ってください',
+    headline: 'PR状態を確認中です。',
+    subline: 'GitHub連携とPR番号を確認してください。',
+    nextAction: '状態を取得し直してください',
     level: 'neutral',
     canMerge: false,
   };
@@ -106,8 +116,8 @@ export function translatePrCiToHuman(snapshot: PrCiSnapshot): PrCiHumanSummary {
 
 export function buildMockPrCiSnapshot(override?: Partial<PrCiSnapshot>): PrCiSnapshot {
   return {
-    prTitle: 'Phase 95: PR/CI状態の人間向け要約',
-    prNumber: 195,
+    prTitle: 'Phase 103: PR/CI状態の人間向け要約',
+    prNumber: 185,
     ciStatus: 'passed',
     reviewStatus: 'approved',
     mergeReadiness: 'ready',

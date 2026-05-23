@@ -378,19 +378,14 @@ async function handleGetPrHealth(request: Request, env: Env): Promise<Response> 
     return json({ ok: false, code: "INVALID_INPUT", error: "PR番号を確認してください" }, 400);
   }
 
-  // Get check runs for PR head commit
-  const prRes = await fetch(
-    `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/pulls/${prNumber}`,
-    {
-      headers: {
-        Accept: "application/vnd.github+json",
-        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
-        "X-GitHub-Api-Version": "2022-11-28",
-        "User-Agent": "darake-dev-app-ai",
-      },
-    },
-  );
+  const headers = {
+    Accept: "application/vnd.github+json",
+    Authorization: "Bearer " + env.GITHUB_TOKEN,
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": "darake-dev-app-ai",
+  };
 
+  const prRes = await fetch(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}/pulls/${prNumber}`, { headers });
   if (!prRes.ok) {
     const ghJson = (await prRes.json().catch(() => null)) as { message?: string } | null;
     return json(
@@ -400,76 +395,135 @@ async function handleGetPrHealth(request: Request, env: Env): Promise<Response> 
   }
 
   type GhPrDetail = {
+    html_url: string;
     head: { sha: string };
-    mergeable?: boolean;
-    mergeable_state?: string;
+    merged?: boolean;
+    draft?: boolean;
+    mergeable?: boolean | null;
+    mergeable_state?: string | null;
     requested_reviewers?: unknown[];
   };
+  type GhReview = { state?: string | null };
+  type CheckRun = { status: string; conclusion: string | null; name: string };
+  type CheckRunsResponse = { check_runs: CheckRun[]; total_count: number };
+
   const pr = (await prRes.json()) as GhPrDetail;
   const headSha = pr.head.sha;
 
-  const checksRes = await fetch(
-    `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/commits/${headSha}/check-runs?per_page=50`,
-    {
-      headers: {
-        Accept: "application/vnd.github+json",
-        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
-        "X-GitHub-Api-Version": "2022-11-28",
-        "User-Agent": "darake-dev-app-ai",
-      },
-    },
-  );
+  const [checksRes, reviewsRes] = await Promise.all([
+    fetch(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}/commits/${headSha}/check-runs?per_page=50`, { headers }),
+    fetch(`https://api.github.com/repos/${parsed.owner}/${parsed.repo}/pulls/${prNumber}/reviews?per_page=100`, { headers }),
+  ]);
 
-  if (!checksRes.ok) {
-    return json({ ok: true, health: "unknown", summary: "チェック状態を取得できませんでした" });
-  }
-
-  type CheckRun = { status: string; conclusion: string | null; name: string };
-  type CheckRunsResponse = { check_runs: CheckRun[]; total_count: number };
-  const checksData = (await checksRes.json().catch(() => ({ check_runs: [], total_count: 0 }))) as CheckRunsResponse;
-  const runs = checksData.check_runs;
-
-  if (runs.length === 0) {
-    return json({ ok: true, health: "waiting", summary: "チェックがまだ開始されていません" });
-  }
-
-  const inProgress = runs.some((r) => r.status === "in_progress" || r.status === "queued");
-  const failed = runs.some((r) => r.conclusion === "failure" || r.conclusion === "timed_out");
-  // Only consider completed runs (non-null conclusion) when checking if all passed
-  const completedRuns = runs.filter((r) => r.conclusion !== null);
-  const allPassed =
-    completedRuns.length > 0 &&
-    completedRuns.every((r) => r.conclusion === "success" || r.conclusion === "skipped" || r.conclusion === "neutral");
-
-  let health: string;
-  let summary: string;
   const details: string[] = [];
 
-  if (inProgress) {
-    health = "checks-running";
-    summary = "CIが実行中です";
-  } else if (failed) {
-    health = "checks-failed";
-    summary = "CIまたはBuildが失敗しました";
-    runs.filter((r) => r.conclusion === "failure").forEach((r) => details.push(`❌ ${r.name}`));
-  } else if (allPassed) {
-    const hasReviewers = (pr.requested_reviewers ?? []).length > 0;
-    if (hasReviewers) {
-      health = "review-needed";
-      summary = "CIが通りました。レビューが必要です。";
-    } else if (pr.mergeable === true && pr.mergeable_state === "clean") {
-      health = "ready-to-merge";
-      summary = "マージできる状態です";
-    } else {
-      health = "checks-passed";
-      summary = "CIが通りました";
-    }
-  } else {
-    health = "unknown";
-    summary = "チェック状態を確認中です";
+  const runs = checksRes.ok
+    ? ((await checksRes.json().catch(() => ({ check_runs: [], total_count: 0 }))) as CheckRunsResponse).check_runs
+    : [];
+
+  const reviews = reviewsRes.ok
+    ? ((await reviewsRes.json().catch(() => [])) as GhReview[])
+    : [];
+
+  const inProgress = runs.some((run) => run.status === "in_progress" || run.status === "queued");
+  const failed = runs.some((run) => run.conclusion === "failure" || run.conclusion === "timed_out");
+  const completedRuns = runs.filter((run) => run.conclusion !== null);
+  const allSkipped = completedRuns.length > 0 && completedRuns.every((run) => run.conclusion === "skipped" || run.conclusion === "neutral");
+  const allPassed =
+    completedRuns.length > 0 &&
+    completedRuns.every((run) => run.conclusion === "success" || run.conclusion === "skipped" || run.conclusion === "neutral");
+
+  const ciStatus = failed
+    ? "failed"
+    : inProgress || runs.length === 0
+      ? "running"
+      : allPassed
+        ? allSkipped
+          ? "skipped"
+          : "passed"
+        : "unknown";
+
+  if (failed) {
+    runs
+      .filter((run) => run.conclusion === "failure" || run.conclusion === "timed_out")
+      .forEach((run) => details.push(`❌ ${run.name}`));
   }
 
-  return json({ ok: true, health, summary, details: details.length > 0 ? details : undefined });
+  let reviewStatus: "approved" | "changes-requested" | "pending" | "none" = "none";
+  const reviewStates = reviews.map((review) => String(review.state ?? "").toUpperCase());
+  if (reviewStates.includes("CHANGES_REQUESTED")) {
+    reviewStatus = "changes-requested";
+  } else if (reviewStates.includes("APPROVED")) {
+    reviewStatus = "approved";
+  } else if ((pr.requested_reviewers ?? []).length > 0) {
+    reviewStatus = "pending";
+  }
+
+  let mergeReadiness: "ready" | "not-ready" | "merged" | "unknown" = "unknown";
+  if (pr.merged) {
+    mergeReadiness = "merged";
+  } else if (pr.draft || reviewStatus === "changes-requested") {
+    mergeReadiness = "not-ready";
+  } else if (pr.mergeable === true && pr.mergeable_state === "clean" && ciStatus === "passed") {
+    mergeReadiness = "ready";
+  } else if (pr.mergeable === false || (pr.mergeable_state && pr.mergeable_state !== "clean")) {
+    mergeReadiness = "not-ready";
+  }
+
+  let health = "unknown";
+  if (mergeReadiness === "merged") {
+    health = "merged";
+  } else if (reviewStatus === "changes-requested") {
+    health = "changes-requested";
+  } else if (ciStatus === "failed") {
+    health = "checks-failed";
+  } else if (ciStatus === "running") {
+    health = runs.length === 0 ? "waiting" : "checks-running";
+  } else if (ciStatus === "passed" && mergeReadiness === "ready") {
+    health = "ready-to-merge";
+  } else if (ciStatus === "passed" && reviewStatus === "pending") {
+    health = "review-needed";
+  } else if (ciStatus === "passed") {
+    health = "checks-passed";
+  }
+
+  let summary = "状態を確認中です。";
+  if (mergeReadiness === "merged") {
+    summary = "このPRはマージ済みです。";
+  } else if (reviewStatus === "changes-requested") {
+    summary = "レビューで修正依頼があります。内容を確認してください。";
+  } else if (ciStatus === "failed") {
+    summary = "CI失敗。AIに修正依頼できます。";
+  } else if (ciStatus === "running") {
+    summary = "CI実行中です。少し待ってから再確認してください。";
+  } else if (ciStatus === "passed" && mergeReadiness === "ready") {
+    summary = "CI成功。マージできそうです。";
+  } else if (ciStatus === "passed" && reviewStatus === "pending") {
+    summary = "CI成功。レビュー待ちです。";
+  } else if (ciStatus === "passed") {
+    summary = "CI成功。レビュー状態を確認してください。";
+  }
+
+  if (!checksRes.ok) {
+    details.push("CI詳細を取得できませんでした");
+  }
+  if (!reviewsRes.ok) {
+    details.push("レビュー詳細を取得できませんでした");
+  }
+
+  return json({
+    ok: true,
+    health,
+    summary,
+    message: summary,
+    prNumber,
+    prUrl: pr.html_url,
+    ciStatus,
+    reviewStatus,
+    mergeReadiness,
+    headSha,
+    details: details.length > 0 ? details : undefined,
+  });
 }
 
 async function handleCreatePrComment(request: Request, env: Env): Promise<Response> {
@@ -1211,7 +1265,7 @@ export default {
     if (url.pathname === "/api/github/prs/find-by-issue") {
       return handleFindPrByIssue(request, env);
     }
-    if (url.pathname === "/api/github/prs/health") {
+    if (url.pathname === "/api/github/prs/health" || url.pathname === "/api/darake/pr/health" || url.pathname === "/api/pr/health") {
       return handleGetPrHealth(request, env);
     }
     if (url.pathname === "/api/github/prs/comment") {
