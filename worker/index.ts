@@ -433,15 +433,14 @@ async function handleGetPrHealth(request: Request, env: Env): Promise<Response> 
     completedRuns.length > 0 &&
     completedRuns.every((run) => run.conclusion === "success" || run.conclusion === "skipped" || run.conclusion === "neutral");
 
-  const ciStatus = failed
-    ? "failed"
-    : inProgress || runs.length === 0
-      ? "running"
-      : allPassed
-        ? allSkipped
-          ? "skipped"
-          : "passed"
-        : "unknown";
+  let ciStatus: "passed" | "failed" | "running" | "unknown" | "skipped" = "unknown";
+  if (failed) {
+    ciStatus = "failed";
+  } else if (inProgress || runs.length === 0) {
+    ciStatus = "running";
+  } else if (allPassed) {
+    ciStatus = allSkipped ? "skipped" : "passed";
+  }
 
   if (failed) {
     runs

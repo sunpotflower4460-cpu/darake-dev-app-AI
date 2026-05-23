@@ -49,7 +49,7 @@ export function PreviewDeployStatusPanel() {
   const [previewUrl, setPreviewUrl] = useState(stored.previewUrl ?? '');
   const [deployStatus, setDeployStatus] = useState<DeployStatus>(stored.deployStatus);
   const [pasteText, setPasteText] = useState('');
-  const [urlSource, setUrlSource] = useState<'manual' | 'extracted'>(stored.previewUrl ? 'manual' : 'manual');
+  const [urlSource, setUrlSource] = useState<'manual' | 'extracted'>('manual');
   const [detectedUrls, setDetectedUrls] = useState<string[]>([]);
   const [detectionAttempted, setDetectionAttempted] = useState(false);
 
