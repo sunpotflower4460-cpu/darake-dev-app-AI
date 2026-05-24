@@ -20,14 +20,11 @@ function openUrl(url: string | null) {
 }
 
 function resolveNextAction(session: DarakeWorkSession): (() => void) | null {
-  if (session.nextActionLabel.includes('Issue') && session.issueUrl) {
-    return () => openUrl(session.issueUrl);
-  }
-  if (session.nextActionLabel.includes('PR') && session.prUrl) {
-    return () => openUrl(session.prUrl);
-  }
-  if (session.nextActionLabel.includes('Preview') && session.previewUrl) {
+  if (session.status === 'preview-ready' && session.previewUrl) {
     return () => openUrl(session.previewUrl);
+  }
+  if (session.status === 'phase-complete') {
+    return () => navigateToGroup('run');
   }
   if (
     session.status === 'idea' ||
@@ -45,9 +42,6 @@ function resolveNextAction(session: DarakeWorkSession): (() => void) | null {
     session.status === 'review-needed'
   ) {
     return () => navigateToGroup('watch');
-  }
-  if (session.status === 'phase-complete') {
-    return () => navigateToGroup('run');
   }
   return null;
 }

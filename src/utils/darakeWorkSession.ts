@@ -88,7 +88,7 @@ function sanitizePositiveNumber(value: unknown): number | null {
 function sanitizeIssueUrl(value: unknown): string | null {
   const text = sanitizeOptionalText(value);
   if (!text) return null;
-  return /^https:\/\/github\.com\/[^/]+\/[^/]+\/issues\/(\d+\/?|new(\?.+)?)$/i.test(text) ? text : null;
+  return /^https:\/\/github\.com\/[^/]+\/[^/]+\/issues\/\d+\/?$/i.test(text) ? text : null;
 }
 
 function sanitizePrUrl(value: unknown): string | null {

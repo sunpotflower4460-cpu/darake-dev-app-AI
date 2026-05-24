@@ -93,6 +93,10 @@ function normalizeRepoUrl(value: string): string {
   return value.trim() || DEFAULT_REPO_URL;
 }
 
+function sanitizeGitHubPrUrl(url: string | null): string | null {
+  return url && /^https:\/\/github\.com\/[^/]+\/[^/]+\/pull\/\d+\/?$/i.test(url) ? url : null;
+}
+
 function realStatusToSnapshot(status: RealPrCiStatus): PrCiSnapshot {
   return buildMockPrCiSnapshot({
     prNumber: status.prNumber ?? 0,
@@ -126,7 +130,10 @@ export function PrCiHumanSummaryPanel() {
     [realStatus],
   );
   const parsedPrInput = parseGitHubPrInput(prInput, repoUrl);
-  const savedPrUrl = parsedPrInput.prUrl || buildGitHubPrUrl(repoUrl, parsedPrInput.prNumber ?? 0);
+  const safeRealPrUrl = sanitizeGitHubPrUrl(realStatus?.prUrl ?? null);
+  const savedPrUrl = sanitizeGitHubPrUrl(
+    parsedPrInput.prUrl || buildGitHubPrUrl(repoUrl, parsedPrInput.prNumber ?? 0),
+  );
 
   function savePrReference() {
     if (!parsedPrInput.prNumber && !parsedPrInput.prUrl) {
@@ -190,12 +197,17 @@ export function PrCiHumanSummaryPanel() {
           : result.mode === 'real' && result.ciStatus === 'passed'
             ? 'Preview URLを探す'
             : 'CIを確認する';
+    const effectivePrNumber = result.prNumber ?? parsedPrInput.prNumber ?? currentSession.prNumber;
+    const effectivePrUrl =
+      sanitizeGitHubPrUrl(result.prUrl) ??
+      (effectivePrNumber ? buildGitHubPrUrl(nextRepoUrl, effectivePrNumber) : null) ??
+      currentSession.prUrl;
     saveCurrentWorkSession(
       buildDarakeWorkSession({
         ...currentSession,
         repoUrl: nextRepoUrl,
-        prUrl: result.prUrl || parsedPrInput.prUrl || currentSession.prUrl,
-        prNumber: result.prNumber ?? parsedPrInput.prNumber ?? currentSession.prNumber,
+        prUrl: effectivePrUrl,
+        prNumber: effectivePrNumber,
         status: nextStatus,
         nextActionLabel,
       }),
@@ -272,8 +284,8 @@ export function PrCiHumanSummaryPanel() {
                 <span className="prCiHuman__chip prCiHuman__chip--sha">HEAD: {formatHeadSha(realStatus.headSha)}</span>
               </div>
               <div className="prCiHuman__meta">
-                {realStatus.prUrl ? (
-                  <a href={realStatus.prUrl} target="_blank" rel="noreferrer" className="prCiHuman__link">
+                {safeRealPrUrl ? (
+                  <a href={safeRealPrUrl} target="_blank" rel="noreferrer" className="prCiHuman__link">
                     PRを開く
                   </a>
                 ) : savedPrUrl ? (

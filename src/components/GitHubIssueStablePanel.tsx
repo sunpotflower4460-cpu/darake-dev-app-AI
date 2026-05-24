@@ -37,7 +37,7 @@ export function GitHubIssueStablePanel() {
         appName: currentSession?.appName || form?.appName || '新しいアプリ',
         oneLineIdea: currentSession?.oneLineIdea || form?.oneLineIdea || 'アイデアを整理する',
         repoUrl: state.repoUrl,
-        issueUrl: state.fallbackUrl,
+        issueUrl: null,
         issueNumber: currentSession?.issueNumber ?? null,
         status: 'issue-ready',
         nextActionLabel: 'GitHub Issue作成画面を開く',

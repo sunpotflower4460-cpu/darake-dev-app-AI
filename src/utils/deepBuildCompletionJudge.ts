@@ -11,11 +11,11 @@ const HUMAN_CHECK_KEYWORDS = [
   '規約',
   '大規模リファクタ',
   'mainへの直接反映',
-] as const;
+].map((keyword) => keyword.toLowerCase());
 
 function inferHumanCheckRequired(phase: DeepBuildPhase): boolean {
   const text = `${phase.title} ${phase.purpose}`.toLowerCase();
-  return HUMAN_CHECK_KEYWORDS.some((keyword) => text.includes(keyword.toLowerCase()));
+  return HUMAN_CHECK_KEYWORDS.some((keyword) => text.includes(keyword));
 }
 
 function mapWorkSessionStatusToPhaseStatus(
@@ -84,13 +84,18 @@ export function markCompletionCandidates(plan: DeepBuildPlan): DeepBuildPlan {
     const hasIssue = Boolean(phase.issueNumber || phase.issueUrl);
     const hasPr = Boolean(phase.prNumber || phase.prUrl);
     const hasPreview = Boolean(phase.previewUrl);
+    const issueBasedCandidate =
+      phase.kind === 'design' && hasIssue && (phase.status === 'issue-ready' || phase.status === 'agent-working');
+    const prBasedCandidate =
+      (phase.kind === 'fix' || phase.kind === 'review' || phase.kind === 'final-polish') &&
+      hasPr &&
+      phase.status === 'pr-open';
     const candidate =
       !phase.humanCheckRequired &&
       (
         (phase.ciStatus === 'passed' && hasPreview) ||
-        (phase.status === 'issue-ready' && hasIssue) ||
-        (phase.status === 'agent-working' && hasIssue) ||
-        (phase.status === 'pr-open' && hasPr)
+        issueBasedCandidate ||
+        prBasedCandidate
       );
     return { ...phase, completionCandidate: candidate && !phase.humanCheckDone };
   });
