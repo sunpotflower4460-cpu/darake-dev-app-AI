@@ -157,7 +157,7 @@ export function SetupHubV2Panel() {
 
   return (
     <section className="setupHubV2" aria-label="初期設定ここだけ v2">
-      <DarakePanelBadge kinds={['real-data']} />
+      <DarakePanelBadge kinds={['real-data', 'manual-note']} />
       <div className="setupHubV2__header">
         <span className="setupHubV2__eyebrow">Phase 92 · 初期設定ここだけ</span>
         <h2 className="setupHubV2__title">上から押すだけで完了します</h2>
@@ -201,6 +201,31 @@ export function SetupHubV2Panel() {
                 )}
               </>
             )}
+            <details className="setupHubV2__diagDetails">
+              <summary className="setupHubV2__diagDetailsSummary">設定の詳細を見る</summary>
+              <div className="setupHubV2__diagSection">
+                <span className="setupHubV2__diagSectionLabel">必須</span>
+                <ul className="setupHubV2__diagItemList">
+                  {diagnostic.items.filter((i) => i.required).map((item) => (
+                    <li key={item.id} className={`setupHubV2__diagItemEntry setupHubV2__diagItemEntry--${item.level}`}>
+                      <span className="setupHubV2__diagItemIcon">{item.level === 'ok' ? '✓' : '△'}</span>
+                      {item.label}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="setupHubV2__diagSection">
+                <span className="setupHubV2__diagSectionLabel">任意</span>
+                <ul className="setupHubV2__diagItemList">
+                  {diagnostic.items.filter((i) => !i.required).map((item) => (
+                    <li key={item.id} className={`setupHubV2__diagItemEntry setupHubV2__diagItemEntry--${item.level}`}>
+                      <span className="setupHubV2__diagItemIcon">{item.level === 'ok' ? '✓' : '△'}</span>
+                      {item.label}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </details>
           </>
         ) : null}
       </div>
