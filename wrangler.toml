@@ -13,6 +13,12 @@ run_worker_first = ["/api/*"]
 # This lets the Worker create GitHub Issues when GITHUB_TOKEN is also configured as a Secret.
 GITHUB_ISSUE_CREATE_ENABLED = "true"
 
+# Phase 1 — Image/Text → AI Blueprint generation.
+# Requires ANTHROPIC_API_KEY in Worker Secrets when enabled.
+DARAKE_BLUEPRINT_AI_ENABLED = "false"
+BLUEPRINT_AI_DAILY_BUDGET_USD = "5"
+BLUEPRINT_AI_MODEL = "claude-sonnet-4-6"
+
 # Cron Trigger for background autopilot patrol.
 # Uncomment and configure to activate scheduled checks.
 # Requires DARAKE_AUTOPILOT_SCHEDULE_ENABLED=true in Worker Secrets.

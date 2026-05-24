@@ -13,6 +13,10 @@ type Env = {
   /** Public URL of the Pages app, e.g. https://your-app.pages.dev */
   APP_URL?: string;
   ASSETS: Fetcher;
+  ANTHROPIC_API_KEY?: string;
+  DARAKE_BLUEPRINT_AI_ENABLED?: string;
+  BLUEPRINT_AI_DAILY_BUDGET_USD?: string;
+  BLUEPRINT_AI_MODEL?: string;
 };
 
 function json(data: unknown, status = 200): Response {
@@ -618,6 +622,7 @@ import {
   isTokenExpired,
   EXECUTABLE_ACTION_KINDS,
 } from "./wakeActionToken";
+import { handleGenerateBlueprintFromInput } from "./blueprintGenerator";
 
 async function handleGetWakeAction(request: Request, env: Env): Promise<Response> {
   if (request.method !== "POST") {
@@ -1299,6 +1304,9 @@ export default {
     }
     if (url.pathname === "/api/darake/wake-action/run") {
       return handleRunWakeAction(request, env);
+    }
+    if (url.pathname === "/api/darake/blueprint/generate-from-input") {
+      return handleGenerateBlueprintFromInput(request, env);
     }
     return env.ASSETS.fetch(request);
   },

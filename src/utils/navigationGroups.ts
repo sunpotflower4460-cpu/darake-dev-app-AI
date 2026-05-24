@@ -46,6 +46,7 @@ export const PANEL_GROUP_MAP: PanelNavGroupMap = {
   FocusedModePanel: 'home',
   DarakeNavigationBar: 'home',
   IssueDraftPanel: 'create',
+  AppDesignInputPanel: 'create',
   FinalCheckPanel: 'create',
   ManualGatePanel: 'create',
   IssueRecordPanel: 'create',

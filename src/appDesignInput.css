@@ -1,0 +1,243 @@
+.appDesignInputPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.appDesignInputHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.88));
+}
+
+.appDesignInputHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.appDesignInputHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  letter-spacing: -0.04em;
+}
+
+.appDesignInputHero .eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6a7765;
+  margin: 0 0 6px;
+}
+
+.appDesignInputSafety {
+  padding: 12px 16px;
+  border: 1px solid rgba(185, 130, 46, 0.35);
+  background: rgba(255, 247, 230, 0.7);
+  border-radius: 14px;
+  font-size: 0.88rem;
+  color: #6b4d18;
+}
+
+.appDesignInputForm {
+  display: grid;
+  gap: 14px;
+}
+
+.appDesignInputForm fieldset {
+  border: 1px solid rgba(76, 124, 85, 0.16);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+
+.appDesignInputForm legend {
+  font-size: 0.84rem;
+  color: #4c7c55;
+  padding: 0 6px;
+}
+
+.appDesignInputForm label {
+  display: block;
+  font-size: 0.86rem;
+  color: #35513d;
+  margin-bottom: 10px;
+}
+
+.appDesignInputForm input,
+.appDesignInputForm textarea {
+  margin-top: 4px;
+  display: block;
+  width: 100%;
+  border: 1px solid rgba(76, 124, 85, 0.25);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font: inherit;
+  background: #fffdf8;
+}
+
+.appDesignInputDropZone {
+  border: 2px dashed rgba(76, 124, 85, 0.35);
+  border-radius: 14px;
+  padding: 18px;
+  text-align: center;
+  background: rgba(248, 252, 240, 0.6);
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: #4c7c55;
+}
+
+.appDesignInputDropZone.dragOver {
+  background: rgba(229, 244, 213, 0.85);
+  border-color: #4c7c55;
+}
+
+.appDesignInputThumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.appDesignInputThumb {
+  position: relative;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fffdf8;
+}
+
+.appDesignInputThumb img {
+  display: block;
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+}
+
+.appDesignInputThumb .label {
+  padding: 6px 8px;
+  font-size: 0.75rem;
+  color: #4c5b46;
+  word-break: break-all;
+}
+
+.appDesignInputThumb button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(34, 41, 31, 0.78);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+}
+
+.appDesignInputControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.appDesignInputControls button.primary {
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  color: #fffaf0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.appDesignInputControls button.primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.appDesignInputStatus {
+  font-size: 0.85rem;
+  color: #4c5b46;
+}
+
+.appDesignInputStatus.error {
+  color: #b94c2e;
+}
+
+.appDesignInputResult {
+  display: grid;
+  gap: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.2);
+  border-radius: 16px;
+  padding: 16px;
+  background: #fffdf8;
+}
+
+.appDesignInputResult h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #35513d;
+}
+
+.appDesignInputResultMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: #6a7765;
+}
+
+.appDesignInputPaletteRow {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.appDesignInputPaletteSwatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.appDesignInputPhasesList {
+  display: grid;
+  gap: 10px;
+}
+
+.appDesignInputPhaseCard {
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: rgba(248, 252, 240, 0.55);
+}
+
+.appDesignInputPhaseCard h5 {
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+  color: #35513d;
+}
+
+.appDesignInputPhaseCard p {
+  margin: 4px 0;
+  color: #4c5b46;
+  font-size: 0.85rem;
+}
+
+.appDesignInputPhaseCard ul {
+  margin: 4px 0 0;
+  padding-left: 20px;
+  font-size: 0.83rem;
+  color: #4c5b46;
+}
