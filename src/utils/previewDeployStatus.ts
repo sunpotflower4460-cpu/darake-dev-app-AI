@@ -23,12 +23,14 @@ export function loadPreviewDeployRecord(): PreviewDeployRecord | null {
 export function sanitizePreviewUrl(value: string | null | undefined): string | null {
   if (!value) return null;
   const trimmed = value.trim();
-  if (!trimmed) return null;
+  if (!trimmed || /^javascript:/i.test(trimmed)) return null;
+
   try {
     const parsed = new URL(trimmed);
     if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
       return null;
     }
+    parsed.hash = '';
     return parsed.toString();
   } catch {
     return null;
@@ -45,7 +47,7 @@ export function savePreviewDeployRecord(record: PreviewDeployRecord): void {
 
 export function buildDefaultPreviewDeployRecord(): PreviewDeployRecord {
   return {
-    phaseName: 'Phase 97',
+    phaseName: 'Phase 104',
     deployStatus: 'unknown',
     deployedAt: null,
     previewUrl: null,

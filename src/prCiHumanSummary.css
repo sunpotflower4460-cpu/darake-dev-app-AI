@@ -23,6 +23,13 @@
   margin: 0 0 4px;
 }
 
+.prCiHuman__sectionLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: #2563eb;
+  text-transform: uppercase;
+}
+
 .prCiHuman__card {
   border-radius: 10px;
   padding: 16px;
@@ -94,6 +101,11 @@
 .prCiHuman__chip--review-approved { background: #dcfce7; color: #15803d; }
 .prCiHuman__chip--review-requested { background: #fef3c7; color: #92400e; }
 .prCiHuman__chip--review-none { background: #f3f4f6; color: #6b7280; }
+.prCiHuman__chip--merge-ready { background: #dcfce7; color: #15803d; }
+.prCiHuman__chip--merge-not-ready { background: #fef3c7; color: #92400e; }
+.prCiHuman__chip--merge-merged { background: #dbeafe; color: #1d4ed8; }
+.prCiHuman__chip--merge-unknown,
+.prCiHuman__chip--sha { background: #f3f4f6; color: #4b5563; }
 
 .prCiHuman__demo {
   display: flex;
@@ -129,7 +141,6 @@
   border-color: #2563eb;
 }
 
-/* Phase 103: Real data section */
 .prCiHuman__realSection {
   display: flex;
   flex-direction: column;
@@ -140,16 +151,26 @@
   border: 1px solid #e2e8f0;
 }
 
-.prCiHuman__realTitle {
-  font-size: 13px;
-  font-weight: 700;
-  color: #374151;
+.prCiHuman__repoHint,
+.prCiHuman__realSummary {
+  font-size: 12px;
+  color: #6b7280;
 }
 
 .prCiHuman__realForm {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  align-items: end;
+}
+
+.prCiHuman__fieldLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
 }
 
 .prCiHuman__realInput {
@@ -162,8 +183,8 @@
 }
 
 .prCiHuman__realInput--small {
-  flex: 0 0 90px;
-  min-width: 90px;
+  width: 110px;
+  min-width: 110px;
 }
 
 .prCiHuman__realBtn {
@@ -182,15 +203,29 @@
   cursor: not-allowed;
 }
 
+.prCiHuman__repoDetails {
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.prCiHuman__repoDetails summary {
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
 .prCiHuman__card--real {
   border: 2px solid #2563eb;
 }
 
-.prCiHuman__realBadge {
+.prCiHuman__realBadge,
+.prCiHuman__demoBadge {
   display: inline-block;
   font-size: 11px;
   font-weight: 700;
-  background: #2563eb;
   color: #fff;
   padding: 2px 8px;
   border-radius: 12px;
@@ -198,18 +233,20 @@
   align-self: flex-start;
 }
 
-.prCiHuman__realSummary {
-  font-size: 12px;
-  color: #6b7280;
-  margin-top: 4px;
+.prCiHuman__realBadge { background: #2563eb; }
+.prCiHuman__demoBadge { background: #64748b; }
+
+.prCiHuman__meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.prCiHuman__realError {
-  font-size: 13px;
-  color: #dc2626;
-  padding: 8px 10px;
-  background: #fef2f2;
-  border-radius: 6px;
+.prCiHuman__link {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d4ed8;
+  text-decoration: none;
 }
 
 .prCiHuman__demoSection {
@@ -231,13 +268,16 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-.prCiHuman__demoSection > *:not(summary) {
+.prCiHuman__demoInner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   padding: 12px;
 }
 
-/* Phase 108: Mobile */
 @media (max-width: 640px) {
-  .prCiHuman__demoSection {
-    display: none;
+  .prCiHuman__realForm {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
