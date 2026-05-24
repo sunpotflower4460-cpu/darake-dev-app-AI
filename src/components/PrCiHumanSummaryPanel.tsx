@@ -2,6 +2,12 @@ import { useMemo, useState } from 'react';
 import '../prCiHumanSummary.css';
 import { DarakePanelBadge } from './DarakePanelBadge';
 import {
+  buildDarakeWorkSession,
+  loadCurrentWorkSession,
+  parseGitHubPrInput,
+  saveCurrentWorkSession,
+} from '../utils/darakeWorkSession';
+import {
   buildMockPrCiSnapshot,
   translatePrCiToHuman,
   type CiStatus,
@@ -12,6 +18,7 @@ import {
   buildGitHubPrUrl,
   fetchPrCiStatus,
   loadPrCiLastQuery,
+  savePrCiLastStatus,
   savePrCiLastQuery,
   type RealPrCiStatus,
 } from '../utils/prCiStatusClient';
@@ -86,6 +93,29 @@ function normalizeRepoUrl(value: string): string {
   return value.trim() || DEFAULT_REPO_URL;
 }
 
+function sanitizeGitHubPrUrl(url: string | null): string | null {
+  return url && /^https:\/\/github\.com\/[^/]+\/[^/]+\/pull\/\d+\/?$/i.test(url) ? url : null;
+}
+
+function openGitHubPrUrl(url: string | null): void {
+  const safeUrl = sanitizeGitHubPrUrl(url);
+  if (!safeUrl) return;
+  window.open(safeUrl, '_blank', 'noopener,noreferrer');
+}
+
+function resolveEffectivePrUrl(args: {
+  fetchedPrUrl: string | null;
+  repoUrl: string;
+  prNumber: number | null;
+  fallbackPrUrl: string | null;
+}): string | null {
+  return (
+    sanitizeGitHubPrUrl(args.fetchedPrUrl) ??
+    (args.prNumber ? buildGitHubPrUrl(args.repoUrl, args.prNumber) : null) ??
+    args.fallbackPrUrl
+  );
+}
+
 function realStatusToSnapshot(status: RealPrCiStatus): PrCiSnapshot {
   return buildMockPrCiSnapshot({
     prNumber: status.prNumber ?? 0,
@@ -101,12 +131,16 @@ function realStatusToSnapshot(status: RealPrCiStatus): PrCiSnapshot {
 }
 
 export function PrCiHumanSummaryPanel() {
+  const session = loadCurrentWorkSession();
   const lastQuery = loadPrCiLastQuery();
-  const [repoUrl, setRepoUrl] = useState(normalizeRepoUrl(lastQuery.repoUrl));
-  const [prNumberInput, setPrNumberInput] = useState(lastQuery.prNumber);
+  const initialPrInput =
+    session?.prUrl || (session?.prNumber ? String(session.prNumber) : lastQuery.prNumber);
+  const [repoUrl, setRepoUrl] = useState(normalizeRepoUrl(session?.repoUrl || lastQuery.repoUrl));
+  const [prInput, setPrInput] = useState(initialPrInput);
   const [realStatus, setRealStatus] = useState<RealPrCiStatus | null>(null);
   const [realLoading, setRealLoading] = useState(false);
   const [activeScenario, setActiveScenario] = useState(0);
+  const [saveMessage, setSaveMessage] = useState('');
 
   const demoSnapshot = buildMockPrCiSnapshot(DEMO_SCENARIOS[activeScenario]?.snapshot);
   const demoSummary = translatePrCiToHuman(demoSnapshot);
@@ -114,21 +148,92 @@ export function PrCiHumanSummaryPanel() {
     () => (realStatus?.mode === 'real' ? translatePrCiToHuman(realStatusToSnapshot(realStatus)) : null),
     [realStatus],
   );
-  const savedPrUrl = buildGitHubPrUrl(repoUrl, Number.parseInt(prNumberInput, 10));
+  const parsedPrInput = parseGitHubPrInput(prInput, repoUrl);
+  const safeRealPrUrl = sanitizeGitHubPrUrl(realStatus?.prUrl ?? null);
+  const savedPrUrl = sanitizeGitHubPrUrl(
+    parsedPrInput.prUrl || buildGitHubPrUrl(repoUrl, parsedPrInput.prNumber ?? 0),
+  );
+  const displayPrUrl = safeRealPrUrl ?? savedPrUrl;
+
+  function savePrReference() {
+    if (!parsedPrInput.prNumber && !parsedPrInput.prUrl) {
+      setSaveMessage('PR URL または PR番号を入れてください');
+      return;
+    }
+    const normalizedRepoUrl = normalizeRepoUrl(parsedPrInput.repoUrl || repoUrl);
+    savePrCiLastQuery({
+      repoUrl: normalizedRepoUrl,
+      prNumber: parsedPrInput.prNumber ? String(parsedPrInput.prNumber) : '',
+    });
+    saveCurrentWorkSession(
+      buildDarakeWorkSession({
+        ...(loadCurrentWorkSession() ?? {}),
+        appName: session?.appName || '新しいアプリ',
+        oneLineIdea: session?.oneLineIdea || 'アイデアを整理する',
+        repoUrl: normalizedRepoUrl,
+        issueUrl: session?.issueUrl ?? null,
+        issueNumber: session?.issueNumber ?? null,
+        prUrl: parsedPrInput.prUrl,
+        prNumber: parsedPrInput.prNumber,
+        previewUrl: session?.previewUrl ?? null,
+        currentPhaseTitle: session?.currentPhaseTitle ?? null,
+        currentInstruction: session?.currentInstruction ?? null,
+        status: 'pr-detected',
+        nextActionLabel: 'CIを確認する',
+      }),
+    );
+    setRepoUrl(normalizedRepoUrl);
+    setPrInput(parsedPrInput.prUrl || (parsedPrInput.prNumber ? String(parsedPrInput.prNumber) : prInput));
+    setSaveMessage('WorkSessionにPRを保存しました');
+  }
 
   function handleFetchClick() {
     void handleFetch();
   }
 
   async function handleFetch() {
-    const prNum = Number.parseInt(prNumberInput, 10);
-    const nextRepoUrl = normalizeRepoUrl(repoUrl);
+    const prNum = parsedPrInput.prNumber ?? Number.parseInt(prInput, 10);
+    const nextRepoUrl = normalizeRepoUrl(parsedPrInput.repoUrl || repoUrl);
 
-    savePrCiLastQuery({ repoUrl: nextRepoUrl, prNumber: prNumberInput.trim() });
+    savePrCiLastQuery({ repoUrl: nextRepoUrl, prNumber: prNum > 0 ? String(prNum) : '' });
     setRealLoading(true);
     const result = await fetchPrCiStatus(nextRepoUrl, prNum);
+    savePrCiLastStatus(result);
     setRealStatus(result);
     setRealLoading(false);
+    const currentSession = loadCurrentWorkSession();
+    if (!currentSession) return;
+    const nextStatus =
+      result.mode === 'real' && (result.ciStatus === 'failed' || result.mergeReadiness === 'conflict')
+        ? 'review-needed'
+        : result.mode === 'real' && result.ciStatus === 'passed' && currentSession.previewUrl
+          ? 'preview-ready'
+          : 'ci-checking';
+    const nextActionLabel =
+      nextStatus === 'review-needed'
+        ? '人間確認する'
+        : result.mode === 'real' && result.ciStatus === 'passed' && currentSession.previewUrl
+          ? 'Previewを見る'
+          : result.mode === 'real' && result.ciStatus === 'passed'
+            ? 'Preview URLを探す'
+            : 'CIを確認する';
+    const effectivePrNumber = result.prNumber ?? parsedPrInput.prNumber ?? currentSession.prNumber;
+    const effectivePrUrl = resolveEffectivePrUrl({
+      fetchedPrUrl: result.prUrl,
+      repoUrl: nextRepoUrl,
+      prNumber: effectivePrNumber,
+      fallbackPrUrl: currentSession.prUrl,
+    });
+    saveCurrentWorkSession(
+      buildDarakeWorkSession({
+        ...currentSession,
+        repoUrl: nextRepoUrl,
+        prUrl: effectivePrUrl,
+        prNumber: effectivePrNumber,
+        status: nextStatus,
+        nextActionLabel,
+      }),
+    );
   }
 
   return (
@@ -142,17 +247,18 @@ export function PrCiHumanSummaryPanel() {
         <div className="prCiHuman__repoHint">対象Repo: {repoUrl || DEFAULT_REPO_URL}</div>
         <div className="prCiHuman__realForm">
           <label className="prCiHuman__fieldLabel" htmlFor="pr-ci-number">
-            PR番号
+            PR URL または PR番号
             <input
               id="pr-ci-number"
               className="prCiHuman__realInput prCiHuman__realInput--small"
-              value={prNumberInput}
-              onChange={(event) => setPrNumberInput(event.target.value)}
-              placeholder="185"
-              type="number"
-              min="1"
+              value={prInput}
+              onChange={(event) => setPrInput(event.target.value)}
+              placeholder="https://github.com/owner/repo/pull/185 または 185"
             />
           </label>
+          <button type="button" className="prCiHuman__realBtn" onClick={savePrReference}>
+            保存
+          </button>
           <button
             type="button"
             className="prCiHuman__realBtn"
@@ -162,6 +268,7 @@ export function PrCiHumanSummaryPanel() {
             {realLoading ? '取得中…' : '状態を取得する'}
           </button>
         </div>
+        {saveMessage ? <div className="prCiHuman__realSummary">{saveMessage}</div> : null}
 
         <details className="prCiHuman__repoDetails">
           <summary>リポジトリURLを変更</summary>
@@ -199,14 +306,10 @@ export function PrCiHumanSummaryPanel() {
                 <span className="prCiHuman__chip prCiHuman__chip--sha">HEAD: {formatHeadSha(realStatus.headSha)}</span>
               </div>
               <div className="prCiHuman__meta">
-                {realStatus.prUrl ? (
-                  <a href={realStatus.prUrl} target="_blank" rel="noreferrer" className="prCiHuman__link">
+                {displayPrUrl ? (
+                  <button type="button" className="prCiHuman__linkBtn" onClick={() => openGitHubPrUrl(displayPrUrl)}>
                     PRを開く
-                  </a>
-                ) : savedPrUrl ? (
-                  <a href={savedPrUrl} target="_blank" rel="noreferrer" className="prCiHuman__link">
-                    PRを開く
-                  </a>
+                  </button>
                 ) : null}
               </div>
             </div>
@@ -228,7 +331,7 @@ export function PrCiHumanSummaryPanel() {
           )
         ) : (
           <div className="prCiHuman__realSummary">
-            PR番号を入れると、CI状態 / レビュー状態 / マージ可否 / 最新commitを確認できます。
+            PR URL または PR番号を入れると、CI状態 / レビュー状態 / マージ可否 / 最新commitを確認できます。
           </div>
         )}
       </div>

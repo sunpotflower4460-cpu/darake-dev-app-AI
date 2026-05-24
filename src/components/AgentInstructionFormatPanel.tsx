@@ -5,15 +5,21 @@ import {
   buildAgentInstructionFormat,
   type AgentTarget,
 } from '../utils/agentInstructionFormat';
+import {
+  buildDarakeWorkSession,
+  loadCurrentWorkSession,
+  saveCurrentWorkSession,
+} from '../utils/darakeWorkSession';
 import { loadGentleAppStartForm } from '../utils/gentleAppStartForm';
 
 const TARGETS: AgentTarget[] = ['cloud-agent', 'codex', 'copilot', 'generic'];
 
 export function AgentInstructionFormatPanel() {
+  const session = loadCurrentWorkSession();
   const form = loadGentleAppStartForm();
   const [target, setTarget] = useState<AgentTarget>('cloud-agent');
-  const [appName, setAppName] = useState(form?.appName?.trim() || '');
-  const [phaseTitle, setPhaseTitle] = useState('');
+  const [appName, setAppName] = useState(session?.appName || form?.appName?.trim() || '');
+  const [phaseTitle, setPhaseTitle] = useState(session?.currentPhaseTitle || '');
   const [purpose, setPurpose] = useState('');
   const [scope, setScope] = useState('');
   const [doneConditions, setDoneConditions] = useState('');
@@ -33,17 +39,45 @@ export function AgentInstructionFormatPanel() {
         .filter(Boolean),
     });
     setResult(inst);
+    saveCurrentWorkSession(
+      buildDarakeWorkSession({
+        ...(loadCurrentWorkSession() ?? {}),
+        appName: appName || session?.appName || form?.appName || '新しいアプリ',
+        oneLineIdea: session?.oneLineIdea || form?.oneLineIdea || 'アイデアを整理する',
+        repoUrl: session?.repoUrl ?? null,
+        issueUrl: session?.issueUrl ?? null,
+        issueNumber: session?.issueNumber ?? null,
+        currentPhaseTitle: phaseTitle || 'Phase実装',
+        currentInstruction: `PR: ${inst.prTitle}\n\n${inst.prBody}`,
+        status: 'agent-instruction-ready',
+        nextActionLabel: 'Agentに渡す',
+      }),
+    );
   }
 
   function copyBody() {
-    if (!result) return;
-    const text = `PR: ${result.prTitle}\n\n${result.prBody}`;
-    if (navigator.clipboard) {
-      void navigator.clipboard.writeText(text).then(() => {
-        setCopied(true);
-        window.setTimeout(() => setCopied(false), 2000);
-      });
-    }
+   if (!result) return;
+   const text = `PR: ${result.prTitle}\n\n${result.prBody}`;
+   if (navigator.clipboard) {
+     void navigator.clipboard.writeText(text).then(() => {
+         saveCurrentWorkSession(
+           buildDarakeWorkSession({
+             ...(loadCurrentWorkSession() ?? {}),
+             appName: appName || session?.appName || form?.appName || '新しいアプリ',
+             oneLineIdea: session?.oneLineIdea || form?.oneLineIdea || 'アイデアを整理する',
+             repoUrl: session?.repoUrl ?? null,
+             issueUrl: session?.issueUrl ?? null,
+             issueNumber: session?.issueNumber ?? null,
+             currentPhaseTitle: phaseTitle || 'Phase実装',
+             currentInstruction: text,
+             status: 'agent-working',
+             nextActionLabel: 'PRを探す',
+           }),
+         );
+         setCopied(true);
+         window.setTimeout(() => setCopied(false), 2000);
+       });
+   }
   }
 
   return (

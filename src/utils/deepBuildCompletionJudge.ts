@@ -1,8 +1,102 @@
+import type { DarakeWorkSession } from './darakeWorkSession';
 import type { DeepBuildCompletionJudgement, DeepBuildPhase, DeepBuildPlan } from './deepBuildPlan';
+import type { RealPrCiStatus } from './prCiStatusClient';
+
+const HUMAN_CHECK_KEYWORDS = [
+  'App Store提出',
+  '本番公開',
+  '課金',
+  'Secret変更',
+  '法律',
+  '規約',
+  '大規模リファクタ',
+  'mainへの直接反映',
+].map((keyword) => keyword.toLowerCase());
+
+function inferHumanCheckRequired(phase: DeepBuildPhase): boolean {
+  const text = `${phase.title} ${phase.purpose}`.toLowerCase();
+  return HUMAN_CHECK_KEYWORDS.some((keyword) => text.includes(keyword));
+}
+
+function mapWorkSessionStatusToPhaseStatus(
+  phase: DeepBuildPhase,
+  session: DarakeWorkSession,
+  prStatus: RealPrCiStatus | null,
+): DeepBuildPhase['status'] {
+  if (session.status === 'phase-complete') return 'done';
+  if (session.status === 'review-needed') {
+    return prStatus?.ciStatus === 'failed' || prStatus?.mergeReadiness === 'conflict' ? 'needs-fix' : 'reviewing';
+  }
+  if (session.status === 'preview-ready') return 'reviewing';
+  if (session.status === 'ci-checking') return 'checks-running';
+  if (session.status === 'pr-detected') return 'pr-open';
+  if (session.status === 'agent-working' || session.status === 'agent-instruction-ready' || session.status === 'issue-created') {
+    return 'agent-working';
+  }
+  if (session.status === 'issue-ready' || session.status === 'idea') return 'issue-ready';
+  return phase.status;
+}
+
+export function syncCurrentDeepBuildPhase(
+  plan: DeepBuildPlan,
+  session: DarakeWorkSession | null,
+  prStatus: RealPrCiStatus | null,
+): DeepBuildPlan {
+  const phases = plan.phases.map((phase) => ({
+    ...phase,
+    humanCheckRequired: phase.humanCheckRequired ?? inferHumanCheckRequired(phase),
+  }));
+  const currentIndex = plan.currentPhaseId
+    ? phases.findIndex((phase) => phase.id === plan.currentPhaseId)
+    : phases.findIndex((phase) => phase.status !== 'done');
+
+  if (!session || currentIndex < 0) {
+    return { ...plan, phases };
+  }
+
+  const currentPhase = phases[currentIndex];
+  if (!currentPhase) {
+    return { ...plan, phases };
+  }
+
+  const linkedPrStatus =
+    prStatus && session.prNumber && prStatus.prNumber === session.prNumber ? prStatus : null;
+
+  phases[currentIndex] = {
+    ...currentPhase,
+    issueUrl: session.issueUrl ?? currentPhase.issueUrl ?? null,
+    issueNumber: session.issueNumber ?? currentPhase.issueNumber ?? null,
+    prUrl: session.prUrl ?? currentPhase.prUrl ?? null,
+    prNumber: session.prNumber ?? currentPhase.prNumber ?? null,
+    previewUrl: session.previewUrl ?? currentPhase.previewUrl ?? null,
+    ciStatus:
+      linkedPrStatus?.ciStatus === 'skipped'
+        ? 'unknown'
+        : linkedPrStatus?.ciStatus ?? currentPhase.ciStatus ?? 'unknown',
+    status: mapWorkSessionStatusToPhaseStatus(currentPhase, session, linkedPrStatus),
+  };
+
+  return { ...plan, phases };
+}
 
 export function markCompletionCandidates(plan: DeepBuildPlan): DeepBuildPlan {
   const phases = plan.phases.map((phase): DeepBuildPhase => {
-    const candidate = Boolean(phase.prUrl && phase.ciStatus === 'passed');
+    const hasIssue = Boolean(phase.issueNumber || phase.issueUrl);
+    const hasPr = Boolean(phase.prNumber || phase.prUrl);
+    const hasPreview = Boolean(phase.previewUrl);
+    const issueBasedCandidate =
+      phase.kind === 'design' && hasIssue && (phase.status === 'issue-ready' || phase.status === 'agent-working');
+    const prBasedCandidate =
+      (phase.kind === 'fix' || phase.kind === 'review' || phase.kind === 'final-polish') &&
+      hasPr &&
+      phase.status === 'pr-open';
+    const candidate =
+      !phase.humanCheckRequired &&
+      (
+        (phase.ciStatus === 'passed' && hasPreview) ||
+        issueBasedCandidate ||
+        prBasedCandidate
+      );
     return { ...phase, completionCandidate: candidate && !phase.humanCheckDone };
   });
   return { ...plan, phases };
@@ -75,4 +169,17 @@ export function getDeepBuildProgress(plan: DeepBuildPlan): {
     total,
     percent: total === 0 ? 0 : Math.round((done / total) * 100),
   };
+}
+
+export function getDeepBuildNextAction(phase: DeepBuildPhase | undefined): string {
+  if (!phase) return '次のPhaseへ';
+  if (phase.humanCheckRequired && !phase.humanCheckDone) return '人間確認する';
+  if (phase.completionCandidate) return '次のPhaseへ';
+  if (phase.status === 'issue-ready') return 'Issueを作る';
+  if (phase.status === 'agent-working') return 'AI指示をコピー';
+  if (phase.status === 'pr-open') return 'PRを登録する';
+  if (phase.status === 'checks-running') return 'CIを確認';
+  if (phase.previewUrl) return 'Previewを見る';
+  if (phase.status === 'needs-fix' || phase.status === 'fix-requested') return '人間確認する';
+  return '次のPhaseへ';
 }

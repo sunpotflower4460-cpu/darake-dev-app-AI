@@ -2,6 +2,11 @@ import { useMemo, useState } from 'react';
 import '../previewDeployStatus.css';
 import { DarakePanelBadge } from './DarakePanelBadge';
 import {
+  buildDarakeWorkSession,
+  loadCurrentWorkSession,
+  saveCurrentWorkSession,
+} from '../utils/darakeWorkSession';
+import {
   buildDefaultPreviewDeployRecord,
   deployStatusLabel,
   deployStatusLevel,
@@ -59,6 +64,17 @@ export function PreviewDeployStatusPanel() {
 
   function persist(next: PreviewDeployRecord, nextSource: 'manual' | 'extracted') {
     savePreviewDeployRecord(next);
+    const currentSession = loadCurrentWorkSession();
+    if (currentSession) {
+      saveCurrentWorkSession(
+        buildDarakeWorkSession({
+          ...currentSession,
+          previewUrl: next.previewUrl,
+          status: next.previewUrl ? 'preview-ready' : 'ci-checking',
+          nextActionLabel: next.previewUrl ? 'Previewを見る' : 'Preview URLを探す',
+        }),
+      );
+    }
     setRecord(next);
     setPhaseName(next.phaseName);
     setPreviewUrl(next.previewUrl ?? '');

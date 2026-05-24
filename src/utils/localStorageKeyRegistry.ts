@@ -468,12 +468,28 @@ export const LOCAL_STORAGE_KEY_REGISTRY: LocalStorageKeyRegistryItem[] = [
     notes: 'repoUrl文字列とprNumber文字列のみ。tokenなし。',
   },
   {
-    key: 'darake.workSession.current.v1',
-    owner: 'DarakeMothershipV1Panel',
-    phase: '101',
-    purpose: '進行中作業セッションの有無を判定するためのキー（将来拡張用）',
+    key: 'darake.prCiHuman.lastStatus.v1',
+    owner: 'PrCiHumanSummaryPanel',
+    phase: '105',
+    purpose: '最後に取得したPR/CI状態をDeep Build連携用に保存',
     containsSensitiveData: false,
-    notes: '存在確認のみ。値の内容はtokenなし。',
+    notes: 'PR URL・番号・CI/レビュー状態のみ。tokenなし。',
+  },
+  {
+    key: 'darake.workSession.current.v1',
+    owner: 'DarakeCurrentWorkPanel',
+    phase: '105',
+    purpose: '進行中のWorkSession本体を保存',
+    containsSensitiveData: false,
+    notes: 'アプリ名・Issue/PR/Preview URL・次アクションのみ。tokenなし。',
+  },
+  {
+    key: 'darake.workSession.history.v1',
+    owner: 'DarakeCurrentWorkPanel',
+    phase: '105',
+    purpose: '直近のWorkSession履歴を保存',
+    containsSensitiveData: false,
+    notes: '履歴20件まで。secret/tokenは保存しない。',
   },
 ];
 
