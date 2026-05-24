@@ -256,6 +256,16 @@
   text-decoration: none;
 }
 
+.prCiHuman__linkBtn {
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d4ed8;
+  cursor: pointer;
+}
+
 .prCiHuman__demoSection {
   border: 1px solid #e5e7eb;
   border-radius: 8px;

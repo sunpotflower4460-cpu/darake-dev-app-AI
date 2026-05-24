@@ -97,6 +97,25 @@ function sanitizeGitHubPrUrl(url: string | null): string | null {
   return url && /^https:\/\/github\.com\/[^/]+\/[^/]+\/pull\/\d+\/?$/i.test(url) ? url : null;
 }
 
+function openGitHubPrUrl(url: string | null): void {
+  const safeUrl = sanitizeGitHubPrUrl(url);
+  if (!safeUrl) return;
+  window.open(safeUrl, '_blank', 'noopener,noreferrer');
+}
+
+function resolveEffectivePrUrl(args: {
+  fetchedPrUrl: string | null;
+  repoUrl: string;
+  prNumber: number | null;
+  fallbackPrUrl: string | null;
+}): string | null {
+  return (
+    sanitizeGitHubPrUrl(args.fetchedPrUrl) ??
+    (args.prNumber ? buildGitHubPrUrl(args.repoUrl, args.prNumber) : null) ??
+    args.fallbackPrUrl
+  );
+}
+
 function realStatusToSnapshot(status: RealPrCiStatus): PrCiSnapshot {
   return buildMockPrCiSnapshot({
     prNumber: status.prNumber ?? 0,
@@ -198,10 +217,12 @@ export function PrCiHumanSummaryPanel() {
             ? 'Preview URLを探す'
             : 'CIを確認する';
     const effectivePrNumber = result.prNumber ?? parsedPrInput.prNumber ?? currentSession.prNumber;
-    const effectivePrUrl =
-      sanitizeGitHubPrUrl(result.prUrl) ??
-      (effectivePrNumber ? buildGitHubPrUrl(nextRepoUrl, effectivePrNumber) : null) ??
-      currentSession.prUrl;
+    const effectivePrUrl = resolveEffectivePrUrl({
+      fetchedPrUrl: result.prUrl,
+      repoUrl: nextRepoUrl,
+      prNumber: effectivePrNumber,
+      fallbackPrUrl: currentSession.prUrl,
+    });
     saveCurrentWorkSession(
       buildDarakeWorkSession({
         ...currentSession,
@@ -285,13 +306,13 @@ export function PrCiHumanSummaryPanel() {
               </div>
               <div className="prCiHuman__meta">
                 {safeRealPrUrl ? (
-                  <a href={safeRealPrUrl} target="_blank" rel="noreferrer" className="prCiHuman__link">
+                  <button type="button" className="prCiHuman__linkBtn" onClick={() => openGitHubPrUrl(safeRealPrUrl)}>
                     PRを開く
-                  </a>
+                  </button>
                 ) : savedPrUrl ? (
-                  <a href={savedPrUrl} target="_blank" rel="noreferrer" className="prCiHuman__link">
+                  <button type="button" className="prCiHuman__linkBtn" onClick={() => openGitHubPrUrl(savedPrUrl)}>
                     PRを開く
-                  </a>
+                  </button>
                 ) : null}
               </div>
             </div>

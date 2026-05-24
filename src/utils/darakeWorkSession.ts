@@ -36,6 +36,7 @@ export type DarakeWorkSession = {
 
 export const DARAKE_WORK_SESSION_CURRENT_KEY = 'darake.workSession.current.v1';
 export const DARAKE_WORK_SESSION_HISTORY_KEY = 'darake.workSession.history.v1';
+const MAX_WORK_SESSION_TEXT_LENGTH = 20000;
 
 const VALID_STATUSES: DarakeWorkSessionStatus[] = [
   'idea',
@@ -65,7 +66,7 @@ function sanitizeText(value: unknown, fallback = ''): string {
 function sanitizeOptionalText(value: unknown): string | null {
   const text = sanitizeText(value);
   if (!text) return null;
-  return text.slice(0, 20000);
+  return text.slice(0, MAX_WORK_SESSION_TEXT_LENGTH);
 }
 
 function sanitizeRepoUrl(value: unknown): string | null {
