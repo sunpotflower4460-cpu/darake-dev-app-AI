@@ -10,6 +10,8 @@ const SETUP_DONE_KEY = 'darake.setupHubV2.doneSteps.v1';
 // Must stay in sync with the STEPS array length in SetupHubV2Panel.tsx
 const SETUP_TOTAL_STEPS = 5;
 
+const WORK_SESSION_KEY = 'darake.workSession.current.v1';
+
 function loadSetupDoneCount(): number {
   try {
     const raw = localStorage.getItem(SETUP_DONE_KEY);
@@ -19,6 +21,15 @@ function loadSetupDoneCount(): number {
     return parsed.length;
   } catch {
     return 0;
+  }
+}
+
+function loadHasWorkSession(): boolean {
+  try {
+    const raw = localStorage.getItem(WORK_SESSION_KEY);
+    return raw !== null && raw.trim().length > 0;
+  } catch {
+    return false;
   }
 }
 
@@ -40,7 +51,9 @@ export function DarakeMothershipV1Panel() {
     const count = loadSetupDoneCount();
     setSetupDone(count >= SETUP_TOTAL_STEPS);
     const record = loadAppCreationRecord();
-    setHasInProgress(record !== null && record.status === 'active');
+    const hasFlow = record !== null && record.status === 'active';
+    const hasSession = loadHasWorkSession();
+    setHasInProgress(hasFlow || hasSession);
   }, []);
 
   const settingsNeedsAttention = !setupDone;
@@ -88,46 +101,50 @@ export function DarakeMothershipV1Panel() {
         </span>
       )}
 
-      <div className="mothership__progress">
-        <div className="mothership__progressBar">
-          <div
-            className="mothership__progressFill"
-            style={{ width: `${readiness.percent}%` }}
-          />
+      <details className="mothership__detailsSection">
+        <summary className="mothership__detailsSummary">機能一覧と進捗を見る</summary>
+
+        <div className="mothership__progress">
+          <div className="mothership__progressBar">
+            <div
+              className="mothership__progressFill"
+              style={{ width: `${readiness.percent}%` }}
+            />
+          </div>
+          <span className="mothership__progressLabel">{readiness.message}</span>
         </div>
-        <span className="mothership__progressLabel">{readiness.message}</span>
-      </div>
 
-      <ul className="mothership__features">
-        {MOTHERSHIP_V1_FEATURES.map((f) => (
-          <li key={f.id} className={`mothership__feature mothership__feature--${f.status}`}>
-            <span className="mothership__featureDot" aria-hidden="true" />
-            <div className="mothership__featureBody">
-              <div className="mothership__featureLabel">{f.label}</div>
-              <div className="mothership__featurePhase">{f.phase}</div>
-            </div>
-            <span className="mothership__featureDesc">{f.description}</span>
-          </li>
-        ))}
-      </ul>
-
-      {readiness.v1Complete ? (
-        <div className="mothership__complete">
-          <div className="mothership__completeTitle">v1 完成です</div>
-          <p className="mothership__completeNote">
-            初期設定・アイデア入力・Issue作成・Agent指示・PR確認・安全ゲート・App Store準備まで、一通りの開発サイクルがアプリ内で完結します。
-          </p>
-        </div>
-      ) : null}
-
-      <div className="mothership__vision">
-        <div className="mothership__visionTitle">v1後の発展</div>
-        <ul className="mothership__visionList">
-          <li className="mothership__visionItem">v1.5: 複数アプリ管理（宝地図・メモ・音楽・研究）</li>
-          <li className="mothership__visionItem">v2: テンプレート母艦化（アプリ種別に最適なテンプレ）</li>
-          <li className="mothership__visionItem">v3: AI工房OS化（アイデア → 完成まで全自動）</li>
+        <ul className="mothership__features">
+          {MOTHERSHIP_V1_FEATURES.map((f) => (
+            <li key={f.id} className={`mothership__feature mothership__feature--${f.status}`}>
+              <span className="mothership__featureDot" aria-hidden="true" />
+              <div className="mothership__featureBody">
+                <div className="mothership__featureLabel">{f.label}</div>
+                <div className="mothership__featurePhase">{f.phase}</div>
+              </div>
+              <span className="mothership__featureDesc">{f.description}</span>
+            </li>
+          ))}
         </ul>
-      </div>
+
+        {readiness.v1Complete ? (
+          <div className="mothership__complete">
+            <div className="mothership__completeTitle">v1 完成です</div>
+            <p className="mothership__completeNote">
+              初期設定・アイデア入力・Issue作成・Agent指示・PR確認・安全ゲート・App Store準備まで、一通りの開発サイクルがアプリ内で完結します。
+            </p>
+          </div>
+        ) : null}
+
+        <div className="mothership__vision">
+          <div className="mothership__visionTitle">v1後の発展</div>
+          <ul className="mothership__visionList">
+            <li className="mothership__visionItem">v1.5: 複数アプリ管理（宝地図・メモ・音楽・研究）</li>
+            <li className="mothership__visionItem">v2: テンプレート母艦化（アプリ種別に最適なテンプレ）</li>
+            <li className="mothership__visionItem">v3: AI工房OS化（アイデア → 完成まで全自動）</li>
+          </ul>
+        </div>
+      </details>
     </section>
   );
 }

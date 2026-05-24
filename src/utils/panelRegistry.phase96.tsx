@@ -8,7 +8,7 @@ export const PANEL_REGISTRY_PHASE96: PanelRegistryItem[] = [
     group: 'settings',
     phase: 'Phase 96',
     component: <SafetyGateV2Panel />,
-    defaultVisible: true,
+    defaultVisible: false,
     priority: 96,
     tags: ['safety', 'gate', 'stop', 'allow', 'darake', 'rules'],
     kind: 'developer',

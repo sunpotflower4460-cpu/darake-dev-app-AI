@@ -8,7 +8,7 @@ export const PANEL_REGISTRY_PHASE99: PanelRegistryItem[] = [
     group: 'submit',
     phase: 'Phase 99',
     component: <AppStorePrepModePanel />,
-    defaultVisible: true,
+    defaultVisible: false,
     priority: 99,
     tags: ['appstore', 'submit', 'prep', 'checklist', 'review'],
   },

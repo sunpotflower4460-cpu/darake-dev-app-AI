@@ -186,7 +186,12 @@ export function SetupHubV2Panel() {
               </span>
             </div>
             {diagnostic.overall !== 'not-ready' ? (
-              <div className="setupHubV2__diagReady">✅ 始められます</div>
+              <div className="setupHubV2__diagReady">
+                ✅ 始められます
+                {diagnostic.overall === 'partial' && (
+                  <span className="setupHubV2__diagReadySub">基本設定OK。任意設定はあとでOKです。</span>
+                )}
+              </div>
             ) : (
               <>
                 <div className="setupHubV2__diagNotReady">⚠️ 足りないのはこれだけです</div>
