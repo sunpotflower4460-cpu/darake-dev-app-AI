@@ -58,26 +58,27 @@ type DarakeCurrentWorkPanelProps = {
 
 export function DarakeCurrentWorkPanel({ session = loadCurrentWorkSession() }: DarakeCurrentWorkPanelProps) {
   const currentSession = session ?? loadCurrentWorkSession();
-  if (!hasActiveWorkSession(currentSession)) return null;
+  if (!currentSession || !hasActiveWorkSession(currentSession)) return null;
+  const activeSession = currentSession;
 
-  const onNext = resolveNextAction(currentSession);
+  const onNext = resolveNextAction(activeSession);
 
   return (
     <section className="currentWork" aria-label="今の作業">
       <span className="currentWork__eyebrow">Phase 105 · 今の作業</span>
       <h3 className="currentWork__title">今の作業</h3>
-      <div className="currentWork__appName">{currentSession.appName}</div>
-      {currentSession.currentPhaseTitle ? <div className="currentWork__phase">{currentSession.currentPhaseTitle}</div> : null}
+      <div className="currentWork__appName">{activeSession.appName}</div>
+      {activeSession.currentPhaseTitle ? <div className="currentWork__phase">{activeSession.currentPhaseTitle}</div> : null}
 
       <div className="currentWork__facts">
-        {currentSession.issueNumber ? <div>Issue: #{currentSession.issueNumber}</div> : null}
-        {currentSession.prNumber ? <div>PR: #{currentSession.prNumber}</div> : null}
-        <div>Preview: {currentSession.previewUrl ? 'あり' : 'なし'}</div>
+        {activeSession.issueNumber ? <div>Issue: #{activeSession.issueNumber}</div> : null}
+        {activeSession.prNumber ? <div>PR: #{activeSession.prNumber}</div> : null}
+        <div>Preview: {activeSession.previewUrl ? 'あり' : 'なし'}</div>
       </div>
 
       <div className="currentWork__next">
         <span>次にやること:</span>
-        <strong>{currentSession.nextActionLabel}</strong>
+        <strong>{activeSession.nextActionLabel}</strong>
       </div>
 
       <div className="currentWork__actions">
@@ -86,18 +87,18 @@ export function DarakeCurrentWorkPanel({ session = loadCurrentWorkSession() }: D
             次へ
           </button>
         ) : null}
-        {currentSession.issueUrl ? (
-          <button type="button" className="currentWork__secondary" onClick={() => openUrl(currentSession.issueUrl)}>
+        {activeSession.issueUrl ? (
+          <button type="button" className="currentWork__secondary" onClick={() => openUrl(activeSession.issueUrl)}>
             Issueを開く
           </button>
         ) : null}
-        {currentSession.prUrl ? (
-          <button type="button" className="currentWork__secondary" onClick={() => openUrl(currentSession.prUrl)}>
+        {activeSession.prUrl ? (
+          <button type="button" className="currentWork__secondary" onClick={() => openUrl(activeSession.prUrl)}>
             PRを開く
           </button>
         ) : null}
-        {currentSession.previewUrl ? (
-          <button type="button" className="currentWork__secondary" onClick={() => openUrl(currentSession.previewUrl)}>
+        {activeSession.previewUrl ? (
+          <button type="button" className="currentWork__secondary" onClick={() => openUrl(activeSession.previewUrl)}>
             Previewを開く
           </button>
         ) : null}
