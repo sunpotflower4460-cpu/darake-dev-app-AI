@@ -40,6 +40,12 @@
   gap: 6px;
 }
 
+.issueStable__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .issueStable__bodyLabel {
   font-size: 12px;
   font-weight: 600;
@@ -103,6 +109,16 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+}
+
+.issueStable__input {
+  flex: 1 1 260px;
+  min-width: 220px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 13px;
+  color: #111827;
 }
 
 .issueStable__note {

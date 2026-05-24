@@ -1,16 +1,26 @@
 import { useEffect, useMemo, useState } from 'react';
 import { buildDeepBuildPlan } from '../utils/buildDeepBuildPlan';
-import { judgeDeepBuildCompletion, getDeepBuildProgress, markCompletionCandidates } from '../utils/deepBuildCompletionJudge';
+import {
+  getDeepBuildNextAction,
+  getDeepBuildProgress,
+  judgeDeepBuildCompletion,
+  markCompletionCandidates,
+  syncCurrentDeepBuildPhase,
+} from '../utils/deepBuildCompletionJudge';
+import { loadCurrentWorkSession } from '../utils/darakeWorkSession';
 import { clearDeepBuildPlan, loadDeepBuildPlan, saveDeepBuildPlan } from '../utils/deepBuildPlanStorage';
 import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
 import { loadGentleAppStartForm } from '../utils/gentleAppStartForm';
 import type { DeepBuildPlan } from '../utils/deepBuildPlan';
+import { loadPrCiLastStatus } from '../utils/prCiStatusClient';
 
 function buildPlanSource(): { appName: string; oneLineIdea: string } {
+  const session = loadCurrentWorkSession();
   const form = loadGentleAppStartForm();
   return {
-    appName: form?.appName?.trim() || '宝地図アプリ',
+    appName: session?.appName || form?.appName?.trim() || '宝地図アプリ',
     oneLineIdea:
+      session?.oneLineIdea ||
       form?.oneLineIdea?.trim() ||
       '自分の夢や目標を宝の地図みたいに置いて、AIが次の一歩にしてくれるアプリ',
   };
@@ -66,7 +76,10 @@ export function DeepBuildModePanel() {
 
   const plan = useMemo(() => {
     const loaded = loadDeepBuildPlan();
-    return loaded ? markCompletionCandidates(loaded) : null;
+    if (!loaded) return null;
+    return markCompletionCandidates(
+      syncCurrentDeepBuildPhase(loaded, loadCurrentWorkSession(), loadPrCiLastStatus()),
+    );
   }, [revision]);
   const judgement = useMemo(() => (plan ? judgeDeepBuildCompletion(plan) : null), [plan]);
   const progress = useMemo(() => (plan ? getDeepBuildProgress(plan) : null), [plan]);
@@ -124,6 +137,7 @@ export function DeepBuildModePanel() {
   const currentPhase = plan.currentPhaseId
     ? plan.phases.find((p) => p.id === plan.currentPhaseId)
     : plan.phases.find((p) => p.status !== 'done');
+  const nextAction = getDeepBuildNextAction(currentPhase);
 
   const CI_STATUS_LABEL: Record<string, string> = {
     passed: '✅ CI成功',
@@ -154,10 +168,17 @@ export function DeepBuildModePanel() {
               {CI_STATUS_LABEL[currentPhase.ciStatus] ?? currentPhase.ciStatus}
             </span>
           ) : null}
+          <div className="deepBuildModePanel__nextAction">次の一手: {nextAction}</div>
+          {currentPhase.humanCheckRequired && !currentPhase.humanCheckDone ? (
+            <div className="deepBuildModePanel__check">
+              <span>ここは人間確認が必要です</span>
+              <p>自動で完了扱いにせず、人間が確認してから次へ進めます。</p>
+            </div>
+          ) : null}
           {currentPhase.completionCandidate ? (
             <div className="deepBuildModePanel__candidate">
               <span>🏁 完了候補</span>
-              <p>このPhaseは完了候補です。確認しますか？</p>
+              <p>このPhaseは完了候補です。確認して次へ進みますか？</p>
               <button
                 type="button"
                 className="deepBuildModePanel__confirmBtn"
@@ -170,6 +191,11 @@ export function DeepBuildModePanel() {
           {currentPhase.prUrl ? (
             <a href={currentPhase.prUrl} target="_blank" rel="noreferrer" className="deepBuildModePanel__link">
               🔗 PRを見る
+            </a>
+          ) : null}
+          {currentPhase.issueUrl ? (
+            <a href={currentPhase.issueUrl} target="_blank" rel="noreferrer" className="deepBuildModePanel__link">
+              📝 Issueを見る
             </a>
           ) : null}
           {currentPhase.previewUrl ? (
@@ -215,6 +241,7 @@ export function DeepBuildModePanel() {
             <li key={phase.id}>
               <strong>{phase.title}</strong>
               <span>{phase.status}</span>
+              {phase.humanCheckRequired ? <span className="deepBuildModePanel__candidateBadge">人間確認</span> : null}
               {phase.completionCandidate ? <span className="deepBuildModePanel__candidateBadge">完了候補</span> : null}
               <p>{phase.purpose}</p>
               <details>

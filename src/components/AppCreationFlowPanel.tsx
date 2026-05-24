@@ -8,7 +8,49 @@ import {
   saveAppCreationRecord,
   type AppCreationRecord,
 } from '../utils/appCreationFlowV1';
+import {
+  appendWorkSessionHistory,
+  buildDarakeWorkSession,
+  clearCurrentWorkSession,
+  loadCurrentWorkSession,
+  parseGitHubIssueInput,
+  parseGitHubPrInput,
+  saveCurrentWorkSession,
+} from '../utils/darakeWorkSession';
+import { loadGitHubIssueCreateState } from '../utils/githubIssueCreateState';
 import { SafetyConfirmButton } from './SafetyConfirmButton';
+
+function workSessionStepMeta(step: AppCreationRecord['currentStep']): {
+  status:
+    | 'idea'
+    | 'issue-ready'
+    | 'issue-created'
+    | 'agent-instruction-ready'
+    | 'agent-working'
+    | 'pr-detected'
+    | 'ci-checking'
+    | 'preview-ready'
+    | 'phase-complete';
+  nextActionLabel: string;
+} {
+  switch (step) {
+    case 'idea':
+    case 'mvp':
+    case 'blueprint':
+    case 'phase-breakdown':
+      return { status: 'idea', nextActionLabel: 'Issueを作る' };
+    case 'issue-created':
+      return { status: 'issue-ready', nextActionLabel: 'GitHub Issue作成画面を開く' };
+    case 'agent-handed':
+      return { status: 'agent-working', nextActionLabel: 'PRを探す' };
+    case 'pr-review':
+      return { status: 'pr-detected', nextActionLabel: 'CIを確認する' };
+    case 'preview-check':
+      return { status: 'ci-checking', nextActionLabel: 'Preview URLを探す' };
+    case 'next-improvement':
+      return { status: 'preview-ready', nextActionLabel: '次のPhaseへ' };
+  }
+}
 
 export function AppCreationFlowPanel() {
   const stored = loadAppCreationRecord();
@@ -21,15 +63,27 @@ export function AppCreationFlowPanel() {
 
   function startFlow() {
     if (!appName.trim()) return;
+    const repoUrl = loadGitHubIssueCreateState()?.repoUrl?.trim() || loadCurrentWorkSession()?.repoUrl || undefined;
     const newRecord: AppCreationRecord = {
       appName: appName.trim(),
       oneLineIdea: oneLineIdea.trim() || 'アイデアを整理する',
       currentStep: 'idea',
       completedSteps: [],
       status: 'active',
+      repoUrl,
       updatedAt: new Date().toISOString(),
     };
     saveAppCreationRecord(newRecord);
+    saveCurrentWorkSession(
+      buildDarakeWorkSession({
+        ...(loadCurrentWorkSession() ?? {}),
+        appName: newRecord.appName,
+        oneLineIdea: newRecord.oneLineIdea,
+        repoUrl,
+        status: 'idea',
+        nextActionLabel: 'Issueを作る',
+      }),
+    );
     setRecord(newRecord);
   }
 
@@ -37,30 +91,89 @@ export function AppCreationFlowPanel() {
     if (!record) return;
     const next = advanceAppCreationFlow(record);
     saveAppCreationRecord(next);
+    const meta = workSessionStepMeta(next.currentStep);
+    saveCurrentWorkSession(
+      buildDarakeWorkSession({
+        ...(loadCurrentWorkSession() ?? {}),
+        appName: next.appName,
+        oneLineIdea: next.oneLineIdea,
+        repoUrl: next.repoUrl ?? null,
+        issueUrl: next.issueUrl ?? null,
+        issueNumber: next.issueNumber ?? null,
+        prUrl: next.prUrl ?? null,
+        prNumber: next.prNumber ?? null,
+        previewUrl: next.previewUrl ?? null,
+        status: next.status === 'completed' ? 'phase-complete' : meta.status,
+        nextActionLabel: next.status === 'completed' ? '次のPhaseへ' : meta.nextActionLabel,
+      }),
+    );
     setRecord(next);
   }
 
   function reset() {
+    const currentSession = loadCurrentWorkSession();
+    if (currentSession) {
+      appendWorkSessionHistory(currentSession);
+      clearCurrentWorkSession();
+    }
     clearAppCreationRecord();
-    setRecord(null);
     setAppName('');
     setOneLineIdea('');
     setIssueUrl('');
     setPrUrl('');
     setPreviewUrl('');
+    setRecord(null);
   }
 
   function saveIssueUrl() {
     if (!record) return;
-    const next = { ...record, issueUrl: issueUrl.trim() };
+    const parsed = parseGitHubIssueInput(issueUrl, record.repoUrl);
+    const next = {
+      ...record,
+      issueUrl: parsed.issueUrl || issueUrl.trim() || undefined,
+      issueNumber: parsed.issueNumber || undefined,
+      repoUrl: parsed.repoUrl || record.repoUrl,
+    };
     saveAppCreationRecord(next);
+    saveCurrentWorkSession(
+      buildDarakeWorkSession({
+        ...(loadCurrentWorkSession() ?? {}),
+        appName: next.appName,
+        oneLineIdea: next.oneLineIdea,
+        repoUrl: next.repoUrl ?? null,
+        issueUrl: parsed.issueUrl || next.issueUrl || null,
+        issueNumber: parsed.issueNumber,
+        status: parsed.issueNumber || parsed.issueUrl ? 'issue-created' : 'issue-ready',
+        nextActionLabel: parsed.issueNumber || parsed.issueUrl ? 'AI指示を作る' : 'GitHub Issue作成画面を開く',
+      }),
+    );
     setRecord(next);
   }
 
   function savePrUrl() {
     if (!record) return;
-    const next = { ...record, prUrl: prUrl.trim() };
+    const parsed = parseGitHubPrInput(prUrl, record.repoUrl);
+    const next = {
+      ...record,
+      repoUrl: parsed.repoUrl || record.repoUrl,
+      prUrl: parsed.prUrl || prUrl.trim() || undefined,
+      prNumber: parsed.prNumber || undefined,
+    };
     saveAppCreationRecord(next);
+    saveCurrentWorkSession(
+      buildDarakeWorkSession({
+        ...(loadCurrentWorkSession() ?? {}),
+        appName: next.appName,
+        oneLineIdea: next.oneLineIdea,
+        repoUrl: next.repoUrl ?? null,
+        issueUrl: next.issueUrl ?? null,
+        issueNumber: next.issueNumber ?? null,
+        prUrl: parsed.prUrl || next.prUrl || null,
+        prNumber: parsed.prNumber,
+        status: parsed.prNumber || parsed.prUrl ? 'pr-detected' : 'agent-working',
+        nextActionLabel: parsed.prNumber || parsed.prUrl ? 'CIを確認する' : 'PRを探す',
+      }),
+    );
     setRecord(next);
   }
 
@@ -68,6 +181,21 @@ export function AppCreationFlowPanel() {
     if (!record) return;
     const next = { ...record, previewUrl: previewUrl.trim() };
     saveAppCreationRecord(next);
+    saveCurrentWorkSession(
+      buildDarakeWorkSession({
+        ...(loadCurrentWorkSession() ?? {}),
+        appName: next.appName,
+        oneLineIdea: next.oneLineIdea,
+        repoUrl: next.repoUrl ?? null,
+        issueUrl: next.issueUrl ?? null,
+        issueNumber: next.issueNumber ?? null,
+        prUrl: next.prUrl ?? null,
+        prNumber: next.prNumber ?? null,
+        previewUrl: next.previewUrl ?? null,
+        status: next.previewUrl?.trim() ? 'preview-ready' : 'ci-checking',
+        nextActionLabel: next.previewUrl?.trim() ? 'Previewを見る' : 'Preview URLを探す',
+      }),
+    );
     setRecord(next);
   }
 

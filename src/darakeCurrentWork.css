@@ -1,0 +1,77 @@
+.currentWork {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid #dbeafe;
+  background: linear-gradient(135deg, #eff6ff 0%, #ffffff 65%);
+}
+
+.currentWork__eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #2563eb;
+}
+
+.currentWork__title {
+  margin: 0;
+  font-size: 20px;
+  color: #111827;
+}
+
+.currentWork__appName {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1d4ed8;
+}
+
+.currentWork__phase {
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.currentWork__facts,
+.currentWork__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.currentWork__facts {
+  font-size: 13px;
+  color: #1f2937;
+}
+
+.currentWork__next {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #dbeafe;
+  color: #1e3a8a;
+}
+
+.currentWork__primary,
+.currentWork__secondary {
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.currentWork__primary {
+  border: none;
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.currentWork__secondary {
+  border: 1px solid #bfdbfe;
+  background: #ffffff;
+  color: #1d4ed8;
+}

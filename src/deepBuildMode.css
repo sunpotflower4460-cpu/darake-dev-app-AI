@@ -110,6 +110,12 @@
   color: rgba(23, 37, 28, 0.8);
 }
 
+.deepBuildModePanel__nextAction {
+  font-size: 13px;
+  font-weight: 700;
+  color: #285c39;
+}
+
 .deepBuildModePanel__candidate {
   display: grid;
   gap: 6px;

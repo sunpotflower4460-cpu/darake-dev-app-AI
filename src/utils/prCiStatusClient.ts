@@ -17,6 +17,7 @@ export type PrCiLastQuery = {
 };
 
 export const PR_CI_LAST_QUERY_KEY = 'darake.prCiHuman.lastQuery.v1';
+export const PR_CI_LAST_STATUS_KEY = 'darake.prCiHuman.lastStatus.v1';
 
 const PR_HEALTH_ENDPOINTS = ['/api/github/prs/health', '/api/darake/pr/health', '/api/pr/health'] as const;
 const UNAVAILABLE_MESSAGE = 'PR状態取得APIはまだ未接続です';
@@ -72,6 +73,55 @@ export function loadPrCiLastQuery(): PrCiLastQuery {
 export function savePrCiLastQuery(query: PrCiLastQuery): void {
   try {
     localStorage.setItem(PR_CI_LAST_QUERY_KEY, JSON.stringify(query));
+  } catch {
+    // ignore
+  }
+}
+
+export function loadPrCiLastStatus(): RealPrCiStatus | null {
+  try {
+    const raw = localStorage.getItem(PR_CI_LAST_STATUS_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<RealPrCiStatus>;
+    return {
+      mode:
+        parsed.mode === 'real' || parsed.mode === 'unavailable' || parsed.mode === 'error'
+          ? parsed.mode
+          : 'unavailable',
+      prNumber: typeof parsed.prNumber === 'number' ? parsed.prNumber : null,
+      prUrl: typeof parsed.prUrl === 'string' ? parsed.prUrl : null,
+      ciStatus:
+        parsed.ciStatus === 'passed' ||
+        parsed.ciStatus === 'failed' ||
+        parsed.ciStatus === 'running' ||
+        parsed.ciStatus === 'skipped'
+          ? parsed.ciStatus
+          : 'unknown',
+      reviewStatus:
+        parsed.reviewStatus === 'approved' ||
+        parsed.reviewStatus === 'changes-requested' ||
+        parsed.reviewStatus === 'pending' ||
+        parsed.reviewStatus === 'none'
+          ? parsed.reviewStatus
+          : 'unknown',
+      mergeReadiness:
+        parsed.mergeReadiness === 'ready' ||
+        parsed.mergeReadiness === 'not-ready' ||
+        parsed.mergeReadiness === 'merged' ||
+        parsed.mergeReadiness === 'conflict'
+          ? parsed.mergeReadiness
+          : 'unknown',
+      headSha: typeof parsed.headSha === 'string' ? parsed.headSha : null,
+      message: typeof parsed.message === 'string' ? parsed.message : undefined,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function savePrCiLastStatus(status: RealPrCiStatus): void {
+  try {
+    localStorage.setItem(PR_CI_LAST_STATUS_KEY, JSON.stringify(status));
   } catch {
     // ignore
   }

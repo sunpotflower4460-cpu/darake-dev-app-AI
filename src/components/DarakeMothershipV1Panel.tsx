@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
 import '../darakeMothershipV1.css';
+import { DarakeCurrentWorkPanel } from './DarakeCurrentWorkPanel';
 import {
   buildMothershipReadiness,
   MOTHERSHIP_V1_FEATURES,
 } from '../utils/darakeMothershipV1';
 import { loadAppCreationRecord } from '../utils/appCreationFlowV1';
+import {
+  hasActiveWorkSession,
+  loadCurrentWorkSession,
+  type DarakeWorkSession,
+} from '../utils/darakeWorkSession';
+import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
 
 const SETUP_DONE_KEY = 'darake.setupHubV2.doneSteps.v1';
-// Must stay in sync with the STEPS array length in SetupHubV2Panel.tsx
 const SETUP_TOTAL_STEPS = 5;
-
-const WORK_SESSION_KEY = 'darake.workSession.current.v1';
 
 function loadSetupDoneCount(): number {
   try {
@@ -21,15 +25,6 @@ function loadSetupDoneCount(): number {
     return parsed.length;
   } catch {
     return 0;
-  }
-}
-
-function loadHasWorkSession(): boolean {
-  try {
-    const raw = localStorage.getItem(WORK_SESSION_KEY);
-    return raw !== null && raw.trim().length > 0;
-  } catch {
-    return false;
   }
 }
 
@@ -46,14 +41,20 @@ export function DarakeMothershipV1Panel() {
   const readiness = buildMothershipReadiness();
   const [setupDone, setSetupDone] = useState(false);
   const [hasInProgress, setHasInProgress] = useState(false);
+  const [currentSession, setCurrentSession] = useState<DarakeWorkSession | null>(null);
 
   useEffect(() => {
-    const count = loadSetupDoneCount();
-    setSetupDone(count >= SETUP_TOTAL_STEPS);
-    const record = loadAppCreationRecord();
-    const hasFlow = record !== null && record.status === 'active';
-    const hasSession = loadHasWorkSession();
-    setHasInProgress(hasFlow || hasSession);
+    const sync = () => {
+      const count = loadSetupDoneCount();
+      setSetupDone(count >= SETUP_TOTAL_STEPS);
+      const record = loadAppCreationRecord();
+      const session = loadCurrentWorkSession();
+      const hasFlow = record !== null && record.status === 'active';
+      setCurrentSession(session);
+      setHasInProgress(hasFlow || hasActiveWorkSession(session));
+    };
+    sync();
+    return subscribeDarakeRuntimeEvents(sync);
   }, []);
 
   const settingsNeedsAttention = !setupDone;
@@ -92,6 +93,19 @@ export function DarakeMothershipV1Panel() {
           <span className="mothership__quickBtnSub">途中の作業や次の一手を確認します</span>
         </button>
       </div>
+
+      {hasActiveWorkSession(currentSession) ? (
+        <DarakeCurrentWorkPanel session={currentSession} />
+      ) : (
+        <button
+          type="button"
+          className="mothership__quickBtn mothership__quickBtn--create"
+          onClick={() => navigateToGroup('create')}
+        >
+          <span className="mothership__quickBtnMain">✏️ 作りたいものを置く</span>
+          <span className="mothership__quickBtnSub">進行中の作業がないので、ここから新しいWorkSessionを始めます</span>
+        </button>
+      )}
 
       {readiness.v1Complete ? (
         <span className="mothership__badge">v1 完成</span>

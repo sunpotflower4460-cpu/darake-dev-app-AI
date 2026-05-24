@@ -50,17 +50,18 @@ export type DeepBuildPhase = {
   agentInstruction: string;
   doneWhen: string[];
   status: DeepBuildPhaseStatus;
-  issueNumber?: number;
-  issueUrl?: string;
-  prNumber?: number;
-  prUrl?: string;
+  issueNumber?: number | null;
+  issueUrl?: string | null;
+  prNumber?: number | null;
+  prUrl?: string | null;
   autoFixAttempts?: number;
   maxAutoFixAttempts?: number;
   riskLevel?: DeepBuildRiskLevel;
   ciStatus?: 'unknown' | 'running' | 'passed' | 'failed';
-  previewUrl?: string;
+  previewUrl?: string | null;
   humanCheckDone?: boolean;
   completionCandidate?: boolean;
+  humanCheckRequired?: boolean;
 };
 
 export type DeepBuildCompletionContract = {
