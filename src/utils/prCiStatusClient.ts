@@ -1,12 +1,12 @@
 import { parseGitHubRepoUrl } from './githubRepoUrl';
 
 export type RealPrCiStatus = {
-  mode: 'real' | 'unavailable';
+  mode: 'real' | 'unavailable' | 'error';
   prNumber: number | null;
   prUrl: string | null;
   ciStatus: 'passed' | 'failed' | 'running' | 'unknown' | 'skipped';
-  reviewStatus: 'approved' | 'changes-requested' | 'pending' | 'none';
-  mergeReadiness: 'ready' | 'not-ready' | 'merged' | 'unknown';
+  reviewStatus: 'approved' | 'changes-requested' | 'pending' | 'none' | 'unknown';
+  mergeReadiness: 'ready' | 'not-ready' | 'merged' | 'conflict' | 'unknown';
   headSha: string | null;
   message?: string;
 };
@@ -17,9 +17,13 @@ export type PrCiLastQuery = {
 };
 
 export const PR_CI_LAST_QUERY_KEY = 'darake.prCiHuman.lastQuery.v1';
+
+const PR_HEALTH_ENDPOINTS = ['/api/github/prs/health', '/api/darake/pr/health', '/api/pr/health'] as const;
+const UNAVAILABLE_MESSAGE = 'PR状態取得APIはまだ未接続です';
+
 const DEFAULT_STATUS: Omit<RealPrCiStatus, 'mode' | 'prNumber' | 'prUrl' | 'message'> = {
   ciStatus: 'unknown',
-  reviewStatus: 'none',
+  reviewStatus: 'unknown',
   mergeReadiness: 'unknown',
   headSha: null,
 };
@@ -34,7 +38,7 @@ type PrHealthApiResponse = {
   prUrl?: string;
   ciStatus?: RealPrCiStatus['ciStatus'];
   reviewStatus?: RealPrCiStatus['reviewStatus'];
-  mergeReadiness?: RealPrCiStatus['mergeReadiness'];
+  mergeReadiness?: RealPrCiStatus['mergeReadiness'] | 'blocked';
   headSha?: string | null;
   error?: string;
 };
@@ -79,7 +83,7 @@ function mapLegacyHealth(data: PrHealthApiResponse): Omit<RealPrCiStatus, 'mode'
   }
 
   if (health === 'checks-running' || health === 'waiting') {
-    return { ...DEFAULT_STATUS, ciStatus: 'running' };
+    return { ...DEFAULT_STATUS, ciStatus: 'running', mergeReadiness: 'not-ready' };
   }
 
   if (health === 'review-needed') {
@@ -95,6 +99,7 @@ function mapLegacyHealth(data: PrHealthApiResponse): Omit<RealPrCiStatus, 'mode'
     return {
       ...DEFAULT_STATUS,
       ciStatus: 'passed',
+      reviewStatus: 'approved',
       mergeReadiness: 'ready',
     };
   }
@@ -107,36 +112,93 @@ function mapLegacyHealth(data: PrHealthApiResponse): Omit<RealPrCiStatus, 'mode'
     };
   }
 
+  if (health === 'merged') {
+    return {
+      ...DEFAULT_STATUS,
+      ciStatus: 'passed',
+      mergeReadiness: 'merged',
+    };
+  }
+
+  if (health === 'changes-requested') {
+    return {
+      ...DEFAULT_STATUS,
+      ciStatus: 'passed',
+      reviewStatus: 'changes-requested',
+      mergeReadiness: 'not-ready',
+    };
+  }
+
+  if (health === 'conflict' || health === 'blocked') {
+    return {
+      ...DEFAULT_STATUS,
+      mergeReadiness: 'conflict',
+    };
+  }
+
   return DEFAULT_STATUS;
 }
 
-function normalizeStatus(
-  repoUrl: string,
-  prNumber: number,
-  data: PrHealthApiResponse,
-): RealPrCiStatus {
+function normalizeReviewStatus(value: PrHealthApiResponse['reviewStatus']): RealPrCiStatus['reviewStatus'] {
+  if (value === 'approved' || value === 'changes-requested' || value === 'pending' || value === 'none') {
+    return value;
+  }
+  return 'unknown';
+}
+
+function normalizeMergeReadiness(value: PrHealthApiResponse['mergeReadiness']): RealPrCiStatus['mergeReadiness'] {
+  if (value === 'ready' || value === 'not-ready' || value === 'merged' || value === 'conflict') {
+    return value;
+  }
+  if (value === 'blocked') {
+    return 'conflict';
+  }
+  return 'unknown';
+}
+
+function normalizeStatus(repoUrl: string, prNumber: number, data: PrHealthApiResponse): RealPrCiStatus {
   const fallback = mapLegacyHealth(data);
   return {
     mode: 'real',
     prNumber: data.prNumber ?? prNumber,
     prUrl: data.prUrl ?? buildGitHubPrUrl(repoUrl, data.prNumber ?? prNumber),
     ciStatus: data.ciStatus ?? fallback.ciStatus,
-    reviewStatus: data.reviewStatus ?? fallback.reviewStatus,
-    mergeReadiness: data.mergeReadiness ?? fallback.mergeReadiness,
+    reviewStatus: data.reviewStatus ? normalizeReviewStatus(data.reviewStatus) : fallback.reviewStatus,
+    mergeReadiness: data.mergeReadiness ? normalizeMergeReadiness(data.mergeReadiness) : fallback.mergeReadiness,
     headSha: typeof data.headSha === 'string' ? data.headSha : fallback.headSha,
     message: data.summary ?? data.message,
   };
 }
 
-export async function fetchRealPrCiStatus(repoUrl: string, prNumber: number): Promise<RealPrCiStatus> {
-  const parsed = parseGitHubRepoUrl(repoUrl);
-  const prUrl = buildGitHubPrUrl(repoUrl, prNumber);
+function buildUnavailable(repoUrl: string, prNumber: number, message: string): RealPrCiStatus {
+  return {
+    mode: 'unavailable',
+    prNumber,
+    prUrl: buildGitHubPrUrl(repoUrl, prNumber),
+    ...DEFAULT_STATUS,
+    message,
+  };
+}
+
+function buildError(repoUrl: string, prNumber: number, message: string): RealPrCiStatus {
+  return {
+    mode: 'error',
+    prNumber,
+    prUrl: buildGitHubPrUrl(repoUrl, prNumber),
+    ...DEFAULT_STATUS,
+    message,
+  };
+}
+
+export async function fetchPrCiStatus(repoUrl: string, prNumber: number): Promise<RealPrCiStatus> {
+  const normalizedRepoUrl = repoUrl.trim();
+  const parsed = parseGitHubRepoUrl(normalizedRepoUrl);
 
   if (!parsed.ok) {
     return {
-      mode: 'unavailable',
+      mode: 'error',
       prNumber,
-      prUrl,
+      prUrl: buildGitHubPrUrl(repoUrl, prNumber),
       ...DEFAULT_STATUS,
       message: parsed.error,
     };
@@ -144,7 +206,7 @@ export async function fetchRealPrCiStatus(repoUrl: string, prNumber: number): Pr
 
   if (!Number.isInteger(prNumber) || prNumber <= 0) {
     return {
-      mode: 'unavailable',
+      mode: 'error',
       prNumber: null,
       prUrl: null,
       ...DEFAULT_STATUS,
@@ -152,33 +214,42 @@ export async function fetchRealPrCiStatus(repoUrl: string, prNumber: number): Pr
     };
   }
 
-  try {
-    const res = await fetch('/api/github/prs/health', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ repoUrl: repoUrl.trim(), prNumber }),
-    });
+  let sawNotFound = false;
 
-    const data = (await res.json().catch(() => null)) as PrHealthApiResponse | null;
-    if (!res.ok || !data?.ok) {
-      return {
-        mode: 'unavailable',
-        prNumber,
-        prUrl,
-        ...DEFAULT_STATUS,
-        message: data?.error ?? data?.message ?? `HTTP ${res.status}`,
-      };
+  for (const endpoint of PR_HEALTH_ENDPOINTS) {
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ repoUrl: normalizedRepoUrl, prNumber }),
+      });
+
+      const data = (await res.json().catch(() => null)) as PrHealthApiResponse | null;
+      if (res.status === 404) {
+        sawNotFound = true;
+        continue;
+      }
+
+      if (!res.ok) {
+        return buildError(normalizedRepoUrl, prNumber, data?.error ?? data?.message ?? `HTTP ${res.status}`);
+      }
+
+      if (!data?.ok) {
+        return buildError(normalizedRepoUrl, prNumber, data?.error ?? data?.message ?? 'PR状態を取得できませんでした。');
+      }
+
+      return normalizeStatus(normalizedRepoUrl, prNumber, data);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      return buildError(normalizedRepoUrl, prNumber, `ネットワークエラー: ${message}`);
     }
-
-    return normalizeStatus(repoUrl.trim(), prNumber, data);
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    return {
-      mode: 'unavailable',
-      prNumber,
-      prUrl,
-      ...DEFAULT_STATUS,
-      message: `ネットワークエラー: ${message}`,
-    };
   }
+
+  if (sawNotFound) {
+    return buildUnavailable(normalizedRepoUrl, prNumber, UNAVAILABLE_MESSAGE);
+  }
+
+  return buildUnavailable(normalizedRepoUrl, prNumber, UNAVAILABLE_MESSAGE);
 }
+
+export const fetchRealPrCiStatus = fetchPrCiStatus;

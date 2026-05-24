@@ -34,9 +34,9 @@ export function translatePrCiToHuman(snapshot: PrCiSnapshot): PrCiHumanSummary {
 
   if (mergeReadiness === 'blocked') {
     return {
-      headline: 'マージ条件を満たしていません。',
-      subline: 'コンフリクトやブランチ保護の可能性があります。',
-      nextAction: 'PR画面でブロック理由を確認してください',
+      headline: 'コンフリクトがあります。人間確認が必要です。',
+      subline: 'コンフリクト解消後に再確認してください。',
+      nextAction: 'PR画面で競合ファイルを確認してください',
       level: 'error',
       canMerge: false,
     };
@@ -87,7 +87,7 @@ export function translatePrCiToHuman(snapshot: PrCiSnapshot): PrCiHumanSummary {
 
   if (ciStatus === 'passed' && reviewStatus === 'pending') {
     return {
-      headline: 'CI成功。レビュー待ちです。',
+      headline: 'レビュー待ちです。',
       subline: 'レビュアーの確認が終わるまで待ってください。',
       nextAction: 'レビュー完了後に再確認してください',
       level: 'warn',

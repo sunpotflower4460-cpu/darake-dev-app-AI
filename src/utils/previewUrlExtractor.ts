@@ -10,9 +10,26 @@ function isAllowedPreviewHost(hostname: string): boolean {
   return PREVIEW_HOST_SUFFIXES.some((suffix) => lower === suffix || lower.endsWith(`.${suffix}`));
 }
 
+export function isAllowedPreviewUrl(value: string): boolean {
+  const trimmed = value.trim();
+  if (!trimmed || /^javascript:/i.test(trimmed) || /^data:/i.test(trimmed)) {
+    return false;
+  }
+
+  try {
+    const parsed = new URL(trimmed);
+    if (parsed.protocol !== 'https:') {
+      return false;
+    }
+    return isAllowedPreviewHost(parsed.hostname);
+  } catch {
+    return false;
+  }
+}
+
 function normalizePreviewUrl(candidate: string): string | null {
   const trimmed = stripTrailingPunctuation(candidate.trim());
-  if (!trimmed || /^javascript:/i.test(trimmed)) {
+  if (!trimmed || /^javascript:/i.test(trimmed) || /^data:/i.test(trimmed)) {
     return null;
   }
 
@@ -23,6 +40,9 @@ function normalizePreviewUrl(candidate: string): string | null {
     }
     if (!isAllowedPreviewHost(parsed.hostname)) {
       return null;
+    }
+    if (parsed.protocol === 'http:') {
+      parsed.protocol = 'https:';
     }
     parsed.hash = '';
     return parsed.toString();
@@ -45,13 +65,7 @@ export function extractPreviewUrls(text: string): string[] {
 
     const parsed = new URL(normalized);
     const key = canonicalKey(parsed);
-    const existing = deduped.get(key);
-    if (!existing) {
-      deduped.set(key, normalized);
-      continue;
-    }
-
-    if (existing.startsWith('http://') && normalized.startsWith('https://')) {
+    if (!deduped.has(key)) {
       deduped.set(key, normalized);
     }
   }

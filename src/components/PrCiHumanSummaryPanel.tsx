@@ -10,7 +10,7 @@ import {
 } from '../utils/prCiHumanTranslator';
 import {
   buildGitHubPrUrl,
-  fetchRealPrCiStatus,
+  fetchPrCiStatus,
   loadPrCiLastQuery,
   savePrCiLastQuery,
   type RealPrCiStatus,
@@ -26,6 +26,7 @@ const DEMO_SCENARIOS: { label: string; snapshot: Partial<PrCiSnapshot> }[] = [
     label: '修正依頼',
     snapshot: { ciStatus: 'passed', reviewStatus: 'changes-requested', mergeReadiness: 'not-ready' },
   },
+  { label: 'コンフリクト', snapshot: { ciStatus: 'passed', mergeReadiness: 'blocked' } },
   { label: 'マージ済', snapshot: { ciStatus: 'passed', mergeReadiness: 'merged' } },
 ];
 
@@ -45,26 +46,27 @@ const CI_LABEL: Record<CiStatus, string> = {
   skipped: 'CI: スキップ',
 };
 
-const REVIEW_CLASS: Record<ReviewStatus, string> = {
+const REVIEW_CLASS: Record<RealPrCiStatus['reviewStatus'], string> = {
   approved: 'prCiHuman__chip--review-approved',
   'changes-requested': 'prCiHuman__chip--review-requested',
   pending: 'prCiHuman__chip--review-none',
   none: 'prCiHuman__chip--review-none',
-  dismissed: 'prCiHuman__chip--review-none',
+  unknown: 'prCiHuman__chip--review-none',
 };
 
-const REVIEW_LABEL: Record<ReviewStatus, string> = {
+const REVIEW_LABEL: Record<RealPrCiStatus['reviewStatus'], string> = {
   approved: 'レビュー: 承認',
   'changes-requested': 'レビュー: 修正依頼',
   pending: 'レビュー: 待機中',
   none: 'レビュー: なし',
-  dismissed: 'レビュー: 解消済み',
+  unknown: 'レビュー: 不明',
 };
 
 const MERGE_CLASS: Record<RealPrCiStatus['mergeReadiness'], string> = {
   ready: 'prCiHuman__chip--merge-ready',
   'not-ready': 'prCiHuman__chip--merge-not-ready',
   merged: 'prCiHuman__chip--merge-merged',
+  conflict: 'prCiHuman__chip--merge-conflict',
   unknown: 'prCiHuman__chip--merge-unknown',
 };
 
@@ -72,6 +74,7 @@ const MERGE_LABEL: Record<RealPrCiStatus['mergeReadiness'], string> = {
   ready: 'マージ: 可能',
   'not-ready': 'マージ: 未準備',
   merged: 'マージ: 済み',
+  conflict: 'マージ: コンフリクト',
   unknown: 'マージ: 不明',
 };
 
@@ -87,8 +90,13 @@ function realStatusToSnapshot(status: RealPrCiStatus): PrCiSnapshot {
   return buildMockPrCiSnapshot({
     prNumber: status.prNumber ?? 0,
     ciStatus: status.ciStatus,
-    reviewStatus: status.reviewStatus,
-    mergeReadiness: status.mergeReadiness === 'unknown' ? 'unknown' : status.mergeReadiness,
+    reviewStatus: status.reviewStatus === 'unknown' ? 'none' : status.reviewStatus,
+    mergeReadiness:
+      status.mergeReadiness === 'conflict'
+        ? 'blocked'
+        : status.mergeReadiness === 'unknown'
+          ? 'unknown'
+          : status.mergeReadiness,
   });
 }
 
@@ -118,7 +126,7 @@ export function PrCiHumanSummaryPanel() {
 
     savePrCiLastQuery({ repoUrl: nextRepoUrl, prNumber: prNumberInput.trim() });
     setRealLoading(true);
-    const result = await fetchRealPrCiStatus(nextRepoUrl, prNum);
+    const result = await fetchPrCiStatus(nextRepoUrl, prNum);
     setRealStatus(result);
     setRealLoading(false);
   }
@@ -130,7 +138,7 @@ export function PrCiHumanSummaryPanel() {
       <h2 className="prCiHuman__title">PR/CI 要約</h2>
 
       <div className="prCiHuman__realSection">
-        <div className="prCiHuman__sectionLabel">実データ</div>
+        <div className="prCiHuman__sectionLabel">実データ取得</div>
         <div className="prCiHuman__repoHint">対象Repo: {repoUrl || DEFAULT_REPO_URL}</div>
         <div className="prCiHuman__realForm">
           <label className="prCiHuman__fieldLabel" htmlFor="pr-ci-number">
@@ -164,12 +172,15 @@ export function PrCiHumanSummaryPanel() {
             placeholder={DEFAULT_REPO_URL}
           />
         </details>
+      </div>
 
+      <div className="prCiHuman__resultSection">
+        <div className="prCiHuman__sectionLabel">取得結果</div>
         {realStatus ? (
           realStatus.mode === 'real' && realSummary ? (
             <div className={`prCiHuman__card prCiHuman__card--${realSummary.level} prCiHuman__card--real`}>
               <div className="prCiHuman__realBadge">実データ</div>
-              <div className="prCiHuman__headline">{realStatus.message ?? realSummary.headline}</div>
+              <div className="prCiHuman__headline">{realSummary.headline}</div>
               <div className="prCiHuman__subline">{realSummary.subline}</div>
               <div className="prCiHuman__next">次にやること: {realSummary.nextAction}</div>
               <div className="prCiHuman__details">
@@ -196,13 +207,19 @@ export function PrCiHumanSummaryPanel() {
                 ) : null}
               </div>
             </div>
+          ) : realStatus.mode === 'unavailable' ? (
+            <div className="prCiHuman__card prCiHuman__card--neutral prCiHuman__card--real">
+              <div className="prCiHuman__realBadge">実データ</div>
+              <div className="prCiHuman__headline">実データ取得はまだ未接続です。</div>
+              <div className="prCiHuman__subline">デモ表示で確認できます。</div>
+              {realStatus.message ? <div className="prCiHuman__realSummary">{realStatus.message}</div> : null}
+            </div>
           ) : (
             <div className="prCiHuman__card prCiHuman__card--neutral prCiHuman__card--real">
               <div className="prCiHuman__realBadge">実データ</div>
               <div className="prCiHuman__headline">
                 PR状態を取得できませんでした。PR番号やGitHub連携を確認してください。
               </div>
-              <div className="prCiHuman__subline">デモ表示で確認できます。</div>
               {realStatus.message ? <div className="prCiHuman__realSummary">{realStatus.message}</div> : null}
             </div>
           )
@@ -214,7 +231,7 @@ export function PrCiHumanSummaryPanel() {
       </div>
 
       <details className="prCiHuman__demoSection">
-        <summary className="prCiHuman__demoSummary">デモ</summary>
+        <summary className="prCiHuman__demoSummary">デモ表示</summary>
 
         <div className="prCiHuman__demoInner">
           <div className={`prCiHuman__card prCiHuman__card--${demoSummary.level}`}>
@@ -228,8 +245,8 @@ export function PrCiHumanSummaryPanel() {
             <span className={`prCiHuman__chip ${CI_CHIP_CLASS[demoSnapshot.ciStatus]}`}>
               {CI_LABEL[demoSnapshot.ciStatus]}
             </span>
-            <span className={`prCiHuman__chip ${REVIEW_CLASS[demoSnapshot.reviewStatus]}`}>
-              {REVIEW_LABEL[demoSnapshot.reviewStatus]}
+            <span className={`prCiHuman__chip ${REVIEW_CLASS[demoSnapshot.reviewStatus === 'dismissed' ? 'none' : demoSnapshot.reviewStatus]}`}>
+              {REVIEW_LABEL[demoSnapshot.reviewStatus === 'dismissed' ? 'none' : demoSnapshot.reviewStatus]}
             </span>
           </div>
 
