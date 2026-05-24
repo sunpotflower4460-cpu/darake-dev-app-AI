@@ -320,3 +320,58 @@
     padding: 14px;
   }
 }
+
+/* Phase 102: Required/optional details breakdown */
+.setupHubV2__diagDetails {
+  margin-top: 8px;
+}
+
+.setupHubV2__diagDetailsSummary {
+  font-size: 12px;
+  color: #6b7280;
+  cursor: pointer;
+  user-select: none;
+}
+
+.setupHubV2__diagSection {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.setupHubV2__diagSectionLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.setupHubV2__diagItemList {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.setupHubV2__diagItemEntry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #374151;
+}
+
+.setupHubV2__diagItemIcon {
+  font-size: 11px;
+  width: 14px;
+  flex-shrink: 0;
+}
+
+.setupHubV2__diagItemEntry--ok .setupHubV2__diagItemIcon { color: #15803d; }
+.setupHubV2__diagItemEntry--missing .setupHubV2__diagItemIcon,
+.setupHubV2__diagItemEntry--blocked .setupHubV2__diagItemIcon { color: #b91c1c; }
