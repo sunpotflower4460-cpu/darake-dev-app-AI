@@ -25,9 +25,9 @@ vm.runInNewContext(
   { filename: sourcePath },
 );
 
-const { extractPreviewUrls } = moduleRef.exports;
-if (typeof extractPreviewUrls !== 'function') {
-  throw new Error('extractPreviewUrls が見つかりません');
+const { extractPreviewUrls, isAllowedPreviewUrl } = moduleRef.exports;
+if (typeof extractPreviewUrls !== 'function' || typeof isAllowedPreviewUrl !== 'function') {
+  throw new Error('extractPreviewUrls / isAllowedPreviewUrl が見つかりません');
 }
 
 const cases = [
@@ -36,10 +36,15 @@ const cases = [
   { input: 'https://demo.vercel.app', expected: ['https://demo.vercel.app/'] },
   { input: 'https://sample.netlify.app', expected: ['https://sample.netlify.app/'] },
   { input: 'javascript:alert(1)', expected: [] },
+  { input: 'data:text/html,<h1>x</h1>', expected: [] },
   { input: 'ただの文章', expected: [] },
   {
     input: 'https://dup.pages.dev https://dup.pages.dev',
     expected: ['https://dup.pages.dev/'],
+  },
+  {
+    input: 'http://example.pages.dev',
+    expected: ['https://example.pages.dev/'],
   },
 ];
 
@@ -59,4 +64,26 @@ if (failed > 0) {
   process.exit(1);
 }
 
-console.log(`previewUrlExtractor smoke test passed: ${cases.length} case(s).`);
+const allowedChecks = [
+  { input: 'https://example.pages.dev', expected: true },
+  { input: 'http://example.pages.dev', expected: false },
+  { input: 'javascript:alert(1)', expected: false },
+  { input: 'data:text/html,<h1>x</h1>', expected: false },
+];
+
+for (const check of allowedChecks) {
+  const actual = isAllowedPreviewUrl(check.input);
+  const passed = actual === check.expected;
+  console.log(`[${passed ? 'PASS' : 'FAIL'}] allowed ${check.input} => ${actual}`);
+  if (!passed) {
+    failed += 1;
+    console.log(`  expected: ${check.expected}`);
+  }
+}
+
+if (failed > 0) {
+  console.error(`previewUrlExtractor smoke test failed: ${failed} case(s).`);
+  process.exit(1);
+}
+
+console.log(`previewUrlExtractor smoke test passed: ${cases.length + allowedChecks.length} case(s).`);

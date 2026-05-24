@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "safetygate:test": "node scripts/safetyGateV2Smoke.mjs",
+    "preview:test": "node scripts/previewUrlExtractorSmoke.mjs",
     "state:build": "node scripts/buildState.mjs",
     "review:build": "node scripts/buildReviewWatch.mjs",
     "pr:build": "node scripts/buildPrWatch.mjs",

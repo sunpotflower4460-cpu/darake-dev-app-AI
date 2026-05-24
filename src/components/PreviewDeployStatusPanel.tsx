@@ -103,11 +103,11 @@ export function PreviewDeployStatusPanel() {
   return (
     <section className="previewDeploy" aria-label="Preview/Deploy 実データと手動メモ">
       <DarakePanelBadge kinds={['real-data', 'manual-note']} />
-      <span className="previewDeploy__eyebrow">Phase 104 · 実データ / 手動メモ</span>
+      <span className="previewDeploy__eyebrow">Phase 104 · 自動検出 / 手動メモ</span>
       <h2 className="previewDeploy__title">Preview/Deploy 確認</h2>
 
       <div className="previewDeploy__realSection">
-        <div className="previewDeploy__sectionLabel">実データ</div>
+        <div className="previewDeploy__sectionLabel">Preview URL自動検出</div>
         {linkedPrUrl ? (
           <div className="previewDeploy__linkedCard">
             <div className="previewDeploy__linkedText">
@@ -149,7 +149,7 @@ export function PreviewDeployStatusPanel() {
 
         {detectedPreviewUrl ? (
           <div className="previewDeploy__detectedCard">
-            <div className="previewDeploy__detectedBadge">実データ</div>
+            <div className="previewDeploy__detectedBadge">自動検出</div>
             <div className="previewDeploy__detectedTitle">Preview URLを見つけました</div>
             <a
               href={detectedPreviewUrl}
@@ -175,7 +175,7 @@ export function PreviewDeployStatusPanel() {
       </div>
 
       <div className="previewDeploy__manualSection">
-        <div className="previewDeploy__sectionLabel">手動メモ</div>
+        <div className="previewDeploy__sectionLabel">Preview/Deploy 手動メモ</div>
 
         <div className={`previewDeploy__status previewDeploy__status--${level}`}>
           <span className="previewDeploy__dot" aria-hidden="true" />
@@ -205,7 +205,7 @@ export function PreviewDeployStatusPanel() {
                 urlSource === 'extracted' ? 'previewDeploy__urlBadge--real' : 'previewDeploy__urlBadge--manual'
               }`}
             >
-              {urlSource === 'extracted' ? '実データ' : '手動メモ'}
+              {urlSource === 'extracted' ? '自動検出' : '手動メモ'}
             </span>
           </div>
         ) : null}

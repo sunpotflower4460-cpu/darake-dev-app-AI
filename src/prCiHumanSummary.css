@@ -104,6 +104,7 @@
 .prCiHuman__chip--merge-ready { background: #dcfce7; color: #15803d; }
 .prCiHuman__chip--merge-not-ready { background: #fef3c7; color: #92400e; }
 .prCiHuman__chip--merge-merged { background: #dbeafe; color: #1d4ed8; }
+.prCiHuman__chip--merge-conflict { background: #fee2e2; color: #991b1b; }
 .prCiHuman__chip--merge-unknown,
 .prCiHuman__chip--sha { background: #f3f4f6; color: #4b5563; }
 
@@ -149,6 +150,12 @@
   background: #f8fafc;
   border-radius: 8px;
   border: 1px solid #e2e8f0;
+}
+
+.prCiHuman__resultSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .prCiHuman__repoHint,

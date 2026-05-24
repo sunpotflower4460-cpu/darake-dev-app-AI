@@ -1,3 +1,5 @@
+import { isAllowedPreviewUrl } from './previewUrlExtractor';
+
 const STORAGE_KEY = 'darake.previewDeployStatus.v1';
 
 export type DeployStatus = 'unknown' | 'deploying' | 'deployed' | 'failed';
@@ -23,15 +25,16 @@ export function loadPreviewDeployRecord(): PreviewDeployRecord | null {
 export function sanitizePreviewUrl(value: string | null | undefined): string | null {
   if (!value) return null;
   const trimmed = value.trim();
-  if (!trimmed || /^javascript:/i.test(trimmed)) return null;
+  if (!trimmed || /^javascript:/i.test(trimmed) || /^data:/i.test(trimmed)) return null;
 
   try {
     const parsed = new URL(trimmed);
-    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+    if (parsed.protocol !== 'https:') {
       return null;
     }
     parsed.hash = '';
-    return parsed.toString();
+    const sanitized = parsed.toString();
+    return isAllowedPreviewUrl(sanitized) ? sanitized : null;
   } catch {
     return null;
   }
