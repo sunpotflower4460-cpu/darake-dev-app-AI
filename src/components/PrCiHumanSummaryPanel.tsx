@@ -153,6 +153,7 @@ export function PrCiHumanSummaryPanel() {
   const savedPrUrl = sanitizeGitHubPrUrl(
     parsedPrInput.prUrl || buildGitHubPrUrl(repoUrl, parsedPrInput.prNumber ?? 0),
   );
+  const displayPrUrl = safeRealPrUrl ?? savedPrUrl;
 
   function savePrReference() {
     if (!parsedPrInput.prNumber && !parsedPrInput.prUrl) {
@@ -305,12 +306,8 @@ export function PrCiHumanSummaryPanel() {
                 <span className="prCiHuman__chip prCiHuman__chip--sha">HEAD: {formatHeadSha(realStatus.headSha)}</span>
               </div>
               <div className="prCiHuman__meta">
-                {safeRealPrUrl ? (
-                  <button type="button" className="prCiHuman__linkBtn" onClick={() => openGitHubPrUrl(safeRealPrUrl)}>
-                    PRを開く
-                  </button>
-                ) : savedPrUrl ? (
-                  <button type="button" className="prCiHuman__linkBtn" onClick={() => openGitHubPrUrl(savedPrUrl)}>
+                {displayPrUrl ? (
+                  <button type="button" className="prCiHuman__linkBtn" onClick={() => openGitHubPrUrl(displayPrUrl)}>
                     PRを開く
                   </button>
                 ) : null}

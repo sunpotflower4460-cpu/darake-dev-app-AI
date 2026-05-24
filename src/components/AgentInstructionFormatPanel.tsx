@@ -60,23 +60,23 @@ export function AgentInstructionFormatPanel() {
    const text = `PR: ${result.prTitle}\n\n${result.prBody}`;
    if (navigator.clipboard) {
      void navigator.clipboard.writeText(text).then(() => {
-       saveCurrentWorkSession(
-         buildDarakeWorkSession({
-           ...(loadCurrentWorkSession() ?? {}),
-           appName: appName || session?.appName || form?.appName || '新しいアプリ',
-           oneLineIdea: session?.oneLineIdea || form?.oneLineIdea || 'アイデアを整理する',
-           repoUrl: session?.repoUrl ?? null,
-           issueUrl: session?.issueUrl ?? null,
-           issueNumber: session?.issueNumber ?? null,
-           currentPhaseTitle: phaseTitle || 'Phase実装',
-           currentInstruction: text,
-           status: 'agent-working',
-           nextActionLabel: 'PRを探す',
-         }),
-       );
-       setCopied(true);
-       window.setTimeout(() => setCopied(false), 2000);
-     });
+         saveCurrentWorkSession(
+           buildDarakeWorkSession({
+             ...(loadCurrentWorkSession() ?? {}),
+             appName: appName || session?.appName || form?.appName || '新しいアプリ',
+             oneLineIdea: session?.oneLineIdea || form?.oneLineIdea || 'アイデアを整理する',
+             repoUrl: session?.repoUrl ?? null,
+             issueUrl: session?.issueUrl ?? null,
+             issueNumber: session?.issueNumber ?? null,
+             currentPhaseTitle: phaseTitle || 'Phase実装',
+             currentInstruction: text,
+             status: 'agent-working',
+             nextActionLabel: 'PRを探す',
+           }),
+         );
+         setCopied(true);
+         window.setTimeout(() => setCopied(false), 2000);
+       });
    }
   }
 

@@ -52,6 +52,9 @@ const VALID_STATUSES: DarakeWorkSessionStatus[] = [
 ];
 
 function makeId(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return `work-${crypto.randomUUID()}`;
+  }
   return `work-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
