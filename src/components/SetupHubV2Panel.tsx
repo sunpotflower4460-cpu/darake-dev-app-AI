@@ -208,7 +208,9 @@ export function SetupHubV2Panel() {
                 <ul className="setupHubV2__diagItemList">
                   {diagnostic.items.filter((i) => i.required).map((item) => (
                     <li key={item.id} className={`setupHubV2__diagItemEntry setupHubV2__diagItemEntry--${item.level}`}>
-                      <span className="setupHubV2__diagItemIcon">{item.level === 'ok' ? '✓' : '△'}</span>
+                      <span className="setupHubV2__diagItemIcon">
+                        {item.level === 'ok' ? '✓' : item.level === 'blocked' ? '✕' : '△'}
+                      </span>
                       {item.label}
                     </li>
                   ))}
@@ -219,7 +221,9 @@ export function SetupHubV2Panel() {
                 <ul className="setupHubV2__diagItemList">
                   {diagnostic.items.filter((i) => !i.required).map((item) => (
                     <li key={item.id} className={`setupHubV2__diagItemEntry setupHubV2__diagItemEntry--${item.level}`}>
-                      <span className="setupHubV2__diagItemIcon">{item.level === 'ok' ? '✓' : '△'}</span>
+                      <span className="setupHubV2__diagItemIcon">
+                        {item.level === 'ok' ? '✓' : item.level === 'blocked' ? '✕' : '△'}
+                      </span>
                       {item.label}
                     </li>
                   ))}
