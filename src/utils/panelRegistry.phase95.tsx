@@ -8,7 +8,7 @@ export const PANEL_REGISTRY_PHASE95: PanelRegistryItem[] = [
     group: "watch",
     phase: "Phase 103",
     component: <PrCiHumanSummaryPanel />,
-    defaultVisible: true,
+    defaultVisible: false,
     priority: 103,
     tags: ["pr", "ci", "summary", "human", "translate", "watch", "preview"],
     kind: "real-data",

@@ -8,7 +8,7 @@ export const PANEL_REGISTRY_PHASE94: PanelRegistryItem[] = [
     group: 'create',
     phase: 'Phase 94',
     component: <AgentInstructionFormatPanel />,
-    defaultVisible: true,
+    defaultVisible: false,
     priority: 94,
     tags: ['agent', 'instruction', 'format', 'cloud-agent', 'codex', 'copilot'],
   },

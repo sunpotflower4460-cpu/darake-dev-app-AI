@@ -271,6 +271,15 @@
   font-size: 13px;
   font-weight: 700;
   color: #16a34a;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.setupHubV2__diagReadySub {
+  font-size: 12px;
+  font-weight: 400;
+  color: #4b5563;
 }
 
 .setupHubV2__diagNotReady {

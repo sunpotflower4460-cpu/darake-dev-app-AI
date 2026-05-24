@@ -467,6 +467,14 @@ export const LOCAL_STORAGE_KEY_REGISTRY: LocalStorageKeyRegistryItem[] = [
     containsSensitiveData: false,
     notes: 'repoUrl文字列とprNumber文字列のみ。tokenなし。',
   },
+  {
+    key: 'darake.workSession.current.v1',
+    owner: 'DarakeMothershipV1Panel',
+    phase: '101',
+    purpose: '進行中作業セッションの有無を判定するためのキー（将来拡張用）',
+    containsSensitiveData: false,
+    notes: '存在確認のみ。値の内容はtokenなし。',
+  },
 ];
 
 export function formatLocalStorageKeyRegistryMarkdown(
