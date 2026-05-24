@@ -42,6 +42,16 @@ type PrHealthApiResponse = {
   headSha?: string | null;
   error?: string;
 };
+const VALID_REVIEW_STATUSES = ['approved', 'changes-requested', 'pending', 'none'] as const;
+const VALID_MERGE_READINESS = ['ready', 'not-ready', 'merged', 'conflict'] as const;
+
+function isValidReviewStatus(value: unknown): value is (typeof VALID_REVIEW_STATUSES)[number] {
+  return typeof value === 'string' && (VALID_REVIEW_STATUSES as readonly string[]).includes(value);
+}
+
+function isValidMergeReadiness(value: unknown): value is (typeof VALID_MERGE_READINESS)[number] {
+  return typeof value === 'string' && (VALID_MERGE_READINESS as readonly string[]).includes(value);
+}
 
 export function loadPrCiLastQuery(): PrCiLastQuery {
   try {
@@ -83,7 +93,7 @@ function mapLegacyHealth(data: PrHealthApiResponse): Omit<RealPrCiStatus, 'mode'
   }
 
   if (health === 'checks-running' || health === 'waiting') {
-    return { ...DEFAULT_STATUS, ciStatus: 'running', mergeReadiness: 'not-ready' };
+    return { ...DEFAULT_STATUS, ciStatus: 'running', reviewStatus: 'pending', mergeReadiness: 'not-ready' };
   }
 
   if (health === 'review-needed') {
@@ -140,14 +150,14 @@ function mapLegacyHealth(data: PrHealthApiResponse): Omit<RealPrCiStatus, 'mode'
 }
 
 function normalizeReviewStatus(value: PrHealthApiResponse['reviewStatus']): RealPrCiStatus['reviewStatus'] {
-  if (value === 'approved' || value === 'changes-requested' || value === 'pending' || value === 'none') {
+  if (isValidReviewStatus(value)) {
     return value;
   }
   return 'unknown';
 }
 
 function normalizeMergeReadiness(value: PrHealthApiResponse['mergeReadiness']): RealPrCiStatus['mergeReadiness'] {
-  if (value === 'ready' || value === 'not-ready' || value === 'merged' || value === 'conflict') {
+  if (isValidMergeReadiness(value)) {
     return value;
   }
   if (value === 'blocked') {

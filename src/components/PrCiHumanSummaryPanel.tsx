@@ -182,6 +182,9 @@ export function PrCiHumanSummaryPanel() {
               <div className="prCiHuman__realBadge">実データ</div>
               <div className="prCiHuman__headline">{realSummary.headline}</div>
               <div className="prCiHuman__subline">{realSummary.subline}</div>
+              {realStatus.message && realStatus.message !== realSummary.headline ? (
+                <div className="prCiHuman__realSummary">{realStatus.message}</div>
+              ) : null}
               <div className="prCiHuman__next">次にやること: {realSummary.nextAction}</div>
               <div className="prCiHuman__details">
                 <span className={`prCiHuman__chip ${CI_CHIP_CLASS[realStatus.ciStatus]}`}>
@@ -245,8 +248,8 @@ export function PrCiHumanSummaryPanel() {
             <span className={`prCiHuman__chip ${CI_CHIP_CLASS[demoSnapshot.ciStatus]}`}>
               {CI_LABEL[demoSnapshot.ciStatus]}
             </span>
-            <span className={`prCiHuman__chip ${REVIEW_CLASS[demoSnapshot.reviewStatus === 'dismissed' ? 'none' : demoSnapshot.reviewStatus]}`}>
-              {REVIEW_LABEL[demoSnapshot.reviewStatus === 'dismissed' ? 'none' : demoSnapshot.reviewStatus]}
+            <span className={`prCiHuman__chip ${REVIEW_CLASS[demoSnapshot.reviewStatus]}`}>
+              {REVIEW_LABEL[demoSnapshot.reviewStatus]}
             </span>
           </div>
 

@@ -1,5 +1,5 @@
 export type CiStatus = 'unknown' | 'running' | 'passed' | 'failed' | 'skipped';
-export type ReviewStatus = 'none' | 'pending' | 'approved' | 'changes-requested' | 'dismissed';
+export type ReviewStatus = 'none' | 'pending' | 'approved' | 'changes-requested';
 export type MergeReadiness = 'not-ready' | 'ready' | 'merged' | 'blocked' | 'unknown';
 
 export type PrCiSnapshot = {
