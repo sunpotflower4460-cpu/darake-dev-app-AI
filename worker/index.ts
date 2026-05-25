@@ -30,6 +30,7 @@ type Env = {
   DARAKE_SUBMIT_ANDROID_ENABLED?: string;
   DARAKE_FINAL_CHECK_ENABLED?: string;
   DARAKE_PROJECT_AUTOPILOT_ENABLED?: string;
+  DARAKE_SECRET_SYNC_ENABLED?: string;
 };
 
 function json(data: unknown, status = 200): Response {
@@ -639,6 +640,7 @@ import {
 } from "./submit";
 import { handleFinalCheck } from "./finalCheck";
 import { runAutopilotScheduled } from "./autopilotRunner";
+import { handleSecretsSync } from "./secretsSync";
 
 async function handleGetWakeAction(request: Request, env: Env): Promise<Response> {
   if (request.method !== "POST") {
@@ -1353,6 +1355,9 @@ export default {
     }
     if (url.pathname === "/api/darake/verify/final-check") {
       return handleFinalCheck(request, env);
+    }
+    if (url.pathname === "/api/darake/secrets/sync") {
+      return handleSecretsSync(request, env);
     }
     return env.ASSETS.fetch(request);
   },

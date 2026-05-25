@@ -49,6 +49,11 @@ DARAKE_FINAL_CHECK_ENABLED = "false"
 # and DARAKE_AUTOPILOT_SCHEDULE_ENABLED (Secret) for the loop to run.
 DARAKE_PROJECT_AUTOPILOT_ENABLED = "false"
 
+# Secret sync — encrypts client-supplied secrets (libsodium sealed box) and
+# PUTs them to a project repo's Actions secrets. Security-sensitive: enable
+# only after reviewing worker/secretsSync.ts. Requires GITHUB_TOKEN.
+DARAKE_SECRET_SYNC_ENABLED = "false"
+
 # Cron Trigger for background autopilot patrol.
 # Uncomment and configure to activate scheduled checks.
 # Requires DARAKE_AUTOPILOT_SCHEDULE_ENABLED=true in Worker Secrets.
