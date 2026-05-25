@@ -19,6 +19,12 @@ DARAKE_BLUEPRINT_AI_ENABLED = "false"
 BLUEPRINT_AI_DAILY_BUDGET_USD = "5"
 BLUEPRINT_AI_MODEL = "claude-sonnet-4-6"
 
+# Phase 2 — Screenshot vs Design comparison via Vision LLM.
+# Requires ANTHROPIC_API_KEY in Worker Secrets when enabled.
+DARAKE_VISION_VERIFY_ENABLED = "false"
+VISION_VERIFY_DAILY_BUDGET_USD = "10"
+VISION_VERIFY_MODEL = "claude-sonnet-4-6"
+
 # Cron Trigger for background autopilot patrol.
 # Uncomment and configure to activate scheduled checks.
 # Requires DARAKE_AUTOPILOT_SCHEDULE_ENABLED=true in Worker Secrets.

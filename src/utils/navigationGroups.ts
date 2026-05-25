@@ -66,6 +66,7 @@ export const PANEL_GROUP_MAP: PanelNavGroupMap = {
   ActionPreviewPanel: 'watch',
   Phase7SafetyPanel: 'watch',
   PreviewUrlRecordPanel: 'watch',
+  VisionVerifyPanel: 'screenshots',
   ScreenshotJobDraftPanel: 'screenshots',
   ScreenshotPlanExportPanel: 'screenshots',
   ScreenshotRunGatePanel: 'screenshots',

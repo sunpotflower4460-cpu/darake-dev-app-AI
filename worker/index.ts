@@ -17,6 +17,9 @@ type Env = {
   DARAKE_BLUEPRINT_AI_ENABLED?: string;
   BLUEPRINT_AI_DAILY_BUDGET_USD?: string;
   BLUEPRINT_AI_MODEL?: string;
+  DARAKE_VISION_VERIFY_ENABLED?: string;
+  VISION_VERIFY_DAILY_BUDGET_USD?: string;
+  VISION_VERIFY_MODEL?: string;
 };
 
 function json(data: unknown, status = 200): Response {
@@ -623,6 +626,7 @@ import {
   EXECUTABLE_ACTION_KINDS,
 } from "./wakeActionToken";
 import { handleGenerateBlueprintFromInput } from "./blueprintGenerator";
+import { handleCompareScreenshots, handleListVisionResults } from "./visionVerify";
 
 async function handleGetWakeAction(request: Request, env: Env): Promise<Response> {
   if (request.method !== "POST") {
@@ -1307,6 +1311,12 @@ export default {
     }
     if (url.pathname === "/api/darake/blueprint/generate-from-input") {
       return handleGenerateBlueprintFromInput(request, env);
+    }
+    if (url.pathname === "/api/darake/verify/compare-screenshots") {
+      return handleCompareScreenshots(request, env);
+    }
+    if (url.pathname === "/api/darake/verify/list-results") {
+      return handleListVisionResults(request, env);
     }
     return env.ASSETS.fetch(request);
   },
