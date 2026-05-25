@@ -1,0 +1,6 @@
+{
+  "$schema": "darake-app-config-v1",
+  "routes": ["/"],
+  "designDir": "darake/design",
+  "notes": "routes はスクリーンショット撮影対象の相対パス。画面が増えたら追記してください。"
+}

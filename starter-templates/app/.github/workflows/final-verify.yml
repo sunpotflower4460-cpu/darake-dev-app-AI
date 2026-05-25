@@ -1,0 +1,70 @@
+# だらけ最終完成判定ワークフロー (生成プロジェクト側に配置)
+#
+# main へのpush (= 全フェーズのマージ) ごとに、アプリ全体のプレビューを撮影して
+# だらけWorkerの /api/darake/verify/final-check で2パス完成判定します。
+# 完成と判定されると Worker 側でプロジェクトが awaiting-user になり、
+# ユーザーにプレビューURL付きで通知されます。
+#
+# 必要な設定:
+#   Secrets: DARAKE_WORKER_URL
+#   Variables: DARAKE_VERIFY_ROUTES (任意)
+#   設計参照画像を darake/design/*.png にコミットしておくこと
+name: darake-final-verify
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  final-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright
+        run: |
+          npm install playwright@^1.40.0
+          npx playwright install --with-deps chromium
+
+      - name: Resolve Cloudflare Pages production URL
+        id: preview
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const sha = context.sha;
+            for (let attempt = 0; attempt < 20; attempt += 1) {
+              const { data: deployments } = await github.rest.repos.listDeployments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                sha,
+              });
+              for (const dep of deployments) {
+                const { data: statuses } = await github.rest.repos.listDeploymentStatuses({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  deployment_id: dep.id,
+                });
+                const ready = statuses.find((s) => s.state === 'success' && s.environment_url);
+                if (ready) {
+                  core.setOutput('url', ready.environment_url);
+                  return;
+                }
+              }
+              await new Promise((r) => setTimeout(r, 15000));
+            }
+            core.setFailed('Pages production URL not found within timeout.');
+
+      - name: Run final completion check
+        env:
+          DARAKE_WORKER_URL: ${{ secrets.DARAKE_WORKER_URL }}
+          PREVIEW_URL: ${{ steps.preview.outputs.url }}
+          PROJECT_ID: ${{ github.event.repository.name }}
+          ROUTES: ${{ vars.DARAKE_VERIFY_ROUTES }}
+        run: node scripts/darake-final.mjs

@@ -1,28 +1,41 @@
 # だらけ スターターテンプレート
 
-このフォルダは **生成される各アプリのリポジトリ** に配置するファイル群です。
-管制室 (このリポジトリ) 自体のCI・デプロイには影響しません。
+`app/` が **生成される各アプリのリポジトリにそのまま push できる雛形** です。
+管制室 (このリポジトリ) のCI・デプロイには影響しません
+(`app/.github/workflows/` はサブディレクトリ内なので、このリポジトリでは実行されません)。
 
-Phase 3 のプロジェクト・ブートストラップが、新規リポジトリ作成時にこれらを
-コピーする想定です。Phase 2 の段階では、単一リポジトリで検証ループを試すために
-手動でコピーして使えます。
+## 使い方
 
-## 中身
+1. `app/` の中身を新しいGitHubリポジトリに push する
+2. そのリポジトリを **Template repository** に設定 (Settings → Template repository)
+3. だらけWorkerの環境変数 `STARTER_TEMPLATE_REPO` に `owner/repo` を設定
 
-| パス | コピー先 | 役割 |
-|---|---|---|
-| `github-workflows/phase-verify.yml` | `.github/workflows/phase-verify.yml` | PRのCI成功後にスクショ撮影→設計図比較→PRコメント/ラベル |
-| `scripts/darake-verify.mjs` | `scripts/darake-verify.mjs` | Playwright撮影 + だらけWorkerへ判定リクエスト |
+以降、だらけ管制室の「並列プロジェクト ダッシュボード」からの作成、または
+プロジェクト自走 (`DARAKE_PROJECT_AUTOPILOT_ENABLED`) が、このテンプレートを複製します。
+
+## `app/` の中身
+
+| パス | 役割 |
+|---|---|
+| `package.json` / `vite.config.ts` / `tsconfig.json` / `index.html` / `src/` | 最小の Vite + React アプリ (ビルド可能) |
+| `darake.config.json` | スクリーンショット撮影対象ルート |
+| `darake/design/` | 設計参照画像を置く場所 |
+| `.github/workflows/phase-verify.yml` | PRのCI成功後にスクショ→設計図比較→PRコメント/ラベル |
+| `.github/workflows/final-verify.yml` | main更新時に全画面スクショ→2パス完成判定 |
+| `.github/workflows/submit-ios.yml` / `submit-android.yml` | fastlane / gradle-play-publisher 申請テンプレート |
+| `scripts/darake-verify.mjs` / `darake-final.mjs` | Playwright撮影 + だらけWorkerへの判定リクエスト |
 
 ## 生成プロジェクト側の設定
 
-1. 設計参照画像を `darake/design/*.png`(または jpg/webp)にコミット
-2. リポジトリ Secrets に `DARAKE_WORKER_URL`(だらけWorkerの公開URL)を設定
-3. 任意で Variables に `DARAKE_VERIFY_ROUTES`(例 `"/,/settings"`)を設定
-4. Cloudflare Pages のプレビューデプロイを有効化(PRごとにプレビューURLが出る状態)
+1. 設計参照画像を `darake/design/*.png` にコミット
+2. リポジトリ Secrets に `DARAKE_WORKER_URL` (だらけWorkerの公開URL)
+3. 任意で Variables `DARAKE_VERIFY_ROUTES` (例 `"/,/settings"`)
+4. Cloudflare Pages のプレビューデプロイを有効化
+5. 申請する場合は Apple/Google の認証情報を Secrets に
+   (だらけの「申請前ゲート」+ Secret同期で投入可能)
 
-## だらけWorker側の設定 (管制室リポジトリ)
+## だらけWorker側 (管制室リポジトリ)
 
-- Worker Secret: `ANTHROPIC_API_KEY`
-- wrangler 変数: `DARAKE_VISION_VERIFY_ENABLED = "true"`
-- KV `RUN_REGISTRY_KV` をバインドすると判定履歴と監査ログが残る
+- Worker Secret: `ANTHROPIC_API_KEY`、`GITHUB_TOKEN`
+- wrangler 変数: 使う機能を `DARAKE_*_ENABLED = "true"`
+- KV `RUN_REGISTRY_KV` をバインド (履歴・監査ログ・プロジェクト登録に必須)
