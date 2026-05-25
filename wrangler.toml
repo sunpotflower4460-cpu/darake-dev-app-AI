@@ -43,6 +43,12 @@ DARAKE_SUBMIT_ANDROID_ENABLED = "false"
 # Requires ANTHROPIC_API_KEY in Worker Secrets when enabled.
 DARAKE_FINAL_CHECK_ENABLED = "false"
 
+# Project autopilot — cron-driven phase orchestration (issue -> @copilot ->
+# PR -> verify label -> merge -> next phase). Requires the cron trigger and
+# KV below to be active, plus GITHUB_AGENT_ASSIGN_ENABLED / GITHUB_PR_MERGE_ENABLED
+# and DARAKE_AUTOPILOT_SCHEDULE_ENABLED (Secret) for the loop to run.
+DARAKE_PROJECT_AUTOPILOT_ENABLED = "false"
+
 # Cron Trigger for background autopilot patrol.
 # Uncomment and configure to activate scheduled checks.
 # Requires DARAKE_AUTOPILOT_SCHEDULE_ENABLED=true in Worker Secrets.

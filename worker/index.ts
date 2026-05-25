@@ -29,6 +29,7 @@ type Env = {
   DARAKE_SUBMIT_IOS_ENABLED?: string;
   DARAKE_SUBMIT_ANDROID_ENABLED?: string;
   DARAKE_FINAL_CHECK_ENABLED?: string;
+  DARAKE_PROJECT_AUTOPILOT_ENABLED?: string;
 };
 
 function json(data: unknown, status = 200): Response {
@@ -637,6 +638,7 @@ import {
   handleSubmitCallback,
 } from "./submit";
 import { handleFinalCheck } from "./finalCheck";
+import { runAutopilotScheduled } from "./autopilotRunner";
 
 async function handleGetWakeAction(request: Request, env: Env): Promise<Response> {
   if (request.method !== "POST") {
@@ -1353,5 +1355,16 @@ export default {
       return handleFinalCheck(request, env);
     }
     return env.ASSETS.fetch(request);
+  },
+  async scheduled(
+    _event: { cron: string; scheduledTime: number },
+    env: Env,
+    ctx: { waitUntil: (p: Promise<unknown>) => void },
+  ): Promise<void> {
+    ctx.waitUntil(
+      runAutopilotScheduled(env).catch((err) => {
+        console.error("[darake-scheduled] Unhandled error:", err);
+      }),
+    );
   },
 };
