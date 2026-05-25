@@ -25,6 +25,9 @@ type Env = {
   PROJECT_OWNER?: string;
   CLOUDFLARE_API_TOKEN?: string;
   CLOUDFLARE_ACCOUNT_ID?: string;
+  DARAKE_SUBMIT_WEB_ENABLED?: string;
+  DARAKE_SUBMIT_IOS_ENABLED?: string;
+  DARAKE_SUBMIT_ANDROID_ENABLED?: string;
 };
 
 function json(data: unknown, status = 200): Response {
@@ -626,6 +629,12 @@ import { handleCompareScreenshots, handleListVisionResults } from "./visionVerif
 import { isAllowedRepoAsync } from "./repoAllowlist";
 import { handleCreateProject } from "./projectBootstrap";
 import { handleListProjects, handleGetProject } from "./projectsList";
+import {
+  handleSubmitWeb,
+  handleSubmitIos,
+  handleSubmitAndroid,
+  handleSubmitCallback,
+} from "./submit";
 
 async function handleGetWakeAction(request: Request, env: Env): Promise<Response> {
   if (request.method !== "POST") {
@@ -1325,6 +1334,18 @@ export default {
     }
     if (url.pathname === "/api/darake/projects/get") {
       return handleGetProject(request, env);
+    }
+    if (url.pathname === "/api/darake/submit/web") {
+      return handleSubmitWeb(request, env);
+    }
+    if (url.pathname === "/api/darake/submit/ios") {
+      return handleSubmitIos(request, env);
+    }
+    if (url.pathname === "/api/darake/submit/android") {
+      return handleSubmitAndroid(request, env);
+    }
+    if (url.pathname === "/api/darake/submit/callback") {
+      return handleSubmitCallback(request, env);
     }
     return env.ASSETS.fetch(request);
   },

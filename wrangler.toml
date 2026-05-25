@@ -33,6 +33,12 @@ DARAKE_PROJECT_BOOTSTRAP_ENABLED = "false"
 # STARTER_TEMPLATE_REPO = "your-org/darake-app-starter"
 # PROJECT_OWNER = "your-org"
 
+# Phase 4/5 — Submission. Web promotes the Pages deployment; iOS/Android
+# dispatch the submit-*.yml workflows in the project repo. All default off.
+DARAKE_SUBMIT_WEB_ENABLED = "false"
+DARAKE_SUBMIT_IOS_ENABLED = "false"
+DARAKE_SUBMIT_ANDROID_ENABLED = "false"
+
 # Cron Trigger for background autopilot patrol.
 # Uncomment and configure to activate scheduled checks.
 # Requires DARAKE_AUTOPILOT_SCHEDULE_ENABLED=true in Worker Secrets.

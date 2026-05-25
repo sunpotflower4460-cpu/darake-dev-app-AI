@@ -1,0 +1,74 @@
+# だらけ iOS申請ワークフロー (生成プロジェクト側に配置)
+#
+# だらけWorkerの /api/darake/submit/ios から workflow_dispatch で起動されます。
+# fastlane を使って TestFlight アップロード → App Store Connect 申請まで進めます。
+#
+# 必要な設定 (生成プロジェクトの Secrets):
+#   APP_STORE_CONNECT_API_KEY_ID
+#   APP_STORE_CONNECT_API_ISSUER_ID
+#   APP_STORE_CONNECT_API_KEY        (.p8 の中身)
+#   MATCH_PASSWORD / MATCH_GIT_URL   (証明書管理に fastlane match を使う場合)
+#   DARAKE_WORKER_URL                (完了通知のコールバック先)
+#
+# ⚠️ 課金・本番リリース承認はだらけ側の申請前ゲートで人間が確認済みである前提です。
+name: darake-submit-ios
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: darake project id
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  submit:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Ruby / fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Install fastlane
+        run: gem install fastlane --no-document
+
+      - name: Build & upload to TestFlight / submit
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+        run: |
+          # プロジェクトに Fastfile を用意してください。例:
+          #   lane :release do
+          #     match(type: "appstore", readonly: true)
+          #     build_app(scheme: "App")
+          #     upload_to_testflight
+          #     deliver(submit_for_review: true, automatic_release: false, force: true)
+          #   end
+          if [ -f fastlane/Fastfile ]; then
+            fastlane release
+          else
+            echo "::warning::fastlane/Fastfile が見つかりません。iOSプロジェクトの設定を追加してください。"
+            exit 1
+          fi
+
+      - name: Notify darake
+        if: always()
+        env:
+          DARAKE_WORKER_URL: ${{ secrets.DARAKE_WORKER_URL }}
+          PROJECT_ID: ${{ github.event.inputs.project_id }}
+          RESULT: ${{ job.status }}
+        run: |
+          if [ -n "$DARAKE_WORKER_URL" ]; then
+            curl -s -X POST "$DARAKE_WORKER_URL/api/darake/submit/callback" \
+              -H 'content-type: application/json' \
+              -d "{\"projectId\":\"$PROJECT_ID\",\"platform\":\"ios\",\"status\":\"$RESULT\"}" || true
+          fi

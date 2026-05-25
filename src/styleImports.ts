@@ -127,3 +127,4 @@ import './darakePanelBadge.css';
 import './appDesignInput.css';
 import './visionVerify.css';
 import './multiProjectDashboard.css';
+import './submissionGate.css';
