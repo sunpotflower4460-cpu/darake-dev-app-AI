@@ -126,6 +126,7 @@ export const PANEL_GROUP_MAP: PanelNavGroupMap = {
   CrossAppNotificationDigestPanel: 'portfolio',
   PortfolioCompletionReportPanel: 'portfolio',
   DarakeSafetySettingsPanel: 'settings',
+  CompletionConfirmPanel: 'reports',
   DarakeDevOsCompletionReportPanel: 'reports',
   StatusPanel: 'reports',
   FuturePanel: 'reports',

@@ -28,6 +28,7 @@ type Env = {
   DARAKE_SUBMIT_WEB_ENABLED?: string;
   DARAKE_SUBMIT_IOS_ENABLED?: string;
   DARAKE_SUBMIT_ANDROID_ENABLED?: string;
+  DARAKE_FINAL_CHECK_ENABLED?: string;
 };
 
 function json(data: unknown, status = 200): Response {
@@ -635,6 +636,7 @@ import {
   handleSubmitAndroid,
   handleSubmitCallback,
 } from "./submit";
+import { handleFinalCheck } from "./finalCheck";
 
 async function handleGetWakeAction(request: Request, env: Env): Promise<Response> {
   if (request.method !== "POST") {
@@ -1346,6 +1348,9 @@ export default {
     }
     if (url.pathname === "/api/darake/submit/callback") {
       return handleSubmitCallback(request, env);
+    }
+    if (url.pathname === "/api/darake/verify/final-check") {
+      return handleFinalCheck(request, env);
     }
     return env.ASSETS.fetch(request);
   },

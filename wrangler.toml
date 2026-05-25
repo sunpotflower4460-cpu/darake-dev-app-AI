@@ -39,6 +39,10 @@ DARAKE_SUBMIT_WEB_ENABLED = "false"
 DARAKE_SUBMIT_IOS_ENABLED = "false"
 DARAKE_SUBMIT_ANDROID_ENABLED = "false"
 
+# Phase D — Whole-app completion check (2-pass: strict + devil's advocate).
+# Requires ANTHROPIC_API_KEY in Worker Secrets when enabled.
+DARAKE_FINAL_CHECK_ENABLED = "false"
+
 # Cron Trigger for background autopilot patrol.
 # Uncomment and configure to activate scheduled checks.
 # Requires DARAKE_AUTOPILOT_SCHEDULE_ENABLED=true in Worker Secrets.
