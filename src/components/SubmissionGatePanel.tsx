@@ -9,7 +9,7 @@ import {
   type GateState,
   type SubmissionPlatform,
 } from '../utils/submissionGate';
-import { submitPlatform } from '../services/submissionService';
+import { draftMetadata, submitPlatform, type MetadataDraft } from '../services/submissionService';
 
 const PLATFORM_LABELS: Record<SubmissionPlatform, string> = {
   web: 'Web',
@@ -24,6 +24,26 @@ export function SubmissionGatePanel() {
   const [confirming, setConfirming] = useState(false);
   const [result, setResult] = useState<{ text: string; error: boolean } | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [draft, setDraft] = useState<MetadataDraft | null>(null);
+  const [draftMsg, setDraftMsg] = useState<{ text: string; error: boolean } | null>(null);
+  const [drafting, setDrafting] = useState(false);
+
+  async function runDraft() {
+    if (!projectId.trim() || projectId.trim() === 'manual') {
+      setDraftMsg({ text: 'アプリ名 (プロジェクトID) を入れてください', error: true });
+      return;
+    }
+    setDrafting(true);
+    setDraftMsg(null);
+    const res = await draftMetadata({ appName: projectId.trim() });
+    setDrafting(false);
+    if (res.ok) {
+      setDraft(res.result);
+      setDraftMsg({ text: 'AI下書きを生成しました。内容を確認して各項目を承認してください。', error: false });
+    } else {
+      setDraftMsg({ text: `[${res.code}] ${res.error}`, error: true });
+    }
+  }
 
   useEffect(() => {
     setState(loadGateState(projectId.trim() || 'manual'));
@@ -109,6 +129,39 @@ export function SubmissionGatePanel() {
           </button>
         ))}
       </div>
+
+      <div className="submissionGatePlatforms">
+        <button
+          type="button"
+          className="submissionGatePlatformBtn"
+          onClick={() => void runDraft()}
+          disabled={drafting}
+        >
+          {drafting ? 'AI下書き生成中…' : 'プライバシーポリシー / 年齢区分をAIで下書き'}
+        </button>
+      </div>
+      {draftMsg && (
+        <div className={`submissionGateResult ${draftMsg.error ? 'err' : 'ok'}`}>{draftMsg.text}</div>
+      )}
+      {draft && (
+        <div className="submissionGateCostBox" style={{ borderColor: 'rgba(76,124,85,0.4)', background: 'rgba(248,252,240,0.7)', color: '#35513d' }}>
+          <strong>推奨年齢区分: {draft.ageRating.recommended || '未判定'}</strong>
+          {draft.ageRating.answers.length > 0 && (
+            <ul style={{ margin: '6px 0', paddingLeft: 20 }}>
+              {draft.ageRating.answers.map((a, i) => (
+                <li key={i}>{a}</li>
+              ))}
+            </ul>
+          )}
+          {draft.reviewNotes && <p style={{ margin: '6px 0 0' }}>審査メモ: {draft.reviewNotes}</p>}
+          <details style={{ marginTop: 8 }}>
+            <summary style={{ cursor: 'pointer' }}>プライバシーポリシー本文 (コピーしてホスティング → URLを下に入力)</summary>
+            <pre style={{ whiteSpace: 'pre-wrap', font: 'inherit', fontSize: '0.82rem', marginTop: 6 }}>
+              {draft.privacyPolicyMarkdown}
+            </pre>
+          </details>
+        </div>
+      )}
 
       <div className="submissionGateList">
         {items.map((item) => {

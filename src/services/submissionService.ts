@@ -10,6 +10,35 @@ const ENDPOINTS: Record<SubmissionPlatform, string> = {
   android: '/api/darake/submit/android',
 };
 
+export type MetadataDraft = {
+  privacyPolicyMarkdown: string;
+  ageRating: { recommended: string; answers: string[] };
+  reviewNotes: string;
+};
+
+export type DraftMetadataResponse =
+  | { ok: true; result: MetadataDraft; model: string }
+  | { ok: false; code: string; error: string };
+
+export async function draftMetadata(body: {
+  appName: string;
+  description?: string;
+  collectsData?: boolean;
+}): Promise<DraftMetadataResponse> {
+  try {
+    const res = await fetch('/api/darake/submit/draft-metadata', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const json = (await res.json().catch(() => null)) as DraftMetadataResponse | null;
+    if (!json) return { ok: false, code: 'INVALID_RESPONSE', error: 'レスポンスを読み取れません' };
+    return json;
+  } catch {
+    return { ok: false, code: 'NETWORK_ERROR', error: 'ネットワークエラーが発生しました' };
+  }
+}
+
 export async function submitPlatform(
   platform: SubmissionPlatform,
   body: { projectId: string; values?: Record<string, string> },

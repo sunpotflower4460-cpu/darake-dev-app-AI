@@ -36,6 +36,7 @@ type Env = {
   DARAKE_CROSS_CHECK_ENABLED?: string;
   GEMINI_API_KEY?: string;
   CROSS_CHECK_MODEL?: string;
+  DARAKE_METADATA_DRAFT_ENABLED?: string;
 };
 
 function json(data: unknown, status = 200): Response {
@@ -647,6 +648,8 @@ import { handleFinalCheck } from "./finalCheck";
 import { runAutopilotScheduled } from "./autopilotRunner";
 import { handleSecretsSync } from "./secretsSync";
 import { handleGenerateIcon } from "./iconGenerator";
+import { handleRequestFix } from "./projectRequestFix";
+import { handleDraftMetadata } from "./metadataDraft";
 
 async function handleGetWakeAction(request: Request, env: Env): Promise<Response> {
   if (request.method !== "POST") {
@@ -1367,6 +1370,12 @@ export default {
     }
     if (url.pathname === "/api/darake/icons/generate") {
       return handleGenerateIcon(request, env);
+    }
+    if (url.pathname === "/api/darake/projects/request-fix") {
+      return handleRequestFix(request, env);
+    }
+    if (url.pathname === "/api/darake/submit/draft-metadata") {
+      return handleDraftMetadata(request, env);
     }
     return env.ASSETS.fetch(request);
   },

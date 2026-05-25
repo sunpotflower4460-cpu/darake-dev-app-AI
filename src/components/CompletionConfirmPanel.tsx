@@ -3,6 +3,7 @@ import { CheckCircle2, ImagePlus, PartyPopper, Wrench, X } from 'lucide-react';
 import { fileToDesignAsset } from '../utils/appDesignInputClient';
 import type { DesignAssetInput } from '../utils/designAsset';
 import { postFinalCheck, type FinalCheckResult } from '../services/finalCheckService';
+import { requestFix } from '../services/projectListService';
 
 type StagedImage = DesignAssetInput & { previewUrl: string };
 
@@ -23,8 +24,35 @@ export function CompletionConfirmPanel() {
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
   const [decision, setDecision] = useState<Decision>(null);
   const [fixText, setFixText] = useState('');
+  const [fixMsg, setFixMsg] = useState<{ text: string; error: boolean } | null>(null);
+  const [fixBusy, setFixBusy] = useState(false);
   const designRef = useRef<HTMLInputElement>(null);
   const shotsRef = useRef<HTMLInputElement>(null);
+
+  async function submitFix() {
+    const pid = projectId.trim();
+    if (pid === 'manual' || !pid) {
+      setFixMsg({
+        text: '実プロジェクト(ブートストラップ済み)のIDを入れると、修正Issueを自動起票してループに戻せます。manualでは手動Issue化してください。',
+        error: true,
+      });
+      return;
+    }
+    if (!fixText.trim()) {
+      setFixMsg({ text: '修正内容を入力してください', error: true });
+      return;
+    }
+    setFixBusy(true);
+    setFixMsg(null);
+    const res = await requestFix({ projectId: pid, fixText: fixText.trim() });
+    setFixBusy(false);
+    if (res.ok) {
+      setFixMsg({ text: `修正Issueを作成し@copilotに割り当てました: #${res.issueNumber}`, error: false });
+      setFixText('');
+    } else {
+      setFixMsg({ text: `[${res.code}] ${res.error}`, error: true });
+    }
+  }
 
   async function addFiles(
     list: FileList,
@@ -231,9 +259,14 @@ export function CompletionConfirmPanel() {
                 placeholder="直してほしい点を書いてください (例: トップのヘッダーをもっと大きく)"
                 style={{ ...inputStyle, maxWidth: '100%' }}
               />
-              <div className="submissionGateResult err">
-                この修正依頼を新しいIssueとして@copilotに渡す処理は、autopilotのプロジェクト連携で実行されます。現時点では内容をコピーして手動Issue化してください。
+              <div className="appDesignInputControls">
+                <button type="button" className="primary" onClick={() => void submitFix()} disabled={fixBusy}>
+                  <Wrench size={14} /> {fixBusy ? '送信中…' : '修正Issueを起票して@copilotに依頼'}
+                </button>
               </div>
+              {fixMsg && (
+                <div className={`submissionGateResult ${fixMsg.error ? 'err' : 'ok'}`}>{fixMsg.text}</div>
+              )}
             </div>
           )}
         </div>
