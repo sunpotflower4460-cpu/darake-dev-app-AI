@@ -54,6 +54,14 @@ DARAKE_PROJECT_AUTOPILOT_ENABLED = "false"
 # only after reviewing worker/secretsSync.ts. Requires GITHUB_TOKEN.
 DARAKE_SECRET_SYNC_ENABLED = "false"
 
+# Phase 5 — AI icon generation (Claude → SVG) and Gemini cross-check for the
+# final completion second opinion. Icons need ANTHROPIC_API_KEY; cross-check
+# needs GEMINI_API_KEY (Secret).
+DARAKE_ICON_GEN_ENABLED = "false"
+ICON_GEN_MODEL = "claude-sonnet-4-6"
+DARAKE_CROSS_CHECK_ENABLED = "false"
+CROSS_CHECK_MODEL = "gemini-2.5-flash"
+
 # Cron Trigger for background autopilot patrol.
 # Uncomment and configure to activate scheduled checks.
 # Requires DARAKE_AUTOPILOT_SCHEDULE_ENABLED=true in Worker Secrets.

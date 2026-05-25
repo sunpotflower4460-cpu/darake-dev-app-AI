@@ -96,6 +96,7 @@ export const PANEL_GROUP_MAP: PanelNavGroupMap = {
   UiCheckCompletionReportPanel: 'screenshots',
   Phase10ScreenshotUiCompletionReportPanel: 'screenshots',
   SubmissionGatePanel: 'submit',
+  IconGeneratorPanel: 'submit',
   NotificationDraftPanel: 'submit',
   NotificationDigestPanel: 'submit',
   ManualGateNotificationTemplatePanel: 'submit',

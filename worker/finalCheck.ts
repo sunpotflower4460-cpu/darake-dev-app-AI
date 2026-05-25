@@ -1,4 +1,5 @@
 import { callAnthropic, estimateCostUsd, extractJsonObject, type AnthropicUserContent } from './anthropicClient';
+import { callGeminiVision } from './geminiClient';
 import { appendAudit } from './auditLog';
 import { checkBudget, parseBudgetUsd, recordSpend, type BudgetEnv } from './budgetGuard';
 import { getProject, saveProject } from './projectRegistry';
@@ -8,7 +9,12 @@ type FinalCheckEnv = BudgetEnv & {
   DARAKE_FINAL_CHECK_ENABLED?: string;
   VISION_VERIFY_DAILY_BUDGET_USD?: string;
   VISION_VERIFY_MODEL?: string;
+  DARAKE_CROSS_CHECK_ENABLED?: string;
+  GEMINI_API_KEY?: string;
+  CROSS_CHECK_MODEL?: string;
 };
+
+const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash';
 
 const DEFAULT_MODEL = 'claude-sonnet-4-6';
 const MAX_IMAGES = 8;
@@ -127,31 +133,50 @@ export async function handleFinalCheck(request: Request, env: FinalCheckEnv): Pr
   await recordSpend(env, 'vision', estimateCostUsd(model, strict.usage)).catch(() => null);
 
   // Pass 2 — devil's advocate ("really done?").
-  const devil = await callAnthropic(env.ANTHROPIC_API_KEY, {
-    model,
-    max_tokens: 2048,
-    system: DEVIL_SYSTEM,
-    messages: [
-      {
-        role: 'user',
-        content: imagesToContent(
-          `# 本当に完成か?\nprojectId: ${projectId}\nこのアプリが完成していないと言える理由を挙げてください。`,
-          designAssets,
-          captured,
-        ),
-      },
-    ],
-  });
-  if (!devil.ok) {
-    return json({ ok: false, code: devil.code, error: devil.error }, 502);
+  // Cross-model second opinion: use Gemini when enabled, else fall back to Claude.
+  const devilUserText = `# 本当に完成か?\nprojectId: ${projectId}\nこのアプリが完成していないと言える理由を挙げてください。`;
+  const useGemini = env.DARAKE_CROSS_CHECK_ENABLED === 'true' && !!env.GEMINI_API_KEY;
+  let devilText = '';
+  let crossModel = model;
+
+  if (useGemini) {
+    const geminiModel = env.CROSS_CHECK_MODEL?.trim() || DEFAULT_GEMINI_MODEL;
+    const geminiImages = [
+      ...designAssets.map((d) => ({ mediaType: d.mediaType, base64: d.base64 })),
+      ...captured.map((c) => ({ mediaType: c.mediaType, base64: c.base64 })),
+    ];
+    const g = await callGeminiVision(
+      env.GEMINI_API_KEY!,
+      geminiModel,
+      DEVIL_SYSTEM,
+      `${devilUserText}\n\n最初の画像群が参照設計図、後半がアプリのスクリーンショットです。`,
+      geminiImages,
+    );
+    if (g.ok) {
+      devilText = g.text;
+      crossModel = geminiModel;
+    }
   }
-  await recordSpend(env, 'vision', estimateCostUsd(model, devil.usage)).catch(() => null);
+
+  if (!devilText) {
+    const devil = await callAnthropic(env.ANTHROPIC_API_KEY, {
+      model,
+      max_tokens: 2048,
+      system: DEVIL_SYSTEM,
+      messages: [{ role: 'user', content: imagesToContent(devilUserText, designAssets, captured) }],
+    });
+    if (!devil.ok) {
+      return json({ ok: false, code: devil.code, error: devil.error }, 502);
+    }
+    devilText = devil.text;
+    await recordSpend(env, 'vision', estimateCostUsd(model, devil.usage)).catch(() => null);
+  }
 
   let strictObj: Record<string, unknown> = {};
   let devilObj: Record<string, unknown> = {};
   try {
     strictObj = (extractJsonObject(strict.text) ?? {}) as Record<string, unknown>;
-    devilObj = (extractJsonObject(devil.text) ?? {}) as Record<string, unknown>;
+    devilObj = (extractJsonObject(devilText) ?? {}) as Record<string, unknown>;
   } catch (e) {
     return json({ ok: false, code: 'PARSE_ERROR', error: (e as Error).message }, 502);
   }
@@ -191,7 +216,7 @@ export async function handleFinalCheck(request: Request, env: FinalCheckEnv): Pr
   await appendAudit(env, {
     scope: projectId,
     kind: complete ? 'final-check-complete' : 'final-check-incomplete',
-    message: `score=${score} blockers=${blockers.length} doubts=${reasonsNotDone.length}`,
+    message: `score=${score} blockers=${blockers.length} doubts=${reasonsNotDone.length} crossModel=${crossModel}`,
   });
 
   return json({ ok: true, result });

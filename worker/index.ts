@@ -31,6 +31,11 @@ type Env = {
   DARAKE_FINAL_CHECK_ENABLED?: string;
   DARAKE_PROJECT_AUTOPILOT_ENABLED?: string;
   DARAKE_SECRET_SYNC_ENABLED?: string;
+  DARAKE_ICON_GEN_ENABLED?: string;
+  ICON_GEN_MODEL?: string;
+  DARAKE_CROSS_CHECK_ENABLED?: string;
+  GEMINI_API_KEY?: string;
+  CROSS_CHECK_MODEL?: string;
 };
 
 function json(data: unknown, status = 200): Response {
@@ -641,6 +646,7 @@ import {
 import { handleFinalCheck } from "./finalCheck";
 import { runAutopilotScheduled } from "./autopilotRunner";
 import { handleSecretsSync } from "./secretsSync";
+import { handleGenerateIcon } from "./iconGenerator";
 
 async function handleGetWakeAction(request: Request, env: Env): Promise<Response> {
   if (request.method !== "POST") {
@@ -1358,6 +1364,9 @@ export default {
     }
     if (url.pathname === "/api/darake/secrets/sync") {
       return handleSecretsSync(request, env);
+    }
+    if (url.pathname === "/api/darake/icons/generate") {
+      return handleGenerateIcon(request, env);
     }
     return env.ASSETS.fetch(request);
   },
