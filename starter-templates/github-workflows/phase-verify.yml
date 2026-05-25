@@ -1,0 +1,124 @@
+# だらけ自動検証ワークフロー
+#
+# 【これは生成プロジェクト側のリポジトリに置くテンプレートです】
+# このリポジトリ (管制室) のCIには影響しません。
+# Phase 3 のプロジェクト・ブートストラップが、生成した各アプリのリポジトリの
+# .github/workflows/phase-verify.yml としてコピーします。
+#
+# 動作:
+#   PRのCI (check_suite) が成功 → Cloudflare Pages プレビューを待つ
+#   → Playwrightでスクショ撮影 → だらけWorkerで設計図と比較
+#   → pass: ラベル darake:verify-pass / fail: 修正リクエストをPRにコメント
+#
+# 必要なリポジトリ設定:
+#   Secrets: DARAKE_WORKER_URL (だらけWorkerの公開URL)
+#   Variables: DARAKE_VERIFY_ROUTES (任意, 例 "/,/settings")
+#   設計参照画像を darake/design/*.png にコミットしておくこと
+name: darake-phase-verify
+
+on:
+  check_suite:
+    types: [completed]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  verify:
+    if: github.event.check_suite.conclusion == 'success' && github.event.check_suite.pull_requests[0]
+    runs-on: ubuntu-latest
+    env:
+      PR_NUMBER: ${{ github.event.check_suite.pull_requests[0].number }}
+      HEAD_SHA: ${{ github.event.check_suite.head_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.check_suite.head_sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright
+        run: |
+          npm install playwright@^1.40.0
+          npx playwright install --with-deps chromium
+
+      - name: Resolve Cloudflare Pages preview URL
+        id: preview
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const sha = process.env.HEAD_SHA;
+            // Cloudflare Pages publishes a deployment status with the preview URL.
+            for (let attempt = 0; attempt < 20; attempt += 1) {
+              const { data: deployments } = await github.rest.repos.listDeployments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                sha,
+              });
+              for (const dep of deployments) {
+                const { data: depStatuses } = await github.rest.repos.listDeploymentStatuses({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  deployment_id: dep.id,
+                });
+                const ready = depStatuses.find((s) => s.state === 'success' && s.environment_url);
+                if (ready) {
+                  core.setOutput('url', ready.environment_url);
+                  return;
+                }
+              }
+              await new Promise((r) => setTimeout(r, 15000));
+            }
+            core.setFailed('Cloudflare Pages preview URL was not found within timeout.');
+
+      - name: Run darake verify
+        id: verify
+        env:
+          DARAKE_WORKER_URL: ${{ secrets.DARAKE_WORKER_URL }}
+          PREVIEW_URL: ${{ steps.preview.outputs.url }}
+          PROJECT_ID: ${{ github.event.repository.name }}
+          ROUTES: ${{ vars.DARAKE_VERIFY_ROUTES }}
+        run: node scripts/darake-verify.mjs
+
+      - name: Post result to PR
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const prNumber = Number(process.env.PR_NUMBER);
+            const verdict = '${{ steps.verify.outputs.verdict }}';
+            let body = '## だらけ自動検証\n\n結果ファイルを生成できませんでした。';
+            try {
+              body = fs.readFileSync('artifacts/darake-verify-comment.md', 'utf8');
+            } catch {}
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body,
+            });
+            const passLabel = 'darake:verify-pass';
+            const failLabel = 'darake:verify-fail';
+            const addLabel = verdict === 'pass' ? passLabel : failLabel;
+            const removeLabel = verdict === 'pass' ? failLabel : passLabel;
+            try {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: [addLabel],
+              });
+            } catch {}
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                name: removeLabel,
+              });
+            } catch {}

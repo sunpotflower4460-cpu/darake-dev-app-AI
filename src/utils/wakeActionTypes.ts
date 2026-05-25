@@ -4,7 +4,8 @@ export type WakeActionKind =
   | 'copy-fallback-instruction'
   | 'open-issue'
   | 'show-setup'
-  | 'show-details';
+  | 'show-details'
+  | 'review-fix-request';
 
 export type WakeActionTokenRecord = {
   tokenId: string;

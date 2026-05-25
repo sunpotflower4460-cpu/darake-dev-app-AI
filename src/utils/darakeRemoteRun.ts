@@ -26,6 +26,11 @@ export type DarakeRemoteRun = {
   wakeSentAt?: string;
   createdAt: string;
   updatedAt: string;
+  /** Set when this run belongs to a parallel project orchestration. */
+  projectId?: string;
+  phaseId?: string;
+  /** Screenshot-vs-design verify attempt counter (separate from build autofix). */
+  verifyAttempts?: number;
 };
 
 export type RegisterDarakeRunRequest = {

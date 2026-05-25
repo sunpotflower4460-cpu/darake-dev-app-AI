@@ -13,6 +13,55 @@ run_worker_first = ["/api/*"]
 # This lets the Worker create GitHub Issues when GITHUB_TOKEN is also configured as a Secret.
 GITHUB_ISSUE_CREATE_ENABLED = "true"
 
+# Phase 1 — Image/Text → AI Blueprint generation.
+# Requires ANTHROPIC_API_KEY in Worker Secrets when enabled.
+DARAKE_BLUEPRINT_AI_ENABLED = "false"
+BLUEPRINT_AI_DAILY_BUDGET_USD = "5"
+BLUEPRINT_AI_MODEL = "claude-sonnet-4-6"
+
+# Phase 2 — Screenshot vs Design comparison via Vision LLM.
+# Requires ANTHROPIC_API_KEY in Worker Secrets when enabled.
+DARAKE_VISION_VERIFY_ENABLED = "false"
+VISION_VERIFY_DAILY_BUDGET_USD = "10"
+VISION_VERIFY_MODEL = "claude-sonnet-4-6"
+
+# Phase 3 — Parallel project bootstrap (repo from template + Pages + KV registry).
+# Requires GITHUB_TOKEN in Secrets, STARTER_TEMPLATE_REPO, and RUN_REGISTRY_KV bound.
+# Optional: CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID (Secrets) for Pages creation,
+#           PROJECT_OWNER to place new repos under a specific org/user.
+DARAKE_PROJECT_BOOTSTRAP_ENABLED = "false"
+# STARTER_TEMPLATE_REPO = "your-org/darake-app-starter"
+# PROJECT_OWNER = "your-org"
+
+# Phase 4/5 — Submission. Web promotes the Pages deployment; iOS/Android
+# dispatch the submit-*.yml workflows in the project repo. All default off.
+DARAKE_SUBMIT_WEB_ENABLED = "false"
+DARAKE_SUBMIT_IOS_ENABLED = "false"
+DARAKE_SUBMIT_ANDROID_ENABLED = "false"
+
+# Phase D — Whole-app completion check (2-pass: strict + devil's advocate).
+# Requires ANTHROPIC_API_KEY in Worker Secrets when enabled.
+DARAKE_FINAL_CHECK_ENABLED = "false"
+
+# Project autopilot — cron-driven phase orchestration (issue -> @copilot ->
+# PR -> verify label -> merge -> next phase). Requires the cron trigger and
+# KV below to be active, plus GITHUB_AGENT_ASSIGN_ENABLED / GITHUB_PR_MERGE_ENABLED
+# and DARAKE_AUTOPILOT_SCHEDULE_ENABLED (Secret) for the loop to run.
+DARAKE_PROJECT_AUTOPILOT_ENABLED = "false"
+
+# Secret sync — encrypts client-supplied secrets (libsodium sealed box) and
+# PUTs them to a project repo's Actions secrets. Security-sensitive: enable
+# only after reviewing worker/secretsSync.ts. Requires GITHUB_TOKEN.
+DARAKE_SECRET_SYNC_ENABLED = "false"
+
+# Phase 5 — AI icon generation (Claude → SVG) and Gemini cross-check for the
+# final completion second opinion. Icons need ANTHROPIC_API_KEY; cross-check
+# needs GEMINI_API_KEY (Secret).
+DARAKE_ICON_GEN_ENABLED = "false"
+ICON_GEN_MODEL = "claude-sonnet-4-6"
+DARAKE_CROSS_CHECK_ENABLED = "false"
+CROSS_CHECK_MODEL = "gemini-2.5-flash"
+
 # Cron Trigger for background autopilot patrol.
 # Uncomment and configure to activate scheduled checks.
 # Requires DARAKE_AUTOPILOT_SCHEDULE_ENABLED=true in Worker Secrets.

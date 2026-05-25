@@ -1,0 +1,79 @@
+# だらけ Android申請ワークフロー (生成プロジェクト側に配置)
+#
+# だらけWorkerの /api/darake/submit/android から workflow_dispatch で起動されます。
+# Gradle Play Publisher で内部テスト → 本番リリースまで進めます。
+#
+# 必要な設定 (生成プロジェクトの Secrets):
+#   GOOGLE_PLAY_JSON_KEY     (Service Account JSON の中身)
+#   ANDROID_KEYSTORE_BASE64  (署名キーストアの base64)
+#   ANDROID_KEYSTORE_PASSWORD / ANDROID_KEY_ALIAS / ANDROID_KEY_PASSWORD
+#   DARAKE_WORKER_URL        (完了通知のコールバック先)
+#
+# ⚠️ 課金・本番リリース承認はだらけ側の申請前ゲートで人間が確認済みである前提です。
+name: darake-submit-android
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: darake project id
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Decode keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$ANDROID_KEYSTORE_BASE64" ]; then
+            echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > release.keystore
+          fi
+
+      - name: Write Play service account
+        env:
+          GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
+        run: |
+          if [ -n "$GOOGLE_PLAY_JSON_KEY" ]; then
+            echo "$GOOGLE_PLAY_JSON_KEY" > play-service-account.json
+          fi
+
+      - name: Build & publish
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          # プロジェクトに gradle-play-publisher プラグインを設定してください。例:
+          #   ./gradlew publishReleaseBundle
+          if [ -f gradlew ]; then
+            chmod +x gradlew
+            ./gradlew publishReleaseBundle || ./gradlew bundleRelease
+          else
+            echo "::warning::gradlew が見つかりません。Androidプロジェクトの設定を追加してください。"
+            exit 1
+          fi
+
+      - name: Notify darake
+        if: always()
+        env:
+          DARAKE_WORKER_URL: ${{ secrets.DARAKE_WORKER_URL }}
+          PROJECT_ID: ${{ github.event.inputs.project_id }}
+          RESULT: ${{ job.status }}
+        run: |
+          if [ -n "$DARAKE_WORKER_URL" ]; then
+            curl -s -X POST "$DARAKE_WORKER_URL/api/darake/submit/callback" \
+              -H 'content-type: application/json' \
+              -d "{\"projectId\":\"$PROJECT_ID\",\"platform\":\"android\",\"status\":\"$RESULT\"}" || true
+          fi

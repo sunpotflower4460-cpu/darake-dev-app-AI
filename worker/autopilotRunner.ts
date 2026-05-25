@@ -18,6 +18,7 @@ import {
   saveWakeActionToken,
 } from './wakeActionToken';
 import type { WakeActionKind } from './wakeActionToken';
+import { processAllProjects, type OrchestratorEnv } from './projectOrchestrator';
 
 type RunnerEnv = {
   GITHUB_TOKEN?: string;
@@ -30,7 +31,7 @@ type RunnerEnv = {
   RUN_REGISTRY_KV?: KVNamespace;
   /** Public URL of the Pages app, e.g. https://your-app.pages.dev */
   APP_URL?: string;
-};
+} & OrchestratorEnv;
 
 type GitHubHeaders = Record<string, string>;
 
@@ -371,5 +372,12 @@ export async function runAutopilotScheduled(env: RunnerEnv): Promise<void> {
     } catch (err) {
       console.error(`[darake-runner] Error processing run ${run.id}:`, err);
     }
+  }
+
+  // Parallel project orchestration (gated by DARAKE_PROJECT_AUTOPILOT_ENABLED).
+  try {
+    await processAllProjects(env);
+  } catch (err) {
+    console.error('[darake-runner] Project orchestration error:', err);
   }
 }
