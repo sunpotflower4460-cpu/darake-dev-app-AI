@@ -118,6 +118,7 @@ export const PANEL_GROUP_MAP: PanelNavGroupMap = {
   FeedbackIssueDraftPanel: 'post-release',
   NextUpdatePlanPanel: 'post-release',
   PostReleaseCompletionReportPanel: 'post-release',
+  MultiProjectDashboardPanel: 'portfolio',
   AppRegistryPanel: 'portfolio',
   PortfolioDashboardPanel: 'portfolio',
   TodaysFocusPanel: 'portfolio',

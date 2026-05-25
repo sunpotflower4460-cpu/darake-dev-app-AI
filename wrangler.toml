@@ -25,6 +25,14 @@ DARAKE_VISION_VERIFY_ENABLED = "false"
 VISION_VERIFY_DAILY_BUDGET_USD = "10"
 VISION_VERIFY_MODEL = "claude-sonnet-4-6"
 
+# Phase 3 — Parallel project bootstrap (repo from template + Pages + KV registry).
+# Requires GITHUB_TOKEN in Secrets, STARTER_TEMPLATE_REPO, and RUN_REGISTRY_KV bound.
+# Optional: CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID (Secrets) for Pages creation,
+#           PROJECT_OWNER to place new repos under a specific org/user.
+DARAKE_PROJECT_BOOTSTRAP_ENABLED = "false"
+# STARTER_TEMPLATE_REPO = "your-org/darake-app-starter"
+# PROJECT_OWNER = "your-org"
+
 # Cron Trigger for background autopilot patrol.
 # Uncomment and configure to activate scheduled checks.
 # Requires DARAKE_AUTOPILOT_SCHEDULE_ENABLED=true in Worker Secrets.

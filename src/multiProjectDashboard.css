@@ -1,0 +1,167 @@
+.multiProjectDashboard {
+  display: grid;
+  gap: 18px;
+}
+
+.multiProjectHero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 20px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.88));
+}
+
+.multiProjectHero > svg {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 16px;
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+}
+
+.multiProjectHero h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  letter-spacing: -0.04em;
+}
+
+.multiProjectBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.multiProjectBar button {
+  border: 1px solid rgba(76, 124, 85, 0.25);
+  border-radius: 8px;
+  padding: 6px 12px;
+  background: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.multiProjectGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.multiProjectCard {
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: #fffdf8;
+  display: grid;
+  gap: 8px;
+}
+
+.multiProjectCard h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: #35513d;
+}
+
+.multiProjectCard .meta {
+  font-size: 0.8rem;
+  color: #6a7765;
+  word-break: break-all;
+}
+
+.multiProjectStatusPill {
+  justify-self: start;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.multiProjectStatusPill.planning,
+.multiProjectStatusPill.paused {
+  background: rgba(106, 119, 101, 0.15);
+  color: #4c5b46;
+}
+
+.multiProjectStatusPill.building,
+.multiProjectStatusPill.verifying,
+.multiProjectStatusPill.submitting {
+  background: rgba(185, 130, 46, 0.16);
+  color: #815a18;
+}
+
+.multiProjectStatusPill.awaiting-user {
+  background: rgba(46, 110, 185, 0.14);
+  color: #1e4d81;
+}
+
+.multiProjectStatusPill.done {
+  background: rgba(76, 124, 85, 0.18);
+  color: #2c5238;
+}
+
+.multiProjectStatusPill.failed {
+  background: rgba(185, 76, 46, 0.16);
+  color: #813a1e;
+}
+
+.multiProjectCard a {
+  font-size: 0.82rem;
+  color: #4c7c55;
+}
+
+.multiProjectCreate {
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 16px;
+  padding: 16px;
+  background: rgba(248, 252, 240, 0.55);
+  display: grid;
+  gap: 10px;
+}
+
+.multiProjectCreate label {
+  font-size: 0.85rem;
+  color: #35513d;
+}
+
+.multiProjectCreate input {
+  margin-top: 4px;
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  border: 1px solid rgba(76, 124, 85, 0.25);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font: inherit;
+}
+
+.multiProjectCreate button.primary {
+  justify-self: start;
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
+  color: #fffaf0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.multiProjectCreate button.primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.multiProjectMsg {
+  font-size: 0.84rem;
+  color: #4c5b46;
+}
+
+.multiProjectMsg.error {
+  color: #b94c2e;
+}

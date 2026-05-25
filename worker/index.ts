@@ -20,6 +20,11 @@ type Env = {
   DARAKE_VISION_VERIFY_ENABLED?: string;
   VISION_VERIFY_DAILY_BUDGET_USD?: string;
   VISION_VERIFY_MODEL?: string;
+  DARAKE_PROJECT_BOOTSTRAP_ENABLED?: string;
+  STARTER_TEMPLATE_REPO?: string;
+  PROJECT_OWNER?: string;
+  CLOUDFLARE_API_TOKEN?: string;
+  CLOUDFLARE_ACCOUNT_ID?: string;
 };
 
 function json(data: unknown, status = 200): Response {
@@ -42,15 +47,6 @@ function parseGitHubRepoUrl(
   const owner = match[1];
   const repo = match[2].replace(/\.git$/, "");
   return { ok: true, owner, repo, fullName: `${owner}/${repo}` };
-}
-
-function isAllowedRepo(fullName: string, allowlist?: string): boolean {
-  if (!allowlist?.trim()) return true;
-  return allowlist
-    .split(",")
-    .map((item) => item.trim().toLowerCase())
-    .filter(Boolean)
-    .includes(fullName.toLowerCase());
 }
 
 async function handleCreateIssue(request: Request, env: Env): Promise<Response> {
@@ -96,7 +92,7 @@ async function handleCreateIssue(request: Request, env: Env): Promise<Response> 
     return json({ ok: false, code: "INVALID_REPO_URL", error: parsed.error }, 400);
   }
 
-  if (!isAllowedRepo(parsed.fullName, env.GITHUB_ALLOWED_REPOS)) {
+  if (!(await isAllowedRepoAsync(parsed.fullName, env))) {
     return json(
       {
         ok: false,
@@ -213,7 +209,7 @@ async function handleAssignAgent(request: Request, env: Env): Promise<Response> 
     return json({ ok: false, code: "INVALID_INPUT", error: parsed.error }, 400);
   }
 
-  if (!isAllowedRepo(parsed.fullName, env.GITHUB_ALLOWED_REPOS)) {
+  if (!(await isAllowedRepoAsync(parsed.fullName, env))) {
     return json(
       { ok: false, code: "REPO_NOT_ALLOWED", error: "このリポジトリは許可リストに入っていません" },
       403,
@@ -279,7 +275,7 @@ async function handleFindPrByIssue(request: Request, env: Env): Promise<Response
     return json({ ok: false, code: "INVALID_INPUT", error: parsed.error }, 400);
   }
 
-  if (!isAllowedRepo(parsed.fullName, env.GITHUB_ALLOWED_REPOS)) {
+  if (!(await isAllowedRepoAsync(parsed.fullName, env))) {
     return json(
       { ok: false, code: "REPO_NOT_ALLOWED", error: "このリポジトリは許可リストに入っていません" },
       403,
@@ -374,7 +370,7 @@ async function handleGetPrHealth(request: Request, env: Env): Promise<Response> 
     return json({ ok: false, code: "INVALID_INPUT", error: parsed.error }, 400);
   }
 
-  if (!isAllowedRepo(parsed.fullName, env.GITHUB_ALLOWED_REPOS)) {
+  if (!(await isAllowedRepoAsync(parsed.fullName, env))) {
     return json(
       { ok: false, code: "REPO_NOT_ALLOWED", error: "このリポジトリは許可リストに入っていません" },
       403,
@@ -560,7 +556,7 @@ async function handleCreatePrComment(request: Request, env: Env): Promise<Respon
     return json({ ok: false, code: "INVALID_INPUT", error: parsed.error }, 400);
   }
 
-  if (!isAllowedRepo(parsed.fullName, env.GITHUB_ALLOWED_REPOS)) {
+  if (!(await isAllowedRepoAsync(parsed.fullName, env))) {
     return json(
       { ok: false, code: "REPO_NOT_ALLOWED", error: "このリポジトリは許可リストに入っていません" },
       403,
@@ -627,6 +623,9 @@ import {
 } from "./wakeActionToken";
 import { handleGenerateBlueprintFromInput } from "./blueprintGenerator";
 import { handleCompareScreenshots, handleListVisionResults } from "./visionVerify";
+import { isAllowedRepoAsync } from "./repoAllowlist";
+import { handleCreateProject } from "./projectBootstrap";
+import { handleListProjects, handleGetProject } from "./projectsList";
 
 async function handleGetWakeAction(request: Request, env: Env): Promise<Response> {
   if (request.method !== "POST") {
@@ -824,7 +823,7 @@ async function handleRegisterRun(request: Request, env: Env): Promise<Response> 
     return json({ ok: false, code: "INVALID_INPUT", error: parsed.error }, 400);
   }
 
-  if (!isAllowedRepo(parsed.fullName, env.GITHUB_ALLOWED_REPOS)) {
+  if (!(await isAllowedRepoAsync(parsed.fullName, env))) {
     return json({ ok: false, code: "REPO_NOT_ALLOWED", error: "このリポジトリは許可リストに入っていません" }, 403);
   }
 
@@ -916,7 +915,7 @@ async function handleGetPrRiskInput(request: Request, env: Env): Promise<Respons
     return json({ ok: false, code: "INVALID_REPO_URL", error: parsed.error }, 400);
   }
 
-  if (!isAllowedRepo(parsed.fullName, env.GITHUB_ALLOWED_REPOS)) {
+  if (!(await isAllowedRepoAsync(parsed.fullName, env))) {
     return json(
       { ok: false, code: "REPO_NOT_ALLOWED", error: "このリポジトリは許可リストに入っていません" },
       403,
@@ -1061,7 +1060,7 @@ async function handleMergePr(request: Request, env: Env): Promise<Response> {
     return json({ ok: false, code: "INVALID_REPO_URL", error: parsed.error }, 400);
   }
 
-  if (!isAllowedRepo(parsed.fullName, env.GITHUB_ALLOWED_REPOS)) {
+  if (!(await isAllowedRepoAsync(parsed.fullName, env))) {
     return json(
       { ok: false, code: "REPO_NOT_ALLOWED", error: "このリポジトリは許可リストに入っていません" },
       403,
@@ -1317,6 +1316,15 @@ export default {
     }
     if (url.pathname === "/api/darake/verify/list-results") {
       return handleListVisionResults(request, env);
+    }
+    if (url.pathname === "/api/darake/projects/create") {
+      return handleCreateProject(request, env);
+    }
+    if (url.pathname === "/api/darake/projects/list") {
+      return handleListProjects(request, env);
+    }
+    if (url.pathname === "/api/darake/projects/get") {
+      return handleGetProject(request, env);
     }
     return env.ASSETS.fetch(request);
   },
