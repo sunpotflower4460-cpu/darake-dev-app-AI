@@ -16,7 +16,16 @@ export function DarakeBackupPanel() {
   const [importText, setImportText] = useState('');
   const [importStatus, setImportStatus] = useState<ImportStatus>({ kind: 'idle' });
   const [crossTabNotice, setCrossTabNotice] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewJson, setPreviewJson] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Recompute preview JSON only when the details section is opened
+  useEffect(() => {
+    if (previewOpen) {
+      setPreviewJson(JSON.stringify(exportDarakeBackup(), null, 2));
+    }
+  }, [previewOpen]);
 
   // Detect cross-tab storage changes and show a notice
   useEffect(() => {
@@ -66,8 +75,6 @@ export function DarakeBackupPanel() {
     if (fileInputRef.current) fileInputRef.current.value = '';
   }
 
-  const previewJson = JSON.stringify(exportDarakeBackup(), null, 2);
-
   return (
     <div className="phase24Panel">
       <div className="phase24Hero">
@@ -110,7 +117,10 @@ export function DarakeBackupPanel() {
           </button>
         </div>
 
-        <details style={{ marginTop: 12 }}>
+        <details
+          style={{ marginTop: 12 }}
+          onToggle={(e) => setPreviewOpen((e.currentTarget as HTMLDetailsElement).open)}
+        >
           <summary style={{ fontSize: '0.8rem', cursor: 'pointer', color: 'var(--muted)' }}>
             プレビュー（現在の保存データ）
           </summary>
