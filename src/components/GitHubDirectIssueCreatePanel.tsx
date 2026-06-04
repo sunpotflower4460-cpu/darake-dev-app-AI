@@ -8,6 +8,10 @@ import { parseGitHubRepoUrl } from '../utils/githubRepoUrl';
 import { buildPonStartPack } from '../utils/ponStartPack';
 import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
 import { DARAKE_SETUP_LINKS } from '../utils/darakeSetupLinks';
+import { formatGitHubWriteRiskLabel, getGitHubWriteGatePolicy } from '../utils/writeGatePolicy';
+
+const MAX_ISSUE_BODY_PREVIEW_LENGTH = 4000;
+const ISSUE_CREATE_WRITE_GATE_POLICY = getGitHubWriteGatePolicy('issue-create');
 
 export function GitHubDirectIssueCreatePanel() {
   const [revision, setRevision] = useState(0);
@@ -15,6 +19,7 @@ export function GitHubDirectIssueCreatePanel() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<CreateGitHubIssueResult | null>(null);
   const [copied, setCopied] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
 
   const pack = useMemo(() => buildPonStartPack(), [revision]);
   const record = useMemo(() => loadGitHubIssueRecord(), [revision]);
@@ -38,10 +43,17 @@ export function GitHubDirectIssueCreatePanel() {
   }, [pack.issueDraftMarkdown, pack.appName]);
 
   const issueBody = pack.issueDraftMarkdown;
+  const issueBodyPreview = useMemo(
+    () => ((issueBody.length > MAX_ISSUE_BODY_PREVIEW_LENGTH)
+      ? `${issueBody.slice(0, MAX_ISSUE_BODY_PREVIEW_LENGTH)}\n\n...（以下省略）`
+      : issueBody),
+    [issueBody],
+  );
 
   function handleRepoUrlChange(value: string) {
     setRepoUrl(value);
     setResult(null);
+    setConfirmed(false);
     if (value.trim()) {
       saveGitHubIssueCreateState({ repoUrl: value.trim() });
     }
@@ -94,7 +106,8 @@ export function GitHubDirectIssueCreatePanel() {
     parsed?.ok === true &&
     issueTitle.length > 0 &&
     issueBody.length > 0 &&
-    pack.status !== 'not-ready';
+    pack.status !== 'not-ready' &&
+    confirmed;
 
   const isDisabledError =
     result && !result.ok && result.code === 'DISABLED';
@@ -158,29 +171,51 @@ export function GitHubDirectIssueCreatePanel() {
       )}
 
       {!result?.ok && (
-        <div className="gdicField">
-          <label className="gdicLabel" htmlFor="gdic-repo-url">
-            GitHubリポジトリURL
-          </label>
-          <input
-            id="gdic-repo-url"
-            className={`gdicInput${repoUrlError ? ' gdicInputError' : ''}`}
-            type="url"
-            placeholder="https://github.com/sunpotflower4460-cpu/sample-app"
-            value={repoUrl}
-            onChange={(e) => handleRepoUrlChange(e.target.value)}
-            autoComplete="url"
-          />
-          {repoUrlError && (
-            <div className="gdicFieldError">{repoUrlError}</div>
-          )}
-          {repoUrl && parsed?.ok && (
-            <div className="gdicFieldOk">✅ {parsed.fullName}</div>
-          )}
-          {!repoUrl && (
-            <div className="gdicFieldError">リポジトリURLを入れてください</div>
-          )}
-        </div>
+        <>
+          <div className="gdicField">
+            <label className="gdicLabel" htmlFor="gdic-repo-url">
+              GitHubリポジトリURL
+            </label>
+            <input
+              id="gdic-repo-url"
+              className={`gdicInput${repoUrlError ? ' gdicInputError' : ''}`}
+              type="url"
+              placeholder="https://github.com/sunpotflower4460-cpu/sample-app"
+              value={repoUrl}
+              onChange={(e) => handleRepoUrlChange(e.target.value)}
+              autoComplete="url"
+            />
+            {repoUrlError && (
+              <div className="gdicFieldError">{repoUrlError}</div>
+            )}
+            {repoUrl && parsed?.ok && (
+              <div className="gdicFieldOk">✅ {parsed.fullName}</div>
+            )}
+            {!repoUrl && (
+              <div className="gdicFieldError">リポジトリURLを入れてください</div>
+            )}
+          </div>
+
+          <div className="gdicPreviewBox">
+            <div className="gdicPreviewTitle">作成前プレビュー</div>
+            <div className="gdicPreviewItem">
+              <span className="gdicPreviewLabel">リスク:</span> {formatGitHubWriteRiskLabel(ISSUE_CREATE_WRITE_GATE_POLICY.risk)}
+            </div>
+            <div className="gdicPreviewItem">
+              <span className="gdicPreviewLabel">タイトル:</span> {issueTitle || '(未入力)'}
+            </div>
+            <div className="gdicPreviewBody">{issueBodyPreview || '(本文なし)'}</div>
+            <label className="gdicConfirmRow" htmlFor="gdic-confirm-create">
+              <input
+                id="gdic-confirm-create"
+                type="checkbox"
+                checked={confirmed}
+                onChange={(e) => setConfirmed(e.target.checked)}
+              />
+              <span>プレビュー内容を確認し、Issue作成を実行します</span>
+            </label>
+          </div>
+        </>
       )}
 
       <div className="gdicBtnRow">
