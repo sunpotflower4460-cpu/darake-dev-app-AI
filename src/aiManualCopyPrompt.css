@@ -1,0 +1,50 @@
+.aiManualCopySection {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid rgba(76, 124, 85, 0.18);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.aiManualCopySection h4 {
+  margin: 0;
+  font-size: 0.86rem;
+  color: #35513d;
+}
+
+.aiManualCopyField {
+  display: grid;
+  gap: 6px;
+}
+
+.aiManualCopyField span {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #35513d;
+}
+
+.aiManualCopyField select,
+.aiManualCopyField textarea,
+.aiManualCopyPrompt {
+  width: 100%;
+  border: 1px solid rgba(76, 124, 85, 0.26);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.aiManualCopyPrompt {
+  background: #111827;
+  color: #f9fafb;
+}
+
+.aiManualCopyCheck {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.82rem;
+}

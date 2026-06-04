@@ -1,6 +1,7 @@
 import React from 'react';
 import type { PanelRegistryItem } from './panelRegistry';
 import { AiExecutionCandidateDraftPanel } from '../components/AiExecutionCandidateDraftPanel';
+import { AiManualCopyPromptPanel } from '../components/AiManualCopyPromptPanel';
 import { AiPreparationCompletionReportPanel } from '../components/AiPreparationCompletionReportPanel';
 import { AiPromptPackBuilderPanel } from '../components/AiPromptPackBuilderPanel';
 import { AiProviderCandidatePanel } from '../components/AiProviderCandidatePanel';
@@ -78,5 +79,15 @@ export const PANEL_REGISTRY_PHASE25: PanelRegistryItem[] = [
     defaultVisible: true,
     priority: 206,
     tags: ['reports', 'ai-review'],
+  },
+  {
+    id: 'ai-manual-copy-prompt',
+    label: 'AI Manual Copy Prompt',
+    group: 'create',
+    phase: '25.8',
+    component: React.createElement(AiManualCopyPromptPanel),
+    defaultVisible: true,
+    priority: 207,
+    tags: ['create', 'ai-review', 'manual-gate', 'safety'],
   },
 ];
