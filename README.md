@@ -171,6 +171,7 @@ AI開発をできるだけやさしく、自動化し、安全ゲート付きで
 npm install
 npm run dev
 npm run typecheck
+npm test
 npm run build
 npm run state:build
 npm run review:build
