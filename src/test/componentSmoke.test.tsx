@@ -1,11 +1,10 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { BeginnerNextStepCardPanel } from '../components/BeginnerNextStepCardPanel';
 import { FirstStartAdvancedOpenPanel } from '../components/FirstStartAdvancedOpenPanel';
 import { StatusPanel } from '../components/StatusPanel';
 
 afterEach(() => {
-  cleanup();
   localStorage.clear();
 });
 
