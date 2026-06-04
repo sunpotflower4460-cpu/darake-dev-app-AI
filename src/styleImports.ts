@@ -63,6 +63,7 @@ import './localStorageKeyRegistry.css';
 import './phase24IntegrationCompletionReport.css';
 import './darakeTopCommand.css';
 import './aiProviderCandidates.css';
+import './aiManualCopyPrompt.css';
 import './notificationDryRunTarget.css';
 import './notificationPayloadDryRunBuilder.css';
 import './notificationSafetyGate.css';

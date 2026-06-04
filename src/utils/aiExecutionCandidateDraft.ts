@@ -17,6 +17,19 @@ export type AiExecutionCandidateDraft = {
 
 export const AI_EXECUTION_CANDIDATE_DRAFTS: AiExecutionCandidateDraft[] = [
   {
+    title: 'Manual AI Safety Copy Candidate',
+    status: 'draft-only',
+    provider: 'manual-ai',
+    taskType: 'phase-plan-review',
+    requiredSecrets: [],
+    requiredExternalSetup: ['外部AIサービス規約の人間確認', '貼り付け前のprivate情報スクラブ', 'manual approval flow'],
+    inputPayloadShape: 'human-reviewed prompt + redacted issue/pr/design context',
+    outputExpectedShape: 'summary + review points + optional alternatives',
+    manualGates: ['送信前human approval', '回答の採用前human review'],
+    blockedConditions: ['API key入力欄を作ろうとしている', 'このアプリから外部AIへ自動送信しようとしている'],
+    safetyNotes: ['このPhaseの既定候補', 'manual copy only', 'API keyは不要でもprivate情報確認は必須'],
+  },
+  {
     title: 'OpenAI PR Review Candidate',
     status: 'draft-only',
     provider: 'openai',
