@@ -27,6 +27,34 @@ const RISK_BY_OPERATION: Record<GitHubWriteOperation, GitHubWriteRisk> = {
   'repository-settings-change': 'blocked-for-now',
 };
 
+const REQUIRE_PREVIEW_BY_OPERATION: Record<GitHubWriteOperation, boolean> = {
+  'issue-create': true,
+  'issue-comment-draft': true,
+  'issue-label-add': true,
+  'issue-body-update': true,
+  'pr-body-update': true,
+  'pr-create': true,
+  'branch-create': true,
+  'workflow-manual-assist': true,
+  merge: true,
+  'strong-automation': true,
+  'repository-settings-change': true,
+};
+
+const REQUIRE_CONFIRM_BY_OPERATION: Record<GitHubWriteOperation, boolean> = {
+  'issue-create': true,
+  'issue-comment-draft': false,
+  'issue-label-add': true,
+  'issue-body-update': true,
+  'pr-body-update': true,
+  'pr-create': true,
+  'branch-create': true,
+  'workflow-manual-assist': true,
+  merge: true,
+  'strong-automation': true,
+  'repository-settings-change': true,
+};
+
 export type GitHubWriteGatePolicy = {
   operation: GitHubWriteOperation;
   risk: GitHubWriteRisk;
@@ -40,8 +68,19 @@ export function getGitHubWriteGatePolicy(operation: GitHubWriteOperation): GitHu
   return {
     operation,
     risk,
-    requiresPreview: true,
-    requiresExplicitConfirmation: true,
+    requiresPreview: REQUIRE_PREVIEW_BY_OPERATION[operation],
+    requiresExplicitConfirmation: REQUIRE_CONFIRM_BY_OPERATION[operation],
     blockedForNow: risk === 'blocked-for-now',
   };
+}
+
+const RISK_LABELS: Record<GitHubWriteRisk, string> = {
+  low: 'low（低リスク）',
+  medium: 'medium（中リスク）',
+  high: 'high（高リスク）',
+  'blocked-for-now': 'blocked（このPhaseでは実行しない）',
+};
+
+export function formatGitHubWriteRiskLabel(risk: GitHubWriteRisk): string {
+  return RISK_LABELS[risk];
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getGitHubWriteGatePolicy } from '../utils/writeGatePolicy';
+import { formatGitHubWriteRiskLabel, getGitHubWriteGatePolicy } from '../utils/writeGatePolicy';
 
 describe('writeGatePolicy', () => {
   it('marks issue create as low risk with preview and confirmation', () => {
@@ -18,5 +18,14 @@ describe('writeGatePolicy', () => {
     const policy = getGitHubWriteGatePolicy('merge');
     expect(policy.risk).toBe('blocked-for-now');
     expect(policy.blockedForNow).toBe(true);
+  });
+
+  it('does not require explicit confirmation for comment draft generation', () => {
+    const policy = getGitHubWriteGatePolicy('issue-comment-draft');
+    expect(policy.requiresExplicitConfirmation).toBe(false);
+  });
+
+  it('formats risk labels for Japanese UI', () => {
+    expect(formatGitHubWriteRiskLabel('high')).toContain('高リスク');
   });
 });

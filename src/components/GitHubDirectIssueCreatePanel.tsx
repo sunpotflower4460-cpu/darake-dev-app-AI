@@ -8,7 +8,10 @@ import { parseGitHubRepoUrl } from '../utils/githubRepoUrl';
 import { buildPonStartPack } from '../utils/ponStartPack';
 import { subscribeDarakeRuntimeEvents } from '../utils/darakeRuntimeEvents';
 import { DARAKE_SETUP_LINKS } from '../utils/darakeSetupLinks';
-import { getGitHubWriteGatePolicy } from '../utils/writeGatePolicy';
+import { formatGitHubWriteRiskLabel, getGitHubWriteGatePolicy } from '../utils/writeGatePolicy';
+
+const MAX_ISSUE_BODY_PREVIEW_LENGTH = 4000;
+const ISSUE_CREATE_WRITE_GATE_POLICY = getGitHubWriteGatePolicy('issue-create');
 
 export function GitHubDirectIssueCreatePanel() {
   const [revision, setRevision] = useState(0);
@@ -40,10 +43,12 @@ export function GitHubDirectIssueCreatePanel() {
   }, [pack.issueDraftMarkdown, pack.appName]);
 
   const issueBody = pack.issueDraftMarkdown;
-  const issueBodyPreview = issueBody.length > 4000
-    ? `${issueBody.slice(0, 4000)}\n\n...（以下省略）`
-    : issueBody;
-  const writeGatePolicy = getGitHubWriteGatePolicy('issue-create');
+  const issueBodyPreview = useMemo(
+    () => ((issueBody.length > MAX_ISSUE_BODY_PREVIEW_LENGTH)
+      ? `${issueBody.slice(0, MAX_ISSUE_BODY_PREVIEW_LENGTH)}\n\n...（以下省略）`
+      : issueBody),
+    [issueBody],
+  );
 
   function handleRepoUrlChange(value: string) {
     setRepoUrl(value);
@@ -194,7 +199,7 @@ export function GitHubDirectIssueCreatePanel() {
           <div className="gdicPreviewBox">
             <div className="gdicPreviewTitle">作成前プレビュー</div>
             <div className="gdicPreviewItem">
-              <span className="gdicPreviewLabel">リスク:</span> {writeGatePolicy.risk}
+              <span className="gdicPreviewLabel">リスク:</span> {formatGitHubWriteRiskLabel(ISSUE_CREATE_WRITE_GATE_POLICY.risk)}
             </div>
             <div className="gdicPreviewItem">
               <span className="gdicPreviewLabel">タイトル:</span> {issueTitle || '(未入力)'}
