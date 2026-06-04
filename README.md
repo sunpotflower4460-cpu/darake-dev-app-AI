@@ -139,6 +139,24 @@ AI開発をできるだけやさしく、自動化し、安全ゲート付きで
 - secret / token / key 入力とApp Store本番提出は必ず停止
 - Phase 7では実行ボタンより先に「止まる場所」を明確化する
 
+## ロードマップ
+
+Phase全体の現在地と欠番の扱いは [`docs/phase-status.md`](docs/phase-status.md) で確認できます。
+
+| Phase | 名前 | 状態 |
+|-------|------|------|
+| 0 | 設計固定 | ✅ done |
+| 1 | — | ❓ 未確認 |
+| 2〜2.5 | 初期UI強化 | ✅ done |
+| 3〜3.9 | 状態読み取り土台 | ✅ done |
+| 4〜4.3 | Issue下書き | ✅ done |
+| 5 | — | ❓ 未確認 |
+| 6.0〜6.22 | GitHub実データ連携（読み取り） | ✅ done |
+| 7入口 | 書き込み安全設計 | 🔄 in-progress |
+| 59〜63 | — | ❓ 未確認 |
+| 64〜89 | ワンページUI・Cloudflare設定 | ✅ done |
+| 90 | Deep Build Mode | 🔄 in-progress |
+
 ## 初期版でできること
 
 - 魂・種の入力
@@ -195,6 +213,7 @@ CI Watch Snapshot workflow は `snapshot/ci-watch.json` をartifactとして生�
 
 ## 設計書
 
+- `docs/phase-status.md` — Phase全体のロードマップ・欠番一覧
 - `docs/phase-0-design.md`
 - `docs/phase-3-prep.md`
 - `docs/github-integration-safety.md`
