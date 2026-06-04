@@ -211,6 +211,10 @@ CI Watch Snapshot workflow は `snapshot/ci-watch.json` をartifactとして生�
 
 これらのworkflowは常時自動実行ではありません。必要な時だけ実行する安全寄りの導線です。
 
+`Update Watch Files (Scheduled, Opt-in)` workflow は PR / CI / Review Watch の低頻度定期更新用です。
+このworkflowはオプトインで、Repository Variables に `ENABLE_WATCH_SCHEDULED_UPDATES=true` を設定した場合だけ schedule 実行時に更新します。
+既定の運用は今まで通り手動更新です。
+
 ## 設計書
 
 - `docs/phase-status.md` — Phase全体のロードマップ・欠番一覧

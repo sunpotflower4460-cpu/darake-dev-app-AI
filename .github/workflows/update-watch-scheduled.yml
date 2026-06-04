@@ -1,0 +1,56 @@
+name: Update Watch Files (Scheduled, Opt-in)
+
+on:
+  workflow_dispatch:
+  schedule:
+    # low frequency: every 6 hours (UTC 00:17 / 06:17 / 12:17 / 18:17)
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: write
+  actions: read
+  pull-requests: read
+
+jobs:
+  update:
+    # オプトイン用: Repository Variables の ENABLE_WATCH_SCHEDULED_UPDATES=true の時だけ定期更新
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.ENABLE_WATCH_SCHEDULED_UPDATES == 'true' }}
+    name: Update public watch files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build PR watch file
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_WATCH_OUTPUT: public/pr-watch.json
+        run: npm run pr:build
+
+      - name: Build CI watch file
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CI_WATCH_OUTPUT: public/ci-watch.json
+        run: npm run ci:build
+
+      - name: Build review watch file
+        env:
+          REVIEW_WATCH_OUTPUT: public/review-watch.json
+        run: npm run review:build
+
+      - name: Commit watch files if changed
+        run: |
+          if git diff --quiet -- public/pr-watch.json public/ci-watch.json public/review-watch.json; then
+            echo "No watch changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/pr-watch.json public/ci-watch.json public/review-watch.json
+          git commit -m "chore: update watch snapshots (scheduled)"
+          git push
