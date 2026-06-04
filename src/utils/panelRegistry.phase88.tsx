@@ -1,4 +1,5 @@
 import { DarakeSetupHubPanel } from '../components/DarakeSetupHubPanel';
+import { DeepBuildAiPromptPanel } from '../components/DeepBuildAiPromptPanel';
 import { DeepBuildModePanel } from '../components/DeepBuildModePanel';
 import type { PanelRegistryItem } from './panelRegistry';
 
@@ -22,5 +23,15 @@ export const PANEL_REGISTRY_PHASE88: PanelRegistryItem[] = [
     defaultVisible: true,
     priority: 90,
     tags: ['deep-build', 'completion', 'review', 'darake'],
+  },
+  {
+    id: 'deep-build-ai-prompt',
+    label: 'Deep Build → AIに渡す',
+    group: 'run',
+    phase: 'Phase 90',
+    component: <DeepBuildAiPromptPanel />,
+    defaultVisible: true,
+    priority: 91,
+    tags: ['deep-build', 'ai-pipeline', 'manual-copy', 'darake'],
   },
 ];
