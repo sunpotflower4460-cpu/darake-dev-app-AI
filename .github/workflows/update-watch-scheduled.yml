@@ -3,7 +3,7 @@ name: Update Watch Files (Scheduled, Opt-in)
 on:
   workflow_dispatch:
   schedule:
-    # low frequency: every 6 hours
+    # low frequency: every 6 hours (UTC 00:17 / 06:17 / 12:17 / 18:17)
     - cron: '17 */6 * * *'
 
 permissions:
