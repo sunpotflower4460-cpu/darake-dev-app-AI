@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '../safetyConfirmButton.css';
+import '../styles/safetyConfirmButton.css';
 import { checkActionSafety } from '../utils/safetyGateV2';
 
 type Props = {

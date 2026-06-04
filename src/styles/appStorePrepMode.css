@@ -1,26 +1,26 @@
 .appStorePrep {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 20px;
-  background: #fff;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
+  gap: var(--darake-space-6);
+  padding: var(--darake-space-8);
+  background: var(--darake-surface-raised);
+  border-radius: var(--darake-radius-md);
+  border: 1px solid var(--darake-border-muted);
 }
 
 .appStorePrep__eyebrow {
-  font-size: 11px;
+  font-size: var(--darake-font-xs);
   font-weight: 600;
-  color: #6b7280;
+  color: var(--darake-text-muted);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .appStorePrep__title {
-  font-size: 18px;
+  font-size: var(--darake-font-2xl);
   font-weight: 700;
-  color: #111827;
-  margin: 0 0 4px;
+  color: var(--darake-text-heading);
+  margin: 0 0 var(--darake-space-1);
 }
 
 .appStorePrep__progress {
@@ -44,9 +44,9 @@
 }
 
 .appStorePrep__progressLabel {
-  font-size: 13px;
+  font-size: var(--darake-font-md);
   font-weight: 600;
-  color: #374151;
+  color: var(--darake-text-body);
 }
 
 .appStorePrep__list {
@@ -63,7 +63,7 @@
   align-items: flex-start;
   gap: 10px;
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: var(--darake-radius-sm);
   border: 1px solid #e5e7eb;
   background: #f9fafb;
   cursor: pointer;
@@ -97,9 +97,9 @@
 .appStorePrep__itemBody { flex: 1; min-width: 0; }
 
 .appStorePrep__itemLabel {
-  font-size: 13px;
+  font-size: var(--darake-font-md);
   font-weight: 600;
-  color: #111827;
+  color: var(--darake-text-heading);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -124,14 +124,14 @@
 }
 
 .appStorePrep__itemHint {
-  font-size: 11px;
-  color: #6b7280;
+  font-size: var(--darake-font-xs);
+  color: var(--darake-text-muted);
   margin-top: 2px;
 }
 
 .appStorePrep__gate {
-  padding: 16px;
-  border-radius: 10px;
+  padding: var(--darake-space-6);
+  border-radius: var(--darake-radius-sm);
   background: #fef2f2;
   border: 2px solid #fca5a5;
   display: flex;
@@ -153,17 +153,17 @@
 .appStorePrep__gate--ready .appStorePrep__gateTitle { color: #15803d; }
 
 .appStorePrep__gateNote {
-  font-size: 13px;
+  font-size: var(--darake-font-md);
   color: #4b5563;
 }
 
 .appStorePrep__submitGate {
-  padding: 10px 18px;
+  padding: var(--darake-space-3) var(--darake-space-7);
   background: #dc2626;
-  color: #fff;
+  color: var(--darake-text-inverse);
   border: none;
-  border-radius: 8px;
-  font-size: 13px;
+  border-radius: var(--darake-radius-sm);
+  font-size: var(--darake-font-md);
   font-weight: 700;
   cursor: not-allowed;
   opacity: 0.7;

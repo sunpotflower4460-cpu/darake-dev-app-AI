@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import '../previewDeployStatus.css';
+import '../styles/previewDeployStatus.css';
 import { DarakePanelBadge } from './DarakePanelBadge';
 import {
   buildDarakeWorkSession,

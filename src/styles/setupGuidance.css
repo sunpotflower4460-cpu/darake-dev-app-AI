@@ -1,13 +1,13 @@
 /* SetupGuidanceCard styles — Phase 57 */
 
 .sgc-card {
-  border-radius: 10px;
-  padding: 14px 16px;
+  border-radius: var(--darake-radius-sm);
+  padding: var(--darake-space-5) var(--darake-space-6);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--darake-space-3);
   border: 1px solid #e5e7eb;
-  background: #fff;
+  background: var(--darake-surface-raised);
 }
 
 .sgc-card--safe {
@@ -36,9 +36,9 @@
 }
 
 .sgc-title {
-  font-size: 0.9rem;
+  font-size: var(--darake-font-md);
   font-weight: 700;
-  color: var(--text-primary, #111827);
+  color: var(--text-primary, var(--darake-text-heading));
 }
 
 .sgc-badge {
@@ -61,24 +61,24 @@
 }
 
 .sgc-short {
-  font-size: 0.82rem;
-  color: var(--text-secondary, #6b7280);
+  font-size: var(--darake-font-ui);
+  color: var(--text-secondary, var(--darake-text-muted));
   margin: 0;
   line-height: 1.4;
 }
 
 .sgc-actions {
   display: flex;
-  gap: 8px;
+  gap: var(--darake-space-2);
 }
 
 .sgc-btn-primary {
   background: none;
   border: 1px solid #2563eb;
   color: #2563eb;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 0.82rem;
+  border-radius: var(--darake-radius-xs);
+  padding: var(--darake-space-xs) var(--darake-space-4);
+  font-size: var(--darake-font-ui);
   font-weight: 600;
   cursor: pointer;
 }
@@ -91,9 +91,9 @@
 .sgc-steps {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--darake-space-3);
   border-top: 1px solid #f3f4f6;
-  padding-top: 10px;
+  padding-top: var(--darake-space-3);
 }
 
 .sgc-step {
@@ -103,14 +103,14 @@
 }
 
 .sgc-step-title {
-  font-size: 0.82rem;
+  font-size: var(--darake-font-ui);
   font-weight: 600;
-  color: var(--text-primary, #111827);
+  color: var(--text-primary, var(--darake-text-heading));
 }
 
 .sgc-step-desc {
-  font-size: 0.8rem;
-  color: var(--text-secondary, #6b7280);
+  font-size: var(--darake-font-caption);
+  color: var(--text-secondary, var(--darake-text-muted));
   line-height: 1.4;
 }
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '../appStorePrepMode.css';
+import '../styles/appStorePrepMode.css';
 import {
   APP_STORE_PREP_ITEMS,
   buildAppStorePrepReadiness,

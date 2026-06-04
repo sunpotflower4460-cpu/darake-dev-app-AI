@@ -1,4 +1,4 @@
-import '../darakePanelBadge.css';
+import '../styles/darakePanelBadge.css';
 import { PANEL_KIND_INFO, type PanelKind } from '../utils/darakePanelKinds';
 
 type Props = {
