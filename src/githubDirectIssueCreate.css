@@ -171,6 +171,61 @@
   font-size: 0.85em;
 }
 
+.gdicPreviewBox {
+  background: #f7f9fc;
+  border: 1px solid #dbe4f1;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.gdicPreviewTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1e3a5f;
+  margin-bottom: 8px;
+}
+
+.gdicPreviewItem {
+  font-size: 0.82rem;
+  color: #355070;
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.gdicPreviewLabel {
+  font-weight: 700;
+}
+
+.gdicPreviewBody {
+  background: #fff;
+  border: 1px solid #e1e8f2;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #3c4f67;
+  max-height: 180px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-top: 4px;
+}
+
+.gdicConfirmRow {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 0.8rem;
+  color: #2f4b6c;
+  line-height: 1.45;
+}
+
+.gdicConfirmRow input {
+  margin-top: 2px;
+}
+
 .gdicBtnRow {
   display: flex;
   flex-direction: column;

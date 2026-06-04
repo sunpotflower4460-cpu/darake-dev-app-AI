@@ -93,7 +93,8 @@ Phase 6では、以下を自動実行しません。
 - secret登録
 - GitHub Actions permissions変更
 
-これらはPhase 7以降で、個別に安全設計してから扱います。
+これらはPhase 7以降で、個別に安全設計してから扱います。  
+Phase 7の書き込み境界とIssue作成ゲートは `docs/phase-7-write-gate-design.md` を参照してください。
 
 ---
 
