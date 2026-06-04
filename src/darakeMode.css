@@ -5,9 +5,9 @@
 
 .darakeHero {
   padding: 22px;
-  border: 1px solid rgba(76, 124, 85, 0.16);
-  border-radius: 26px;
-  background: linear-gradient(135deg, rgba(255, 250, 240, 0.92), rgba(238, 247, 231, 0.88));
+  border: 1px solid var(--darake-border-hero);
+  border-radius: var(--darake-radius-4xl);
+  background: var(--darake-gradient-hero);
 }
 
 .darakeHero h3 {
@@ -68,10 +68,10 @@
 
 .darakePrinciples span {
   padding: 8px 11px;
-  border-radius: 999px;
-  color: #31513b;
-  background: rgba(76, 124, 85, 0.12);
-  font-size: 0.84rem;
+  border-radius: var(--darake-radius-pill);
+  color: var(--darake-text-accent-soft);
+  background: var(--darake-border-panel-soft);
+  font-size: var(--darake-font-sm);
   font-weight: 900;
 }
 
@@ -82,10 +82,10 @@
 }
 
 .darakeLane {
-  padding: 16px;
+  padding: var(--darake-space-6);
   border: 1px solid var(--line);
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.58);
+  border-radius: var(--darake-radius-3xl);
+  background: var(--darake-surface-overlay-soft);
 }
 
 .darakeLaneHeader {
@@ -139,9 +139,9 @@
 .darakeTask span {
   justify-self: start;
   padding: 5px 9px;
-  border-radius: 999px;
-  color: #76531d;
-  background: rgba(185, 130, 46, 0.13);
+  border-radius: var(--darake-radius-pill);
+  color: var(--darake-text-gold-deep);
+  background: var(--darake-surface-gold-tint);
   font-size: 0.76rem;
   font-weight: 900;
 }
