@@ -11,7 +11,7 @@
   padding: var(--darake-space-8);
   border: 1px solid rgba(76, 124, 85, 0.18);
   border-radius: var(--darake-radius-3xl);
-  background: var(--darake-gradient-hero);
+  background: linear-gradient(135deg, rgba(255, 250, 240, 0.94), rgba(238, 247, 231, 0.88));
 }
 
 .actionPreviewHero > svg {
@@ -19,8 +19,8 @@
   height: 44px;
   padding: var(--darake-space-3);
   border-radius: var(--darake-radius-xl);
-  color: var(--darake-text-paper);
-  background: var(--darake-gradient-icon);
+  color: #fffaf0;
+  background: linear-gradient(135deg, #4c7c55, #b9822e);
 }
 
 .actionPreviewHero h3 {
@@ -50,7 +50,7 @@
   gap: var(--darake-space-3);
   padding: var(--darake-space-6);
   border: 1px solid rgba(76, 124, 85, 0.24);
-  border-radius: var(--darake-radius-2xl);
+  border-radius: 22px;
   background: rgba(76, 124, 85, 0.08);
 }
 
