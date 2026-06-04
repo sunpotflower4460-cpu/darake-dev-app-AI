@@ -10,7 +10,7 @@
 .gasPhaseTag {
   color: var(--darake-text-tint);
   background: var(--darake-surface-good-alt);
-  margin-bottom: 8px;
+  margin-bottom: var(--darake-space-2);
 }
 
 .gasTitle {
@@ -32,8 +32,8 @@
   font-size: var(--darake-font-md);
   color: var(--darake-text-soft);
   font-weight: 500;
-  margin-bottom: 6px;
-  margin-top: 12px;
+  margin-bottom: var(--darake-space-xs);
+  margin-top: var(--darake-space-4);
 }
 
 .gasLabel:first-child {
@@ -73,7 +73,7 @@
   border-radius: var(--darake-radius-md);
   border: 1.5px solid var(--darake-border-soft);
   background: var(--darake-surface-raised);
-  font-size: 0.88rem;
+  font-size: var(--darake-font-ui);
   min-height: 40px;
 }
 
@@ -134,7 +134,7 @@
   padding: 2px var(--darake-space-2);
   border-radius: var(--darake-radius-pill);
   background: var(--darake-surface-soft-muted);
-  color: #537063;
+  color: var(--darake-text-chip);
   font-size: var(--darake-font-xs);
   font-weight: 800;
 }
@@ -145,13 +145,13 @@
 }
 
 .gasTemplateLabel {
-  font-size: 0.86rem;
+  font-size: var(--darake-font-label);
   font-weight: 800;
   color: var(--darake-text-strong);
 }
 
 .gasTemplateDescription {
-  font-size: 0.74rem;
+  font-size: var(--darake-font-2xs);
   line-height: 1.45;
   color: var(--darake-text-subtle);
 }
@@ -162,8 +162,8 @@
   border-radius: 10px;
   border: 1.5px dashed var(--darake-border-neutral);
   background: transparent;
-  color: #888;
-  font-size: 0.85rem;
+  color: var(--darake-text-neutral);
+  font-size: var(--darake-font-compact);
   cursor: pointer;
   margin-bottom: 14px;
   transition: background 0.15s, transform 0.1s;
@@ -196,10 +196,10 @@
   border: none;
   background: var(--darake-action-primary);
   color: var(--darake-text-inverse);
-  font-size: 1rem;
+  font-size: var(--darake-font-base);
   font-weight: 700;
   cursor: pointer;
-  min-height: 50px;
+  min-height: var(--darake-control-height-lg);
   transition: background 0.15s, transform 0.1s;
   user-select: none;
   -webkit-tap-highlight-color: transparent;

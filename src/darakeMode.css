@@ -5,8 +5,8 @@
 
 .darakeHero {
   padding: 22px;
-  border: 1px solid rgba(76, 124, 85, 0.16);
-  border-radius: 26px;
+  border: 1px solid var(--darake-border-hero);
+  border-radius: var(--darake-radius-4xl);
   background: var(--darake-gradient-hero);
 }
 
@@ -69,9 +69,9 @@
 .darakePrinciples span {
   padding: 8px 11px;
   border-radius: var(--darake-radius-pill);
-  color: #31513b;
-  background: rgba(76, 124, 85, 0.12);
-  font-size: 0.84rem;
+  color: var(--darake-text-accent-soft);
+  background: var(--darake-border-panel-soft);
+  font-size: var(--darake-font-sm);
   font-weight: 900;
 }
 
@@ -82,7 +82,7 @@
 }
 
 .darakeLane {
-  padding: 16px;
+  padding: var(--darake-space-6);
   border: 1px solid var(--line);
   border-radius: var(--darake-radius-3xl);
   background: var(--darake-surface-overlay-soft);

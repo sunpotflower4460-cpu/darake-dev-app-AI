@@ -58,15 +58,15 @@
 .flcStepTitle {
   font-size: var(--darake-font-xl);
   font-weight: 600;
-  color: #333;
-  margin-bottom: 14px;
+  color: var(--darake-text-heading);
+  margin-bottom: var(--darake-space-5);
 }
 
 .flcLabel {
   display: block;
   font-size: var(--darake-font-md);
   color: var(--darake-text-soft);
-  margin-bottom: 6px;
+  margin-bottom: var(--darake-space-xs);
   font-weight: 500;
 }
 
@@ -75,8 +75,8 @@
   border-radius: var(--darake-radius-lg);
   border: 1.5px solid var(--darake-border-soft);
   background: var(--darake-surface-soft);
-  font-size: 1rem;
-  margin-bottom: 16px;
+  font-size: var(--darake-font-base);
+  margin-bottom: var(--darake-space-6);
   resize: vertical;
 }
 
@@ -121,13 +121,13 @@
   background: var(--darake-surface-good);
   border-radius: var(--darake-radius-lg);
   padding: var(--darake-space-6);
-  margin-bottom: 16px;
+  margin-bottom: var(--darake-space-6);
 }
 
 .flcSafetyItem {
   font-size: var(--darake-font-md);
   color: var(--darake-text-body);
-  padding: 4px 0;
+  padding: var(--darake-space-1) 0;
   display: flex;
   align-items: flex-start;
   gap: 8px;
@@ -141,17 +141,17 @@
 
 .flcReadyCard {
   background: var(--darake-gradient-ready);
-  border-radius: 18px;
+  border-radius: var(--darake-radius-soft);
   padding: var(--darake-space-8);
   text-align: center;
   margin-bottom: 20px;
 }
 
 .flcReadyTitle {
-  font-size: 1.2rem;
+  font-size: var(--darake-font-2xl);
   font-weight: 700;
   color: var(--darake-text-good);
-  margin-bottom: 6px;
+  margin-bottom: var(--darake-space-xs);
 }
 
 .flcReadySub {
@@ -170,7 +170,7 @@
   font-size: 1.05rem;
   font-weight: 700;
   cursor: pointer;
-  min-height: 52px;
+  min-height: var(--darake-control-height-xl);
   transition: background 0.15s, transform 0.1s;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -195,7 +195,7 @@
   color: var(--darake-text-soft);
   font-size: var(--darake-font-md);
   cursor: pointer;
-  min-height: 44px;
+  min-height: var(--darake-control-height-md);
   transition: background 0.15s, transform 0.1s;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -214,11 +214,11 @@
 .flcPhaseTag {
   display: inline-block;
   font-size: var(--darake-font-xs);
-  color: #888;
+  color: var(--darake-text-neutral);
   background: var(--darake-surface-soft-muted);
-  border-radius: 6px;
-  padding: 2px 7px;
-  margin-bottom: 12px;
+  border-radius: var(--darake-radius-xs);
+  padding: var(--darake-space-micro) 7px;
+  margin-bottom: var(--darake-space-4);
 }
 
 .flcCrSummary {
@@ -226,9 +226,9 @@
 }
 
 .flcCrTitle {
-  font-size: 1rem;
+  font-size: var(--darake-font-base);
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: var(--darake-space-4);
 }
 
 .flcCrStatusBadge.complete {
@@ -242,7 +242,7 @@
 }
 
 .flcCrSection {
-  font-size: 0.85rem;
+  font-size: var(--darake-font-compact);
   font-weight: 600;
   color: var(--darake-text-body);
   margin: 10px 0 5px;
@@ -254,7 +254,7 @@
 }
 
 .flcCrList li {
-  font-size: 0.85rem;
+  font-size: var(--darake-font-compact);
   color: var(--darake-text-soft);
   margin-bottom: 3px;
 }

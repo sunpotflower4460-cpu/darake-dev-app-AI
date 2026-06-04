@@ -24,7 +24,7 @@
   display: inline-block;
   padding: var(--darake-space-1) var(--darake-space-4);
   border-radius: var(--darake-radius-sm);
-  font-size: 0.85rem;
+  font-size: var(--darake-font-compact);
   font-weight: 600;
   margin-bottom: var(--darake-space-4);
 }

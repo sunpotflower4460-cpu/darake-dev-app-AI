@@ -1,5 +1,8 @@
 :root {
+  --darake-space-micro: 2px;
+  --darake-space-xxs: 3px;
   --darake-space-1: 4px;
+  --darake-space-xs: 6px;
   --darake-space-2: 8px;
   --darake-space-3: 10px;
   --darake-space-4: 12px;
@@ -9,19 +12,30 @@
   --darake-space-8: 20px;
   --darake-space-9: 24px;
 
+  --darake-radius-xs: 6px;
   --darake-radius-sm: 8px;
   --darake-radius-md: 12px;
   --darake-radius-lg: 14px;
+  --darake-radius-soft: 18px;
   --darake-radius-xl: 16px;
   --darake-radius-2xl: 20px;
   --darake-radius-3xl: 24px;
+  --darake-radius-4xl: 26px;
   --darake-radius-pill: 999px;
 
   --darake-font-xs: 0.72rem;
+  --darake-font-2xs: 0.74rem;
+  --darake-font-caption: 0.8rem;
   --darake-font-sm: 0.84rem;
+  --darake-font-compact: 0.85rem;
+  --darake-font-label: 0.86rem;
+  --darake-font-ui: 0.88rem;
   --darake-font-md: 0.9rem;
   --darake-font-lg: 0.95rem;
+  --darake-font-base: 1rem;
   --darake-font-xl: 1.05rem;
+  --darake-font-2xl: 1.2rem;
+  --darake-font-3xl: 1.3rem;
 
   --darake-surface-raised: #fff;
   --darake-surface-soft: #fafafa;
@@ -44,24 +58,30 @@
 
   --darake-text-main: #222;
   --darake-text-body: #444;
+  --darake-text-heading: #333;
   --darake-text-soft: #555;
   --darake-text-muted: #666;
+  --darake-text-neutral: #888;
   --darake-text-subtle: #69746e;
   --darake-text-tint: #5f7468;
   --darake-text-accent: #35513d;
+  --darake-text-accent-soft: #31513b;
   --darake-text-strong: #26382f;
+  --darake-text-chip: #537063;
   --darake-text-good: #2e7d32;
   --darake-text-good-deep: #2e4d34;
   --darake-text-warn: #e65100;
   --darake-text-warn-deep: #8a5e12;
   --darake-text-gold-deep: #76531d;
   --darake-text-inverse: #fff;
+  --darake-text-paper: #fffaf0;
 
   --darake-border-soft: #ddd;
   --darake-border-muted: #e0e0e0;
   --darake-border-card: #e1e1e1;
   --darake-border-neutral: #ccc;
   --darake-border-success: #66bb6a;
+  --darake-border-hero: rgba(76, 124, 85, 0.16);
   --darake-border-panel: rgba(76, 124, 85, 0.22);
   --darake-border-panel-soft: rgba(76, 124, 85, 0.12);
   --darake-border-panel-strong: rgba(76, 124, 85, 0.3);
@@ -80,6 +100,10 @@
   --darake-action-primary-hover: #43a047;
   --darake-action-primary-pressed: #2e7d32;
   --darake-action-secondary: #388e3c;
+
+  --darake-control-height-md: 44px;
+  --darake-control-height-lg: 50px;
+  --darake-control-height-xl: 52px;
 
   --darake-panel-max-width: 480px;
 }

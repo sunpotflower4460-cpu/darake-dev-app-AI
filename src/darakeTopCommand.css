@@ -21,7 +21,7 @@
   height: 44px;
   padding: var(--darake-space-3);
   border-radius: var(--darake-radius-xl);
-  color: #fffaf0;
+  color: var(--darake-text-paper);
   background: var(--darake-gradient-icon);
 }
 
@@ -59,7 +59,7 @@
 }
 
 .darakeTopCommandStat .statValue {
-  font-size: 1.3rem;
+  font-size: var(--darake-font-3xl);
   font-weight: 800;
   color: var(--darake-text-good-deep);
   line-height: 1;
@@ -78,10 +78,10 @@
 .darakeTopCommandShortcut {
   padding: 6px var(--darake-space-5);
   border: 1px solid var(--darake-border-panel-strong);
-  border-radius: 18px;
+  border-radius: var(--darake-radius-soft);
   background: var(--darake-surface-overlay-strong);
   color: var(--darake-text-accent);
-  font-size: 0.8rem;
+  font-size: var(--darake-font-caption);
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
