@@ -1,8 +1,6 @@
 /* Phase 45: First Launch Care Onboarding CSS */
 .flcPanel {
-  padding: 20px 16px;
-  max-width: 480px;
-  margin: 0 auto;
+  padding: var(--darake-space-8) var(--darake-space-6);
 }
 
 .flcHero {
@@ -23,8 +21,8 @@
 }
 
 .flcHeroSub {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: var(--darake-font-md);
+  color: var(--darake-text-muted);
   line-height: 1.6;
 }
 
@@ -39,12 +37,12 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #ddd;
+  background: var(--darake-border-soft);
   transition: background 0.2s;
 }
 
 .flcStepDot.active {
-  background: #4caf50;
+  background: var(--darake-action-primary);
   width: 24px;
   border-radius: 4px;
 }
@@ -58,7 +56,7 @@
 }
 
 .flcStepTitle {
-  font-size: 1.05rem;
+  font-size: var(--darake-font-xl);
   font-weight: 600;
   color: #333;
   margin-bottom: 14px;
@@ -66,29 +64,26 @@
 
 .flcLabel {
   display: block;
-  font-size: 0.9rem;
-  color: #555;
+  font-size: var(--darake-font-md);
+  color: var(--darake-text-soft);
   margin-bottom: 6px;
   font-weight: 500;
 }
 
 .flcInput {
-  width: 100%;
-  box-sizing: border-box;
   padding: 14px;
-  border-radius: 14px;
-  border: 1.5px solid #ddd;
-  background: #fafafa;
+  border-radius: var(--darake-radius-lg);
+  border: 1.5px solid var(--darake-border-soft);
+  background: var(--darake-surface-soft);
   font-size: 1rem;
   margin-bottom: 16px;
-  min-height: 48px;
   resize: vertical;
 }
 
 .flcInput:focus {
   outline: none;
-  border-color: #4caf50;
-  background: #fff;
+  border-color: var(--darake-action-primary);
+  background: var(--darake-surface-raised);
 }
 
 .flcChoiceRow {
@@ -100,20 +95,15 @@
 
 .flcChoiceBtn {
   padding: 10px 16px;
-  border-radius: 14px;
-  border: 1.5px solid #ddd;
-  background: #fafafa;
-  cursor: pointer;
-  font-size: 0.9rem;
+  border-radius: var(--darake-radius-lg);
+  border: 1.5px solid var(--darake-border-soft);
+  background: var(--darake-surface-soft);
+  font-size: var(--darake-font-md);
   min-height: 44px;
-  transition: background 0.15s, border-color 0.15s, transform 0.1s;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
 }
 
 .flcChoiceBtn:hover {
-  background: #f0f9e8;
+  background: var(--darake-surface-good);
 }
 
 .flcChoiceBtn:active {
@@ -121,22 +111,22 @@
 }
 
 .flcChoiceBtn.selected {
-  background: #e8f5e9;
-  border-color: #4caf50;
-  color: #2e7d32;
+  background: var(--darake-surface-good-strong);
+  border-color: var(--darake-action-primary);
+  color: var(--darake-text-good);
   font-weight: 600;
 }
 
 .flcSafetyList {
-  background: #f0f9e8;
-  border-radius: 14px;
-  padding: 16px;
+  background: var(--darake-surface-good);
+  border-radius: var(--darake-radius-lg);
+  padding: var(--darake-space-6);
   margin-bottom: 16px;
 }
 
 .flcSafetyItem {
-  font-size: 0.9rem;
-  color: #444;
+  font-size: var(--darake-font-md);
+  color: var(--darake-text-body);
   padding: 4px 0;
   display: flex;
   align-items: flex-start;
@@ -144,15 +134,15 @@
 }
 
 .flcSafetyIcon {
-  color: #4caf50;
+  color: var(--darake-action-primary);
   flex-shrink: 0;
   margin-top: 1px;
 }
 
 .flcReadyCard {
-  background: linear-gradient(135deg, #f0f9e8 0%, #e8f5e9 100%);
+  background: var(--darake-gradient-ready);
   border-radius: 18px;
-  padding: 20px;
+  padding: var(--darake-space-8);
   text-align: center;
   margin-bottom: 20px;
 }
@@ -160,29 +150,23 @@
 .flcReadyTitle {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #2e7d32;
+  color: var(--darake-text-good);
   margin-bottom: 6px;
 }
 
 .flcReadySub {
-  font-size: 0.9rem;
-  color: #555;
+  font-size: var(--darake-font-md);
+  color: var(--darake-text-soft);
   line-height: 1.6;
-}
-
-.flcBtnRow {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
 .flcBtnPrimary {
   width: 100%;
   padding: 16px;
-  border-radius: 16px;
+  border-radius: var(--darake-radius-xl);
   border: none;
-  background: #4caf50;
-  color: #fff;
+  background: var(--darake-action-primary);
+  color: var(--darake-text-inverse);
   font-size: 1.05rem;
   font-weight: 700;
   cursor: pointer;
@@ -194,22 +178,22 @@
 }
 
 .flcBtnPrimary:hover {
-  background: #388e3c;
+  background: var(--darake-action-secondary);
 }
 
 .flcBtnPrimary:active {
-  background: #2e7d32;
+  background: var(--darake-action-primary-pressed);
   transform: scale(0.98);
 }
 
 .flcBtnSecondary {
   width: 100%;
-  padding: 12px;
-  border-radius: 14px;
-  border: 1.5px solid #ddd;
-  background: #fafafa;
-  color: #555;
-  font-size: 0.9rem;
+  padding: var(--darake-space-4);
+  border-radius: var(--darake-radius-lg);
+  border: 1.5px solid var(--darake-border-soft);
+  background: var(--darake-surface-soft);
+  color: var(--darake-text-soft);
+  font-size: var(--darake-font-md);
   cursor: pointer;
   min-height: 44px;
   transition: background 0.15s, transform 0.1s;
@@ -219,26 +203,26 @@
 }
 
 .flcBtnSecondary:hover {
-  background: #f0f0f0;
+  background: var(--darake-surface-soft-muted);
 }
 
 .flcBtnSecondary:active {
-  background: #e0e0e0;
+  background: var(--darake-border-muted);
   transform: scale(0.98);
 }
 
 .flcPhaseTag {
   display: inline-block;
-  font-size: 0.72rem;
+  font-size: var(--darake-font-xs);
   color: #888;
-  background: #f0f0f0;
+  background: var(--darake-surface-soft-muted);
   border-radius: 6px;
   padding: 2px 7px;
   margin-bottom: 12px;
 }
 
 .flcCrSummary {
-  padding: 16px;
+  padding: var(--darake-space-6);
 }
 
 .flcCrTitle {
@@ -247,29 +231,20 @@
   margin-bottom: 12px;
 }
 
-.flcCrStatusBadge {
-  display: inline-block;
-  padding: 5px 12px;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-}
-
 .flcCrStatusBadge.complete {
-  background: #e8f5e9;
-  color: #2e7d32;
+  background: var(--darake-surface-good-strong);
+  color: var(--darake-text-good);
 }
 
 .flcCrStatusBadge.incomplete {
-  background: #fff8e1;
-  color: #e65100;
+  background: var(--darake-surface-warn);
+  color: var(--darake-text-warn);
 }
 
 .flcCrSection {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #444;
+  color: var(--darake-text-body);
   margin: 10px 0 5px;
 }
 
@@ -280,6 +255,6 @@
 
 .flcCrList li {
   font-size: 0.85rem;
-  color: #555;
+  color: var(--darake-text-soft);
   margin-bottom: 3px;
 }

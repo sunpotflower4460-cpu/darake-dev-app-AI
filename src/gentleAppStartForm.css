@@ -1,43 +1,36 @@
 /* Gentle App Start Form CSS */
 .gasPanel {
-  padding: 18px 16px;
-  max-width: 480px;
-  margin: 0 auto;
+  padding: var(--darake-space-7) var(--darake-space-6);
 }
 
 .gasHeader {
-  margin-bottom: 18px;
+  margin-bottom: var(--darake-space-7);
 }
 
 .gasPhaseTag {
-  display: inline-block;
-  font-size: 0.72rem;
-  color: #5f7468;
-  background: #eef8f0;
-  border-radius: 999px;
-  padding: 4px 10px;
+  color: var(--darake-text-tint);
+  background: var(--darake-surface-good-alt);
   margin-bottom: 8px;
-  font-weight: 700;
 }
 
 .gasTitle {
   display: block;
   font-size: 1.1rem;
   font-weight: 700;
-  color: #222;
+  color: var(--darake-text-main);
 }
 
 .gasSection {
-  margin-bottom: 20px;
-  padding: 16px;
-  background: #fafafa;
-  border-radius: 16px;
+  margin-bottom: var(--darake-space-8);
+  padding: var(--darake-space-6);
+  background: var(--darake-surface-soft);
+  border-radius: var(--darake-radius-xl);
 }
 
 .gasLabel {
   display: block;
-  font-size: 0.9rem;
-  color: #555;
+  font-size: var(--darake-font-md);
+  color: var(--darake-text-soft);
   font-weight: 500;
   margin-bottom: 6px;
   margin-top: 12px;
@@ -53,22 +46,19 @@
 }
 
 .gasInput {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 13px 14px;
-  border-radius: 12px;
-  border: 1.5px solid #e0e0e0;
-  background: #fff;
-  font-size: 0.95rem;
+  padding: 13px var(--darake-space-5);
+  border-radius: var(--darake-radius-md);
+  border: 1.5px solid var(--darake-border-muted);
+  background: var(--darake-surface-raised);
+  font-size: var(--darake-font-lg);
   line-height: 1.5;
   resize: vertical;
-  min-height: 48px;
 }
 
 .gasInput:focus {
   outline: none;
-  border-color: #66bb6a;
-  background: #fff;
+  border-color: var(--darake-border-success);
+  background: var(--darake-surface-raised);
 }
 
 .gasChoiceRow {
@@ -80,20 +70,15 @@
 
 .gasChoiceBtn {
   padding: 9px 14px;
-  border-radius: 12px;
-  border: 1.5px solid #ddd;
-  background: #fff;
-  cursor: pointer;
+  border-radius: var(--darake-radius-md);
+  border: 1.5px solid var(--darake-border-soft);
+  background: var(--darake-surface-raised);
   font-size: 0.88rem;
   min-height: 40px;
-  transition: background 0.15s, border-color 0.15s, transform 0.1s;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
 }
 
 .gasChoiceBtn:hover {
-  background: #f1f8e9;
+  background: var(--darake-surface-good);
 }
 
 .gasChoiceBtn:active {
@@ -101,9 +86,9 @@
 }
 
 .gasChoiceBtn.selected {
-  background: #e8f5e9;
-  border-color: #66bb6a;
-  color: #2e7d32;
+  background: var(--darake-surface-good-strong);
+  border-color: var(--darake-border-success);
+  color: var(--darake-text-good);
   font-weight: 600;
 }
 
@@ -115,10 +100,10 @@
 
 .gasTemplateBtn {
   min-height: 92px;
-  padding: 10px;
-  border-radius: 16px;
-  border: 1.5px solid #e1e1e1;
-  background: #fff;
+  padding: var(--darake-space-3);
+  border-radius: var(--darake-radius-xl);
+  border: 1.5px solid var(--darake-border-card);
+  background: var(--darake-surface-raised);
   text-align: left;
   cursor: pointer;
   display: flex;
@@ -135,9 +120,9 @@
 }
 
 .gasTemplateBtn.selected {
-  background: #eef8f0;
-  border-color: #66bb6a;
-  box-shadow: 0 10px 24px rgba(76, 175, 80, 0.12);
+  background: var(--darake-surface-good-alt);
+  border-color: var(--darake-border-success);
+  box-shadow: var(--darake-shadow-emphasis);
 }
 
 .gasTemplateShort {
@@ -146,36 +131,36 @@
   justify-content: center;
   align-self: flex-start;
   min-height: 22px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: #f5f5f5;
+  padding: 2px var(--darake-space-2);
+  border-radius: var(--darake-radius-pill);
+  background: var(--darake-surface-soft-muted);
   color: #537063;
-  font-size: 0.72rem;
+  font-size: var(--darake-font-xs);
   font-weight: 800;
 }
 
 .gasTemplateBtn.selected .gasTemplateShort {
-  background: #dff3e3;
-  color: #2e7d32;
+  background: var(--darake-surface-good-badge);
+  color: var(--darake-text-good);
 }
 
 .gasTemplateLabel {
   font-size: 0.86rem;
   font-weight: 800;
-  color: #26382f;
+  color: var(--darake-text-strong);
 }
 
 .gasTemplateDescription {
   font-size: 0.74rem;
   line-height: 1.45;
-  color: #69746e;
+  color: var(--darake-text-subtle);
 }
 
 .gasAdvancedToggle {
   width: 100%;
-  padding: 10px;
+  padding: var(--darake-space-3);
   border-radius: 10px;
-  border: 1.5px dashed #ccc;
+  border: 1.5px dashed var(--darake-border-neutral);
   background: transparent;
   color: #888;
   font-size: 0.85rem;
@@ -188,7 +173,7 @@
 }
 
 .gasAdvancedToggle:hover {
-  background: #f5f5f5;
+  background: var(--darake-surface-soft-muted);
 }
 
 .gasAdvancedToggle:active {
@@ -196,35 +181,25 @@
 }
 
 .gasErrorBox {
-  background: #fff3e0;
-  border-radius: 12px;
-  padding: 12px 14px;
-  margin-bottom: 12px;
+  background: var(--darake-surface-warn-strong);
+  border-radius: var(--darake-radius-md);
+  padding: var(--darake-space-4) var(--darake-space-5);
+  margin-bottom: var(--darake-space-4);
   font-size: 0.88rem;
-  color: #e65100;
-}
-
-.gasBtnRow {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  color: var(--darake-text-warn);
 }
 
 .gasBtnPrimary {
   width: 100%;
   padding: 15px;
-  border-radius: 14px;
+  border-radius: var(--darake-radius-lg);
   border: none;
-  background: #4caf50;
-  color: #fff;
+  background: var(--darake-action-primary);
+  color: var(--darake-text-inverse);
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
   min-height: 50px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
   transition: background 0.15s, transform 0.1s;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -232,11 +207,11 @@
 }
 
 .gasBtnPrimary:hover:not(:disabled) {
-  background: #388e3c;
+  background: var(--darake-action-secondary);
 }
 
 .gasBtnPrimary:active:not(:disabled) {
-  background: #2e7d32;
+  background: var(--darake-action-primary-pressed);
   transform: scale(0.98);
 }
 
@@ -247,18 +222,14 @@
 
 .gasBtnSecondary {
   width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1.5px solid #ddd;
-  background: #fafafa;
-  color: #555;
-  font-size: 0.9rem;
+  padding: var(--darake-space-4);
+  border-radius: var(--darake-radius-md);
+  border: 1.5px solid var(--darake-border-soft);
+  background: var(--darake-surface-soft);
+  color: var(--darake-text-soft);
+  font-size: var(--darake-font-md);
   cursor: pointer;
   min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
   transition: background 0.15s, transform 0.1s;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -266,56 +237,49 @@
 }
 
 .gasBtnSecondary:hover {
-  background: #f0f0f0;
+  background: var(--darake-surface-soft-muted);
 }
 
 .gasBtnSecondary:active {
-  background: #e0e0e0;
+  background: var(--darake-border-muted);
   transform: scale(0.98);
 }
 
 /* Gentle Blueprint Preview */
 .gbpPanel {
-  padding: 18px 16px;
-  max-width: 480px;
-  margin: 0 auto;
+  padding: var(--darake-space-7) var(--darake-space-6);
 }
 
 .gbpPhaseTag {
-  display: inline-block;
-  font-size: 0.72rem;
-  color: #5f7468;
-  background: #eef8f0;
-  border-radius: 999px;
-  padding: 4px 10px;
+  color: var(--darake-text-tint);
+  background: var(--darake-surface-good-alt);
   margin-bottom: 10px;
-  font-weight: 700;
 }
 
 .gbpTitle {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #222;
+  color: var(--darake-text-main);
   margin-bottom: 14px;
 }
 
 .gbpCard {
-  background: #f0f9e8;
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 14px;
+  background: var(--darake-surface-good);
+  border-radius: var(--darake-radius-xl);
+  padding: var(--darake-space-6);
+  margin-bottom: var(--darake-space-5);
 }
 
 .gbpCardTitle {
   font-size: 0.88rem;
   font-weight: 600;
-  color: #444;
+  color: var(--darake-text-body);
   margin-bottom: 8px;
 }
 
 .gbpCardValue {
-  font-size: 0.95rem;
-  color: #222;
+  font-size: var(--darake-font-lg);
+  color: var(--darake-text-main);
   font-weight: 500;
 }
 
@@ -326,53 +290,44 @@
 
 .gbpList li {
   font-size: 0.88rem;
-  color: #444;
+  color: var(--darake-text-body);
   margin-bottom: 4px;
 }
 
 .gbpWarnBox {
-  background: #fff8e1;
-  border-radius: 12px;
-  padding: 12px 14px;
-  margin-bottom: 12px;
+  background: var(--darake-surface-warn);
+  border-radius: var(--darake-radius-md);
+  padding: var(--darake-space-4) var(--darake-space-5);
+  margin-bottom: var(--darake-space-4);
   font-size: 0.85rem;
-  color: #e65100;
-}
-
-.gbpStatusBadge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-bottom: 12px;
+  color: var(--darake-text-warn);
 }
 
 .gbpStatusBadge.ready {
-  background: #e8f5e9;
-  color: #2e7d32;
+  background: var(--darake-surface-good-strong);
+  color: var(--darake-text-good);
 }
 
 .gbpStatusBadge.needs-review {
-  background: #fff8e1;
+  background: var(--darake-surface-warn);
   color: #f57f17;
 }
 
 .gbpStatusBadge.blocked {
-  background: #ffebee;
+  background: var(--darake-surface-danger);
   color: #c62828;
 }
 
 .gbpBtnRow {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 16px;
+  gap: var(--darake-space-3);
+  margin-top: var(--darake-space-6);
 }
 
 /* Completion report reuse */
 .gasCrPanel {
-  padding: 16px;
+  padding: var(--darake-space-6);
 }
 
 @media (max-width: 380px) {

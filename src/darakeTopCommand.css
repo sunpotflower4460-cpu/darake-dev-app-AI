@@ -2,27 +2,27 @@
 
 .darakeTopCommand {
   display: grid;
-  gap: 14px;
-  padding: 20px;
-  border-radius: 24px;
-  background: linear-gradient(135deg, rgba(231, 241, 255, 0.95), rgba(238, 247, 231, 0.92));
-  border: 1px solid rgba(76, 124, 85, 0.22);
+  gap: var(--darake-space-5);
+  padding: var(--darake-space-8);
+  border-radius: var(--darake-radius-3xl);
+  background: var(--darake-gradient-panel);
+  border: 1px solid var(--darake-border-panel);
 }
 
 .darakeTopCommandHeader {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 14px;
+  gap: var(--darake-space-5);
   align-items: center;
 }
 
 .darakeTopCommandHeader > svg {
   width: 44px;
   height: 44px;
-  padding: 10px;
-  border-radius: 16px;
+  padding: var(--darake-space-3);
+  border-radius: var(--darake-radius-xl);
   color: #fffaf0;
-  background: linear-gradient(135deg, #2e5597, #4c7c55);
+  background: var(--darake-gradient-icon);
 }
 
 .darakeTopCommandHeader h3 {
@@ -33,26 +33,26 @@
 
 .darakeTopCommandHeader p {
   margin: 0;
-  font-size: 0.84rem;
+  font-size: var(--darake-font-sm);
   color: var(--muted);
 }
 
 .darakeTopCommandStats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  gap: 8px;
+  gap: var(--darake-space-2);
 }
 
 .darakeTopCommandStat {
-  background: rgba(255, 255, 255, 0.75);
-  border-radius: 12px;
-  padding: 10px 12px;
+  background: var(--darake-surface-overlay);
+  border-radius: var(--darake-radius-md);
+  padding: var(--darake-space-3) var(--darake-space-4);
   text-align: center;
-  border: 1px solid rgba(76, 124, 85, 0.12);
+  border: 1px solid var(--darake-border-panel-soft);
 }
 
 .darakeTopCommandStat .statLabel {
-  font-size: 0.72rem;
+  font-size: var(--darake-font-xs);
   color: var(--muted);
   font-weight: 600;
   margin-bottom: 2px;
@@ -61,12 +61,12 @@
 .darakeTopCommandStat .statValue {
   font-size: 1.3rem;
   font-weight: 800;
-  color: #2e4d34;
+  color: var(--darake-text-good-deep);
   line-height: 1;
 }
 
 .darakeTopCommandStat .statValue.warn {
-  color: #8a5e12;
+  color: var(--darake-text-warn-deep);
 }
 
 .darakeTopCommandShortcuts {
@@ -76,11 +76,11 @@
 }
 
 .darakeTopCommandShortcut {
-  padding: 6px 14px;
-  border: 1px solid rgba(76, 124, 85, 0.3);
+  padding: 6px var(--darake-space-5);
+  border: 1px solid var(--darake-border-panel-strong);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.8);
-  color: #35513d;
+  background: var(--darake-surface-overlay-strong);
+  color: var(--darake-text-accent);
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
@@ -88,21 +88,21 @@
 }
 
 .darakeTopCommandShortcut:hover {
-  background: rgba(76, 124, 85, 0.15);
-  border-color: rgba(76, 124, 85, 0.5);
+  background: var(--darake-surface-green-tint-hover);
+  border-color: var(--darake-border-panel-hover);
 }
 
 .darakeTopCommandShortcut.active {
-  background: rgba(76, 124, 85, 0.2);
-  border-color: rgba(76, 124, 85, 0.6);
+  background: var(--darake-surface-green-tint-active);
+  border-color: var(--darake-border-panel-active);
   font-weight: 700;
 }
 
 .darakeTopCommandComment {
-  background: rgba(76, 124, 85, 0.07);
-  border-radius: 12px;
-  padding: 10px 14px;
-  font-size: 0.84rem;
-  color: #2e4d34;
+  background: var(--darake-surface-green-tint);
+  border-radius: var(--darake-radius-md);
+  padding: var(--darake-space-3) var(--darake-space-5);
+  font-size: var(--darake-font-sm);
+  color: var(--darake-text-good-deep);
   font-weight: 600;
 }

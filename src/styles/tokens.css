@@ -1,0 +1,85 @@
+:root {
+  --darake-space-1: 4px;
+  --darake-space-2: 8px;
+  --darake-space-3: 10px;
+  --darake-space-4: 12px;
+  --darake-space-5: 14px;
+  --darake-space-6: 16px;
+  --darake-space-7: 18px;
+  --darake-space-8: 20px;
+  --darake-space-9: 24px;
+
+  --darake-radius-sm: 8px;
+  --darake-radius-md: 12px;
+  --darake-radius-lg: 14px;
+  --darake-radius-xl: 16px;
+  --darake-radius-2xl: 20px;
+  --darake-radius-3xl: 24px;
+  --darake-radius-pill: 999px;
+
+  --darake-font-xs: 0.72rem;
+  --darake-font-sm: 0.84rem;
+  --darake-font-md: 0.9rem;
+  --darake-font-lg: 0.95rem;
+  --darake-font-xl: 1.05rem;
+
+  --darake-surface-raised: #fff;
+  --darake-surface-soft: #fafafa;
+  --darake-surface-soft-muted: #f5f5f5;
+  --darake-surface-good: #f0f9e8;
+  --darake-surface-good-strong: #e8f5e9;
+  --darake-surface-good-alt: #eef8f0;
+  --darake-surface-good-badge: #dff3e3;
+  --darake-surface-warn: #fff8e1;
+  --darake-surface-warn-strong: #fff3e0;
+  --darake-surface-danger-soft: #fff0f0;
+  --darake-surface-danger: #ffebee;
+  --darake-surface-overlay: rgba(255, 255, 255, 0.75);
+  --darake-surface-overlay-strong: rgba(255, 255, 255, 0.8);
+  --darake-surface-overlay-soft: rgba(255, 255, 255, 0.58);
+  --darake-surface-green-tint: rgba(76, 124, 85, 0.07);
+  --darake-surface-green-tint-hover: rgba(76, 124, 85, 0.15);
+  --darake-surface-green-tint-active: rgba(76, 124, 85, 0.2);
+  --darake-surface-gold-tint: rgba(185, 130, 46, 0.13);
+
+  --darake-text-main: #222;
+  --darake-text-body: #444;
+  --darake-text-soft: #555;
+  --darake-text-muted: #666;
+  --darake-text-subtle: #69746e;
+  --darake-text-tint: #5f7468;
+  --darake-text-accent: #35513d;
+  --darake-text-strong: #26382f;
+  --darake-text-good: #2e7d32;
+  --darake-text-good-deep: #2e4d34;
+  --darake-text-warn: #e65100;
+  --darake-text-warn-deep: #8a5e12;
+  --darake-text-gold-deep: #76531d;
+  --darake-text-inverse: #fff;
+
+  --darake-border-soft: #ddd;
+  --darake-border-muted: #e0e0e0;
+  --darake-border-card: #e1e1e1;
+  --darake-border-neutral: #ccc;
+  --darake-border-success: #66bb6a;
+  --darake-border-panel: rgba(76, 124, 85, 0.22);
+  --darake-border-panel-soft: rgba(76, 124, 85, 0.12);
+  --darake-border-panel-strong: rgba(76, 124, 85, 0.3);
+  --darake-border-panel-hover: rgba(76, 124, 85, 0.5);
+  --darake-border-panel-active: rgba(76, 124, 85, 0.6);
+
+  --darake-shadow-soft: 0 1px 4px rgba(0, 0, 0, 0.06);
+  --darake-shadow-emphasis: 0 10px 24px rgba(76, 175, 80, 0.12);
+
+  --darake-gradient-panel: linear-gradient(135deg, rgba(231, 241, 255, 0.95), rgba(238, 247, 231, 0.92));
+  --darake-gradient-hero: linear-gradient(135deg, rgba(255, 250, 240, 0.92), rgba(238, 247, 231, 0.88));
+  --darake-gradient-ready: linear-gradient(135deg, #f0f9e8 0%, #e8f5e9 100%);
+  --darake-gradient-icon: linear-gradient(135deg, #2e5597, #4c7c55);
+
+  --darake-action-primary: #4caf50;
+  --darake-action-primary-hover: #43a047;
+  --darake-action-primary-pressed: #2e7d32;
+  --darake-action-secondary: #388e3c;
+
+  --darake-panel-max-width: 480px;
+}

@@ -1,0 +1,74 @@
+.darake-panelShell,
+:is(.gasPanel, .gbpPanel, .flcPanel) {
+  max-width: var(--darake-panel-max-width);
+  margin: 0 auto;
+}
+
+.darake-card {
+  padding: var(--darake-space-6);
+  border-radius: var(--darake-radius-xl);
+  background: var(--darake-surface-soft);
+}
+
+.darake-badge,
+:is(.gasPhaseTag, .gbpPhaseTag) {
+  display: inline-block;
+  padding: var(--darake-space-1) var(--darake-space-3);
+  border-radius: var(--darake-radius-pill);
+  font-size: var(--darake-font-xs);
+  font-weight: 700;
+}
+
+.darake-statusBadge,
+:is(.gbpStatusBadge, .flcCrStatusBadge) {
+  display: inline-block;
+  padding: var(--darake-space-1) var(--darake-space-4);
+  border-radius: var(--darake-radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: var(--darake-space-4);
+}
+
+.darake-formControl,
+:is(.gasInput, .flcInput) {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 48px;
+}
+
+.darake-choiceButtonBase,
+:is(.gasChoiceBtn, .flcChoiceBtn) {
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.darake-actionButton,
+:is(.phase39Btn, .gasBtnPrimary, .gasBtnSecondary, .flcBtnPrimary, .flcBtnSecondary) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--darake-space-2);
+}
+
+.darake-buttonStack,
+:is(.gasBtnRow, .flcBtnRow) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--darake-space-3);
+}
+
+.darake-note {
+  padding: var(--darake-space-4) var(--darake-space-5);
+  border-radius: var(--darake-radius-md);
+  background: var(--darake-surface-warn);
+  color: var(--darake-text-warn);
+}
+
+.darake-collapse {
+  padding: var(--darake-space-5);
+  border-radius: var(--darake-radius-lg);
+  background: var(--darake-surface-soft);
+}

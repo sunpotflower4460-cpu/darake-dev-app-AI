@@ -1,4 +1,6 @@
 import './styles.css';
+import './styles/tokens.css';
+import './styles/common.css';
 import './phase2.css';
 import './phase25.css';
 import './repoSnapshot.css';

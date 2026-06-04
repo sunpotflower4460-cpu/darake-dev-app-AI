@@ -1,43 +1,43 @@
 /* Phase 39: Sleep Mode Panel CSS */
 .phase39Panel {
-  padding: 16px;
+  padding: var(--darake-space-6);
 }
 
 .phase39Hero {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: var(--darake-space-4);
+  margin-bottom: var(--darake-space-6);
 }
 
 .phase39StatusCard {
-  background: #f0f9e8;
-  border-radius: 20px;
-  padding: 20px;
-  margin-bottom: 14px;
+  background: var(--darake-surface-good);
+  border-radius: var(--darake-radius-2xl);
+  padding: var(--darake-space-8);
+  margin-bottom: var(--darake-space-5);
 }
 
 .phase39StatusCard.blocked {
-  background: #fff0f0;
+  background: var(--darake-surface-danger-soft);
 }
 
 .phase39StatusCard.quiet {
-  background: #f5f5f5;
+  background: var(--darake-surface-soft-muted);
 }
 
 .phase39Counters {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 10px;
-  margin-bottom: 14px;
+  gap: var(--darake-space-3);
+  margin-bottom: var(--darake-space-5);
 }
 
 .phase39Counter {
-  background: #fff;
-  border-radius: 12px;
-  padding: 12px;
+  background: var(--darake-surface-raised);
+  border-radius: var(--darake-radius-md);
+  padding: var(--darake-space-4);
   text-align: center;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--darake-shadow-soft);
 }
 
 .phase39Counter h4 {
@@ -47,48 +47,45 @@
 }
 
 .phase39Counter p {
-  font-size: 0.75rem;
-  color: #666;
+  font-size: var(--darake-font-xs);
+  color: var(--darake-text-muted);
   margin: 0;
 }
 
 .phase39BtnRow {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 14px;
+  gap: var(--darake-space-2);
+  margin-top: var(--darake-space-5);
 }
 
 .phase39Btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 16px;
-  border-radius: 12px;
-  border: 1.5px solid #ddd;
-  background: #fafafa;
+  padding: var(--darake-space-3) var(--darake-space-6);
+  border-radius: var(--darake-radius-md);
+  border: 1.5px solid var(--darake-border-soft);
+  background: var(--darake-surface-soft);
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: var(--darake-font-md);
   min-height: 44px;
 }
 
 .phase39Btn:hover {
-  background: #f0f0f0;
+  background: var(--darake-surface-soft-muted);
 }
 
 .phase39PrimaryBtn {
-  background: #4caf50;
-  color: white;
-  border-color: #4caf50;
+  background: var(--darake-action-primary);
+  color: var(--darake-text-inverse);
+  border-color: var(--darake-action-primary);
 }
 
 .phase39PrimaryBtn:hover {
-  background: #43a047;
+  background: var(--darake-action-primary-hover);
 }
 
 .phase39Details {
-  margin-top: 12px;
-  background: #fafafa;
-  border-radius: 14px;
-  padding: 14px;
+  margin-top: var(--darake-space-4);
+  background: var(--darake-surface-soft);
+  border-radius: var(--darake-radius-lg);
+  padding: var(--darake-space-5);
 }
