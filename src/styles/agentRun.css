@@ -1,21 +1,21 @@
 /* Agent Start Panel */
 .agentStartPanel {
-  padding: 20px 16px;
-  max-width: 480px;
+  padding: var(--darake-space-8) var(--darake-space-6);
+  max-width: var(--darake-panel-max-width);
   margin: 0 auto;
 }
 
 .agentStartTitle {
-  font-size: 1.05rem;
+  font-size: var(--darake-font-xl);
   font-weight: 700;
-  color: #222;
-  margin-bottom: 6px;
+  color: var(--darake-text-main);
+  margin-bottom: var(--darake-space-xs);
 }
 
 .agentStartDesc {
-  font-size: 0.87rem;
-  color: #666;
-  margin-bottom: 14px;
+  font-size: var(--darake-font-label);
+  color: var(--darake-text-muted);
+  margin-bottom: var(--darake-space-5);
   line-height: 1.5;
 }
 
@@ -44,24 +44,24 @@
 .agentStartBtnRow {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--darake-space-3);
 }
 
 .agentStartBtnPrimary {
   width: 100%;
-  padding: 16px;
-  border-radius: 16px;
+  padding: var(--darake-space-6);
+  border-radius: var(--darake-radius-xl);
   border: none;
   background: #1565c0;
-  color: #fff;
-  font-size: 1.0rem;
+  color: var(--darake-text-inverse);
+  font-size: var(--darake-font-base);
   font-weight: 700;
   cursor: pointer;
-  min-height: 52px;
+  min-height: var(--darake-control-height-xl);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--darake-space-2);
   transition: background 0.15s, transform 0.1s;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -157,16 +157,16 @@
 
 /* Agent Run Watch Panel */
 .agentWatchPanel {
-  padding: 16px;
-  max-width: 480px;
+  padding: var(--darake-space-6);
+  max-width: var(--darake-panel-max-width);
   margin: 0 auto;
 }
 
 .agentWatchStatus {
   background: #f8f9fa;
-  border-radius: 14px;
-  padding: 16px;
-  margin-bottom: 12px;
+  border-radius: var(--darake-radius-lg);
+  padding: var(--darake-space-6);
+  margin-bottom: var(--darake-space-4);
 }
 
 .agentWatchTitle {
@@ -265,11 +265,11 @@
 
 /* Agent Fix Request Panel */
 .agentFixPanel {
-  padding: 16px;
-  max-width: 480px;
+  padding: var(--darake-space-6);
+  max-width: var(--darake-panel-max-width);
   margin: 0 auto;
   background: #fff8f8;
-  border-radius: 14px;
+  border-radius: var(--darake-radius-lg);
   border: 1.5px solid #ffcdd2;
 }
 

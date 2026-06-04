@@ -1,0 +1,16 @@
+.darakePanelBadge__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--darake-space-1);
+  margin-bottom: var(--darake-space-1);
+}
+
+.darakePanelBadge__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--darake-space-micro) var(--darake-space-2);
+  border-radius: var(--darake-radius-pill);
+  font-size: var(--darake-font-xs);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}

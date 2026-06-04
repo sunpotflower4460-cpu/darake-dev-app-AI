@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '../appCreationFlow.css';
+import '../styles/appCreationFlow.css';
 import {
   advanceAppCreationFlow,
   clearAppCreationRecord,

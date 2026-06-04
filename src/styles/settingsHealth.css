@@ -3,11 +3,11 @@
 .shc-card {
   background: var(--card-bg, #fff);
   border: 1px solid var(--border, #e5e7eb);
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: var(--darake-radius-md);
+  padding: var(--darake-space-8);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--darake-space-4);
 }
 
 .shc-header {
@@ -17,9 +17,9 @@
 }
 
 .shc-title {
-  font-size: 1rem;
+  font-size: var(--darake-font-base);
   font-weight: 700;
-  color: var(--text-primary, #111827);
+  color: var(--text-primary, var(--darake-text-heading));
 }
 
 .shc-badge {
@@ -39,16 +39,16 @@
 }
 
 .shc-idle-desc {
-  font-size: 0.85rem;
-  color: var(--text-secondary, #6b7280);
+  font-size: var(--darake-font-compact);
+  color: var(--text-secondary, var(--darake-text-muted));
   line-height: 1.5;
 }
 
 /* Loading */
 .shc-loading {
-  font-size: 0.9rem;
-  color: #6b7280;
-  padding: 8px 0;
+  font-size: var(--darake-font-md);
+  color: var(--darake-text-muted);
+  padding: var(--darake-space-2) 0;
 }
 
 /* Error */
@@ -65,8 +65,8 @@
 
 /* Banner */
 .shc-banner {
-  border-radius: 10px;
-  padding: 16px;
+  border-radius: var(--darake-radius-sm);
+  padding: var(--darake-space-6);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -91,19 +91,19 @@
 .shc-banner-score {
   font-size: 2rem;
   font-weight: 800;
-  color: var(--text-primary, #111827);
+  color: var(--text-primary, var(--darake-text-heading));
   line-height: 1;
 }
 
 .shc-banner-label {
-  font-size: 1rem;
+  font-size: var(--darake-font-base);
   font-weight: 700;
-  color: var(--text-primary, #111827);
+  color: var(--text-primary, var(--darake-text-heading));
 }
 
 .shc-banner-sub {
-  font-size: 0.82rem;
-  color: var(--text-secondary, #6b7280);
+  font-size: var(--darake-font-ui);
+  color: var(--text-secondary, var(--darake-text-muted));
   line-height: 1.5;
   margin-top: 4px;
 }
@@ -126,7 +126,7 @@
   flex-direction: column;
   gap: 6px;
   border-top: 1px solid var(--border, #e5e7eb);
-  padding-top: 12px;
+  padding-top: var(--darake-space-4);
 }
 
 .shc-section-label {
@@ -142,7 +142,7 @@
 }
 
 .shc-all-ok {
-  font-size: 0.85rem;
+  font-size: var(--darake-font-compact);
   color: #16a34a;
 }
 
@@ -182,9 +182,9 @@
 }
 
 .shc-item-title {
-  font-size: 0.85rem;
+  font-size: var(--darake-font-compact);
   font-weight: 600;
-  color: var(--text-primary, #111827);
+  color: var(--text-primary, var(--darake-text-heading));
 }
 
 .shc-item-desc {
@@ -251,7 +251,7 @@
   background: #2563eb;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--darake-radius-sm);
   padding: 10px 18px;
   font-size: 0.88rem;
   font-weight: 600;
@@ -272,7 +272,7 @@
   background: #f3f4f6;
   color: #374151;
   border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border-radius: var(--darake-radius-sm);
   padding: 8px 14px;
   font-size: 0.82rem;
   font-weight: 500;

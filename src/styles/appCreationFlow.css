@@ -1,26 +1,26 @@
 .appFlow {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 20px;
-  background: #fff;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
+  gap: var(--darake-space-6);
+  padding: var(--darake-space-8);
+  background: var(--darake-surface-raised);
+  border-radius: var(--darake-radius-md);
+  border: 1px solid var(--darake-border-muted);
 }
 
 .appFlow__eyebrow {
-  font-size: 11px;
+  font-size: var(--darake-font-xs);
   font-weight: 600;
-  color: #6b7280;
+  color: var(--darake-text-muted);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .appFlow__title {
-  font-size: 18px;
+  font-size: var(--darake-font-2xl);
   font-weight: 700;
-  color: #111827;
-  margin: 0 0 4px;
+  color: var(--darake-text-heading);
+  margin: 0 0 var(--darake-space-1);
 }
 
 .appFlow__start {
@@ -36,30 +36,30 @@
 }
 
 .appFlow__label {
-  font-size: 12px;
+  font-size: var(--darake-font-caption);
   font-weight: 600;
-  color: #374151;
+  color: var(--darake-text-body);
 }
 
 .appFlow__input {
-  padding: 9px 14px;
+  padding: var(--darake-space-2) var(--darake-space-5);
   border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: var(--darake-radius-sm);
+  font-size: var(--darake-font-md);
   font-family: inherit;
   outline: none;
-  background: #f9fafb;
+  background: var(--darake-surface-soft);
 }
 
 .appFlow__input:focus { border-color: #2563eb; background: #fff; }
 
 .appFlow__startBtn {
-  padding: 10px 20px;
+  padding: var(--darake-space-3) var(--darake-space-8);
   background: #2563eb;
-  color: #fff;
+  color: var(--darake-text-inverse);
   border: none;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: var(--darake-radius-sm);
+  font-size: var(--darake-font-md);
   font-weight: 700;
   cursor: pointer;
   align-self: flex-start;
@@ -76,7 +76,7 @@
   align-items: flex-start;
   gap: 12px;
   padding: 12px 14px;
-  border-radius: 10px;
+  border-radius: var(--darake-radius-sm);
   border: 1px solid #e5e7eb;
   background: #f9fafb;
 }
@@ -112,14 +112,14 @@
 .appFlow__stepBody { flex: 1; min-width: 0; }
 
 .appFlow__stepLabel {
-  font-size: 14px;
+  font-size: var(--darake-font-md);
   font-weight: 600;
-  color: #111827;
+  color: var(--darake-text-heading);
 }
 
 .appFlow__stepDesc {
-  font-size: 12px;
-  color: #6b7280;
+  font-size: var(--darake-font-caption);
+  color: var(--darake-text-muted);
   margin-top: 2px;
 }
 
@@ -134,12 +134,12 @@
 }
 
 .appFlow__advance {
-  padding: 8px 16px;
+  padding: var(--darake-space-2) var(--darake-space-6);
   background: #16a34a;
-  color: #fff;
+  color: var(--darake-text-inverse);
   border: none;
-  border-radius: 8px;
-  font-size: 13px;
+  border-radius: var(--darake-radius-sm);
+  font-size: var(--darake-font-md);
   font-weight: 600;
   cursor: pointer;
 }
@@ -155,12 +155,12 @@
 }
 
 .appFlow__reset {
-  padding: 8px 16px;
-  background: #fff;
-  color: #6b7280;
+  padding: var(--darake-space-2) var(--darake-space-6);
+  background: var(--darake-surface-raised);
+  color: var(--darake-text-muted);
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 12px;
+  border-radius: var(--darake-radius-sm);
+  font-size: var(--darake-font-caption);
   cursor: pointer;
 }
 

@@ -10,6 +10,10 @@
   background: var(--darake-surface-soft);
 }
 
+:is(.shc-card, .sgc-card, .previewDeploy, .appFlow, .appStorePrep, .darakeHealth) {
+  border-radius: var(--darake-radius-md);
+}
+
 .darake-badge,
 :is(.gasPhaseTag, .gbpPhaseTag) {
   display: inline-block;
@@ -17,6 +21,11 @@
   border-radius: var(--darake-radius-pill);
   font-size: var(--darake-font-xs);
   font-weight: 700;
+}
+
+.darake-badge,
+:is(.darakePanelBadge__badge, .sgc-badge, .appFlow__humanBadge, .appStorePrep__humanBadge, .appStorePrep__required) {
+  border-radius: var(--darake-radius-pill);
 }
 
 .darake-statusBadge,
@@ -51,6 +60,11 @@
   align-items: center;
   justify-content: center;
   gap: var(--darake-space-2);
+}
+
+.darake-actionButton,
+:is(.previewDeploy__setBtn, .previewDeploy__extractBtn, .previewDeploy__openBtn, .previewDeploy__resetBtn, .appFlow__startBtn, .appFlow__advance, .appFlow__reset, .appFlow__urlSave, .appStorePrep__submitGate, .sgc-btn-primary, .sgc-copy-btn, .shc-btn-primary, .shc-btn-secondary, .safetyBtn__confirmOk, .safetyBtn__confirmCancel, .safetyBtn__dismiss) {
+  border-radius: var(--darake-radius-sm);
 }
 
 .darake-buttonStack,
