@@ -241,7 +241,7 @@
 }
 
 .gasBtnSecondary:active {
-  background: var(--darake-border-muted);
+  background: var(--darake-surface-soft-muted);
   transform: scale(0.98);
 }
 
