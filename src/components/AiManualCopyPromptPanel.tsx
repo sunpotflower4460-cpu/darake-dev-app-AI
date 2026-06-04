@@ -6,7 +6,19 @@ import { buildAiManualCopyPrompt } from '../utils/aiManualCopyPrompt';
 type CopyState = 'idle' | 'copied' | 'failed';
 
 export function AiManualCopyPromptPanel() {
-  const defaultDraft = AI_EXECUTION_CANDIDATE_DRAFTS.find((draft) => draft.provider === 'manual-ai') ?? AI_EXECUTION_CANDIDATE_DRAFTS[0];
+  const defaultDraft = AI_EXECUTION_CANDIDATE_DRAFTS.find((draft) => draft.provider === 'manual-ai')
+    ?? AI_EXECUTION_CANDIDATE_DRAFTS.find((draft) => draft.status === 'draft-only' && draft.requiredSecrets.length === 0)
+    ?? AI_EXECUTION_CANDIDATE_DRAFTS[0];
+
+  if (!defaultDraft) {
+    return (
+      <div className="phase24Panel">
+        <div className="phaseSafetyBox">
+          <strong>AI実行候補が未定義のため、手動コピー用プロンプトを生成できません。</strong>
+        </div>
+      </div>
+    );
+  }
   const [selectedTitle, setSelectedTitle] = useState(defaultDraft.title);
   const [purpose, setPurpose] = useState('');
   const [additionalContext, setAdditionalContext] = useState('');
@@ -39,7 +51,6 @@ export function AiManualCopyPromptPanel() {
       window.setTimeout(() => setCopyState('idle'), 2400);
     }
   }
-
   return (
     <div className="phase24Panel">
       <div className="phase24Hero">
@@ -112,4 +123,3 @@ export function AiManualCopyPromptPanel() {
     </div>
   );
 }
-

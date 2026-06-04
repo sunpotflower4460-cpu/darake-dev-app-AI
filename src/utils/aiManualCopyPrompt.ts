@@ -29,9 +29,15 @@ const PROVIDER_FOCUS: Record<AiProviderId, string> = {
 
 export function buildAiManualCopyPrompt(input: AiManualCopyPromptInput): string {
   const purpose = input.purpose.trim() || '（ここにIssue / PR / 設計の目的を記入）';
-  const notDoingNow = (input.notDoingNow?.length ? input.notDoingNow : DEFAULT_NOT_DOING_NOW).map((item) => item.trim()).filter(Boolean);
+  const notDoingNowSource =
+    input.notDoingNow && input.notDoingNow.length > 0
+      ? input.notDoingNow
+      : DEFAULT_NOT_DOING_NOW;
+  const notDoingNow = notDoingNowSource.map((item) => item.trim()).filter(Boolean);
   const providerFocus = PROVIDER_FOCUS[input.draft.provider];
-  const requiredSecrets = input.draft.requiredSecrets.length > 0 ? input.draft.requiredSecrets.join(', ') : 'なし（この候補はAPI key入力不要）';
+  const requiredSecrets = input.draft.requiredSecrets.length > 0
+    ? input.draft.requiredSecrets.join(', ')
+    : 'なし（この候補はAPI key入力不要）';
 
   const lines = [
     '# 外部AIへの手動コピー用プロンプト',
@@ -78,4 +84,3 @@ export function buildAiManualCopyPrompt(input: AiManualCopyPromptInput): string 
 
   return lines.join('\n');
 }
-
